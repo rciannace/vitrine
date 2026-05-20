@@ -2549,6 +2549,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
     </div></div>
   <div class="pricing-admin-bar">
     <button class="pricing-add-btn" onclick="addPricingPackage()">＋ Adicionar pacote</button>
+    <button class="pricing-add-btn" onclick="sortPricingByValue()" title="Ordenar do menor ao maior valor" style="background:rgba(0,196,174,.10);margin-left:8px;">⇅ Ordenar por valor</button>
   </div>
   <p class="pricing-footer-note">Dúvidas? <a href="https://wa.me/5511926029852" target="_blank">Fale com a gente no WhatsApp</a> — respondemos rapidinho.</p>
 </div>
@@ -4518,6 +4519,14 @@ function deletePricingPackage(pid) {
   savePricing(data);
   renderPricing();
   toast('✓ Pacote removido');
+}
+
+function sortPricingByValue() {
+  const data = loadPricing();
+  data.sort((a, b) => a.total - b.total);
+  savePricing(data);
+  renderPricing();
+  toast('✓ Pacotes ordenados do menor ao maior valor!');
 }
 
 function addPricingPackage() {
