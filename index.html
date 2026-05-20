@@ -3611,26 +3611,39 @@ async function confirmUpload() {
 
   const newItems = [];
   const total = pendingFiles.length;
+  const CONCURRENCY = 4; // uploads simultâneos
+  let completed = 0;
 
-  for (let i = 0; i < total; i++) {
-    const file = pendingFiles[i];
+  // Função que processa um arquivo individual
+  async function uploadOne(file, index) {
     try {
-      const url = await uploadToCloudinary(file, pct => {
-        const overall = ((i + pct) / total) * 100;
-        progressBar.style.width = overall + '%';
+      const url = await uploadToCloudinary(file, () => {
+        completed = newItems.length + 0.5;
+        progressBar.style.width = Math.round((completed / total) * 100) + '%';
       });
-
       const id    = 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-      const num   = existingCount + i + 1;
+      const num   = existingCount + index + 1;
       const title = file.name.replace(/\.[^.]+$/, '') || `Foto ${num}`;
       const meta  = { id, title, cat: targetCat, tags: [], orient: 'portrait', createdAt: Date.now(), img: url };
       items.push({ ...meta });
       newItems.push(meta);
+      progressBar.style.width = Math.round((newItems.length / total) * 100) + '%';
     } catch(e) {
       console.error('Erro no upload:', e);
       toast('⚠ Erro ao enviar ' + file.name);
     }
   }
+
+  // Executa uploads em paralelo com limite de CONCURRENCY simultâneos
+  let idx = 0;
+  async function worker() {
+    while (idx < total) {
+      const i = idx++;
+      await uploadOne(pendingFiles[i], i);
+    }
+  }
+  const workers = Array.from({ length: Math.min(CONCURRENCY, total) }, worker);
+  await Promise.all(workers);
 
   progressBar.style.width = '100%';
 
