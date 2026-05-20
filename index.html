@@ -2343,7 +2343,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   }
 </script>
 </head>
-<body class="admin-mode">
+<body>
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -2731,6 +2731,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
       </div>
       <div class="toolbar-right">
         <button class="btn btn-ghost btn-sm admin-only" id="reorderBtn" onclick="autoReorder()" title="Ordenar do menor para o maior">⇅ Reordenar</button>
+        <button class="btn btn-ghost btn-sm admin-only" id="selectModeBtn" onclick="toggleSelectMode()" title="Selecionar fotos para mover">☑ Selecionar</button>
       </div>
     </div>
 
@@ -2949,17 +2950,17 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 <div id="bulkBar">
   <span id="bulkCount">0 fotos selecionadas</span>
   <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover para galeria</button>
-  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="clearSelection()">✕ Cancelar</button>
+  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="selectModeActive=false;document.getElementById('selectModeBtn').style.background='';document.getElementById('selectModeBtn').style.color='';document.getElementById('selectModeBtn').style.borderColor='';document.getElementById('selectModeBtn').textContent='☑ Selecionar';clearSelection();render()">✕ Cancelar</button>
 </div>
 
 <!-- PASTE FLASH BORDER -->
 <div class="paste-global-flash" id="pasteFlash"></div>
 
 <!-- ADMIN LOCK BUTTON -->
-<button id="adminLockBtn" onclick="openAdminModal()" title="Modo admin ativo — clique para sair" class="admin-active">🔓</button>
+<button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
 
 <!-- ADMIN BADGE -->
-<div id="adminBadge" class="visible">⚙ Admin</div>
+<div id="adminBadge" class="">⚙ Admin</div>
 
 <!-- ADMIN PASSWORD MODAL -->
 <div id="adminModal" onclick="if(event.target===this)closeAdminModal()" class="">
@@ -3161,6 +3162,9 @@ function buildSidebar() {
 
 function selectCat(catId) {
   currentCat = catId;
+  selectModeActive = false;
+  const btn = document.getElementById('selectModeBtn');
+  if (btn) { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; btn.textContent='☑ Selecionar'; }
   clearSelection();
   buildSidebar();
   render();
@@ -3187,6 +3191,7 @@ function render(pool) {
   const backBtn = document.getElementById('mobileBackBtn');
   const drawerBtn = document.getElementById('drawerToggleBtn');
   const reorderBtn = document.getElementById('reorderBtn');
+  const selectModeBtn = document.getElementById('selectModeBtn');
   const backToGalBtn = document.getElementById('backToGalleriesBtn');
 
   // HOME VIEW: mostra caixas de galerias quando currentCat === null e sem busca
@@ -3196,6 +3201,7 @@ function render(pool) {
     if (backBtn) backBtn.classList.remove('visible');
     if (drawerBtn) drawerBtn.style.display = 'flex';
     if (reorderBtn) reorderBtn.style.display = '';
+    if (selectModeBtn) selectModeBtn.style.display = 'none';
     if (backToGalBtn) backToGalBtn.classList.remove('visible');
     const tb = document.getElementById('mainToolbar');
     if (tb) tb.classList.add('toolbar-home-state');
@@ -3207,6 +3213,7 @@ function render(pool) {
   if (backBtn) backBtn.classList.add('visible');
   if (drawerBtn) drawerBtn.style.display = 'none';
   if (reorderBtn) reorderBtn.style.display = '';
+  if (selectModeBtn) selectModeBtn.style.display = '';
   if (backToGalBtn) backToGalBtn.classList.add('visible');
   const tb2 = document.getElementById('mainToolbar');
   if (tb2) tb2.classList.remove('toolbar-home-state');
@@ -3260,7 +3267,7 @@ function render(pool) {
   }
 
   const isInbox = currentCat === '__inbox__';
-  const selectable = isInbox && adminMode;
+  const selectable = adminMode && (isInbox || selectModeActive);
 
   grid.innerHTML = pool.map((it, idx) => `
     <div class="photo-card ${it.img ? '' : 'photo-card-empty'} ${selectable ? 'selectable' : ''}"
@@ -4105,6 +4112,27 @@ function clearSelection() {
   selectedIds.clear();
   document.querySelectorAll('.photo-card.selected').forEach(c => c.classList.remove('selected'));
   updateBulkBar();
+}
+
+// ── SELECT MODE (ativar seleção em qualquer galeria) ──
+let selectModeActive = false;
+
+function toggleSelectMode() {
+  selectModeActive = !selectModeActive;
+  const btn = document.getElementById('selectModeBtn');
+  if (selectModeActive) {
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.style.borderColor = 'var(--accent)';
+    btn.textContent = '✕ Cancelar seleção';
+  } else {
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+    btn.textContent = '☑ Selecionar';
+    clearSelection();
+  }
+  render();
 }
 
 function openMoveBulk() {
