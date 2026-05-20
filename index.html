@@ -952,6 +952,12 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   background: var(--surface2);
 }
 .upload-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.upload-file-counter {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
 .upload-preview-remove {
   position: absolute;
   top: 3px; right: 3px;
@@ -2040,6 +2046,24 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 .move-bulk-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
 .move-bulk-info { font-size: 13px; color: var(--muted); }
 .move-bulk-info strong { color: var(--text); }
+.move-bulk-newcat {
+  display: flex; gap: 8px; align-items: center;
+}
+.move-bulk-newcat .input-field { flex: 1; margin: 0; }
+.move-bulk-newcat-toggle {
+  background: none;
+  border: 1px dashed rgba(0,196,174,.45);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background .15s;
+  text-align: left;
+}
+.move-bulk-newcat-toggle:hover { background: var(--accent2); }
 .move-bulk-footer {
   padding: 14px 22px;
   border-top: 1px solid var(--border);
@@ -2530,7 +2554,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 </div>
 
 <!-- CAT CHIPS (mobile) -->
-<div class="cat-chips" id="catChips"></div><div class="cat-chip " onclick="selectCat(&#39;c1777586793106&#39;)">Animais</div><div class="cat-chip " onclick="selectCat(&#39;c5&#39;)">Aniversário</div><div class="cat-chip " onclick="selectCat(&#39;c6&#39;)">Casamento</div><div class="cat-chip " onclick="selectCat(&#39;c4&#39;)">Cinemático</div><div class="cat-chip active" onclick="selectCat(&#39;c1&#39;)">Executivas Feminino</div><div class="cat-chip " onclick="selectCat(&#39;c2&#39;)">Executivas Masculino</div><div class="cat-chip " onclick="selectCat(&#39;c1777515636960&#39;)">Familia</div><div class="cat-chip " onclick="selectCat(&#39;c3&#39;)">Fantasy</div><div class="cat-chip " onclick="selectCat(&#39;c7&#39;)">Infantil</div></div>
+<div class="cat-chips" id="catChips"></div>
 
 <!-- SYNC MOBILE BAR (admin only, mobile only) -->
 <!-- mobile-sync-bar removida (duplica os botões da sidebar) -->
@@ -2796,6 +2820,11 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
     <div class="move-bulk-body">
       <div class="move-bulk-info" id="moveBulkInfo">Mover fotos selecionadas para:</div>
       <select id="moveBulkSel" class="select-field"></select>
+      <div class="move-bulk-newcat" id="moveBulkNewCatRow" style="display:none;">
+        <input id="moveBulkNewCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key==='Enter')moveBulkAddCat()">
+        <button class="btn btn-accent btn-sm" onclick="moveBulkAddCat()">＋ Criar</button>
+      </div>
+      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova categoria</button>
     </div>
     <div class="move-bulk-footer">
       <button class="btn btn-ghost" onclick="closeMoveBulk()">Cancelar</button>
@@ -2949,8 +2978,9 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 <!-- BULK SELECT BAR -->
 <div id="bulkBar">
   <span id="bulkCount">0 fotos selecionadas</span>
-  <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover para galeria</button>
-  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="selectModeActive=false;document.getElementById('selectModeBtn').style.background='';document.getElementById('selectModeBtn').style.color='';document.getElementById('selectModeBtn').style.borderColor='';document.getElementById('selectModeBtn').textContent='☑ Selecionar';clearSelection();render()">✕ Cancelar</button>
+  <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
+  <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
+  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
 </div>
 
 <!-- PASTE FLASH BORDER -->
@@ -3162,13 +3192,10 @@ function buildSidebar() {
 
 function selectCat(catId) {
   currentCat = catId;
-  selectModeActive = false;
-  const btn = document.getElementById('selectModeBtn');
-  if (btn) { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; btn.textContent='☑ Selecionar'; }
-  clearSelection();
+  cancelSelectMode();
   buildSidebar();
   render();
-  closeDrawer(); // fecha drawer mobile ao selecionar galeria
+  closeDrawer();
 }
 
 // ── MOBILE DRAWER ──
@@ -3530,22 +3557,33 @@ function dzDrop(e) {
 function filesSelected(files) {
   const arr = [...files].filter(f => f.type.startsWith('image/'));
   if (!arr.length) return;
+  // Revogar URLs anteriores para liberar memória
+  pendingFiles.forEach(f => { if (f._objUrl) URL.revokeObjectURL(f._objUrl); });
   pendingFiles = arr;
   document.getElementById('uploadConfirmBtn').disabled = false;
 
   const grid = document.getElementById('uploadPreviewGrid');
   grid.style.display = 'grid';
   grid.innerHTML = '';
+
+  // Contador de fotos selecionadas
+  let counter = grid.previousElementSibling;
+  if (!counter || !counter.classList.contains('upload-file-counter')) {
+    counter = document.createElement('div');
+    counter.className = 'upload-file-counter';
+    grid.parentNode.insertBefore(counter, grid);
+  }
+  counter.textContent = `${arr.length} foto${arr.length !== 1 ? 's' : ''} selecionada${arr.length !== 1 ? 's' : ''}`;
+
   arr.forEach((file, i) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const div = document.createElement('div');
-      div.className = 'upload-preview-item';
-      div.innerHTML = `<img src="${e.target.result}">
-        <button class="upload-preview-remove" onclick="removePendingFile(${i})">✕</button>`;
-      grid.appendChild(div);
-    };
-    reader.readAsDataURL(file);
+    // createObjectURL é instantâneo — não precisa ler o arquivo inteiro
+    const url = URL.createObjectURL(file);
+    file._objUrl = url;
+    const div = document.createElement('div');
+    div.className = 'upload-preview-item';
+    div.innerHTML = `<img src="${url}">
+      <button class="upload-preview-remove" onclick="removePendingFile(${i})">✕</button>`;
+    grid.appendChild(div);
   });
 }
 
@@ -4117,6 +4155,14 @@ function clearSelection() {
 // ── SELECT MODE (ativar seleção em qualquer galeria) ──
 let selectModeActive = false;
 
+function cancelSelectMode() {
+  selectModeActive = false;
+  const btn = document.getElementById('selectModeBtn');
+  if (btn) { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; btn.textContent='☑ Selecionar'; }
+  clearSelection();
+  render();
+}
+
 function toggleSelectMode() {
   selectModeActive = !selectModeActive;
   const btn = document.getElementById('selectModeBtn');
@@ -4126,13 +4172,22 @@ function toggleSelectMode() {
     btn.style.borderColor = 'var(--accent)';
     btn.textContent = '✕ Cancelar seleção';
   } else {
-    btn.style.background = '';
-    btn.style.color = '';
-    btn.style.borderColor = '';
-    btn.textContent = '☑ Selecionar';
-    clearSelection();
+    cancelSelectMode();
   }
   render();
+}
+
+function deleteBulk() {
+  if (!selectedIds.size) return;
+  const n = selectedIds.size;
+  if (!confirm(`Apagar ${n} foto${n !== 1 ? 's' : ''}? Esta ação não pode ser desfeita.`)) return;
+  items = items.filter(it => !selectedIds.has(it.id));
+  persist();
+  cancelSelectMode();
+  buildSidebar();
+  render();
+  updateHeroStats();
+  toast(`🗑 ${n} foto${n !== 1 ? 's' : ''} apagada${n !== 1 ? 's' : ''}!`);
 }
 
 function openMoveBulk() {
@@ -4150,6 +4205,50 @@ function openMoveBulk() {
 
 function closeMoveBulk() {
   document.getElementById('moveBulkOverlay').classList.remove('open');
+  // Fechar campo de nova cat se aberto
+  const row = document.getElementById('moveBulkNewCatRow');
+  if (row) { row.style.display = 'none'; }
+  const btn = document.getElementById('moveBulkNewCatBtn');
+  if (btn) { btn.textContent = '＋ Nova categoria'; }
+}
+
+function toggleMoveBulkNewCat() {
+  const row = document.getElementById('moveBulkNewCatRow');
+  const btn = document.getElementById('moveBulkNewCatBtn');
+  const input = document.getElementById('moveBulkNewCatInput');
+  if (row.style.display === 'none') {
+    row.style.display = 'flex';
+    btn.textContent = '✕ Cancelar';
+    input.value = '';
+    input.focus();
+  } else {
+    row.style.display = 'none';
+    btn.textContent = '＋ Nova categoria';
+  }
+}
+
+function moveBulkAddCat() {
+  const input = document.getElementById('moveBulkNewCatInput');
+  const name = (input?.value || '').trim();
+  if (!name) { input?.focus(); return; }
+  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast('⚠ Já existe uma galeria com esse nome');
+    return;
+  }
+  const id = 'cat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  cats.push({ id, name, icon: '' });
+  persist();
+  buildSidebar();
+  updateHeroStats();
+  // Atualiza o select e seleciona a nova categoria
+  const sel = document.getElementById('moveBulkSel');
+  sel.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  sel.value = id;
+  // Fecha o campo
+  document.getElementById('moveBulkNewCatRow').style.display = 'none';
+  document.getElementById('moveBulkNewCatBtn').textContent = '＋ Nova categoria';
+  input.value = '';
+  toast(`✓ Galeria "${name}" criada! Clique em Mover para confirmar.`);
 }
 
 function confirmMoveBulk() {
