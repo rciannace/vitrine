@@ -3651,7 +3651,7 @@ async function confirmUpload() {
       });
       const id    = 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
       const num   = existingCount + index + 1;
-      const title = file.name.replace(/\.[^.]+$/, '') || `Foto ${num}`;
+      const title = `Foto ${num}`;
       const meta  = { id, title, cat: targetCat, tags: [], orient: 'portrait', createdAt: Date.now(), img: url };
       items.push({ ...meta });
       newItems.push(meta);
