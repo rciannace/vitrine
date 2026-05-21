@@ -3465,10 +3465,18 @@ function autoReorder() {
   };
 
   const sorted  = [...pool].sort((a, b) => getNum(a.title) - getNum(b.title));
+
+  // Renomeia como Foto 1, Foto 2, Foto 3...
+  sorted.forEach((it, idx) => {
+    const itemInMemory = items.find(i => i.id === it.id);
+    if (itemInMemory) itemInMemory.title = `Foto ${idx + 1}`;
+  });
+
   const poolIds = new Set(pool.map(i => i.id));
   const others  = items.filter(i => !poolIds.has(i.id));
   const firstIdx = items.findIndex(i => poolIds.has(i.id));
-  items.splice(0, items.length, ...others.slice(0, firstIdx), ...sorted, ...others.slice(firstIdx));
+  const renamedSorted = sorted.map(s => items.find(i => i.id === s.id));
+  items.splice(0, items.length, ...others.slice(0, firstIdx), ...renamedSorted, ...others.slice(firstIdx));
 
   persist();
 
@@ -3480,7 +3488,7 @@ function autoReorder() {
   setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
 
   render();
-  toast('✓ Fotos ordenadas!');
+  toast('✓ Fotos ordenadas e renumeradas!');
 }
 
 // ── LIGHTBOX ──
