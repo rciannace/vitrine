@@ -3037,6 +3037,7 @@ async function persist() {
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
       items: items,
       cats:  cats,
+      pricing: loadPricing(),
       updatedAt: Date.now()
     });
   } catch(e) {
@@ -3124,6 +3125,10 @@ async function initApp() {
       const data = snap.data();
       meta = data.items || [];
       cats = data.cats  || [];
+      // Carrega pricing do Firebase e atualiza cache local
+      if (data.pricing && data.pricing.length) {
+        localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
+      }
     } else {
       // Primeira vez — tenta migrar do localStorage
       meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
@@ -4494,14 +4499,28 @@ const DEFAULT_PRICING = [
 
 function loadPricing() {
   try {
+    // Tenta pegar do cache local (sincronizado do Firebase)
     const raw = localStorage.getItem(PRICING_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(DEFAULT_PRICING));
 }
 
-function savePricing(data) {
+async function savePricing(data) {
   localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data));
+  // Salva no Firebase também
+  if (window._fbReady) {
+    try {
+      const db = window._fbDb;
+      const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+      const current = snap.exists() ? snap.data() : {};
+      await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+        ...current,
+        pricing: data,
+        updatedAt: Date.now()
+      });
+    } catch(e) { console.error('Pricing Firebase save error:', e); }
+  }
 }
 
 function formatBRL(value) {
@@ -4565,7 +4584,7 @@ function pricingFieldChange(pid, field, value) {
   }
 }
 
-function savePricingPackage(pid) {
+async function savePricingPackage(pid) {
   const data = loadPricing();
   const pkg = data.find(p => p.id === pid);
   if (!pkg) return;
@@ -4579,35 +4598,35 @@ function savePricingPackage(pid) {
   pkg.qty = qtyVal;
   pkg.total = totalVal;
   pkg.desc = descVal || pkg.desc;
-  savePricing(data);
+  await savePricing(data);
   renderPricing();
   toast('✓ Pacote atualizado!');
 }
 
-function deletePricingPackage(pid) {
+async function deletePricingPackage(pid) {
   const data = loadPricing();
   if (data.length <= 1) { toast('⚠ Precisa ter ao menos 1 pacote'); return; }
   const idx = data.findIndex(p => p.id === pid);
   if (idx === -1) return;
   data.splice(idx, 1);
-  savePricing(data);
+  await savePricing(data);
   renderPricing();
   toast('✓ Pacote removido');
 }
 
-function sortPricingByValue() {
+async function sortPricingByValue() {
   const data = loadPricing();
   data.sort((a, b) => a.total - b.total);
-  savePricing(data);
+  await savePricing(data);
   renderPricing();
   toast('✓ Pacotes ordenados do menor ao maior valor!');
 }
 
-function addPricingPackage() {
+async function addPricingPackage() {
   const data = loadPricing();
   const newId = 'p' + Date.now();
   data.push({ id: newId, qty: 10, total: 99.90, desc: 'Novo pacote', featured: false });
-  savePricing(data);
+  await savePricing(data);
   renderPricing();
   toast('✓ Pacote adicionado — edite os valores e salve!');
 }
