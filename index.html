@@ -3543,27 +3543,57 @@ function downloadCurrentLb() {
 }
 
 // ── DOWNLOAD ──
-function downloadItem(idx) {
+async function downloadItem(idx) {
   const it = currentView[idx];
   if (!it?.img) return;
-  const a = document.createElement('a');
-  a.href = it.img;
-  a.download = `${it.title || 'foto'}.jpg`;
-  a.click();
+  toast('⬇ Preparando download…');
+  try {
+    // Usa URL original (sem miniatura) para download
+    const url = it.img.includes('res.cloudinary.com')
+      ? it.img.replace(/\/upload\/w_\d+[^/]*\//, '/upload/')
+      : it.img;
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = `${it.title || 'foto'}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    toast('✓ Download iniciado!');
+  } catch(e) {
+    // Fallback: abre em nova aba
+    window.open(it.img, '_blank');
+  }
 }
 
-function downloadAll() {
+async function downloadAll() {
   const withImg = currentView.filter(it => it.img);
   if (!withImg.length) { toast('⚠ Nenhuma foto para baixar'); return; }
-  withImg.forEach((it, i) => {
-    setTimeout(() => {
-      const a = document.createElement('a');
-      a.href = it.img;
-      a.download = `${it.title || 'foto-' + (i + 1)}.jpg`;
-      a.click();
-    }, i * 120);
-  });
   toast(`⬇ Baixando ${withImg.length} fotos…`);
+  for (let i = 0; i < withImg.length; i++) {
+    const it = withImg[i];
+    try {
+      const url = it.img.includes('res.cloudinary.com')
+        ? it.img.replace(/\/upload\/w_\d+[^/]*\//, '/upload/')
+        : it.img;
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${it.title || 'foto-' + (i + 1)}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    } catch(e) {
+      window.open(it.img, '_blank');
+    }
+    await new Promise(r => setTimeout(r, 300));
+  }
 }
 
 // ── UPLOAD ──
