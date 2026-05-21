@@ -2757,6 +2757,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
       <div class="toolbar-right">
         <button class="btn btn-ghost btn-sm admin-only" id="reorderBtn" onclick="autoReorder()" title="Ordenar do menor para o maior">⇅ Reordenar</button>
         <button class="btn btn-ghost btn-sm admin-only" id="selectModeBtn" onclick="toggleSelectMode()" title="Selecionar fotos para mover">☑ Selecionar</button>
+        <button class="btn btn-ghost btn-sm admin-only" onclick="cleanGhostItems()" title="Remover registros sem imagem" style="color:var(--red);">🧹 Limpar fantasmas</button>
       </div>
     </div>
 
@@ -2979,6 +2980,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 <!-- BULK SELECT BAR -->
 <div id="bulkBar">
   <span id="bulkCount">0 fotos selecionadas</span>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;" onclick="selectAll()">☑ Todas</button>
   <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
   <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
   <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
@@ -4202,6 +4204,29 @@ function cancelSelectMode() {
   if (btn) { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; btn.textContent='☑ Selecionar'; }
   clearSelection();
   render();
+}
+
+function selectAll() {
+  // Seleciona todas as fotos visíveis no momento
+  const visibleItems = _gpFilteredItems || items;
+  visibleItems.forEach(it => {
+    selectedIds.add(it.id);
+    const card = document.getElementById('pcard-' + it.id);
+    if (card) card.classList.add('selected');
+  });
+  updateBulkBar();
+}
+
+function cleanGhostItems() {
+  const ghosts = items.filter(it => !it.img);
+  if (!ghosts.length) { toast('✓ Nenhum registro fantasma encontrado!'); return; }
+  if (!confirm(`Apagar ${ghosts.length} registro${ghosts.length !== 1 ? 's' : ''} sem imagem?`)) return;
+  items = items.filter(it => it.img);
+  persist();
+  buildSidebar();
+  render();
+  updateHeroStats();
+  toast(`🗑 ${ghosts.length} registro${ghosts.length !== 1 ? 's' : ''} fantasma${ghosts.length !== 1 ? 's' : ''} removido${ghosts.length !== 1 ? 's' : ''}!`);
 }
 
 function toggleSelectMode() {
