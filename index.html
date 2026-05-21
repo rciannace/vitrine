@@ -2774,7 +2774,8 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   <button class="lightbox-nav" id="lbPrev" onclick="lbNavigate(-1)">‹</button>
   <div class="lightbox-inner">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    <img id="lightboxImg" src="./IA Foto Studio — Vitrine de Referências_files/IA Foto Studio — Vitrine de Referências.html" alt="">
+    <button id="lbBackBtn" onclick="closeLightbox()" style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:10;">← Voltar para galeria</button>
+    <img id="lightboxImg" src="" alt="">
     <div class="lightbox-info">
       <span class="lightbox-title" id="lightboxTitle"></span>
       <button class="btn btn-accent btn-sm" onclick="downloadCurrentLb()">⬇ Download</button>
@@ -3501,6 +3502,18 @@ function openLightbox(idx) {
   if (!currentView[idx]?.img) return;
   lbIndex = idx;
   updateLightbox();
+  // Atualiza texto do botão voltar com nome da galeria
+  const backBtn = document.getElementById('lbBackBtn');
+  if (backBtn) {
+    let galName = 'galeria';
+    if (currentCat === null) galName = 'todas as fotos';
+    else if (currentCat === '__inbox__') galName = 'sem categoria';
+    else {
+      const cat = cats.find(c => c.id === currentCat);
+      if (cat) galName = cat.name;
+    }
+    backBtn.textContent = `← ${galName}`;
+  }
   document.getElementById('lightboxOverlay').classList.add('open');
   document.addEventListener('keydown', lbKeyDown);
 }
