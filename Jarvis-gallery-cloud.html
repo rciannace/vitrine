@@ -3291,22 +3291,42 @@ document.querySelectorAll('.pg-chip[data-mode]').forEach(c=>{
 });
 
 const EXTRA_CMD_BY_MODE = {
-  simple: ``,
-  subject: ``,
+  simple: `⚙ GENERATION SETTINGS — APPLY TO ALL OUTPUTS:
+Generate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10-15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.
+Output quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
+
+  subject: `⚠ IDENTITY LOCK — FACE + BODY ARE SACRED — NON-NEGOTIABLE:
+FACE: face shape, nose (size + tip + bridge), EXACT eye color (do NOT change eye color), eye shape, eyebrows, cheekbones, lips (volume + shape), chin, EXACT skin tone, all visible marks (moles, scars, freckles) — 100% identical to subject. Do NOT soften, beautify or alter ANY facial feature.
+HAIR: if BALD → completely shaved scalp, ZERO hair. If has hair → EXACT color, length and style.
+BEARD: if has beard → maintain full beard with same shape and color. If clean-shaved → keep clean-shaved.
+BODY: EXACT body type — if overweight/heavy → maintain real weight. NEVER slim down, NEVER add muscle.
+
+⚙ GENERATION SETTINGS:
+Generate 4 distinct variations. For each: subtly vary lighting angle or background depth — NEVER change identity, pose or outfit.
+Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
+Negative: different face, wrong identity, wrong eye color, skin tone changed, face morphed, beautified, slimmer, different body type, CGI, airbrushed, plastic skin.`,
+
   faceswap: `⚠ IDENTITY LOCK — FACE E CORPO DO MODELO SÃO SAGRADOS E NÃO NEGOCIÁVEIS:
-ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis (pintas, sardas, cicatrizes) — tudo deve ser 100% idêntico ao modelo. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial.
+ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis — 100% idêntico ao modelo. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial.
 CABELO: se CARECA → cabeça raspada, ZERO cabelo. Se tem cabelo → cor, comprimento e estilo EXATOS.
 BARBA: se tem barba → mantenha barba completa com mesma forma e cor. Se barbeado → mantenha barbeado.
-CORPO: biotipo EXATO e SAGRADO — se gordo/robusto/pesado → mantém. NUNCA emagrecer, NUNCA musculizar.
-- Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, changed nose shape, different nose tip, different nose bridge, different jawline, different eye shape, wrong eye color, different lip shape, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, weight loss, idealized physique, plastic skin, airbrushed, CGI, hair (se careca), toupee (se careca), wig (se careca).`,
+CORPO: biotipo EXATO — se gordo/robusto/pesado → mantém. NUNCA emagrecer, NUNCA musculizar.
+
+⚙ CONFIGURAÇÕES DE GERAÇÃO:
+Gere 4 variações distintas. Em cada uma, varie sutilmente: ângulo da iluminação ou profundidade do fundo — NUNCA altere identidade, pose ou roupa.
+Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
+Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, hair (se careca), toupee (se careca), wig (se careca).`,
+
   scene: `⚠ IDENTITY LOCK — FACE E CORPO DO CLIENTE SÃO SAGRADOS E NÃO NEGOCIÁVEIS:
-ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis (pintas, sardas, cicatrizes) — tudo deve ser 100% idêntico ao cliente. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial. O cliente deve parecer ele mesmo no novo cenário.
+ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis — 100% idêntico ao cliente. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial.
 CABELO: se CARECA → cabeça raspada, ZERO cabelo — calvície é permanente. Se tem cabelo → cor, comprimento e estilo EXATOS.
 BARBA: se tem barba → mantenha barba completa com mesma forma e cor. Se barbeado → mantenha barbeado.
-CORPO: biotipo EXATO e SAGRADO — se gordo/robusto/pesado → mantém o peso e proporções reais. NUNCA emagrecer, NUNCA musculizar. O cliente deve aparecer com o corpo real dele na nova cena.
-- Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, changed nose shape, different nose tip, different nose bridge, different jawline, different eye shape, wrong eye color, different lip shape, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, weight loss, idealized physique, plastic skin, airbrushed, CGI, hair (se careca), toupee (se careca), wig (se careca).`
+CORPO: biotipo EXATO e SAGRADO — se gordo/robusto/pesado → mantém o peso real. NUNCA emagrecer, NUNCA musculizar.
+
+⚙ CONFIGURAÇÕES DE GERAÇÃO:
+Gere 4 variações distintas. Em cada uma, varie sutilmente: intensidade da iluminação, profundidade do fundo ou enquadramento — NUNCA altere identidade, pose ou roupa da cena de referência.
+Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
+Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, color photo (se referência for P&B), hair (se careca), toupee (se careca), wig (se careca).`
 };
 
 function getDefaultExtraCmd(){
