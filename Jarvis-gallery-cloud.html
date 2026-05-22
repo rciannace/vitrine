@@ -2175,6 +2175,7 @@ body{
           <button class="pg-chip" id="modeFaceBtn" onclick="setGenMode('faceswap')">🔄 Face Swap</button>
           <button class="pg-chip" id="modeSceneBtn" onclick="setGenMode('scene')">🧬 Clonar Pessoa</button>
           <button class="pg-chip" id="modeFamilyBtn" onclick="setGenMode('family')">👨‍👩‍👧 Família</button>
+          <button class="pg-chip" id="modeKidsBtn" onclick="setGenMode('kids')" style="background:rgba(255,175,50,.08);border-color:rgba(255,175,50,.3);color:#ffaf32;">🎈 Crianças</button>
         </div>
       </div>
 
@@ -2424,6 +2425,86 @@ body{
 
       </div>
 
+
+      <!-- ── MODO CRIANÇAS ── -->
+      <div id="pgModeKids" style="display:none;">
+
+        <!-- Dica -->
+        <div style="background:rgba(255,175,50,.06);border:1px solid rgba(255,175,50,.3);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#ffaf32;font-family:'DM Mono',monospace;display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:18px;line-height:1.3;">🎈</span>
+          <div>
+            <strong>Como usar:</strong> suba a <span style="color:#fff;">Foto do Cliente</span> (rosto da criança) → cole a <span style="color:#fff;">Foto Alvo</span> (cenário / tema) → escolha o tipo de fotografia → <strong>Gerar JSON</strong>. O prompt preserva 100% as feições infantis e adapta ao cenário escolhido.
+          </div>
+        </div>
+
+        <!-- Tipo de foto -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Tipo de fotografia</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;" id="kidsTypeChips">
+            <button class="kids-type-btn active" data-type="aniversario" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid rgba(255,175,50,.4);border-radius:20px;background:rgba(255,175,50,.15);color:#ffaf32;cursor:pointer;transition:all .15s;font-weight:600;">🎂 Aniversário</button>
+            <button class="kids-type-btn" data-type="cenario" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;">🏰 Cenário / Tema</button>
+            <button class="kids-type-btn" data-type="bebe" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;">👶 Bebê / Newborn</button>
+            <button class="kids-type-btn" data-type="fantasia" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;">🦸 Fantasia / Personagem</button>
+            <button class="kids-type-btn" data-type="natureza" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;">🌿 Natureza / Campo</button>
+            <button class="kids-type-btn" data-type="fada" onclick="setKidsType(this)"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;">🧚 Fadas / Mágico</button>
+          </div>
+        </div>
+
+        <!-- Fotos: cliente + alvo -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+          <!-- FOTO CLIENTE (criança) -->
+          <div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">👧 Foto do cliente (criança)</div>
+            <div id="pgKidsClientZone"
+              style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;color:var(--muted);font-size:12px;position:relative;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;"
+              tabindex="0"
+              onclick="pgKidsZoneClick('kidsclient')"
+              ondragover="event.preventDefault();this.style.borderColor='var(--cyan)';this.style.background='var(--cyan3)'"
+              ondragleave="this.style.borderColor='var(--subtle)';this.style.background=''">
+              <button id="pgKidsClientClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearKidsClient()" title="Remover foto">✕</button>
+              <div style="font-size:28px;opacity:.4;" id="pgKidsClientIcon">👧</div>
+              <div id="pgKidsClientLabel" style="font-weight:500;font-size:12px;">Rosto da criança</div>
+              <div style="font-size:10px;color:var(--subtle);">Ctrl+V · clique · arraste</div>
+              <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('kidsclient')">📁 Da galeria</button>
+              <img id="pgKidsClientPreview" style="display:none;width:100%;max-height:200px;object-fit:contain;border-radius:8px;">
+            </div>
+            <input type="file" id="pgKidsClientInput" accept="image/*" style="display:none" onchange="pgHandleKidsClientFile(event)">
+          </div>
+
+          <!-- FOTO ALVO (cenário / tema) -->
+          <div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:#ffaf32;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🎯 Foto alvo (cenário / tema)</div>
+            <div id="pgKidsTargetZone"
+              style="border:1.5px dashed rgba(255,175,50,.4);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;color:var(--muted);font-size:12px;position:relative;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;"
+              tabindex="0"
+              onclick="pgKidsZoneClick('kidstarget')"
+              ondragover="event.preventDefault();this.style.borderColor='#ffaf32';this.style.background='rgba(255,175,50,.05)'"
+              ondragleave="this.style.borderColor='rgba(255,175,50,.4)';this.style.background=''">
+              <button id="pgKidsTargetClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearKidsTarget()" title="Remover foto">✕</button>
+              <div style="font-size:28px;opacity:.4;" id="pgKidsTargetIcon">🎯</div>
+              <div id="pgKidsTargetLabel" style="font-weight:500;font-size:12px;">Cenário / tema</div>
+              <div style="font-size:10px;color:var(--subtle);">Ctrl+V · clique · arraste</div>
+              <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('kidstarget')">📁 Da galeria</button>
+              <img id="pgKidsTargetPreview" style="display:none;width:100%;max-height:200px;object-fit:contain;border-radius:8px;">
+            </div>
+            <input type="file" id="pgKidsTargetInput" accept="image/*" style="display:none" onchange="pgHandleKidsTargetFile(event)">
+          </div>
+
+        </div>
+
+        <!-- Info contextual por tipo -->
+        <div id="kidsTypeInfo" style="margin-top:10px;font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);">
+          🎂 <strong style="color:#ffaf32">Aniversário:</strong> preserva 100% o rosto da criança — coloca no cenário de festa com decoração temática, velas, bolo e atmosfera festiva.
+        </div>
+
+      </div>
 
       <div class="field">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
@@ -2975,7 +3056,8 @@ body{
   #pgOutputCard > div:first-child > div button { flex: 1; text-align: center; }
 
   #pgModeSimple > div, #pgModeSubject > div,
-  #pgModeFaceSwap > div, #pgModeScene > div { grid-template-columns: 1fr !important; }
+  #pgModeFaceSwap > div, #pgModeScene > div,
+  #pgModeKids > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
   #pgDropZone, #pgModelZone, #pgSubjectZone, #pgStyleZone,
   #pgFaceSubjectZone, #pgFaceTargetZone,
   #pgSceneSubjectZone, #pgSceneRefZone { min-height: 100px; }
@@ -3326,8 +3408,19 @@ CORPO: biotipo EXATO e SAGRADO — se gordo/robusto/pesado → mantém o peso re
 ⚙ CONFIGURAÇÕES DE GERAÇÃO:
 Gere 4 variações distintas. Em cada uma, varie sutilmente: intensidade da iluminação, profundidade do fundo ou enquadramento — NUNCA altere identidade, pose ou roupa da cena de referência.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, color photo (se referência for P&B), hair (se careca), toupee (se careca), wig (se careca).`
-};
+Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, color photo (se referência for P&B), hair (se careca), toupee (se careca), wig (se careca).`,
+
+  kids: `⚠ IDENTIDADE DA CRIANÇA — SAGRADA E NÃO NEGOCIÁVEL:
+ROSTO INFANTIL: formato do rosto, nariz (tamanho + formato exato), cor e formato dos olhos (NÃO mude a cor dos olhos), sobrancelhas, bochechas (volume infantil), lábios, queixo, TOM DE PELE EXATO, sardas, covinhas, marcas visíveis — 100% idêntico à foto da criança.
+CABELO: cor exata, comprimento exato, estilo exato (lisos, ondulados, cacheados, crespos) — NÃO mude.
+EXPRESSÃO: preserve a espontaneidade e a expressão infantil natural — sem forçar pose adulta.
+PROPORÇÕES: mantenha as proporções reais da criança — tamanho, peso, altura aparente.
+
+⚙ CONFIGURAÇÕES DE GERAÇÃO (CRIANÇAS):
+Gere 4 variações distintas. Em cada uma, varie sutilmente: ângulo de câmera, profundidade do bokeh ou detalhe decorativo do cenário — NUNCA altere identidade, rosto ou expressão da criança.
+Photorealistic children portrait, soft natural lighting, shallow depth of field, warm tones, Nikon D850, 85mm f/1.8, 4K.
+Negative: wrong face, different child, adult features on child, different eye color, skin tone changed, face morphed, beautified, airbrushed, CGI, plastic skin, wrong hair color, adult proportions.`
+
 
 function getDefaultExtraCmd(){
   return EXTRA_CMD_BY_MODE[pgGenMode] ?? '';
@@ -3369,6 +3462,7 @@ const PG_ZONES = {
   faceswap:    ['facesubject', 'facetarget'],
   scene:       ['scenesubject', 'sceneref'],
   family:      [], // dinâmico — reconstruído em buildFamiliaZones()
+  kids:        ['kidsclient', 'kidstarget'],
 };
 
 // Configurações visuais de cada zona
@@ -3385,6 +3479,9 @@ const PG_ZONE_CFG = {
   familiaRef:  { el: 'pgFamiliaRefZone',  color: 'var(--cyan)',  label: '🏞 Cenário / estilo' },
   familiaAlvo: { el: 'pgFamiliaAlvoZone', color: 'var(--gold)',  label: '🎯 Foto alvo' },
   // Pessoas são adicionadas dinamicamente via buildFamiliaZones()
+  // Crianças:
+  kidsclient:  { el: 'pgKidsClientZone',  color: 'var(--cyan)',  label: '👧 Foto da criança' },
+  kidstarget:  { el: 'pgKidsTargetZone',  color: '#ffaf32',      label: '🎯 Cenário / tema' },
 };
 
 let pgActiveZone = null; // qual zona está selecionada para Ctrl+V
@@ -3500,6 +3597,8 @@ const GP_ZONE_LABELS = {
   scenesubject: '🧍 Foto do cliente',
   sceneref:     '🌆 Foto de referência de cena',
   familiaalvo:  '🎯 Foto alvo (modelo da família)',
+  kidsclient:   '👧 Foto da criança (rosto a preservar)',
+  kidstarget:   '🎯 Foto alvo (cenário / tema)',
 };
 
 function openGalleryPicker(zoneKey, personIdx) {
@@ -3790,8 +3889,15 @@ function gpApplyToZone(zone, base64, dataUrl) {
           <button onclick="event.stopPropagation();pgClearFamiliaAlvo()" style="font-size:10px;padding:3px 10px;border:1px solid var(--red);border-radius:5px;background:transparent;color:var(--red);cursor:pointer;margin-top:4px;">✕ Remover</button>`;
       }
       checkGenBtnReady(); break;
+    case 'kidsclient':
+      pgKidsClientBase64 = base64;
+      show('pgKidsClientPreview','pgKidsClientIcon','pgKidsClientLabel','pgKidsClientClearBtn',null);
+      checkGenBtnReady(); break;
+    case 'kidstarget':
+      pgKidsTargetBase64 = base64;
+      show('pgKidsTargetPreview','pgKidsTargetIcon','pgKidsTargetLabel','pgKidsTargetClearBtn',null);
+      checkGenBtnReady(); break;
     default:
-      // familia person: 'familiaperson_N'
       if (zone && zone.startsWith('familiaperson_')) {
         const idx = parseInt(zone.split('_')[1]);
         if (!isNaN(idx) && familiaPersons[idx] !== undefined) {
@@ -3843,6 +3949,8 @@ function pgZoneOpenFile(zoneKey) {
     sceneref:    'pgSceneRefInput',
     familiaRef:  'familiaRefFileInput',
     familiaAlvo: 'familiaAlvoFileInput',
+    kidsclient:  'pgKidsClientInput',
+    kidstarget:  'pgKidsTargetInput',
   };
   // Zona de pessoa dinâmica
   if (zoneKey.startsWith('fp_')) {
@@ -4128,6 +4236,10 @@ let pgFaceTargetBase64 = null;
 let pgSceneSubjectBase64 = null;
 let pgSceneRefBase64 = null;
 let pgModelBase64 = null; // v8: foto do modelo no modo simples
+// Modo Crianças:
+let pgKidsClientBase64 = null;
+let pgKidsTargetBase64 = null;
+let pgKidsType = 'aniversario';
 let pgGenMode = 'simple';
 
 function setGenMode(mode){
@@ -4137,11 +4249,22 @@ function setGenMode(mode){
   document.getElementById('modeFaceBtn').classList.toggle('active', mode==='faceswap');
   document.getElementById('modeSceneBtn').classList.toggle('active', mode==='scene');
   document.getElementById('modeFamilyBtn').classList.toggle('active', mode==='family');
+  document.getElementById('modeKidsBtn').classList.toggle('active', mode==='kids');
+  if(mode==='kids'){
+    document.getElementById('modeKidsBtn').style.background='rgba(255,175,50,.2)';
+    document.getElementById('modeKidsBtn').style.borderColor='rgba(255,175,50,.7)';
+    document.getElementById('modeKidsBtn').style.color='#ffaf32';
+  } else {
+    document.getElementById('modeKidsBtn').style.background='rgba(255,175,50,.08)';
+    document.getElementById('modeKidsBtn').style.borderColor='rgba(255,175,50,.3)';
+    document.getElementById('modeKidsBtn').style.color='#ffaf32';
+  }
   document.getElementById('pgModeSimple').style.display = mode==='simple' ? 'block' : 'none';
   document.getElementById('pgModeSubject').style.display = mode==='subject' ? 'block' : 'none';
   document.getElementById('pgModeFaceSwap').style.display = mode==='faceswap' ? 'block' : 'none';
   document.getElementById('pgModeScene').style.display = mode==='scene' ? 'block' : 'none';
   document.getElementById('pgModeFamilia').style.display = mode==='family' ? 'block' : 'none';
+  document.getElementById('pgModeKids').style.display = mode==='kids' ? 'block' : 'none';
 
   // No modo simples, SEMPRE mostra a zona do modelo (coluna 2)
   if (mode === 'simple') {
@@ -4160,16 +4283,41 @@ function setGenMode(mode){
 
   // Atualiza label e placeholder da caixinha conforme o modo
   const isClonar = (mode==='faceswap'||mode==='scene');
+  const isKids   = (mode==='kids');
   const label = document.getElementById('pgExtraCmdLabel');
   const hint  = document.getElementById('pgExtraCmdHint');
-  if(label) label.textContent = isClonar ? '🧬 Instruções de clonagem' : '🤖 Comando para o gerador';
-  if(hint)  hint.textContent  = isClonar ? '(garante fidelidade ao biotipo — enviado ao Flow)' : '(anexado ao prompt enviado ao Flow)';
+  if(label) label.textContent = isClonar ? '🧬 Instruções de clonagem' : isKids ? '🎈 Instruções p/ criança' : '🤖 Comando para o gerador';
+  if(hint)  hint.textContent  = isClonar ? '(garante fidelidade ao biotipo — enviado ao Flow)' : isKids ? '(preservação de traços infantis — enviado ao Leonardo.ai)' : '(anexado ao prompt enviado ao Flow)';
   ta.placeholder = isClonar
     ? 'Instruções para preservar rosto, biotipo, barba, óculos...'
-    : 'Comandos extras enviados ao Flow junto com o prompt gerado...';
+    : isKids
+      ? 'Ex: criança tem sardas no nariz; cabelo bem cacheado; olhos muito grandes...'
+      : 'Comandos extras enviados ao Flow junto com o prompt gerado...';
 
   checkGenBtnReady();
   setTimeout(pgAutoActivateFirstZone, 50);
+
+  // Atualiza chips de contexto adicional conforme o modo
+  const chipsDiv = document.getElementById('pgHintChips');
+  if (chipsDiv) {
+    if (mode === 'kids') {
+      chipsDiv.innerHTML = `
+        <button onclick="pgInjectHint('Criança tem sardas no nariz e bochechas')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">🩰 Sardas</button>
+        <button onclick="pgInjectHint('Criança tem covinha no sorriso — preserve as covinhas')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">😊 Covinha</button>
+        <button onclick="pgInjectHint('Cabelo bem cacheado — preserve os cachos naturais')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">🌀 Cabelo cacheado</button>
+        <button onclick="pgInjectHint('Bebê recém-nascido — proporções de newborn, muito delicado')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">👶 Newborn</button>
+        <button onclick="pgInjectHint('Criança usa óculos — mantenha os óculos')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">🕶️ Óculos</button>
+        <button onclick="pgInjectHint('Criança tem cabelo muito loiro / platinado — preserve o loiro')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">✨ Loiro platinado</button>
+        <button onclick="pgInjectHint('Gêmeos — gere duas crianças idênticas no cenário')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid rgba(255,175,50,.4);border-radius:12px;background:rgba(255,175,50,.1);color:#ffaf32;cursor:pointer;">👯 Gêmeos</button>`;
+    } else {
+      chipsDiv.innerHTML = `
+        <button onclick="pgInjectHint('Cliente é careca — não adicione cabelo')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid var(--cyan3);border-radius:12px;background:var(--cyan2);color:var(--cyan);cursor:pointer;">👴 Careca</button>
+        <button onclick="pgInjectHint('Cliente tem barba cheia — mantenha a barba')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid var(--cyan3);border-radius:12px;background:var(--cyan2);color:var(--cyan);cursor:pointer;">🧔 Barba</button>
+        <button onclick="pgInjectHint('A pose é de costas — descreva detalhes da roupa por trás')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid var(--cyan3);border-radius:12px;background:var(--cyan2);color:var(--cyan);cursor:pointer;">🔄 Costas</button>
+        <button onclick="pgInjectHint('Cliente usa óculos — mantenha os óculos no resultado')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid var(--cyan3);border-radius:12px;background:var(--cyan2);color:var(--cyan);cursor:pointer;">🕶️ Óculos</button>
+        <button onclick="pgInjectHint('Cliente tem sobrepeso — não emagreça nem idealize o biotipo')" style="font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border:1px solid var(--cyan3);border-radius:12px;background:var(--cyan2);color:var(--cyan);cursor:pointer;">⚖️ Biotipo</button>`;
+    }
+  }
 }
 
 function checkGenBtnReady(){
@@ -4182,10 +4330,17 @@ function checkGenBtnReady(){
     const hasPeople = familiaPersons.some(p => p.base64);
     btn.disabled = !(familiaRefBase64 && hasPeople);
   }
+  else if(pgGenMode==='kids') {
+    btn.disabled = !(pgKidsClientBase64 && pgKidsTargetBase64);
+  }
   // Atualiza texto do botão conforme contexto
   if(pgGenMode==='simple'){
     btn.textContent = pgModelBase64
       ? '✦ Gerar JSON com override do modelo'
+      : 'Analisar imagem e gerar JSON';
+  } else if(pgGenMode==='kids'){
+    btn.textContent = (pgKidsClientBase64 && pgKidsTargetBase64)
+      ? '🎈 Analisar criança + cenário → Gerar JSON'
       : 'Analisar imagem e gerar JSON';
   } else {
     btn.textContent = 'Analisar imagem e gerar JSON';
@@ -4353,6 +4508,32 @@ async function _pgGenerateInner(){
         pgPopulateSavePanel();
         pgPopulateClientPrompt();
         toast('✓ JSON Família gerado! ' + result.total_people + ' pessoa(s).');
+      }
+    } catch(e) {
+      document.getElementById('pgLoading').style.display = 'none';
+      document.getElementById('pgError').textContent = '⚠ Erro: ' + e.message;
+      document.getElementById('pgError').style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.textContent = 'Analisar imagem e gerar JSON'; checkGenBtnReady();
+    }
+    return;
+  }
+
+  // Modo crianças tem fluxo próprio
+  if (pgGenMode === 'kids') {
+    const btn = document.getElementById('pgGenBtn');
+    btn.disabled = true; btn.textContent = '⏳ Analisando criança…';
+    document.getElementById('pgError').style.display = 'none';
+    try {
+      const result = await pgGenerateKids();
+      if (result) {
+        document.getElementById('pgJsonOutput').textContent = JSON.stringify(result, null, 2);
+        document.getElementById('pgOutputCard').style.display = 'block';
+        pgShowFlowOrder();
+        document.getElementById('pgLoading').style.display = 'none';
+        pgPopulateSavePanel();
+        pgPopulateClientPrompt();
+        toast('🎈 JSON Crianças gerado com sucesso!');
       }
     } catch(e) {
       document.getElementById('pgLoading').style.display = 'none';
@@ -5050,6 +5231,7 @@ function pgGetAlvoBase64() {
     case 'faceswap': return pgFaceTargetBase64;                    // foto alvo do face swap
     case 'scene':    return pgSceneRefBase64;                      // cena de referência
     case 'family':   return familiaRefBase64;                      // foto de referência da família
+    case 'kids':     return pgKidsTargetBase64;                    // cenário / tema
     default:         return pgImageBase64;
   }
 }
@@ -5123,7 +5305,7 @@ function pgPopulateSavePanel() {
   }
 
   // Auto-title suggestion from mode
-  const modeLabels = {simple:'Análise', subject:'Manter Rosto', faceswap:'Face Swap', scene:'Clonar'};
+  const modeLabels = {simple:'Análise', subject:'Manter Rosto', faceswap:'Face Swap', scene:'Clonar', kids:'Criança'};
   const titleEl = document.getElementById('pgSaveTitle');
   if (titleEl && !titleEl.value) {
     const d = new Date();
@@ -5154,6 +5336,11 @@ function pgShowFlowOrder() {
     family: [
       '👥 <strong>IMAGE 1, 2, 3...</strong> → <span style="color:var(--cyan)">FOTOS DOS CLIENTES</span> — uma por pessoa',
       '🎯 <strong>ÚLTIMA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — cena a ser clonada para todos',
+    ],
+    kids: [
+      '👧 <strong>IMAGE 1 (primeira)</strong> → <span style="color:var(--cyan)">FOTO DA CRIANÇA</span> — rosto a preservar',
+      '🎯 <strong>IMAGE 2 (segunda)</strong> → <span style="color:#ffaf32">FOTO ALVO</span> — cenário / tema a aplicar',
+      '🎈 <strong>No Leonardo.ai:</strong> use como "Image Guidance" ou "Character Reference"',
     ],
   };
 
@@ -5192,6 +5379,38 @@ function pgPopulateClientPrompt() {
   const box = document.getElementById('pgClientPromptBox');
   const ta  = document.getElementById('pgClientPromptText');
   if (!box || !ta) return;
+
+  // Kids mode: mostra prompt específico para Leonardo.ai
+  if (pgGenMode === 'kids') {
+    box.style.display = 'block';
+    // Update header label
+    const lbl = box.querySelector('[style*="DM Mono"][style*="gold"]');
+    if (lbl) lbl.textContent = '🎈 Prompt de Aplicação — Leonardo.ai (Crianças)';
+
+    ta.value = `USE O JSON ACIMA COMO REFERÊNCIA — aplique no Leonardo.ai com as configurações abaixo.
+
+━━ CONFIGURAÇÕES LEONARDO.AI ━━
+• Modelo: Leonardo Phoenix 1.0 ou Leonardo Kino XL
+• Ative: Alchemy → ON | PhotoReal → ON
+• Image Guidance: suba a FOTO DA CRIANÇA como "Character Reference" ou "Image to Image"
+• Init Strength: 0.40 (bebês: 0.50)
+• Guidance Scale: 7
+• Gere 4 variações
+
+━━ REGRAS ABSOLUTAS (não negocie nenhuma) ━━
+• Preserve 100% o rosto da criança: cor dos olhos, formato do rosto, nariz, boca, bochechas, feições únicas.
+• Preserve exatamente: tom de pele, cor do cabelo, comprimento, textura, estilo.
+• Se tem sardas → mantenha as sardas. Se tem covinhas → mantenha as covinhas.
+• Se é bebê → mantenha proporções de bebê: bochechas arredondadas, nariz pequeno, olhos grandes.
+• NÃO idealize, NÃO embeleze, NÃO altere a idade aparente.
+• NÃO adicione cabelo se é careca/bebê sem cabelo.
+
+DO JSON: aplique apenas cenário, tema, iluminação, composição, decoração e atmosfera.
+NÃO altere: rosto, cabelo, cor dos olhos, tom de pele, feições — use sempre os da criança.
+
+O resultado deve parecer que É a criança fotografada naquele cenário/tema — não uma outra criança.`;
+    return;
+  }
 
   // Só mostra no modo "Analisar imagem" (simple)
   if (pgGenMode !== 'simple') {
@@ -8072,7 +8291,386 @@ NEGATIVE: different faces, wrong nose shape, different jawline, wrong eye shape,
 }
 
 
-// ── ICON PICKER (Category modals) ──
+// ══════════════════════════════════════════════════
+//  MODO CRIANÇAS — gerador de prompt para Leonardo.ai
+// ══════════════════════════════════════════════════
+
+const KIDS_TYPE_INFO = {
+  aniversario: '🎂 <strong style="color:#ffaf32">Aniversário:</strong> preserva 100% o rosto da criança — coloca no cenário de festa com decoração temática, velas, bolo e atmosfera festiva.',
+  cenario:     '🏰 <strong style="color:#ffaf32">Cenário / Tema:</strong> transporta a criança para o cenário da foto alvo mantendo sua identidade completa.',
+  bebe:        '👶 <strong style="color:#ffaf32">Bebê / Newborn:</strong> análise ultra-delicada de bebês — preserva proporções, expressão, suavidade da pele e cabelos finos.',
+  fantasia:    '🦸 <strong style="color:#ffaf32">Fantasia / Personagem:</strong> veste a criança com o personagem/fantasia da foto alvo mantendo seu rosto real.',
+  natureza:    '🌿 <strong style="color:#ffaf32">Natureza / Campo:</strong> insere a criança em cenário natural com luz solar suave, flores, campo ou floresta.',
+  fada:        '🧚 <strong style="color:#ffaf32">Fadas / Mágico:</strong> cria cena mágica e encantada com a criança como protagonista — asas, luzes, ambiente onírico.',
+};
+
+function setKidsType(btn) {
+  pgKidsType = btn.dataset.type;
+  document.querySelectorAll('.kids-type-btn').forEach(b => {
+    const isActive = b === btn;
+    b.style.background = isActive ? 'rgba(255,175,50,.15)' : 'transparent';
+    b.style.borderColor = isActive ? 'rgba(255,175,50,.4)' : 'var(--border2)';
+    b.style.color = isActive ? '#ffaf32' : 'var(--muted)';
+    b.style.fontWeight = isActive ? '600' : '400';
+  });
+  const info = document.getElementById('kidsTypeInfo');
+  if (info) info.innerHTML = KIDS_TYPE_INFO[pgKidsType] || '';
+}
+
+function pgHandleKidsClientFile(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    pgKidsClientBase64 = ev.target.result.split(',')[1];
+    const prev = document.getElementById('pgKidsClientPreview');
+    if (prev) { prev.src = ev.target.result; prev.style.display = 'block'; }
+    const icon = document.getElementById('pgKidsClientIcon');   if (icon)  icon.style.display  = 'none';
+    const lbl  = document.getElementById('pgKidsClientLabel');  if (lbl)   lbl.style.display   = 'none';
+    const clr  = document.getElementById('pgKidsClientClearBtn'); if (clr) clr.style.display  = 'block';
+    // Avança para zona alvo
+    setTimeout(() => pgSetActiveZone('kidstarget'), 200);
+    checkGenBtnReady();
+    toast('✓ Foto da criança carregada!');
+  };
+  r.readAsDataURL(f);
+}
+
+function pgHandleKidsTargetFile(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    pgKidsTargetBase64 = ev.target.result.split(',')[1];
+    const prev = document.getElementById('pgKidsTargetPreview');
+    if (prev) { prev.src = ev.target.result; prev.style.display = 'block'; }
+    const icon = document.getElementById('pgKidsTargetIcon');   if (icon)  icon.style.display  = 'none';
+    const lbl  = document.getElementById('pgKidsTargetLabel');  if (lbl)   lbl.style.display   = 'none';
+    const clr  = document.getElementById('pgKidsTargetClearBtn'); if (clr) clr.style.display  = 'block';
+    checkGenBtnReady();
+    toast('✓ Cenário / tema carregado!');
+  };
+  r.readAsDataURL(f);
+}
+
+function pgClearKidsClient() {
+  pgKidsClientBase64 = null;
+  const prev = document.getElementById('pgKidsClientPreview'); if (prev) { prev.src=''; prev.style.display='none'; }
+  const icon = document.getElementById('pgKidsClientIcon');    if (icon) icon.style.display = '';
+  const lbl  = document.getElementById('pgKidsClientLabel');   if (lbl)  lbl.style.display  = '';
+  const clr  = document.getElementById('pgKidsClientClearBtn'); if (clr) clr.style.display = 'none';
+  checkGenBtnReady();
+}
+
+function pgClearKidsTarget() {
+  pgKidsTargetBase64 = null;
+  const prev = document.getElementById('pgKidsTargetPreview'); if (prev) { prev.src=''; prev.style.display='none'; }
+  const icon = document.getElementById('pgKidsTargetIcon');    if (icon) icon.style.display = '';
+  const lbl  = document.getElementById('pgKidsTargetLabel');   if (lbl)  lbl.style.display  = '';
+  const clr  = document.getElementById('pgKidsTargetClearBtn'); if (clr) clr.style.display = 'none';
+  checkGenBtnReady();
+}
+
+function pgKidsZoneClick(zoneKey) {
+  if (pgActiveZone === zoneKey) {
+    pgZoneOpenFile(zoneKey);
+  } else {
+    pgSetActiveZone(zoneKey);
+  }
+}
+
+// ── Paste Ctrl+V kids ──
+document.addEventListener('paste', function(e) {
+  if (!document.getElementById('promptGenOverlay').classList.contains('open')) return;
+  if (pgGenMode !== 'kids') return;
+  const tag = document.activeElement?.tagName;
+  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+  const clips = e.clipboardData?.items || [];
+  for (const item of clips) {
+    if (item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      const r = new FileReader();
+      r.onload = ev => {
+        const b64 = ev.target.result.split(',')[1];
+        gpApplyToZone(pgActiveZone || 'kidsclient', b64, ev.target.result);
+        toast('✓ Imagem colada em ' + (pgActiveZone || 'kidsclient') + '!');
+      };
+      r.readAsDataURL(file);
+      e.preventDefault(); break;
+    }
+  }
+});
+
+const KIDS_TYPE_SCENE_CONTEXT = {
+  aniversario: 'birthday party setting — colorful balloons, birthday cake with lit candles, festive decorations matching the theme of the target photo, party lights, streamers, warm celebratory atmosphere',
+  cenario:     'exact scene from the target photo — environment, props, lighting, atmosphere faithfully replicated with the child as the subject',
+  bebe:        'soft nursery or nature setting from the target photo — gentle pastel tones, soft textures, flowers, or wrapped newborn style — ultra-gentle, dreamy, soft light',
+  fantasia:    'fantasy/character costume scene — child dressed as the character/costume from the target photo, same color scheme, accessories, props, magical background',
+  natureza:    'natural outdoor setting — golden sunlight filtering through trees, flower field, green meadow, forest path, soft bokeh background, warm natural tones',
+  fada:        'magical enchanted fairy scene — sparkling fairy wings, glowing light particles, enchanted forest, flowers, magical bokeh, ethereal dreamy atmosphere, pastel colors',
+};
+
+async function pgGenerateKids() {
+  const apiKey = loadApiKey();
+  if (!apiKey) { toast('⚠ Configure sua API Key primeiro'); return null; }
+  if (!pgKidsClientBase64) { toast('⚠ Suba a foto da criança primeiro'); return null; }
+  if (!pgKidsTargetBase64) { toast('⚠ Suba a foto alvo/cenário'); return null; }
+
+  const btn     = document.getElementById('pgGenBtn');
+  const loading = document.getElementById('pgLoading');
+  const errEl   = document.getElementById('pgError');
+
+  loading.style.display = 'flex';
+  errEl.style.display   = 'none';
+  document.getElementById('pgOutputCard').style.display = 'none';
+
+  const MODELS = [
+    'google/gemini-2.0-flash-001',
+    'google/gemini-flash-1.5',
+    'anthropic/claude-3.5-haiku',
+    'openai/gpt-4o-mini',
+  ];
+
+  const typeLabel = {
+    aniversario: 'Aniversário', cenario: 'Cenário/Tema', bebe: 'Bebê/Newborn',
+    fantasia: 'Fantasia/Personagem', natureza: 'Natureza/Campo', fada: 'Fadas/Mágico'
+  }[pgKidsType] || pgKidsType;
+
+  const pgHint = (document.getElementById('pgHint')?.value || '').trim();
+
+  // ── PASSO 1: analisar a foto da criança ──
+  btn.textContent = '⏳ Analisando a criança…';
+  toast('⏳ Analisando traços da criança…');
+
+  const CHILD_ANALYSIS_PROMPT = `You are a forensic child portrait specialist analyzing a photo to extract the child's physical features for AI image recreation.
+
+ANALYZE IMAGE 1 — this is the REAL CHILD PHOTO.
+Extract physical traits ONLY. Return ONLY valid JSON (no markdown, no backticks, no explanation).
+
+━━ CRITICAL RULES ━━
+- Describe ONLY what you SEE. Do NOT invent or add anything.
+- This is a CHILD — be extra precise about their gentle, youthful features.
+- Preserve every unique feature: dimples, freckles, gaps in teeth, birthmarks.
+- For babies (under 2): note chubby cheeks, soft fine hair, large eyes relative to face, small nose.
+- NEVER describe as "adult-like". Preserve child proportions.
+
+Return JSON:
+{
+  "approximate_age": "e.g. 2 years | 5 years | 8 years | newborn | toddler",
+  "gender_presentation": "exact as seen",
+  "face_shape": "round | oval | chubby cheeks | heart | etc",
+  "eyes": "exact color, shape (round/almond/wide), size (large/medium), spacing, any special feature",
+  "eyebrows": "thin/thick, arched/straight, color",
+  "nose": "small/button/snub/upturned, exact description — typical child nose",
+  "lips": "thin/full/rosebud, shape, color",
+  "chin": "soft/rounded/baby chin/pointed",
+  "cheeks": "chubby/round/apple cheeks/slim/dimples — note dimples exactly",
+  "skin_tone": "exact skin tone — e.g. ivory, light peach, warm beige, golden, brown, deep brown",
+  "unique_features": "freckles across nose/cheeks, dimples (left/right/both), birthmarks, gap teeth, rosy cheeks, beauty mark — or 'none'",
+  "hair_color": "exact color: platinum blonde, golden blonde, light brown, dark brown, black, red, auburn — be precise",
+  "hair_length": "bald (newborn) | very short | short | medium | long | very long",
+  "hair_style": "straight | wavy | curly | coily | tightly curled — and style: free/loose, pigtails, braids, ponytail, bun, bowl cut, etc",
+  "hair_texture": "fine/silky | thick | frizzy | soft | wispy",
+  "expression": "happy/laughing/smiling/curious/serious/shy — exact expression",
+  "body_proportions": "baby/toddler proportions | young child | older child — note any special proportions",
+  "clothing_colors": "colors visible — will NOT be preserved but useful context",
+  "face_preservation": "ONE detailed paragraph combining ALL face features above — written as a precise AI prompt instruction to recreate this exact child's face. Start with: 'Child with [age]-year-old facial features, [face_shape] face, [cheeks] cheeks...' Be surgical and complete. This is the most important field.",
+  "is_baby": true or false,
+  "negative_prompt": "adult facial features, aged face, wrong eye color, different hair color, different nose, no dimples (if has dimples), adult proportions, different skin tone, beautified, airbrushed, CGI, plastic skin, wrong age, different child"
+}`;
+
+  let childAnalysis = null;
+  for (const model of MODELS) {
+    try {
+      btn.textContent = `⏳ Analisando criança (${model.split('/')[1]})…`;
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({
+          model,
+          max_tokens: 1200,
+          messages: [{ role: 'user', content: [
+            { type: 'text', text: CHILD_ANALYSIS_PROMPT },
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + pgKidsClientBase64 } }
+          ]}]
+        })
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const raw  = (data.choices?.[0]?.message?.content || '').replace(/```json|```/g, '').trim();
+      childAnalysis = JSON.parse(raw);
+      toast('✓ Criança analisada!');
+      break;
+    } catch(e) { continue; }
+  }
+
+  if (!childAnalysis) {
+    loading.style.display = 'none';
+    errEl.textContent = '⚠ Não foi possível analisar a foto da criança. Verifique sua API Key.';
+    errEl.style.display = 'block';
+    return null;
+  }
+
+  // ── PASSO 2: analisar o cenário/foto alvo ──
+  btn.textContent = '⏳ Analisando cenário / tema…';
+  toast('⏳ Analisando cenário…');
+
+  const SCENE_PROMPT_KIDS = `Analyze this IMAGE — it is the TARGET SCENE / THEME for a children's portrait.
+Type: ${typeLabel}
+
+Return ONLY valid JSON (no markdown, no backticks):
+{
+  "scene_type": "birthday party | outdoor nature | fantasy | themed studio | nursery | other",
+  "setting_description": "exact detailed description of the environment, props, decorations",
+  "dominant_colors": ["#hex1", "#hex2", "#hex3"],
+  "lighting": "soft natural | warm golden | studio soft | dramatic | fairy lights | candle glow",
+  "atmosphere": "joyful/magical/dreamy/peaceful/festive/enchanted",
+  "key_props": ["prop1", "prop2", "prop3 — most important visual elements"],
+  "background_description": "exact background — what's behind/around the subject",
+  "color_palette_mood": "warm/cool/pastel/vibrant/earthy/magical",
+  "season_or_time": "day/golden hour/night/studio/timeless",
+  "prompt_scene_block": "One complete paragraph in English describing the scene, lighting, atmosphere and key visual elements — ready to inject into an AI image prompt. Focus on environment, NOT on the person."
+}`;
+
+  let sceneAnalysis = null;
+  for (const model of MODELS) {
+    try {
+      btn.textContent = `⏳ Analisando cenário (${model.split('/')[1]})…`;
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({
+          model,
+          max_tokens: 700,
+          messages: [{ role: 'user', content: [
+            { type: 'text', text: SCENE_PROMPT_KIDS },
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + pgKidsTargetBase64 } }
+          ]}]
+        })
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const raw  = (data.choices?.[0]?.message?.content || '').replace(/```json|```/g, '').trim();
+      sceneAnalysis = JSON.parse(raw);
+      toast('✓ Cenário analisado!');
+      break;
+    } catch(e) { continue; }
+  }
+
+  if (!sceneAnalysis) {
+    sceneAnalysis = {
+      prompt_scene_block: KIDS_TYPE_SCENE_CONTEXT[pgKidsType] || 'same scene as the reference photo',
+      key_props: [], lighting: 'soft natural light', atmosphere: 'joyful',
+    };
+    toast('⚠ Cenário não analisado — usando contexto padrão do tipo');
+  }
+
+  loading.style.display = 'none';
+
+  // ── PASSO 3: montar o JSON / prompt final ──
+  const isBaby = childAnalysis.is_baby === true || (childAnalysis.approximate_age || '').toLowerCase().includes('newborn') || (childAnalysis.approximate_age || '').toLowerCase().includes('baby') || (childAnalysis.approximate_age || '').includes('0') || (childAnalysis.approximate_age || '').includes('1 y');
+
+  const sceneBlock = sceneAnalysis.prompt_scene_block || KIDS_TYPE_SCENE_CONTEXT[pgKidsType];
+
+  // Leonardo.ai specific extra commands for children
+  const leonardoKidsNegative = [
+    'adult facial features', 'adult face', 'aged skin', 'wrinkles',
+    'wrong eye color', `different hair color`, 'different nose shape',
+    'different skin tone', 'different child', 'wrong child',
+    'no dimples' + (childAnalysis.unique_features && childAnalysis.unique_features.toLowerCase().includes('dimple') ? '' : ' (if applicable)'),
+    'airbrushed', 'CGI', 'plastic skin', 'over-smoothed skin', 'uncanny valley',
+    'adult proportions', 'teenager face', 'creepy smile', 'unnatural expression',
+    ...(isBaby ? ['standing up (if newborn)', 'teeth (if newborn)'] : []),
+    childAnalysis.negative_prompt || ''
+  ].filter(Boolean).join(', ');
+
+  const flowPromptKids =
+`CHILDREN PORTRAIT — ${typeLabel.toUpperCase()} — FACE PRESERVATION MODE
+
+━━ REGRA FUNDAMENTAL ━━
+• ROSTO DA CRIANÇA → 100% da [foto_cliente] — preservação total, sem exceções
+• CENÁRIO / TEMA → 100% da [foto_alvo] — cena, iluminação, decoração, atmosfera
+• NUNCA altere: tom de pele, cor dos olhos, formato do rosto, cabelo, feições únicas
+
+━━ CRIANÇA — ANÁLISE COMPLETA ━━
+• Idade aparente: ${childAnalysis.approximate_age}
+• Rosto: ${childAnalysis.face_preservation}
+• Cabelo: ${childAnalysis.hair_color} | ${childAnalysis.hair_length} | ${childAnalysis.hair_style} | textura: ${childAnalysis.hair_texture}
+• Olhos: ${childAnalysis.eyes}
+• Tom de pele: ${childAnalysis.skin_tone}
+• Bochechas: ${childAnalysis.cheeks}
+• Expressão: ${childAnalysis.expression}
+• Características únicas: ${childAnalysis.unique_features}
+${isBaby ? '• ⚠ BEBÊ — proporções delicadas: cabeça maior proporcionalmente, bochechas redondas de bebê, pele ultra-suave' : ''}
+
+━━ CENÁRIO — [foto_alvo] ━━
+${sceneBlock}
+
+━━ PROMPT PARA LEONARDO.AI ━━
+
+Ingredients: [foto_cliente], [foto_alvo]
+
+Place the child from [foto_cliente] into the scene from [foto_alvo].
+
+CHILD IDENTITY — NON-NEGOTIABLE:
+${childAnalysis.face_preservation}
+Hair: ${childAnalysis.hair_color}, ${childAnalysis.hair_length}, ${childAnalysis.hair_style}, ${childAnalysis.hair_texture} texture — DO NOT CHANGE.
+Eyes: ${childAnalysis.eyes} — EXACT same color, shape and expression.
+Skin: ${childAnalysis.skin_tone} — EXACT same tone.
+${childAnalysis.unique_features && childAnalysis.unique_features !== 'none' ? `PRESERVE EXACTLY: ${childAnalysis.unique_features}` : ''}
+Age appearance: ~${childAnalysis.approximate_age} — DO NOT age up or down.
+${isBaby ? 'BABY PROPORTIONS: chubby baby cheeks, large eyes relative to face, soft delicate skin, no teeth, rounded baby proportions — all preserved exactly.' : ''}
+
+SCENE from [foto_alvo]:
+${sceneBlock}
+Lighting: ${sceneAnalysis.lighting || 'soft natural'}
+Atmosphere: ${sceneAnalysis.atmosphere || 'joyful'}
+${sceneAnalysis.key_props?.length ? 'Key props: ' + sceneAnalysis.key_props.join(', ') : ''}
+
+TECHNICAL:
+Style: photorealistic children portrait, natural soft skin texture, warm natural tones
+Camera: 85mm f/1.8, shallow depth of field, soft bokeh background, eye-level perspective
+Quality: 4K, sharp eyes, natural catchlights, film-quality
+
+NEGATIVE PROMPT:
+${leonardoKidsNegative}${pgHint ? '\n\n⚠ INSTRUÇÃO EXTRA (PRIORIDADE MÁXIMA): ' + pgHint : ''}`;
+
+  const result = {
+    mode: 'kids',
+    tipo: typeLabel,
+    child: childAnalysis,
+    scene: sceneAnalysis,
+    flow_prompt_final: flowPromptKids,
+    leonardo_settings: {
+      model_suggestion: 'Leonardo Phoenix 1.0 ou Leonardo Kino XL',
+      alchemy: true,
+      photoReal: true,
+      guidance_scale: 7,
+      init_strength: 0.45,
+      num_images: 4,
+      negative_prompt: leonardoKidsNegative,
+      tip: 'Use a foto da criança como Image to Image (init_strength 0.35-0.45) para melhor preservação de traços. Ative Alchemy + PhotoReal.'
+    },
+    flow_instructions: [
+      '🎈 COMO USAR NO LEONARDO.AI:',
+      '1) Acesse app.leonardo.ai → Image Generation',
+      '2) Ative: Alchemy → ON | PhotoReal → ON (se disponível)',
+      '3) Cole o flow_prompt_final no campo de prompt',
+      '4) Cole o negative_prompt no campo negativo',
+      '5) Em "Image Guidance" → suba [foto_cliente] como referência',
+      '6) Opcionalmente suba [foto_alvo] como style reference',
+      '7) Modelo sugerido: ' + (result?.leonardo_settings?.model_suggestion || 'Leonardo Phoenix 1.0'),
+      '8) Guidance Scale: 7 | Gere 4 variações',
+      '',
+      '💡 DICA PRO: Para bebês, use init_strength 0.5 e ative Face Fix.',
+      '💡 Use [foto_cliente] como Controlnet "Character Reference" se disponível.'
+    ]
+  };
+  // Fix circular reference
+  result.flow_instructions[6] = '7) Modelo sugerido: ' + result.leonardo_settings.model_suggestion;
+
+  return result;
+}
+
+
 function selectCatIcon(inputId, gridId, emoji) {
   document.getElementById(inputId).value = emoji;
   // highlight selected button
