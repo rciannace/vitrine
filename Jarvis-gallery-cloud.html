@@ -1140,6 +1140,13 @@ body{
       <span id="apiDot" style="width:7px;height:7px;border-radius:50%;background:var(--subtle);display:inline-block;border-radius:50%;transition:background .3s;"></span>
       API Key
     </button>
+    <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+    <button class="sb-footer-btn" onclick="cleanGhostPhotos()" title="Remove registros sem imagem do banco" style="color:#ff6b6b;font-size:11px;">
+      <span>👻</span> Limpar Fantasmas
+    </button>
+    <button class="sb-footer-btn" onclick="enterSelectModeAll()" title="Entra no modo seleção com todas as fotos já selecionadas" style="font-size:11px;">
+      <span>☑</span> Selecionar Todas
+    </button>
   </div>
 </nav>
 
@@ -4577,11 +4584,12 @@ async function _pgGenerateInner(){
     document.getElementById('pgDots').textContent='.'.repeat(dots);
   },400);
 
-  const schema=pgSchemas[pgMode];
+  const schema = pgSchemas[pgMode] || pgSchemas['ultra'];
   const pgHintVal = (document.getElementById('pgHint')?.value || '').trim();
+  const systemBase = pgModePrompts[pgMode] || pgModePrompts['ultra'];
   const system = pgHintVal
-    ? pgModePrompts[pgMode] + '\n\n⚠ CONTEXTO ADICIONAL DO OPERADOR (PRIORIDADE MÁXIMA):\n' + pgHintVal
-    : pgModePrompts[pgMode];
+    ? systemBase + '\n\n⚠ CONTEXTO ADICIONAL DO OPERADOR (PRIORIDADE MÁXIMA):\n' + pgHintVal
+    : systemBase;
 
   let userContent;
 
@@ -5537,12 +5545,21 @@ function pgCreateCatInline() {
 <!-- MULTI-SELECT FLOATING BAR -->
 <div id="multiSelectBar">
   <div class="msb-count" id="msbCount">0 fotos</div>
+  <button class="msb-btn" id="msbSelectAllBtn" onclick="selectAllVisible()"
+    style="background:var(--s3);border:1px solid var(--border2);color:var(--muted);font-size:11px;padding:6px 12px;"
+    onmouseover="this.style.color='var(--cyan)';this.style.borderColor='var(--cyan3)'"
+    onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border2)'">☑ Todas</button>
   <div class="msb-divider"></div>
   <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);">Mover para:</span>
   <select class="msb-select" id="msbTargetCat">
     <option value="">Sem categoria</option>
   </select>
   <button class="msb-btn msb-btn-move" id="msbMoveBtn" onclick="multiSelectMove()">↗ Mover</button>
+  <div class="msb-divider"></div>
+  <button class="msb-btn" id="msbDeleteBtn" onclick="deleteSelectedCards()"
+    style="background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:var(--red);font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;cursor:pointer;"
+    onmouseover="this.style.background='rgba(255,77,109,.25)'"
+    onmouseout="this.style.background='rgba(255,77,109,.12)'">🗑 Apagar</button>
   <div class="msb-divider"></div>
   <button class="msb-btn msb-btn-cancel" onclick="exitSelectMode()">✕ Cancelar</button>
 </div>
@@ -6312,6 +6329,66 @@ function multiSelectMove() {
   exitSelectMode();
   if (targetCat) selectCat(targetCat, null);
   else render();
+}
+
+// ── SELECIONAR TODAS VISÍVEIS ──
+function selectAllVisible() {
+  const visíveis = [...document.querySelectorAll('.card[data-id]')];
+  visíveis.forEach(card => {
+    const id = card.dataset.id;
+    selectedIds.add(id);
+    card.classList.add('selected');
+    const check = card.querySelector('.card-select-check');
+    if (check) check.textContent = '✓';
+  });
+  updateMultiSelectBar();
+  toast(`☑ ${selectedIds.size} foto${selectedIds.size!==1?'s':''} selecionada${selectedIds.size!==1?'s':''}!`);
+}
+
+// ── APAGAR SELECIONADAS ──
+function deleteSelectedCards() {
+  if (!selectedIds.size) return;
+  const n = selectedIds.size;
+  if (!confirm(`⚠ Apagar ${n} foto${n!==1?'s':''}? Esta ação não pode ser desfeita.`)) return;
+  selectedIds.forEach(id => {
+    clLog('delete', id, {});
+  });
+  items = items.filter(it => !selectedIds.has(it.id));
+  persist();
+  exitSelectMode();
+  buildTabs(); render(); updateSbStats();
+  toast(`🗑 ${n} foto${n!==1?'s':''} apagada${n!==1?'s':''}!`);
+}
+
+// ── LIMPAR FOTOS FANTASMAS ──
+function cleanGhostPhotos() {
+  const ghosts = items.filter(it => !it.img || it.img.trim() === '');
+  if (!ghosts.length) {
+    toast('✓ Nenhuma foto fantasma encontrada!');
+    return;
+  }
+  const n = ghosts.length;
+  if (!confirm(`Encontrado${n!==1?'s':''} ${n} registro${n!==1?'s':''} sem imagem (fantasma${n!==1?'s':''}).\n\nApagar? Esta ação não pode ser desfeita.`)) return;
+  ghosts.forEach(it => clLog('delete', it.id, { reason: 'ghost' }));
+  items = items.filter(it => it.img && it.img.trim() !== '');
+  persist();
+  buildTabs(); render(); updateSbStats();
+  toast(`👻 ${n} foto${n!==1?'s':''} fantasma${n!==1?'s':''} removida${n!==1?'s':''}!`);
+}
+
+// ── ENTRAR EM MODO SELEÇÃO COM TODAS SELECIONADAS ──
+function enterSelectModeAll() {
+  closeSidebar();
+  selectMode = true;
+  selectedIds.clear();
+  document.getElementById('appMain').classList.add('select-mode');
+  // Aguarda render e então seleciona tudo
+  render();
+  setTimeout(() => {
+    selectAllVisible();
+    updateMultiSelectBar();
+    toast(`☑ Modo seleção: ${selectedIds.size} foto${selectedIds.size!==1?'s':''} selecionada${selectedIds.size!==1?'s':''}!`);
+  }, 80);
 }
 
 // ── ADD MODAL ──
