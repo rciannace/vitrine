@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script>
+window.onerror = function(msg, src, line, col, err) {
+  var div = document.createElement('div');
+  div.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#ff1744;color:#fff;padding:10px 14px;font-size:13px;font-family:monospace;white-space:pre-wrap;';
+  div.textContent = '🔴 JS ERROR: ' + msg + ' | linha: ' + line + ' | ' + (err ? err.stack : '');
+  document.body.appendChild(div);
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  var div = document.createElement('div');
+  div.style.cssText = 'position:fixed;top:40px;left:0;right:0;z-index:99999;background:#ff6d00;color:#fff;padding:10px 14px;font-size:13px;font-family:monospace;white-space:pre-wrap;';
+  div.textContent = '🟠 PROMISE ERROR: ' + (e.reason ? e.reason.stack || e.reason : e);
+  document.body.appendChild(div);
+});
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jarvis Gallery v11 Cloud</title>
@@ -670,8 +684,10 @@ body{
   z-index:500;
   align-items:center;justify-content:center;
   padding:20px;
+  overflow-y:auto;
 }
-.overlay.open{display:flex;}
+.overlay.open{display:flex !important;}
+#promptGenOverlay{z-index:800;}
 
 .modal{
   background:var(--s1);
@@ -2165,7 +2181,7 @@ body{
 </div>
 
 <!-- ══ MODAL: PROMPT GENERATOR ══ -->
-<div class="overlay" id="promptGenOverlay" style="z-index:800;">
+<div class="overlay" id="promptGenOverlay">
   <div class="modal" style="max-width:680px;max-height:96vh;overflow-x:hidden;">
     <div class="modal-head">
       <div class="modal-title">✦ GERADOR DE PROMPT JSON</div>
@@ -3446,18 +3462,33 @@ function pgInjectHint(text) {
 }
 
 function openPromptGen(){
-  const k=loadApiKey();
-  document.getElementById('pgApiWarn').style.display=k?'none':'block';
-  document.getElementById('promptGenOverlay').classList.add('open');
-  // Garante que zona do modelo fica visível no modo simple
-  const wrap = document.getElementById('pgModelZoneWrap');
-  const grid = document.getElementById('pgSimpleGrid');
-  if (wrap) wrap.style.display = 'block';
-  if (grid) grid.style.gridTemplateColumns = '1fr 1fr';
-  setTimeout(pgAutoActivateFirstZone, 100);
+  try {
+    const overlay = document.getElementById('promptGenOverlay');
+    if (!overlay) { alert('⚠ Elemento promptGenOverlay não encontrado!'); return; }
+    
+    // Força abertura de duas formas
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
+    
+    const k = loadApiKey();
+    const warn = document.getElementById('pgApiWarn');
+    if (warn) warn.style.display = k ? 'none' : 'block';
+    
+    const wrap = document.getElementById('pgModelZoneWrap');
+    const grid = document.getElementById('pgSimpleGrid');
+    if (wrap) wrap.style.display = 'block';
+    if (grid) grid.style.gridTemplateColumns = '1fr 1fr';
+    
+    setTimeout(pgAutoActivateFirstZone, 100);
+  } catch(e) {
+    alert('Erro ao abrir Gerar Prompt: ' + e.message + '\nLinha: ' + e.stack);
+  }
 }
 function closePromptGen(){
-  document.getElementById('promptGenOverlay').classList.remove('open');
+  const overlay = document.getElementById('promptGenOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  overlay.style.display = 'none';
 }
 
 // ── SISTEMA DE ZONA ATIVA (Ctrl+V + setas do teclado) ──
