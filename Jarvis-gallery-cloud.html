@@ -3417,7 +3417,7 @@ document.querySelectorAll('.pg-chip[data-mode]').forEach(c=>{
 
 const EXTRA_CMD_BY_MODE = {
   simple: `⚙ GENERATION SETTINGS — APPLY TO ALL OUTPUTS:
-Generate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10-15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.
+Generate 1 final image of this scene.
 Output quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
 
   subject: `⚠ CRITICAL RULES — READ BEFORE GENERATING:
@@ -3432,7 +3432,7 @@ Output quality: Photorealistic, hyperrealistic detail, natural skin texture, sha
 • Beard: maintain exactly as in IMAGE 1.
 • Body: EXACT body type — NEVER slim down, NEVER add muscle.
 
-⚙ Generate 4 distinct variations. Vary only: lighting intensity or background blur. NEVER change identity, pose or color style.
+⚙ Generate 1 final image. Do NOT generate multiple versions or variations.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
 Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong gaze, head angle changed, color photo (if reference is B&W), colorized, hair (if bald), slimmer, muscular, CGI, airbrushed.`,
 
@@ -3448,7 +3448,7 @@ Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong 
 • Barba: mantenha exatamente como em IMAGE 1.
 • Corpo: biotipo EXATO — NUNCA emagrecer, NUNCA musculizar.
 
-⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.
+⚙ Gere 1 imagem final. NÃO gere múltiplas versões ou variações.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
 Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong gaze, head angle changed, color photo (se referência for P&B), colorized, hair (se careca), slimmer, muscular, CGI, airbrushed.`,
 
@@ -3464,7 +3464,7 @@ Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong 
 • Barba: mantenha exatamente como em IMAGE 1.
 • Corpo: biotipo EXATO e SAGRADO — se gordo/pesado → mantém. NUNCA emagrecer, NUNCA musculizar.
 
-⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.
+⚙ Gere 1 imagem final. NÃO gere múltiplas versões ou variações.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
 Negative: different face, wrong identity, wrong eye color, skin tone changed, wrong pose, wrong gaze direction, head angle changed, face rescaled, color photo (se referência for P&B), colorized, warm tones, color grading, hair (se careca), toupee (se careca), slimmer, thinner, muscular, CGI, airbrushed, plastic skin.`,
 
@@ -3480,7 +3480,7 @@ Negative: different face, wrong identity, wrong eye color, skin tone changed, wr
 • Proporções: mantenha tamanho e peso reais da criança.
 • Expressão: preserve a espontaneidade infantil — sem forçar pose adulta.
 
-⚙ Gere 4 variações. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.
+⚙ Gere 1 imagem final. NÃO gere múltiplas versões ou variações.
 Photorealistic children portrait, soft natural lighting, shallow depth of field, Nikon D850, 85mm f/1.8, 4K.
 Negative: wrong face, different child, adult features, different eye color, skin tone changed, wrong hair, face morphed, CGI, airbrushed, color photo (se referência for P&B).`
 };
@@ -5487,7 +5487,7 @@ function pgPopulateClientPrompt() {
 • Image Guidance: suba a FOTO DA CRIANÇA como "Character Reference" ou "Image to Image"
 • Init Strength: 0.40 (bebês: 0.50)
 • Guidance Scale: 7
-• Gere 4 variações
+• Gere 1 imagem final
 
 ━━ REGRAS ABSOLUTAS (não negocie nenhuma) ━━
 • Preserve 100% o rosto da criança: cor dos olhos, formato do rosto, nariz, boca, bochechas, feições únicas.
@@ -8831,7 +8831,7 @@ ${leonardoKidsNegative}${pgHint ? '\n\n⚠ INSTRUÇÃO EXTRA (PRIORIDADE MÁXIMA
       '5) Em "Image Guidance" → suba [foto_cliente] como referência',
       '6) Opcionalmente suba [foto_alvo] como style reference',
       '7) Modelo sugerido: ' + (result?.leonardo_settings?.model_suggestion || 'Leonardo Phoenix 1.0'),
-      '8) Guidance Scale: 7 | Gere 4 variações',
+      '8) Guidance Scale: 7 | Gere 1 imagem final',
       '',
       '💡 DICA PRO: Para bebês, use init_strength 0.5 e ative Face Fix.',
       '💡 Use [foto_cliente] como Controlnet "Character Reference" se disponível.'
