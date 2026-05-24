@@ -2609,6 +2609,26 @@ body{
             readonly></textarea>
         </div>
 
+        <!-- ── COMANDO EXTRA PARA COLAR NA IA ── -->
+        <div id="pgExtraCmdResultBox" style="display:none;border-top:2px solid rgba(255,100,100,0.3);padding:14px 16px;background:rgba(255,80,80,0.04);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:16px;">🚨</span>
+              <span style="font-size:10px;font-family:'DM Mono',monospace;color:#ff6464;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;">Cole isso também na IA — Garante P&B + Pose</span>
+            </div>
+            <button onclick="pgCopyExtraCmdResult()" id="pgCopyExtraCmdBtn"
+              style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 14px;border:1px solid rgba(255,100,100,0.5);border-radius:4px;background:rgba(255,100,100,0.1);color:#ff6464;cursor:pointer;transition:all .15s;font-weight:600;white-space:nowrap;">
+              📋 Copiar Comando Extra
+            </button>
+          </div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:10px;padding:8px 10px;background:rgba(0,0,0,0.2);border-radius:6px;border-left:3px solid rgba(255,100,100,0.4);">
+            ⚡ <strong style="color:#ff9999;">Cole este bloco JUNTO com o Flow Prompt</strong> na IA geradora (Google Flow, SuperGrok, Leonardo…). Ele reforça: P&B se referência for P&B, pose exata, identidade do cliente.
+          </div>
+          <textarea id="pgExtraCmdResultText" rows="8"
+            style="width:100%;background:#0a0505;border:1px solid rgba(255,100,100,0.2);border-radius:8px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:11px;color:#ff9999;line-height:1.75;resize:vertical;box-sizing:border-box;outline:none;"
+            readonly></textarea>
+        </div>
+
         <!-- ── SAVE TO GALLERY PANEL (v9) ── -->
         <div id="pgSavePanel" style="border-top:1px solid var(--border);padding:16px;background:var(--s1);">
           <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
@@ -3400,49 +3420,69 @@ const EXTRA_CMD_BY_MODE = {
 Generate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10-15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.
 Output quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
 
-  subject: `⚠ IDENTITY LOCK — FACE + BODY ARE SACRED — NON-NEGOTIABLE:
-FACE: face shape, nose (size + tip + bridge), EXACT eye color (do NOT change eye color), eye shape, eyebrows, cheekbones, lips (volume + shape), chin, EXACT skin tone, all visible marks (moles, scars, freckles) — 100% identical to subject. Do NOT soften, beautify or alter ANY facial feature.
-HAIR: if BALD → completely shaved scalp, ZERO hair. If has hair → EXACT color, length and style.
-BEARD: if has beard → maintain full beard with same shape and color. If clean-shaved → keep clean-shaved.
-BODY: EXACT body type — if overweight/heavy → maintain real weight. NEVER slim down, NEVER add muscle.
+  subject: `⚠ CRITICAL RULES — READ BEFORE GENERATING:
 
-⚙ GENERATION SETTINGS:
-Generate 4 distinct variations. For each: subtly vary lighting angle or background depth — NEVER change identity, pose or outfit.
+🎨 COLOR STYLE LOCK: If IMAGE 2 (reference) is BLACK AND WHITE → the output MUST be black and white, monochrome, desaturated. No color. If IMAGE 2 is color → output is color. This is NON-NEGOTIABLE.
+
+📐 POSE + GAZE LOCK: The exact pose, body position, head angle and gaze direction from IMAGE 2 are SACRED. Reproduce them 100%. Do NOT use the pose from IMAGE 1. Every arm, hand, shoulder and head position must match IMAGE 2 exactly.
+
+👤 IDENTITY LOCK — FACE + BODY FROM IMAGE 1 ARE SACRED:
+• Face: face shape, nose (size + tip + bridge), EXACT eye color, eye shape, eyebrows, cheekbones, lips, chin, EXACT skin tone, all marks — 100% identical. Do NOT soften or beautify.
+• Hair: if BALD → zero hair, smooth scalp. If has hair → EXACT color, length, style.
+• Beard: maintain exactly as in IMAGE 1.
+• Body: EXACT body type — NEVER slim down, NEVER add muscle.
+
+⚙ Generate 4 distinct variations. Vary only: lighting intensity or background blur. NEVER change identity, pose or color style.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, wrong eye color, skin tone changed, face morphed, beautified, slimmer, different body type, CGI, airbrushed, plastic skin.`,
+Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong gaze, head angle changed, color photo (if reference is B&W), colorized, hair (if bald), slimmer, muscular, CGI, airbrushed.`,
 
-  faceswap: `⚠ IDENTITY LOCK — FACE E CORPO DO MODELO SÃO SAGRADOS E NÃO NEGOCIÁVEIS:
-ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis — 100% idêntico ao modelo. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial.
-CABELO: se CARECA → cabeça raspada, ZERO cabelo. Se tem cabelo → cor, comprimento e estilo EXATOS.
-BARBA: se tem barba → mantenha barba completa com mesma forma e cor. Se barbeado → mantenha barbeado.
-CORPO: biotipo EXATO — se gordo/robusto/pesado → mantém. NUNCA emagrecer, NUNCA musculizar.
+  faceswap: `⚠ REGRAS CRÍTICAS — LEIA ANTES DE GERAR:
 
-⚙ CONFIGURAÇÕES DE GERAÇÃO:
-Gere 4 variações distintas. Em cada uma, varie sutilmente: ângulo da iluminação ou profundidade do fundo — NUNCA altere identidade, pose ou roupa.
+🎨 LOCK DE COR: Se IMAGE 2 (alvo) for PRETO E BRANCO → o resultado DEVE ser preto e branco, monocromático, sem cor. Se IMAGE 2 for colorida → resultado é colorido. INEGOCIÁVEL.
+
+📐 LOCK DE POSE + OLHAR: A pose exata, posição do corpo, ângulo da cabeça e direção do olhar de IMAGE 2 são SAGRADOS. Reproduza 100%. NÃO use a pose de IMAGE 1. Cada braço, mão, ombro e cabeça deve corresponder exatamente a IMAGE 2.
+
+👤 IDENTITY LOCK — ROSTO + CORPO DE IMAGE 1 SÃO SAGRADOS:
+• Rosto: formato, nariz, COR EXATA DOS OLHOS, sobrancelhas, maçãs, lábios, queixo, TOM DE PELE EXATO, marcas visíveis — 100% idêntico. NÃO suavize nem embeleze.
+• Cabelo: se CARECA → zero cabelo, cabeça lisa. Se tem cabelo → cor, comprimento e estilo EXATOS.
+• Barba: mantenha exatamente como em IMAGE 1.
+• Corpo: biotipo EXATO — NUNCA emagrecer, NUNCA musculizar.
+
+⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, hair (se careca), toupee (se careca), wig (se careca).`,
+Negative: different face, wrong eye color, skin tone changed, wrong pose, wrong gaze, head angle changed, color photo (se referência for P&B), colorized, hair (se careca), slimmer, muscular, CGI, airbrushed.`,
 
-  scene: `⚠ IDENTITY LOCK — FACE E CORPO DO CLIENTE SÃO SAGRADOS E NÃO NEGOCIÁVEIS:
-ROSTO: formato do rosto, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS (não mude a cor dos olhos), formato dos olhos, sobrancelhas, maçãs do rosto, lábios (volume + formato), queixo, TOM DE PELE EXATO, marcas visíveis — 100% idêntico ao cliente. NÃO suavize, NÃO embeleze, NÃO altere NENHUM traço facial.
-CABELO: se CARECA → cabeça raspada, ZERO cabelo — calvície é permanente. Se tem cabelo → cor, comprimento e estilo EXATOS.
-BARBA: se tem barba → mantenha barba completa com mesma forma e cor. Se barbeado → mantenha barbeado.
-CORPO: biotipo EXATO e SAGRADO — se gordo/robusto/pesado → mantém o peso real. NUNCA emagrecer, NUNCA musculizar.
+  scene: `⚠ REGRAS CRÍTICAS — LEIA ANTES DE GERAR:
 
-⚙ CONFIGURAÇÕES DE GERAÇÃO:
-Gere 4 variações distintas. Em cada uma, varie sutilmente: intensidade da iluminação, profundidade do fundo ou enquadramento — NUNCA altere identidade, pose ou roupa da cena de referência.
+🎨 LOCK DE COR: Se IMAGE 2 (referência) for PRETO E BRANCO → o resultado DEVE ser preto e branco, monocromático, sem cor alguma. Se IMAGE 2 for colorida → resultado é colorido. INEGOCIÁVEL — não colorize uma referência P&B.
+
+📐 LOCK DE POSE + OLHAR: A pose exata, posição do corpo, ângulo da cabeça, direção do olhar e escala do rosto de IMAGE 2 são SAGRADOS. Reproduza 100%. NÃO use a pose de IMAGE 1. Cada braço, mão, ombro e cabeça deve corresponder exatamente a IMAGE 2.
+
+👤 IDENTITY LOCK — ROSTO + CORPO DO CLIENTE (IMAGE 1) SÃO SAGRADOS:
+• Rosto: formato, nariz (tamanho + ponta + ponte), COR EXATA DOS OLHOS, olhos, sobrancelhas, maçãs do rosto, lábios, queixo, TOM DE PELE EXATO, todas as marcas visíveis — 100% idêntico. NÃO suavize, NÃO embeleze.
+• Cabelo: se CARECA → zero cabelo, cabeça completamente raspada. Se tem cabelo → cor, comprimento e estilo EXATOS.
+• Barba: mantenha exatamente como em IMAGE 1.
+• Corpo: biotipo EXATO e SAGRADO — se gordo/pesado → mantém. NUNCA emagrecer, NUNCA musculizar.
+
+⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.
 Photorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.
-Negative: different face, wrong identity, changed nose shape, different eye shape, wrong eye color, skin tone changed, face morphed, beautified face, different body type, slimmer, thinner, muscular, plastic skin, airbrushed, CGI, color photo (se referência for P&B), hair (se careca), toupee (se careca), wig (se careca).`,
+Negative: different face, wrong identity, wrong eye color, skin tone changed, wrong pose, wrong gaze direction, head angle changed, face rescaled, color photo (se referência for P&B), colorized, warm tones, color grading, hair (se careca), toupee (se careca), slimmer, thinner, muscular, CGI, airbrushed, plastic skin.`,
 
-  kids: `⚠ IDENTIDADE DA CRIANÇA — SAGRADA E NÃO NEGOCIÁVEL:
-ROSTO INFANTIL: formato do rosto, nariz (tamanho + formato exato), cor e formato dos olhos (NÃO mude a cor dos olhos), sobrancelhas, bochechas (volume infantil), lábios, queixo, TOM DE PELE EXATO, sardas, covinhas, marcas visíveis — 100% idêntico à foto da criança.
-CABELO: cor exata, comprimento exato, estilo exato (lisos, ondulados, cacheados, crespos) — NÃO mude.
-EXPRESSÃO: preserve a espontaneidade e a expressão infantil natural — sem forçar pose adulta.
-PROPORÇÕES: mantenha as proporções reais da criança — tamanho, peso, altura aparente.
+  child: `⚠ REGRAS CRÍTICAS — CRIANÇAS:
 
-⚙ CONFIGURAÇÕES DE GERAÇÃO (CRIANÇAS):
-Gere 4 variações distintas. Em cada uma, varie sutilmente: ângulo de câmera, profundidade do bokeh ou detalhe decorativo do cenário — NUNCA altere identidade, rosto ou expressão da criança.
-Photorealistic children portrait, soft natural lighting, shallow depth of field, warm tones, Nikon D850, 85mm f/1.8, 4K.
-Negative: wrong face, different child, adult features on child, different eye color, skin tone changed, face morphed, beautified, airbrushed, CGI, plastic skin, wrong hair color, adult proportions.`
+🎨 LOCK DE COR: Se IMAGE 2 (referência) for PRETO E BRANCO → resultado DEVE ser P&B. Se colorida → colorido. INEGOCIÁVEL.
+
+📐 LOCK DE POSE + CENÁRIO: A pose, posição do corpo, enquadramento e cenário de IMAGE 2 são SAGRADOS. Reproduza 100%.
+
+👶 IDENTITY LOCK — ROSTO + CORPO DA CRIANÇA (IMAGE 1) SÃO SAGRADOS:
+• Rosto infantil: formato, nariz, COR EXATA DOS OLHOS, bochechas, lábios, queixo, TOM DE PELE EXATO, sardas, covinhas, marcas — 100% idêntico.
+• Cabelo: cor exata, comprimento exato, estilo exato — NÃO mude.
+• Proporções: mantenha tamanho e peso reais da criança.
+• Expressão: preserve a espontaneidade infantil — sem forçar pose adulta.
+
+⚙ Gere 4 variações. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.
+Photorealistic children portrait, soft natural lighting, shallow depth of field, Nikon D850, 85mm f/1.8, 4K.
+Negative: wrong face, different child, adult features, different eye color, skin tone changed, wrong hair, face morphed, CGI, airbrushed, color photo (se referência for P&B).`
 };
 
 function getDefaultExtraCmd(){
@@ -4116,6 +4156,8 @@ function pgSetImage(base64,dataUrl){
   if (cpb) cpb.style.display = 'none';
   const fob = document.getElementById('pgFlowOrderBox');
   if (fob) fob.style.display = 'none';
+  const ecb = document.getElementById('pgExtraCmdResultBox');
+  if (ecb) ecb.style.display = 'none';
   checkGenBtnReady();
 }
 
@@ -4542,6 +4584,7 @@ async function _pgGenerateInner(){
         document.getElementById('pgJsonOutput').textContent = JSON.stringify(result, null, 2);
         document.getElementById('pgOutputCard').style.display = 'block';
         pgShowFlowOrder();
+        pgShowExtraCmdResult();
         document.getElementById('pgLoading').style.display = 'none';
         pgPopulateSavePanel();
         pgPopulateClientPrompt();
@@ -4568,6 +4611,7 @@ async function _pgGenerateInner(){
         document.getElementById('pgJsonOutput').textContent = JSON.stringify(result, null, 2);
         document.getElementById('pgOutputCard').style.display = 'block';
         pgShowFlowOrder();
+        pgShowExtraCmdResult();
         document.getElementById('pgLoading').style.display = 'none';
         pgPopulateSavePanel();
         pgPopulateClientPrompt();
@@ -5177,6 +5221,8 @@ ${schema}
       toast('✓ Gerado com ' + model.split('/')[1].split(':')[0]);
       pgPopulateSavePanel();
       pgPopulateClientPrompt();
+      pgShowFlowOrder();
+      pgShowExtraCmdResult();
       return;
     } catch(e) {
       lastError = e.message;
@@ -5476,6 +5522,38 @@ NÃO aplique: cabelo, cor de cabelo, cor de olhos, formato de rosto, biotipo, et
 O resultado final deve parecer que É o cliente fotografado naquele cenário/estilo — não uma recriação da pessoa original do JSON.`;
 
   ta.value = clientPrompt;
+}
+
+function pgShowExtraCmdResult() {
+  const box = document.getElementById('pgExtraCmdResultBox');
+  const ta  = document.getElementById('pgExtraCmdResultText');
+  if (!box || !ta) return;
+  const cmd = document.getElementById('pgExtraCmd')?.value?.trim();
+  if (!cmd || pgGenMode === 'simple') { box.style.display = 'none'; return; }
+  ta.value = cmd;
+  box.style.display = 'block';
+}
+
+function pgCopyExtraCmdResult() {
+  const ta = document.getElementById('pgExtraCmdResultText');
+  if (!ta) return;
+  navigator.clipboard.writeText(ta.value).catch(() => {
+    ta.select(); document.execCommand('copy');
+  });
+  const btn = document.getElementById('pgCopyExtraCmdBtn');
+  if (btn) {
+    btn.textContent = '✓ Copiado!';
+    btn.style.background = 'rgba(100,255,100,0.15)';
+    btn.style.color = '#64ff64';
+    btn.style.borderColor = 'rgba(100,255,100,0.5)';
+    setTimeout(() => {
+      btn.textContent = '📋 Copiar Comando Extra';
+      btn.style.background = 'rgba(255,100,100,0.1)';
+      btn.style.color = '#ff6464';
+      btn.style.borderColor = 'rgba(255,100,100,0.5)';
+    }, 2000);
+  }
+  toast('🚨 Comando extra copiado!');
 }
 
 function pgCopyClientPrompt() {
