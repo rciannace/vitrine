@@ -3501,11 +3501,7 @@ function openLightbox(idx) {
   updateLightbox();
   const backBtn = document.getElementById('lbBackBtn');
   if (backBtn) {
-    let galName = 'galeria';
-    if (currentCat === null) galName = 'todas as fotos';
-    else if (currentCat === '__inbox__') galName = 'sem categoria';
-    else { const cat = cats.find(c => c.id === currentCat); if (cat) galName = cat.name; }
-    backBtn.textContent = `← ${galName}`;
+    backBtn.textContent = `← Voltar`;
   }
   document.getElementById('lightboxOverlay').classList.add('open');
   document.addEventListener('keydown', lbKeyDown);
