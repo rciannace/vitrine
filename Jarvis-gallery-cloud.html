@@ -2439,7 +2439,7 @@ body{
               <span style="font-size:11px;color:var(--muted);">Foto modelo — será clonada para todos</span>
               <span style="font-size:10px;color:var(--muted);opacity:.6;">clique · arraste · Ctrl+V</span>
             </div>
-            <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('familiaalvo')" style="pointer-events:auto;">📁 Da galeria</button>
+            <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('familiaAlvo')" style="pointer-events:auto;">📁 Da galeria</button>
           </div>
           <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:5px;opacity:.7;">
             💡 Esta foto define a pose, cenário, roupa e iluminação que cada pessoa irá replicar
@@ -3674,7 +3674,7 @@ const GP_ZONE_LABELS = {
   facetarget:   '🎯 Foto alvo (corpo + pose a manter)',
   scenesubject: '🧍 Foto do cliente',
   sceneref:     '🌆 Foto de referência de cena',
-  familiaalvo:  '🎯 Foto alvo (modelo da família)',
+  familiaAlvo:  '🎯 Foto alvo (modelo da família)',
   kidsclient:   '👧 Foto da criança (rosto a preservar)',
   kidstarget:   '🎯 Foto alvo (cenário / tema)',
 };
@@ -3957,7 +3957,7 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgSceneRefBase64 = base64;
       show('pgSceneRefPreview','pgSceneRefIcon','pgSceneRefLabel','pgSceneRefClearBtn',null);
       checkGenBtnReady(); break;
-    case 'familiaalvo':
+    case 'familiaAlvo':
       familiaRefBase64 = base64;
       const faz = document.getElementById('pgFamiliaAlvoZone');
       if (faz) { faz.style.borderColor = 'var(--gold)'; faz.style.background = 'transparent'; }
@@ -4112,31 +4112,38 @@ function pgPasteToZone(zoneKey, file) {
   if (zoneKey === 'familiaRef') { loadFamiliaRef(file); }
   else if (zoneKey === 'familiaAlvo') { loadFamiliaAlvo(file); }
   else {
-    const handlers = {
-      simple:      pgHandleFile,
-      simplemodel: pgHandleModelFile,
-      subject:     pgHandleSubjectFile,
-      style:       pgHandleStyleFile,
-      facesubject: pgHandleFaceSubjectFile,
-      facetarget:  pgHandleFaceTargetFile,
-      scenesubject:pgHandleSceneSubjectFile,
-      sceneref:    pgHandleSceneRefFile,
+    // Usa gpApplyToZone via FileReader para cobrir todos os modos (simple, subject, faceswap, scene, kids, etc.)
+    const r = new FileReader();
+    r.onload = ev => {
+      const b64 = ev.target.result.split(',')[1];
+      gpApplyToZone(zoneKey, b64, ev.target.result);
+      checkGenBtnReady();
     };
-    const handler = handlers[zoneKey];
-    if (!handler) return;
-    handler({ target: { files: [file] } });
+    r.readAsDataURL(file);
+    // Avança automaticamente para a próxima zona vazia
+    const cfg = PG_ZONE_CFG[zoneKey];
+    const zones = PG_ZONES[pgGenMode] || [];
+    const nextIdx = zones.indexOf(zoneKey) + 1;
+    if (nextIdx < zones.length) {
+      setTimeout(() => pgSetActiveZone(zones[nextIdx]), 300);
+      toast(`📋 Colado em: ${cfg?.label || zoneKey} → próxima zona selecionada`);
+    } else {
+      setTimeout(() => pgSetActiveZone(null), 300);
+      toast(`📋 Colado em: ${cfg?.label || zoneKey} ✓`);
+    }
+    return;
   }
 
-  const cfg = PG_ZONE_CFG[zoneKey];
-  // Avança automaticamente para a próxima zona vazia
-  const zones = PG_ZONES[pgGenMode] || [];
-  const nextIdx = zones.indexOf(zoneKey) + 1;
-  if (nextIdx < zones.length) {
-    setTimeout(() => pgSetActiveZone(zones[nextIdx]), 300);
-    toast(`📋 Colado em: ${cfg?.label || zoneKey} → próxima zona selecionada`);
+  // familiaRef / familiaAlvo: avança para próxima zona após colar
+  const cfg2 = PG_ZONE_CFG[zoneKey];
+  const zones2 = PG_ZONES[pgGenMode] || [];
+  const nextIdx2 = zones2.indexOf(zoneKey) + 1;
+  if (nextIdx2 < zones2.length) {
+    setTimeout(() => pgSetActiveZone(zones2[nextIdx2]), 300);
+    toast(`📋 Colado em: ${cfg2?.label || zoneKey} → próxima zona selecionada`);
   } else {
     setTimeout(() => pgSetActiveZone(null), 300);
-    toast(`📋 Colado em: ${cfg?.label || zoneKey} ✓`);
+    toast(`📋 Colado em: ${cfg2?.label || zoneKey} ✓`);
   }
 }
 
@@ -8563,27 +8570,7 @@ function pgKidsZoneClick(zoneKey) {
   }
 }
 
-// ── Paste Ctrl+V kids ──
-document.addEventListener('paste', function(e) {
-  if (!document.getElementById('promptGenOverlay').classList.contains('open')) return;
-  if (pgGenMode !== 'kids') return;
-  const tag = document.activeElement?.tagName;
-  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
-  const clips = e.clipboardData?.items || [];
-  for (const item of clips) {
-    if (item.type.startsWith('image/')) {
-      const file = item.getAsFile();
-      const r = new FileReader();
-      r.onload = ev => {
-        const b64 = ev.target.result.split(',')[1];
-        gpApplyToZone(pgActiveZone || 'kidsclient', b64, ev.target.result);
-        toast('✓ Imagem colada em ' + (pgActiveZone || 'kidsclient') + '!');
-      };
-      r.readAsDataURL(file);
-      e.preventDefault(); break;
-    }
-  }
-});
+// ── Paste Ctrl+V kids ── (handled by main paste handler in pgPasteToZone → gpApplyToZone)
 
 const KIDS_TYPE_SCENE_CONTEXT = {
   aniversario: 'birthday party setting — colorful balloons, birthday cake with lit candles, festive decorations matching the theme of the target photo, party lights, streamers, warm celebratory atmosphere',
