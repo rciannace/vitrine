@@ -2182,7 +2182,7 @@ body{
 
 <!-- ══ MODAL: PROMPT GENERATOR ══ -->
 <div class="overlay" id="promptGenOverlay">
-  <div class="modal" style="max-width:900px;max-height:96vh;overflow-x:hidden;">
+  <div class="modal" style="max-width:680px;max-height:96vh;overflow-x:hidden;">
     <div class="modal-head">
       <div class="modal-title">✦ GERADOR DE PROMPT JSON</div>
       <button class="modal-close" onclick="closePromptGen()">✕</button>
@@ -2192,13 +2192,13 @@ body{
       <!-- Modo de operação -->
       <div class="field">
         <div class="field-label">Modo</div>
-        <div style="display:flex;gap:6px;flex-wrap:nowrap;margin-top:4px;overflow-x:auto;padding-bottom:2px;">
-          <button class="pg-chip active" id="modeSimpleBtn" onclick="setGenMode('simple')">🖼 Analisar imagem</button>
-          <button class="pg-chip" id="modeSubjectBtn" onclick="setGenMode('subject')">👤 Manter rosto + copiar estilo</button>
-          <button class="pg-chip" id="modeFaceBtn" onclick="setGenMode('faceswap')">🔄 Face Swap</button>
-          <button class="pg-chip" id="modeSceneBtn" onclick="setGenMode('scene')">🧬 Clonar Pessoa</button>
-          <button class="pg-chip" id="modeFamilyBtn" onclick="setGenMode('family')">👨‍👩‍👧 Família</button>
-          <button class="pg-chip" id="modeKidsBtn" onclick="setGenMode('kids')" style="background:rgba(255,175,50,.08);border-color:rgba(255,175,50,.3);color:#ffaf32;">🎈 Crianças</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;justify-content:center;">
+          <button class="pg-chip active" id="modeSimpleBtn" onclick="setGenMode('simple')" style="flex:1;min-width:120px;text-align:center;justify-content:center;">🖼 Analisar imagem</button>
+          <button class="pg-chip" id="modeSubjectBtn" onclick="setGenMode('subject')" style="flex:1;min-width:120px;text-align:center;justify-content:center;">👤 Manter rosto + copiar estilo</button>
+          <button class="pg-chip" id="modeFaceBtn" onclick="setGenMode('faceswap')" style="flex:1;min-width:120px;text-align:center;justify-content:center;">🔄 Face Swap</button>
+          <button class="pg-chip" id="modeSceneBtn" onclick="setGenMode('scene')" style="flex:1;min-width:120px;text-align:center;justify-content:center;">🧬 Clonar Pessoa</button>
+          <button class="pg-chip" id="modeFamilyBtn" onclick="setGenMode('family')" style="flex:1;min-width:120px;text-align:center;justify-content:center;">👨‍👩‍👧 Família</button>
+          <button class="pg-chip" id="modeKidsBtn" onclick="setGenMode('kids')" style="flex:1;min-width:120px;text-align:center;justify-content:center;background:rgba(255,175,50,.08);border-color:rgba(255,175,50,.3);color:#ffaf32;">🎈 Crianças</button>
         </div>
       </div>
 
@@ -2262,7 +2262,7 @@ body{
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0;overflow:hidden;">
           <!-- Foto do modelo (rosto a preservar) -->
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">📌 Foto do modelo (rosto a preservar)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">1️⃣ Foto do cliente (rosto + corpo a preservar)</div>
             <div id="pgSubjectZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('subject')"
@@ -2279,7 +2279,7 @@ body{
           </div>
           <!-- Imagem de referência de estilo -->
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🎨 Imagem de estilo (pose/iluminação/roupa)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">2️⃣ Foto alvo (pose / roupa / estilo)</div>
             <div id="pgStyleZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('style')"
@@ -2303,7 +2303,7 @@ body{
       <div id="pgModeFaceSwap" style="display:none;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0;overflow:hidden;">
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">👤 Foto do modelo (rosto a colocar)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">1️⃣ Foto do cliente (rosto + corpo a preservar)</div>
             <div id="pgFaceSubjectZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('facesubject')"
@@ -2319,7 +2319,7 @@ body{
             <input type="file" id="pgFaceSubjectInput" accept="image/*" style="display:none" onchange="pgHandleFaceSubjectFile(event)">
           </div>
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🎯 Foto alvo (corpo + pose a manter)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">2️⃣ Foto alvo (pose + cenário a copiar)</div>
             <div id="pgFaceTargetZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('facetarget')"
@@ -2344,7 +2344,7 @@ body{
       <div id="pgModeScene" style="display:none;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0;overflow:hidden;">
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🧍 Foto do cliente (rosto + corpo a preservar)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">1️⃣ Foto do cliente (rosto + corpo a preservar)</div>
             <div id="pgSceneSubjectZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('scenesubject')"
@@ -2360,7 +2360,7 @@ body{
             <input type="file" id="pgSceneSubjectInput" accept="image/*" style="display:none" onchange="pgHandleSceneSubjectFile(event)">
           </div>
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🌆 Foto de referência (cenário + roupa + iluminação)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">2️⃣ Foto alvo (cenário + pose + iluminação)</div>
             <div id="pgSceneRefZone" style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;min-width:0;"
               tabindex="0"
               onclick="pgZoneClick('sceneref')"
@@ -2484,7 +2484,7 @@ body{
 
           <!-- FOTO CLIENTE (criança) -->
           <div>
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">👧 Foto do cliente (criança)</div>
+            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">1️⃣ Foto da criança (rosto + corpo a preservar)</div>
             <div id="pgKidsClientZone"
               style="border:1.5px dashed var(--subtle);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;color:var(--muted);font-size:12px;position:relative;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;"
               tabindex="0"
@@ -5405,27 +5405,26 @@ function pgShowFlowOrder() {
   if (!box || !content) return;
 
   const orders = {
-    simple: null, // modo simples não usa Flow com 2 fotos
+    simple: null,
     subject: [
-      '🖼 <strong>IMAGE 1 (primeira)</strong> → <span style="color:var(--cyan)">FOTO DO CLIENTE</span> — rosto + corpo a preservar',
-      '🎨 <strong>IMAGE 2 (segunda)</strong> → <span style="color:var(--gold)">FOTO DE ESTILO</span> — pose + roupa + cenário',
+      '1️⃣ <strong>PRIMEIRA imagem</strong> → <span style="color:var(--cyan)">FOTO DO CLIENTE</span> — rosto + corpo a preservar',
+      '2️⃣ <strong>SEGUNDA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — pose + estilo + cenário a copiar',
     ],
     faceswap: [
-      '👤 <strong>IMAGE 1 (primeira)</strong> → <span style="color:var(--cyan)">FOTO DO MODELO</span> — rosto + corpo a preservar',
-      '🎯 <strong>IMAGE 2 (segunda)</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — cena a ser copiada',
+      '1️⃣ <strong>PRIMEIRA imagem</strong> → <span style="color:var(--cyan)">FOTO DO CLIENTE</span> — rosto + corpo a preservar',
+      '2️⃣ <strong>SEGUNDA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — cena a ser copiada',
     ],
     scene: [
-      '👤 <strong>IMAGE 1 (primeira)</strong> → <span style="color:var(--cyan)">FOTO DO CLIENTE</span> — rosto + corpo a preservar',
-      '🎯 <strong>IMAGE 2 (segunda)</strong> → <span style="color:var(--gold)">FOTO DE REFERÊNCIA</span> — pose + roupa + cenário a copiar',
+      '1️⃣ <strong>PRIMEIRA imagem</strong> → <span style="color:var(--cyan)">FOTO DO CLIENTE</span> — rosto + corpo a preservar',
+      '2️⃣ <strong>SEGUNDA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — pose + roupa + cenário a copiar',
     ],
     family: [
-      '👥 <strong>IMAGE 1, 2, 3...</strong> → <span style="color:var(--cyan)">FOTOS DOS CLIENTES</span> — uma por pessoa',
-      '🎯 <strong>ÚLTIMA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — cena a ser clonada para todos',
+      '1️⃣ <strong>PRIMEIRAS imagens</strong> → <span style="color:var(--cyan)">FOTOS DOS CLIENTES</span> — uma por pessoa',
+      '2️⃣ <strong>ÚLTIMA imagem</strong> → <span style="color:var(--gold)">FOTO ALVO</span> — cena a ser clonada para todos',
     ],
     kids: [
-      '👧 <strong>IMAGE 1 (primeira)</strong> → <span style="color:var(--cyan)">FOTO DA CRIANÇA</span> — rosto a preservar',
-      '🎯 <strong>IMAGE 2 (segunda)</strong> → <span style="color:#ffaf32">FOTO ALVO</span> — cenário / tema a aplicar',
-      '🎈 <strong>No Leonardo.ai:</strong> use como "Image Guidance" ou "Character Reference"',
+      '1️⃣ <strong>PRIMEIRA imagem</strong> → <span style="color:var(--cyan)">FOTO DA CRIANÇA</span> — rosto + corpo a preservar',
+      '2️⃣ <strong>SEGUNDA imagem</strong> → <span style="color:#ffaf32">FOTO ALVO</span> — cenário + tema + fantasia',
     ],
   };
 
