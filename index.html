@@ -3495,21 +3495,44 @@ function onSearch(q) {
 function autoReorder() {
   const catId = currentCat;
   const pool  = catId !== null ? items.filter(it => it.cat === catId) : [...items];
-  const getNum = title => { const m = (title || '').match(/\d+/); return m ? parseInt(m[0], 10) : Infinity; };
-  const sorted = [...pool].sort((a, b) => getNum(a.title) - getNum(b.title));
-  sorted.forEach((it, idx) => { const m = items.find(i => i.id === it.id); if (m) m.title = `Foto ${idx + 1}`; });
-  const poolIds = new Set(pool.map(i => i.id));
-  const others  = items.filter(i => !poolIds.has(i.id));
+  if (pool.length < 2) { toast('✓ Nada para reordenar!'); return; }
+
+  // Embaralha (Fisher-Yates), garantindo que a ordem seja diferente da atual
+  const shuffle = arr => {
+    const a = [...arr];
+    let attempts = 0;
+    do {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      attempts++;
+    } while (attempts < 10 && a.every((el, i) => el.id === arr[i].id));
+    return a;
+  };
+
+  const shuffled = shuffle(pool);
+
+  // Renumera sobre a nova ordem (Foto 1, Foto 2, ...)
+  shuffled.forEach((it, idx) => {
+    const m = items.find(i => i.id === it.id);
+    if (m) m.title = `Foto ${idx + 1}`;
+  });
+
+  // Reposiciona no array global mantendo as outras galerias no lugar
+  const poolIds  = new Set(pool.map(i => i.id));
+  const others   = items.filter(i => !poolIds.has(i.id));
   const firstIdx = items.findIndex(i => poolIds.has(i.id));
-  const renamedSorted = sorted.map(s => items.find(i => i.id === s.id));
-  items.splice(0, items.length, ...others.slice(0, firstIdx), ...renamedSorted, ...others.slice(firstIdx));
+  const renamed  = shuffled.map(s => items.find(i => i.id === s.id));
+  items.splice(0, items.length, ...others.slice(0, firstIdx), ...renamed, ...others.slice(firstIdx));
+
   persist();
   const btn = document.getElementById('reorderBtn');
   const orig = btn.textContent;
-  btn.textContent = '✓ Ordenado!'; btn.style.color = 'var(--accent)'; btn.style.borderColor = 'var(--accent)';
+  btn.textContent = '✓ Reordenado!'; btn.style.color = 'var(--accent)'; btn.style.borderColor = 'var(--accent)';
   setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
   render();
-  toast('✓ Fotos ordenadas e renumeradas!');
+  toast('✓ Fotos reordenadas e renumeradas!');
 }
 
 function selectAll() {
