@@ -2580,6 +2580,7 @@ body{
           <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">JSON Prompt Gerado</span>
           <div style="display:flex;gap:6px;">
             <button onclick="pgCopyFlowPrompt()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid var(--cyan);border-radius:4px;background:var(--cyan2);color:var(--cyan);cursor:pointer;transition:all .15s;font-weight:600;" id="pgFlowCopyBtn">📋 Copiar Flow Prompt</button>
+            <button onclick="pgCopyGptPrompt()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid #a78bfa;border-radius:4px;background:rgba(167,139,250,0.1);color:#a78bfa;cursor:pointer;transition:all .15s;font-weight:600;" id="pgGptCopyBtn">✨ Prompt GPT / Gemini</button>
             <button onclick="pgCopy()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid var(--border2);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border2)'" id="pgCopyBtn">Copiar JSON</button>
           </div>
         </div>
@@ -5463,6 +5464,37 @@ function pgCopyFlowPrompt() {
     b.textContent = '✓ Copiado!'; b.style.background = 'var(--cyan)';
     setTimeout(() => { b.textContent = orig; b.style.background = 'var(--cyan2)'; }, 2000);
     toast('📋 Flow Prompt copiado!');
+  });
+}
+
+function pgCopyGptPrompt() {
+  let parsed = null;
+  try { parsed = JSON.parse(document.getElementById('pgJsonOutput').textContent); } catch {}
+  const basePrompt = parsed?.flow_prompt_final || parsed?.prompt_ready || document.getElementById('pgJsonOutput').textContent;
+  if (!basePrompt) { toast('⚠ Nenhum prompt encontrado'); return; }
+
+  // Instrução de variações adaptada por modo
+  const variationsByMode = {
+    simple:   `\n\n⚙ GENERATION SETTINGS:\nGenerate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
+    subject:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    faceswap: `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    scene:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    kids:     `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    child:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    familia:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+  };
+
+  const variationSuffix = variationsByMode[pgGenMode] || variationsByMode.subject;
+  const fullPrompt = basePrompt + variationSuffix;
+
+  copyText(fullPrompt, () => {
+    const b = document.getElementById('pgGptCopyBtn');
+    const orig = b.textContent;
+    b.textContent = '✓ Copiado!';
+    b.style.background = 'rgba(167,139,250,0.35)';
+    b.style.color = '#fff';
+    setTimeout(() => { b.textContent = orig; b.style.background = 'rgba(167,139,250,0.1)'; b.style.color = '#a78bfa'; }, 2000);
+    toast('✨ Prompt GPT/Gemini copiado! (4 variações)');
   });
 }
 
