@@ -1139,13 +1139,7 @@ body{
     <button class="sb-footer-btn cyan" onclick="openPromptGen()">
       <span>✦</span> Gerar Prompt
     </button>
-    <button class="sb-footer-btn cyan" onclick="exportNovas()" id="exportNovasBtn" title="Exporta só as fotos adicionadas desde o último envio">
-      <span>↑</span> <span id="exportNovasLabel">Enviar Novidades</span>
-    </button>
-    <button class="sb-footer-btn" onclick="document.getElementById('importFile').click()" title="Importar arquivo de novidades">
-      <span>↓</span> Receber Novidades
-    </button>
-    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)">
+
     <button class="sb-footer-btn" onclick="exportBackup()" style="font-size:11px;opacity:.55;">
       <span>⬇</span> Backup completo
     </button>
@@ -5943,7 +5937,6 @@ async function initApp() {
 
   buildTabs();
   render();
-  updateExportNovasLabel();
 }
 function updateSbStats() {
   const el = id => document.getElementById(id);
@@ -7094,106 +7087,6 @@ function applyChangelog(log) {
 }
 
 // ── SYNC — NOVIDADES ──
-// Salva timestamp do último export de novidades
-function getLastSyncTs() {
-  return parseInt(localStorage.getItem('iafoto_last_sync') || '0');
-}
-function setLastSyncTs(ts) {
-  localStorage.setItem('iafoto_last_sync', String(ts));
-  updateExportNovasLabel();
-}
-
-function updateExportNovasLabel() {
-  const ts = getLastSyncTs();
-  const el = document.getElementById('exportNovasLabel');
-  if (!el) return;
-  const novasFotos = items.filter(i => {
-    const id_ts = parseInt((i.id || '').replace('i','').split('_')[0]);
-    return !ts || id_ts > ts;
-  }).length;
-  const novasCl = clGetSince(ts).length;
-  const total = novasFotos + (novasCl > 0 ? 1 : 0); // fotos novas + flag de edições
-  if (!ts && novasFotos === 0) {
-    el.textContent = 'Enviar Novidades';
-  } else if (novasFotos > 0) {
-    el.textContent = `Enviar Novidades (${novasFotos} foto${novasFotos!==1?'s':''})`;
-  } else if (novasCl > 0) {
-    el.textContent = `Enviar Alterações (${novasCl})`;
-  } else {
-    el.textContent = 'Enviar Novidades';
-  }
-}
-
-async function exportNovas() {
-  const lastTs = getLastSyncTs();
-  const agora = Date.now();
-
-  // Fotos criadas DEPOIS do último sync
-  const novas = items.filter(i => {
-    const raw = (i.id || '').replace(/^i/, '').split('_')[0];
-    const ts = parseInt(raw);
-    return !lastTs || ts > lastTs;
-  });
-
-  // Changelog de alterações desde o último sync
-  const changelog = clGetSince(lastTs);
-
-  // Nada a enviar?
-  if (!novas.length && !changelog.length) {
-    toast('✓ Nenhuma novidade ou alteração desde o último envio!');
-    return;
-  }
-
-  const temNovas = novas.length > 0;
-  const temAlteracoes = changelog.length > 0;
-  const resumo = [
-    temNovas ? `${novas.length} foto(s) nova(s)` : '',
-    temAlteracoes ? `${changelog.length} alteração(ões)` : ''
-  ].filter(Boolean).join(' + ');
-
-  toast(`⏳ Preparando: ${resumo}…`);
-
-  // Busca imagens do IDB só para fotos novas
-  let novasComImg = [];
-  if (temNovas) {
-    const ids = novas.map(i => i.id);
-    const imgs = await idbGetAll(ids);
-    novasComImg = novas.map(it => ({
-      ...it,
-      img: imgs[it.id] || it.img || null
-    }));
-    const semImg = novasComImg.filter(i => !i.img).length;
-    if (semImg > 0) {
-      const ok = confirm(`⚠ ${semImg} foto(s) sem imagem serão incluídas só com metadados.\nContinuar?`);
-      if (!ok) return;
-    }
-  }
-
-  const payload = {
-    items: novasComImg,
-    cats,
-    changelog,
-    v: 4,
-    tipo: 'novidades',
-    desde: lastTs || 0,
-    at: new Date().toISOString()
-  };
-
-  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-  const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
-
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `jarvis-novidades-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-
-  setLastSyncTs(agora);
-
-  const comImg = novasComImg.filter(i => i.img).length;
-  const msgImg = temNovas ? ` — ${comImg} com imagem` : '';
-  toast(`✓ Enviado: ${resumo}${msgImg} — ${sizeMB}MB`);
-}
-
 async function exportBackup() {
   toast('⏳ Preparando backup completo…');
   const ids = items.map(it => it.id);
@@ -7210,75 +7103,6 @@ async function exportBackup() {
   a.click();
   const total = itemsWithImgs.filter(i => i.img).length;
   toast(`✓ Backup completo: ${total} foto(s) com imagem`);
-}
-
-async function importBackup(e) {
-  const file = e.target.files[0]; if (!file) return;
-  e.target.value = '';
-
-  toast('⏳ Lendo arquivo…');
-
-  const r = new FileReader();
-  r.onload = async ev => {
-    try {
-      const d = JSON.parse(ev.target.result);
-      if (!d.items || !d.cats) throw new Error('formato inválido');
-
-      const withImg = d.items.filter(i => i.img).length;
-      const total   = d.items.length;
-      const isNovas = d.tipo === 'novidades';
-
-      // Novidades: merge automático sem confirmar
-      // Backup completo: pergunta o modo
-      let doMerge = true;
-      if (!isNovas) {
-        doMerge = confirm(
-          `Backup completo: ${total} foto(s), ${withImg} com imagem.\n\n` +
-          'OK = Merge (adiciona sem apagar)\n' +
-          'Cancelar = Substituir tudo'
-        );
-        if (doMerge === null) return;
-      }
-
-      // Salva imagens no IDB em lote
-      const toSave = d.items.filter(i => i.img);
-      if (toSave.length) {
-        toast(`⏳ Salvando ${toSave.length} imagem(ns)…`);
-        await idbPutBatch(toSave.map(i => ({ id: i.id, dataUrl: i.img })));
-      }
-
-      // Items prontos para memória
-      const itemsReady = d.items.map(it => ({ ...it }));
-
-      if (doMerge) {
-        let added = 0;
-        itemsReady.forEach(ni => {
-          if (!items.find(x => x.id === ni.id)) { items.unshift(ni); added++; }
-        });
-        d.cats.forEach(nc => {
-          if (!cats.find(x => x.id === nc.id)) cats.push(nc);
-        });
-        // Aplica changelog de edições
-        const applied = applyChangelog(d.changelog || []);
-        persist(); buildTabs(); render();
-        const tipo = isNovas ? 'novidade(s)' : 'foto(s)';
-        const editMsg = applied > 0 ? ` + ${applied} edição(ões) aplicada(s)` : '';
-        toast(`✓ ${added} ${tipo} adicionada(s)${withImg ? ` — ${withImg} com imagem` : ''}${editMsg}!`);
-      } else {
-        if (!confirm('Apaga tudo atual. Confirma?')) return;
-        items = itemsReady;
-        cats  = d.cats;
-        persist(); buildTabs(); render();
-        toast(`✓ ${items.length} foto(s) importada(s)${withImg ? ` — ${withImg} com imagem` : ''}!`);
-      }
-
-      updateExportNovasLabel();
-    } catch(err) {
-      toast('⚠ Arquivo inválido ou corrompido');
-      console.error(err);
-    }
-  };
-  r.readAsText(file);
 }
 
 // ── TOAST ──
