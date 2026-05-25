@@ -2296,30 +2296,7 @@ body{
           </div>
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
-        <!-- 2ª foto do cliente — opcional -->
-        <div id="pgSubjectExtra" style="margin-top:10px;">
-          <div id="pgSubjectExtraCollapsed" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:7px 12px;border:1.5px dashed rgba(0,196,174,0.25);border-radius:8px;background:rgba(0,196,174,0.03);transition:all .2s;" onclick="pgToggleExtraClient('subject')">
-            <span style="font-size:16px;color:var(--cyan);font-weight:700;line-height:1;">+</span>
-            <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;">2ª foto do cliente (opcional — ângulo diferente)</span>
-            <span style="font-size:9px;color:var(--muted);margin-left:auto;">melhora a fidelidade do rosto</span>
-          </div>
-          <div id="pgSubjectExtraZoneWrap" style="display:none;margin-top:8px;">
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">📸 2ª foto do cliente (outro ângulo / expressão)</div>
-            <div id="pgSubjectZone2" style="border:1.5px dashed rgba(0,196,174,0.4);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
-              onclick="pgZoneClick('subject2')"
-              ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
-              ondragleave="this.style.borderColor='rgba(0,196,174,0.4)'"
-              ondrop="event.preventDefault();gpApplyFileToZone('subject2',event.dataTransfer.files[0])">
-              <div style="font-size:20px;opacity:.4" id="pgSubjectIcon2">📸</div>
-              <div id="pgSubjectLabel2">2ª foto — outro ângulo (<kbd style="background:var(--s3);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;">Ctrl+V</kbd>)</div>
-              <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('subject2')">📁 Da galeria</button>
-              <button id="pgSubjectClearBtn2" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearExtra('subject2')" title="Remover foto">✕</button>
-              <img id="pgSubjectPreview2" style="display:none;width:100%;max-height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--cyan);">
-            </div>
-            <input type="file" id="pgSubjectInput2" accept="image/*" style="display:none" onchange="pgHandleExtraFile(event,'subject2')">
-          </div>
-        </div>
-        <textarea id="subjectInfoText" rows="3" style="width:100%;background:rgba(245,200,66,.04);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.7;resize:vertical;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;margin-top:10px;">O prompt gerado vai preservar o rosto e características físicas da foto do modelo (calvície, barba, tom de pele, estrutura facial) e copiar apenas o estilo, pose, roupa e iluminação da imagem de referência.</textarea>
+        <textarea id="subjectInfoText" rows="3" style="width:100%;background:rgba(245,200,66,.04);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.7;resize:vertical;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;">O prompt gerado vai preservar o rosto e características físicas da foto do modelo (calvície, barba, tom de pele, estrutura facial) e copiar apenas o estilo, pose, roupa e iluminação da imagem de referência.</textarea>
       </div>
 
       <!-- MODO FACE SWAP: duas imagens -->
@@ -2359,30 +2336,7 @@ body{
           </div>
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
-        <!-- 2ª foto do cliente — opcional -->
-        <div id="pgFaceSubjectExtra" style="margin-top:10px;">
-          <div id="pgFaceSubjectExtraCollapsed" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:7px 12px;border:1.5px dashed rgba(0,196,174,0.25);border-radius:8px;background:rgba(0,196,174,0.03);transition:all .2s;" onclick="pgToggleExtraClient('facesubject')">
-            <span style="font-size:16px;color:var(--cyan);font-weight:700;line-height:1;">+</span>
-            <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;">2ª foto do modelo (opcional — ângulo diferente)</span>
-            <span style="font-size:9px;color:var(--muted);margin-left:auto;">melhora a fidelidade do rosto</span>
-          </div>
-          <div id="pgFaceSubjectExtraZoneWrap" style="display:none;margin-top:8px;">
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">📸 2ª foto do modelo (outro ângulo / expressão)</div>
-            <div id="pgFaceSubjectZone2" style="border:1.5px dashed rgba(0,196,174,0.4);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
-              onclick="pgZoneClick('facesubject2')"
-              ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
-              ondragleave="this.style.borderColor='rgba(0,196,174,0.4)'"
-              ondrop="event.preventDefault();gpApplyFileToZone('facesubject2',event.dataTransfer.files[0])">
-              <div style="font-size:20px;opacity:.4" id="pgFaceSubjectIcon2">📸</div>
-              <div id="pgFaceSubjectLabel2">2ª foto — outro ângulo (<kbd style="background:var(--s3);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;">Ctrl+V</kbd>)</div>
-              <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('facesubject2')">📁 Da galeria</button>
-              <button id="pgFaceSubjectClearBtn2" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearExtra('facesubject2')" title="Remover foto">✕</button>
-              <img id="pgFaceSubjectPreview2" style="display:none;width:100%;max-height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--cyan);">
-            </div>
-            <input type="file" id="pgFaceSubjectInput2" accept="image/*" style="display:none" onchange="pgHandleExtraFile(event,'facesubject2')">
-          </div>
-        </div>
-        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:10px;">
+        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:4px;">
           🔄 Gera um prompt para <strong style="color:var(--cyan)">trocar apenas o rosto e corpo</strong> pelo do modelo, <strong style="color:var(--gold)">mantendo 100% da pose, posição, roupa e fundo</strong> da foto alvo. Se a foto alvo está olhando pro lado, o modelo ficará na mesma posição.
         </div>
       </div>
@@ -2423,30 +2377,7 @@ body{
           </div>
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
-        <!-- 2ª foto do cliente — opcional -->
-        <div id="pgSceneSubjectExtra" style="margin-top:10px;">
-          <div id="pgSceneSubjectExtraCollapsed" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:7px 12px;border:1.5px dashed rgba(0,196,174,0.25);border-radius:8px;background:rgba(0,196,174,0.03);transition:all .2s;" onclick="pgToggleExtraClient('scenesubject')">
-            <span style="font-size:16px;color:var(--cyan);font-weight:700;line-height:1;">+</span>
-            <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;">2ª foto do cliente (opcional — ângulo diferente)</span>
-            <span style="font-size:9px;color:var(--muted);margin-left:auto;">melhora a fidelidade do rosto</span>
-          </div>
-          <div id="pgSceneSubjectExtraZoneWrap" style="display:none;margin-top:8px;">
-            <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">📸 2ª foto do cliente (outro ângulo / expressão)</div>
-            <div id="pgSceneSubjectZone2" style="border:1.5px dashed rgba(0,196,174,0.4);border-radius:10px;padding:16px;text-align:center;cursor:pointer;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
-              onclick="pgZoneClick('scenesubject2')"
-              ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
-              ondragleave="this.style.borderColor='rgba(0,196,174,0.4)'"
-              ondrop="event.preventDefault();gpApplyFileToZone('scenesubject2',event.dataTransfer.files[0])">
-              <div style="font-size:20px;opacity:.4" id="pgSceneSubjectIcon2">📸</div>
-              <div id="pgSceneSubjectLabel2">2ª foto — outro ângulo (<kbd style="background:var(--s3);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;">Ctrl+V</kbd>)</div>
-              <button class="gp-zone-btn" onclick="event.stopPropagation();openGalleryPicker('scenesubject2')">📁 Da galeria</button>
-              <button id="pgSceneSubjectClearBtn2" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearExtra('scenesubject2')" title="Remover foto">✕</button>
-              <img id="pgSceneSubjectPreview2" style="display:none;width:100%;max-height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--cyan);">
-            </div>
-            <input type="file" id="pgSceneSubjectInput2" accept="image/*" style="display:none" onchange="pgHandleExtraFile(event,'scenesubject2')">
-          </div>
-        </div>
-        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:10px;">
+        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:4px;">
           🧬 Clona <strong style="color:var(--cyan)">rosto + corpo exatos do cliente</strong> (biotipo, peso, barba, óculos, cabelo) — coloca ele no <strong style="color:var(--gold)">cenário, roupa e iluminação</strong> da foto de referência. Gordinho continua gordinho.
         </div>
       </div>
@@ -2649,6 +2580,7 @@ body{
           <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">JSON Prompt Gerado</span>
           <div style="display:flex;gap:6px;">
             <button onclick="pgCopyFlowPrompt()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid var(--cyan);border-radius:4px;background:var(--cyan2);color:var(--cyan);cursor:pointer;transition:all .15s;font-weight:600;" id="pgFlowCopyBtn">📋 Copiar Flow Prompt</button>
+            <button onclick="pgCopyGptPrompt()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid #a78bfa;border-radius:4px;background:rgba(167,139,250,0.1);color:#a78bfa;cursor:pointer;transition:all .15s;font-weight:600;" id="pgGptCopyBtn">✨ Prompt GPT / Gemini</button>
             <button onclick="pgCopy()" style="font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border:1px solid var(--border2);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border2)'" id="pgCopyBtn">Copiar JSON</button>
           </div>
         </div>
@@ -3605,33 +3537,30 @@ function closePromptGen(){
 // Mapa de zonas por modo: id da zona → qual handler chamar
 const PG_ZONES = {
   simple:      ['simple', 'simplemodel'],
-  subject:     ['subject', 'subject2', 'style'],
-  faceswap:    ['facesubject', 'facesubject2', 'facetarget'],
-  scene:       ['scenesubject', 'scenesubject2', 'sceneref'],
+  subject:     ['subject', 'style'],
+  faceswap:    ['facesubject', 'facetarget'],
+  scene:       ['scenesubject', 'sceneref'],
   family:      [], // dinâmico — reconstruído em buildFamiliaZones()
   kids:        ['kidsclient', 'kidstarget'],
 };
 
 // Configurações visuais de cada zona
 const PG_ZONE_CFG = {
-  simple:       { el: 'pgDropZone',           color: 'var(--cyan)',  label: '🖼 Foto de referência' },
-  simplemodel:  { el: 'pgModelZone',           color: 'var(--gold)',  label: '👤 Foto do modelo' },
-  subject:      { el: 'pgSubjectZone',         color: 'var(--cyan)',  label: '👤 Foto do modelo' },
-  subject2:     { el: 'pgSubjectZone2',        color: 'var(--cyan)',  label: '📸 2ª foto do modelo', optional: true },
-  style:        { el: 'pgStyleZone',           color: 'var(--gold)',  label: '🎨 Imagem de estilo' },
-  facesubject:  { el: 'pgFaceSubjectZone',     color: 'var(--cyan)',  label: '👤 Foto do modelo' },
-  facesubject2: { el: 'pgFaceSubjectZone2',    color: 'var(--cyan)',  label: '📸 2ª foto do modelo', optional: true },
-  facetarget:   { el: 'pgFaceTargetZone',      color: 'var(--gold)',  label: '🎯 Foto alvo' },
-  scenesubject: { el: 'pgSceneSubjectZone',    color: 'var(--cyan)',  label: '🧍 Foto do cliente' },
-  scenesubject2:{ el: 'pgSceneSubjectZone2',   color: 'var(--cyan)',  label: '📸 2ª foto do cliente', optional: true },
-  sceneref:     { el: 'pgSceneRefZone',        color: 'var(--gold)',  label: '🌆 Foto de referência' },
+  simple:      { el: 'pgDropZone',        color: 'var(--cyan)',  label: '🖼 Foto de referência' },
+  simplemodel: { el: 'pgModelZone',       color: 'var(--gold)',  label: '👤 Foto do modelo' },
+  subject:     { el: 'pgSubjectZone',     color: 'var(--cyan)',  label: '👤 Foto do modelo' },
+  style:       { el: 'pgStyleZone',       color: 'var(--gold)',  label: '🎨 Imagem de estilo' },
+  facesubject: { el: 'pgFaceSubjectZone', color: 'var(--cyan)',  label: '👤 Foto do modelo' },
+  facetarget:  { el: 'pgFaceTargetZone',  color: 'var(--gold)',  label: '🎯 Foto alvo' },
+  scenesubject:{ el: 'pgSceneSubjectZone',color: 'var(--cyan)',  label: '🧍 Foto do cliente' },
+  sceneref:    { el: 'pgSceneRefZone',    color: 'var(--gold)',  label: '🌆 Foto de referência' },
   // Família — zonas fixas:
-  familiaRef:   { el: 'pgFamiliaRefZone',      color: 'var(--cyan)',  label: '🏞 Cenário / estilo' },
-  familiaAlvo:  { el: 'pgFamiliaAlvoZone',     color: 'var(--gold)',  label: '🎯 Foto alvo' },
+  familiaRef:  { el: 'pgFamiliaRefZone',  color: 'var(--cyan)',  label: '🏞 Cenário / estilo' },
+  familiaAlvo: { el: 'pgFamiliaAlvoZone', color: 'var(--gold)',  label: '🎯 Foto alvo' },
   // Pessoas são adicionadas dinamicamente via buildFamiliaZones()
   // Crianças:
-  kidsclient:   { el: 'pgKidsClientZone',      color: 'var(--cyan)',  label: '👧 Foto da criança' },
-  kidstarget:   { el: 'pgKidsTargetZone',      color: '#ffaf32',      label: '🎯 Cenário / tema' },
+  kidsclient:  { el: 'pgKidsClientZone',  color: 'var(--cyan)',  label: '👧 Foto da criança' },
+  kidstarget:  { el: 'pgKidsTargetZone',  color: '#ffaf32',      label: '🎯 Cenário / tema' },
 };
 
 let pgActiveZone = null; // qual zona está selecionada para Ctrl+V
@@ -4009,10 +3938,6 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgSubjectBase64 = base64;
       show('pgSubjectPreview','pgSubjectIcon','pgSubjectLabel','pgSubjectClearBtn',null);
       checkGenBtnReady(); break;
-    case 'subject2':
-      pgSubjectBase64_2 = base64;
-      show('pgSubjectPreview2','pgSubjectIcon2','pgSubjectLabel2','pgSubjectClearBtn2',null);
-      checkGenBtnReady(); break;
     case 'style':
       pgStyleBase64 = base64;
       show('pgStylePreview','pgStyleIcon','pgStyleLabel','pgStyleClearBtn',null);
@@ -4021,10 +3946,6 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgFaceSubjectBase64 = base64;
       show('pgFaceSubjectPreview','pgFaceSubjectIcon','pgFaceSubjectLabel','pgFaceSubjectClearBtn',null);
       checkGenBtnReady(); break;
-    case 'facesubject2':
-      pgFaceSubjectBase64_2 = base64;
-      show('pgFaceSubjectPreview2','pgFaceSubjectIcon2','pgFaceSubjectLabel2','pgFaceSubjectClearBtn2',null);
-      checkGenBtnReady(); break;
     case 'facetarget':
       pgFaceTargetBase64 = base64;
       show('pgFaceTargetPreview','pgFaceTargetIcon','pgFaceTargetLabel','pgFaceTargetClearBtn',null);
@@ -4032,10 +3953,6 @@ function gpApplyToZone(zone, base64, dataUrl) {
     case 'scenesubject':
       pgSceneSubjectBase64 = base64;
       show('pgSceneSubjectPreview','pgSceneSubjectIcon','pgSceneSubjectLabel','pgSceneSubjectClearBtn',null);
-      checkGenBtnReady(); break;
-    case 'scenesubject2':
-      pgSceneSubjectBase64_2 = base64;
-      show('pgSceneSubjectPreview2','pgSceneSubjectIcon2','pgSceneSubjectLabel2','pgSceneSubjectClearBtn2',null);
       checkGenBtnReady(); break;
     case 'sceneref':
       pgSceneRefBase64 = base64;
@@ -4163,25 +4080,9 @@ document.addEventListener('paste', function(e) {
 
 function pgAutoDetectZone() {
   if (pgGenMode === 'simple') return !pgImageBase64 ? 'simple' : (!pgModelBase64 ? 'simplemodel' : 'simple');
-  if (pgGenMode === 'subject') {
-    if (!pgSubjectBase64) return 'subject';
-    // Só vai para subject2 se o painel estiver aberto
-    const w2 = document.getElementById('pgSubjectExtraZoneWrap');
-    if (w2 && w2.style.display !== 'none' && !pgSubjectBase64_2) return 'subject2';
-    return 'style';
-  }
-  if (pgGenMode === 'faceswap') {
-    if (!pgFaceSubjectBase64) return 'facesubject';
-    const w2 = document.getElementById('pgFaceSubjectExtraZoneWrap');
-    if (w2 && w2.style.display !== 'none' && !pgFaceSubjectBase64_2) return 'facesubject2';
-    return 'facetarget';
-  }
-  if (pgGenMode === 'scene') {
-    if (!pgSceneSubjectBase64) return 'scenesubject';
-    const w2 = document.getElementById('pgSceneSubjectExtraZoneWrap');
-    if (w2 && w2.style.display !== 'none' && !pgSceneSubjectBase64_2) return 'scenesubject2';
-    return 'sceneref';
-  }
+  if (pgGenMode === 'subject') return !pgSubjectBase64 ? 'subject' : 'style';
+  if (pgGenMode === 'faceswap') return !pgFaceSubjectBase64 ? 'facesubject' : 'facetarget';
+  if (pgGenMode === 'scene') return !pgSceneSubjectBase64 ? 'scenesubject' : 'sceneref';
   if (pgGenMode === 'family') {
     const emptyPerson = familiaPersons.find(p => !p.base64);
     if (emptyPerson) return emptyPerson.id;
@@ -4340,7 +4241,6 @@ function pgUpdateSimpleInfo(){
 
 function pgClearSubject(){
   pgSubjectBase64=null;
-  pgSubjectBase64_2=null;
   const p=document.getElementById('pgSubjectPreview'); p.src=''; p.style.display='none';
   document.getElementById('pgSubjectIcon').style.display='';
   document.getElementById('pgSubjectLabel').style.display='';
@@ -4363,7 +4263,6 @@ function pgClearStyle(){
 
 function pgClearFaceSubject(){
   pgFaceSubjectBase64=null;
-  pgFaceSubjectBase64_2=null;
   const p=document.getElementById('pgFaceSubjectPreview'); p.src=''; p.style.display='none';
   document.getElementById('pgFaceSubjectIcon').style.display='';
   document.getElementById('pgFaceSubjectLabel').style.display='';
@@ -4386,7 +4285,6 @@ function pgClearFaceTarget(){
 
 function pgClearSceneSubject(){
   pgSceneSubjectBase64=null;
-  pgSceneSubjectBase64_2=null;
   const p=document.getElementById('pgSceneSubjectPreview'); p.src=''; p.style.display='none';
   document.getElementById('pgSceneSubjectIcon').style.display='';
   document.getElementById('pgSceneSubjectLabel').style.display='';
@@ -4407,69 +4305,6 @@ function pgClearSceneRef(){
   checkGenBtnReady();
 }
 
-// ── 2ª foto do cliente — toggle, handler e clear ──
-
-function pgToggleExtraClient(prefix) {
-  // prefix: 'subject' | 'facesubject' | 'scenesubject'
-  const wrapId   = `pg${prefix.charAt(0).toUpperCase()+prefix.slice(1)}ExtraZoneWrap`;
-  const btnId    = `pg${prefix.charAt(0).toUpperCase()+prefix.slice(1)}ExtraCollapsed`;
-  const wrap = document.getElementById(wrapId);
-  const btn  = document.getElementById(btnId);
-  if (!wrap) return;
-  const open = wrap.style.display === 'none' || wrap.style.display === '';
-  wrap.style.display = open ? 'block' : 'none';
-  if (btn) {
-    const plus = btn.querySelector('span');
-    if (plus) plus.textContent = open ? '−' : '+';
-    btn.style.borderColor = open ? 'rgba(0,196,174,0.6)' : 'rgba(0,196,174,0.25)';
-    btn.style.background  = open ? 'rgba(0,196,174,0.08)' : 'rgba(0,196,174,0.03)';
-  }
-  if (open) {
-    // Ativa a zona ao abrir
-    const zoneKey = prefix === 'subject' ? 'subject2' : prefix === 'facesubject' ? 'facesubject2' : 'scenesubject2';
-    setTimeout(() => pgSetActiveZone(zoneKey), 100);
-  }
-}
-
-function pgHandleExtraFile(e, zoneKey) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    const b64 = ev.target.result.split(',')[1];
-    gpApplyToZone(zoneKey, b64, ev.target.result);
-    checkGenBtnReady();
-  };
-  r.readAsDataURL(file);
-}
-
-function gpApplyFileToZone(zoneKey, file) {
-  if (!file || !file.type.startsWith('image/')) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    const b64 = ev.target.result.split(',')[1];
-    gpApplyToZone(zoneKey, b64, ev.target.result);
-    checkGenBtnReady();
-  };
-  r.readAsDataURL(file);
-}
-
-function pgClearExtra(zoneKey) {
-  // zoneKey: 'subject2' | 'facesubject2' | 'scenesubject2'
-  const map = {
-    subject2:      { stateVar: () => { pgSubjectBase64_2 = null; },      preview: 'pgSubjectPreview2',      icon: 'pgSubjectIcon2',      label: 'pgSubjectLabel2',      clearBtn: 'pgSubjectClearBtn2',      input: 'pgSubjectInput2' },
-    facesubject2:  { stateVar: () => { pgFaceSubjectBase64_2 = null; },   preview: 'pgFaceSubjectPreview2',  icon: 'pgFaceSubjectIcon2',  label: 'pgFaceSubjectLabel2',  clearBtn: 'pgFaceSubjectClearBtn2',  input: 'pgFaceSubjectInput2' },
-    scenesubject2: { stateVar: () => { pgSceneSubjectBase64_2 = null; },  preview: 'pgSceneSubjectPreview2', icon: 'pgSceneSubjectIcon2', label: 'pgSceneSubjectLabel2', clearBtn: 'pgSceneSubjectClearBtn2', input: 'pgSceneSubjectInput2' },
-  };
-  const m = map[zoneKey]; if (!m) return;
-  m.stateVar();
-  const p = document.getElementById(m.preview); if (p) { p.src=''; p.style.display='none'; }
-  const ic = document.getElementById(m.icon);   if (ic) ic.style.display='';
-  const lb = document.getElementById(m.label);  if (lb) lb.style.display='';
-  const cb = document.getElementById(m.clearBtn); if (cb) cb.style.display='none';
-  const inp = document.getElementById(m.input); if (inp) inp.value='';
-}
-
 function pgHandleDrop(e){
   e.preventDefault();
   document.getElementById('pgDropZone').style.borderColor='var(--subtle)';
@@ -4483,13 +4318,10 @@ function pgHandleDrop(e){
 }
 
 let pgSubjectBase64 = null;
-let pgSubjectBase64_2 = null;   // 2ª foto cliente — subject
 let pgStyleBase64 = null;
 let pgFaceSubjectBase64 = null;
-let pgFaceSubjectBase64_2 = null; // 2ª foto cliente — faceswap
 let pgFaceTargetBase64 = null;
 let pgSceneSubjectBase64 = null;
-let pgSceneSubjectBase64_2 = null; // 2ª foto cliente — scene
 let pgSceneRefBase64 = null;
 let pgModelBase64 = null; // v8: foto do modelo no modo simples
 // Modo Crianças:
@@ -4948,10 +4780,6 @@ If IMAGE 1 has distinctive marks: also add "mole removed, scar removed, marks re
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSubjectBase64 }},
-      ...(pgSubjectBase64_2 ? [
-        { type:'text', text:'IMAGE 1B (CLIENT — ADDITIONAL ANGLE): This is a second photo of the SAME person as IMAGE 1A, from a different angle or expression. Use BOTH images together to build a more complete and accurate understanding of the client\'s physical traits. Cross-reference both to extract the most faithful details of face shape, nose, eye color, skin tone, hair and body type.' },
-        { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSubjectBase64_2 }}
-      ] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgStyleBase64 }}
     ];
   } else if(pgGenMode==='faceswap'){
@@ -5071,10 +4899,6 @@ Always add: "slimmer, thinner, idealized physique, weight loss, muscular, differ
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceSubjectBase64 }},
-      ...(pgFaceSubjectBase64_2 ? [
-        { type:'text', text:'IMAGE 1B (MODEL — ADDITIONAL ANGLE): This is a second photo of the SAME person as IMAGE 1A, from a different angle or expression. Use BOTH images together to build a more complete and accurate understanding of the model\'s physical traits. Cross-reference both to extract the most faithful face shape, nose, eye color, skin tone, hair and body type.' },
-        { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceSubjectBase64_2 }}
-      ] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceTargetBase64 }}
     ];
   } else if(pgGenMode==='scene'){
@@ -5189,10 +5013,6 @@ If IMAGE 1 has distinctive marks: also add "marks removed, moles removed, scars 
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneSubjectBase64 }},
-      ...(pgSceneSubjectBase64_2 ? [
-        { type:'text', text:'IMAGE 1B (CLIENT — ADDITIONAL ANGLE): This is a second photo of the SAME person as IMAGE 1A, from a different angle or expression. Use BOTH images together to build a more complete and accurate understanding of the client\'s physical traits. Cross-reference both to extract the most faithful face shape, nose, eye color, skin tone, hair and body type.' },
-        { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneSubjectBase64_2 }}
-      ] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneRefBase64 }}
     ];
   } else {
@@ -5644,6 +5464,36 @@ function pgCopyFlowPrompt() {
     b.textContent = '✓ Copiado!'; b.style.background = 'var(--cyan)';
     setTimeout(() => { b.textContent = orig; b.style.background = 'var(--cyan2)'; }, 2000);
     toast('📋 Flow Prompt copiado!');
+  });
+}
+
+function pgCopyGptPrompt() {
+  let parsed = null;
+  try { parsed = JSON.parse(document.getElementById('pgJsonOutput').textContent); } catch {}
+  const basePrompt = parsed?.flow_prompt_final || parsed?.prompt_ready || document.getElementById('pgJsonOutput').textContent;
+  if (!basePrompt) { toast('⚠ Nenhum prompt encontrado'); return; }
+
+  const variationsByMode = {
+    simple:   `\n\n⚙ GENERATION SETTINGS:\nGenerate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
+    subject:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    faceswap: `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    scene:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    kids:     `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    child:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    familia:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+  };
+
+  const suffix = variationsByMode[pgGenMode] || variationsByMode.subject;
+  const fullPrompt = basePrompt + suffix;
+
+  copyText(fullPrompt, () => {
+    const b = document.getElementById('pgGptCopyBtn');
+    const orig = b.textContent;
+    b.textContent = '✓ Copiado!';
+    b.style.background = 'rgba(167,139,250,0.35)';
+    b.style.color = '#fff';
+    setTimeout(() => { b.textContent = orig; b.style.background = 'rgba(167,139,250,0.1)'; b.style.color = '#a78bfa'; }, 2000);
+    toast('✨ Prompt GPT/Gemini copiado! (4 variações)');
   });
 }
 
