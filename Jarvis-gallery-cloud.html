@@ -1388,6 +1388,27 @@ body{
               style="resize:vertical;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;"
               placeholder="Cole seu prompt aqui (Ctrl+V)…"></textarea>
             <input id="mpQuickTags" class="field-input" placeholder="Tags: retrato, iluminação… (separadas por vírgula)" style="font-size:12px;padding:8px 12px;">
+
+            <!-- Campo de foto -->
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">FOTO DE REFERÊNCIA <span style="opacity:.5;">(opcional)</span></span>
+                <button id="mpqImgRemoveBtn" onclick="mpqClearImg()" style="display:none;font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;">✕ Remover</button>
+              </div>
+              <div id="mpqImgDrop"
+                onclick="document.getElementById('mpqImgFile').click()"
+                ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
+                ondragleave="this.style.borderColor='var(--border2)'"
+                ondrop="mpqHandleDrop(event)"
+                style="border:2px dashed var(--border2);border-radius:10px;min-height:72px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden;padding:10px;">
+                <img id="mpqImgPreview" src="" alt="" style="display:none;max-height:180px;max-width:100%;border-radius:7px;object-fit:contain;">
+                <div id="mpqImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
+                  <span style="font-size:20px;">🖼</span>
+                  <span style="font-size:10px;color:var(--muted);">Clique, arraste ou <strong>Ctrl+V</strong> para colar</span>
+                </div>
+              </div>
+              <input id="mpqImgFile" type="file" accept="image/*" style="display:none" onchange="mpqHandleFile(this.files[0])">
+            </div>
             <div style="display:flex;gap:8px;">
               <button onclick="toggleMpQuickAdd()"
                 style="padding:11px 16px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;">
@@ -7395,7 +7416,59 @@ function clearRestorePrompt() {
 // V10: MY PROMPTS
 // ═══════════════════════════════════════════
 let myPrompts = JSON.parse(localStorage.getItem('jarvis_myprompts') || '[]');
-let mpCurrentImg = null; // dataURL da imagem atual no modal
+let mpCurrentImg  = null; // imagem no modal de edição
+let mpqCurrentImg = null; // imagem no form inline de novo prompt
+
+// ── IMAGEM — FORM INLINE ──
+function mpqSetImg(dataUrl) {
+  mpqCurrentImg = dataUrl;
+  const preview     = document.getElementById('mpqImgPreview');
+  const placeholder = document.getElementById('mpqImgPlaceholder');
+  const removeBtn   = document.getElementById('mpqImgRemoveBtn');
+  const drop        = document.getElementById('mpqImgDrop');
+  if (preview)     { preview.src = dataUrl; preview.style.display = 'block'; }
+  if (placeholder)   placeholder.style.display = 'none';
+  if (removeBtn)     removeBtn.style.display = '';
+  if (drop)          drop.style.borderColor = 'var(--cyan)';
+}
+
+function mpqClearImg() {
+  mpqCurrentImg = null;
+  const preview     = document.getElementById('mpqImgPreview');
+  const placeholder = document.getElementById('mpqImgPlaceholder');
+  const removeBtn   = document.getElementById('mpqImgRemoveBtn');
+  const fileInput   = document.getElementById('mpqImgFile');
+  const drop        = document.getElementById('mpqImgDrop');
+  if (preview)     { preview.src = ''; preview.style.display = 'none'; }
+  if (placeholder)   placeholder.style.display = '';
+  if (removeBtn)     removeBtn.style.display = 'none';
+  if (fileInput)     fileInput.value = '';
+  if (drop)          drop.style.borderColor = 'var(--border2)';
+}
+
+function mpqHandleFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = e => mpqSetImg(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function mpqHandleDrop(e) {
+  e.preventDefault();
+  const drop = document.getElementById('mpqImgDrop');
+  if (drop) drop.style.borderColor = 'var(--border2)';
+  const file = e.dataTransfer.files[0];
+  if (file) { mpqHandleFile(file); return; }
+  const item = [...(e.dataTransfer.items||[])].find(i => i.type.startsWith('image/'));
+  if (item) mpqHandleFile(item.getAsFile());
+}
+
+// Ctrl+V cola imagem enquanto o form inline estiver aberto
+document.addEventListener('paste', e => {
+  if (!mpQuickOpen) return;
+  const item = [...(e.clipboardData?.items||[])].find(i => i.type.startsWith('image/'));
+  if (item) { mpqHandleFile(item.getAsFile()); e.preventDefault(); }
+});
 let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
 let mpCurrentCat = 'all';
 let mpEditId = null;
@@ -7810,38 +7883,40 @@ function toggleMpQuickAdd() {
     btn.style.background = 'transparent';
     btn.style.border = '1px solid var(--border2)';
     btn.style.color = 'var(--muted)';
-    // Populate cat select
     const sel = document.getElementById('mpQuickCat');
     if (sel) {
       sel.innerHTML = '<option value="">Sem categoria</option>' +
         mpCats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
     }
+    mpqClearImg();
     setTimeout(() => document.getElementById('mpQuickTitle').focus(), 100);
   } else {
     btn.innerHTML = '<span style="font-size:17px;line-height:1;">+</span> Novo Prompt';
     btn.style.background = 'var(--cyan)';
     btn.style.border = 'none';
     btn.style.color = '#000';
+    mpqClearImg();
   }
 }
 
-function saveMpQuick() {
+async function saveMpQuick() {
   const title = document.getElementById('mpQuickTitle').value.trim();
   const text  = document.getElementById('mpQuickText').value.trim();
   if (!title) { toast('⚠ Digite um nome para o prompt'); document.getElementById('mpQuickTitle').focus(); return; }
   if (!text)  { toast('⚠ Cole o prompt no campo de texto'); document.getElementById('mpQuickText').focus(); return; }
-  const cat  = document.getElementById('mpQuickCat').value;
-  const tags = document.getElementById('mpQuickTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const cat    = document.getElementById('mpQuickCat').value;
+  const tags   = document.getElementById('mpQuickTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const hasImg = !!mpqCurrentImg;
+  const newId  = 'mp' + Date.now();
 
-  myPrompts.unshift({ id: 'mp' + Date.now(), title, text, cat, tags, fav: false });
+  myPrompts.unshift({ id: newId, title, text, cat, tags, fav: false, hasImg });
+  if (hasImg) await idbPut('mpimg_' + newId, mpqCurrentImg);
   persistMp();
 
-  // Clear form
   document.getElementById('mpQuickTitle').value = '';
   document.getElementById('mpQuickText').value  = '';
   document.getElementById('mpQuickTags').value  = '';
-
-  // Close form
+  mpqClearImg();
   toggleMpQuickAdd();
   renderMyPrompts();
   toast('✓ Prompt salvo!');
