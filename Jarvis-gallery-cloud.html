@@ -1379,6 +1379,29 @@ body{
             <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;">
               📝 Bloco de Notas — Novo Prompt
             </div>
+
+            <!-- FOTO EM CIMA -->
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">FOTO DE REFERÊNCIA <span style="opacity:.5;">(opcional)</span></span>
+                <button id="mpqImgRemoveBtn" onclick="mpqClearImg()" style="display:none;font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;">✕ Remover</button>
+              </div>
+              <div id="mpqImgDrop"
+                onclick="mpqDropClick()"
+                ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
+                ondragleave="if(!mpqDropFocused)this.style.borderColor='var(--border2)'"
+                ondrop="mpqHandleDrop(event)"
+                style="border:2px dashed var(--border2);border-radius:10px;min-height:72px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;padding:10px;">
+                <img id="mpqImgPreview" src="" alt="" style="display:none;max-height:200px;max-width:100%;border-radius:7px;object-fit:contain;">
+                <div id="mpqImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
+                  <span style="font-size:20px;">🖼</span>
+                  <span id="mpqDropHint" style="font-size:10px;color:var(--muted);">Clique para ativar → cole com <strong>Ctrl+V</strong></span>
+                </div>
+              </div>
+              <input id="mpqImgFile" type="file" accept="image/*" style="display:none" onchange="mpqHandleFile(this.files[0])">
+            </div>
+
+            <!-- PROMPT EMBAIXO -->
             <input id="mpQuickTitle" class="field-input" placeholder="Nome do prompt…" style="font-size:13px;padding:9px 12px;">
             <div style="display:flex;gap:8px;">
               <select id="mpQuickCat" class="field-select" style="font-size:12px;padding:8px 10px;flex:1;"></select>
@@ -1386,29 +1409,9 @@ body{
             </div>
             <textarea id="mpQuickText" class="field-input" rows="7"
               style="resize:vertical;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;"
-              placeholder="Cole seu prompt aqui (Ctrl+V)…"></textarea>
+              placeholder="Cole seu prompt aqui…"></textarea>
             <input id="mpQuickTags" class="field-input" placeholder="Tags: retrato, iluminação… (separadas por vírgula)" style="font-size:12px;padding:8px 12px;">
 
-            <!-- Campo de foto -->
-            <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">FOTO DE REFERÊNCIA <span style="opacity:.5;">(opcional)</span></span>
-                <button id="mpqImgRemoveBtn" onclick="mpqClearImg()" style="display:none;font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;">✕ Remover</button>
-              </div>
-              <div id="mpqImgDrop"
-                onclick="document.getElementById('mpqImgFile').click()"
-                ondragover="event.preventDefault();this.style.borderColor='var(--cyan)'"
-                ondragleave="this.style.borderColor='var(--border2)'"
-                ondrop="mpqHandleDrop(event)"
-                style="border:2px dashed var(--border2);border-radius:10px;min-height:72px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden;padding:10px;">
-                <img id="mpqImgPreview" src="" alt="" style="display:none;max-height:180px;max-width:100%;border-radius:7px;object-fit:contain;">
-                <div id="mpqImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
-                  <span style="font-size:20px;">🖼</span>
-                  <span style="font-size:10px;color:var(--muted);">Clique, arraste ou <strong>Ctrl+V</strong> para colar</span>
-                </div>
-              </div>
-              <input id="mpqImgFile" type="file" accept="image/*" style="display:none" onchange="mpqHandleFile(this.files[0])">
-            </div>
             <div style="display:flex;gap:8px;">
               <button onclick="toggleMpQuickAdd()"
                 style="padding:11px 16px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;">
@@ -7418,10 +7421,36 @@ function clearRestorePrompt() {
 let myPrompts = JSON.parse(localStorage.getItem('jarvis_myprompts') || '[]');
 let mpCurrentImg  = null; // imagem no modal de edição
 let mpqCurrentImg = null; // imagem no form inline de novo prompt
+let mpqDropFocused = false; // controla 1º/2º clique na zona de foto
 
 // ── IMAGEM — FORM INLINE ──
+function mpqDropClick() {
+  const drop = document.getElementById('mpqImgDrop');
+  const hint = document.getElementById('mpqDropHint');
+  if (mpqCurrentImg) { document.getElementById('mpqImgFile').click(); return; }
+  if (!mpqDropFocused) {
+    // 1º clique → ativa zona para Ctrl+V
+    mpqDropFocused = true;
+    if (drop) { drop.style.borderColor = 'var(--cyan)'; drop.style.boxShadow = '0 0 0 3px rgba(0,196,174,.18)'; }
+    if (hint) hint.innerHTML = '<strong style="color:var(--cyan);">✓ Ativo</strong> — cole com <strong>Ctrl+V</strong> ou clique novamente para arquivo';
+  } else {
+    // 2º clique → abre upload
+    document.getElementById('mpqImgFile').click();
+  }
+}
+
+function mpqBlurDrop() {
+  if (mpqDropFocused && !mpqCurrentImg) {
+    mpqDropFocused = false;
+    const drop = document.getElementById('mpqImgDrop');
+    const hint = document.getElementById('mpqDropHint');
+    if (drop) { drop.style.borderColor = 'var(--border2)'; drop.style.boxShadow = 'none'; }
+    if (hint) hint.innerHTML = 'Clique para ativar → cole com <strong>Ctrl+V</strong>';
+  }
+}
 function mpqSetImg(dataUrl) {
-  mpqCurrentImg = dataUrl;
+  mpqCurrentImg  = dataUrl;
+  mpqDropFocused = false;
   const preview     = document.getElementById('mpqImgPreview');
   const placeholder = document.getElementById('mpqImgPlaceholder');
   const removeBtn   = document.getElementById('mpqImgRemoveBtn');
@@ -7429,21 +7458,24 @@ function mpqSetImg(dataUrl) {
   if (preview)     { preview.src = dataUrl; preview.style.display = 'block'; }
   if (placeholder)   placeholder.style.display = 'none';
   if (removeBtn)     removeBtn.style.display = '';
-  if (drop)          drop.style.borderColor = 'var(--cyan)';
+  if (drop)        { drop.style.borderColor = 'var(--cyan)'; drop.style.boxShadow = 'none'; }
 }
 
 function mpqClearImg() {
-  mpqCurrentImg = null;
+  mpqCurrentImg  = null;
+  mpqDropFocused = false;
   const preview     = document.getElementById('mpqImgPreview');
   const placeholder = document.getElementById('mpqImgPlaceholder');
   const removeBtn   = document.getElementById('mpqImgRemoveBtn');
   const fileInput   = document.getElementById('mpqImgFile');
   const drop        = document.getElementById('mpqImgDrop');
+  const hint        = document.getElementById('mpqDropHint');
   if (preview)     { preview.src = ''; preview.style.display = 'none'; }
   if (placeholder)   placeholder.style.display = '';
   if (removeBtn)     removeBtn.style.display = 'none';
   if (fileInput)     fileInput.value = '';
-  if (drop)          drop.style.borderColor = 'var(--border2)';
+  if (drop)        { drop.style.borderColor = 'var(--border2)'; drop.style.boxShadow = 'none'; }
+  if (hint)          hint.innerHTML = 'Clique para ativar → cole com <strong>Ctrl+V</strong>';
 }
 
 function mpqHandleFile(file) {
@@ -7463,11 +7495,19 @@ function mpqHandleDrop(e) {
   if (item) mpqHandleFile(item.getAsFile());
 }
 
-// Ctrl+V cola imagem enquanto o form inline estiver aberto
+// Ctrl+V cola imagem quando a zona estiver ativa (mpqDropFocused) ou o form aberto
 document.addEventListener('paste', e => {
   if (!mpQuickOpen) return;
   const item = [...(e.clipboardData?.items||[])].find(i => i.type.startsWith('image/'));
   if (item) { mpqHandleFile(item.getAsFile()); e.preventDefault(); }
+});
+
+// Clicar fora da zona de foto desativa o foco
+document.addEventListener('click', e => {
+  const drop = document.getElementById('mpqImgDrop');
+  if (drop && !drop.contains(e.target) && mpqDropFocused && !mpqCurrentImg) {
+    mpqBlurDrop();
+  }
 });
 let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
 let mpCurrentCat = 'all';
