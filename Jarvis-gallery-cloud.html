@@ -1439,6 +1439,24 @@ body{
         <label class="field-label">Tags (separadas por vírgula)</label>
         <input id="mpTags" class="field-input" placeholder="ex: retrato, iluminação, exterior">
       </div>
+      <div class="field">
+        <label class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Foto de referência <span style="color:var(--muted);font-weight:400;">(opcional)</span></span>
+          <button id="mpImgRemoveBtn" onclick="mpClearImg()" style="display:none;font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;">✕ Remover</button>
+        </label>
+        <div id="mpImgDrop" onclick="document.getElementById('mpImgFile').click()"
+          style="border:2px dashed var(--border2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;"
+          ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+          ondragleave="this.style.borderColor='var(--border2)'"
+          ondrop="mpHandleDrop(event)">
+          <img id="mpImgPreview" src="" alt="" style="display:none;max-height:160px;max-width:100%;border-radius:7px;object-fit:contain;">
+          <div id="mpImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+            <span style="font-size:22px;">🖼</span>
+            <span style="font-size:11px;color:var(--muted);">Clique, arraste ou <strong>Ctrl+V</strong> para colar</span>
+          </div>
+        </div>
+        <input id="mpImgFile" type="file" accept="image/*" style="display:none" onchange="mpHandleFile(this.files[0])">
+      </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeAddMyPrompt()">Cancelar</button>
@@ -7377,6 +7395,7 @@ function clearRestorePrompt() {
 // V10: MY PROMPTS
 // ═══════════════════════════════════════════
 let myPrompts = JSON.parse(localStorage.getItem('jarvis_myprompts') || '[]');
+let mpCurrentImg = null; // dataURL da imagem atual no modal
 let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
 let mpCurrentCat = 'all';
 let mpEditId = null;
@@ -7416,7 +7435,7 @@ function renderMpCatList() {
   container.innerHTML = html;
 }
 
-function renderMpGrid() {
+async function renderMpGrid() {
   const container = document.getElementById('mpGrid');
   if (!container) return;
   const search = (document.getElementById('mpSearch')?.value || '').toLowerCase();
@@ -7437,9 +7456,15 @@ function renderMpGrid() {
   }
   const catMap = {};
   mpCats.forEach(c => { catMap[c.id] = c.icon + ' ' + c.name; });
-  container.innerHTML = list.map(p => `
+
+  // Pré-carrega imagens dos prompts que têm foto
+  const imgPromises = list.map(p => p.hasImg ? idbGet('mpimg_' + p.id) : Promise.resolve(null));
+  const imgs = await Promise.all(imgPromises);
+
+  container.innerHTML = list.map((p, i) => `
     <div class="mp-card ${p.fav?'fav':''}">
       <span class="mp-fav-star" onclick="toggleMpFav('${p.id}')" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
+      ${imgs[i] ? `<img src="${imgs[i]}" alt="Referência" style="width:100%;max-height:140px;object-fit:cover;border-radius:7px;margin-bottom:8px;cursor:pointer;" onclick="mpViewImg('${p.id}')">` : ''}
       <div class="mp-card-title">${p.title}</div>
       ${p.cat && catMap[p.cat] ? `<div class="mp-card-cat">${catMap[p.cat]}</div>` : ''}
       <div class="mp-card-text">${p.text}</div>
@@ -7452,6 +7477,13 @@ function renderMpGrid() {
         <button onclick="deleteMpPrompt('${p.id}')" style="color:var(--red)!important;border-color:rgba(255,77,109,.3)!important;">✕ Excluir</button>
       </div>
     </div>`).join('');
+}
+
+async function mpViewImg(id) {
+  const dataUrl = await idbGet('mpimg_' + id);
+  if (!dataUrl) return;
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.write(`<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;"></body>`);
 }
 
 function setMpCat(catId) {
@@ -7474,9 +7506,62 @@ function toggleMpFav(id) {
 
 function deleteMpPrompt(id) {
   if (!confirm('Excluir este prompt?')) return;
+  const p = myPrompts.find(x => x.id === id);
+  if (p?.hasImg) idbDelete('mpimg_' + id);
   myPrompts = myPrompts.filter(x => x.id !== id);
   persistMp(); renderMyPrompts();
 }
+
+// ── FUNÇÕES DE IMAGEM DO PROMPT ──
+function mpSetImg(dataUrl) {
+  mpCurrentImg = dataUrl;
+  const preview = document.getElementById('mpImgPreview');
+  const placeholder = document.getElementById('mpImgPlaceholder');
+  const removeBtn = document.getElementById('mpImgRemoveBtn');
+  if (preview) { preview.src = dataUrl; preview.style.display = 'block'; }
+  if (placeholder) placeholder.style.display = 'none';
+  if (removeBtn) removeBtn.style.display = '';
+  const drop = document.getElementById('mpImgDrop');
+  if (drop) drop.style.borderColor = 'var(--accent)';
+}
+
+function mpClearImg() {
+  mpCurrentImg = null;
+  const preview = document.getElementById('mpImgPreview');
+  const placeholder = document.getElementById('mpImgPlaceholder');
+  const removeBtn = document.getElementById('mpImgRemoveBtn');
+  const fileInput = document.getElementById('mpImgFile');
+  if (preview) { preview.src = ''; preview.style.display = 'none'; }
+  if (placeholder) placeholder.style.display = '';
+  if (removeBtn) removeBtn.style.display = 'none';
+  if (fileInput) fileInput.value = '';
+  const drop = document.getElementById('mpImgDrop');
+  if (drop) drop.style.borderColor = 'var(--border2)';
+}
+
+function mpHandleFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = e => mpSetImg(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function mpHandleDrop(e) {
+  e.preventDefault();
+  document.getElementById('mpImgDrop').style.borderColor = 'var(--border2)';
+  const file = e.dataTransfer.files[0];
+  if (file) { mpHandleFile(file); return; }
+  const item = [...(e.dataTransfer.items||[])].find(i => i.type.startsWith('image/'));
+  if (item) mpHandleFile(item.getAsFile());
+}
+
+// Ctrl+V no overlay do prompt
+document.addEventListener('paste', e => {
+  const overlay = document.getElementById('addMpOverlay');
+  if (!overlay || overlay.style.display === 'none') return;
+  const item = [...(e.clipboardData?.items||[])].find(i => i.type.startsWith('image/'));
+  if (item) { mpHandleFile(item.getAsFile()); e.preventDefault(); }
+});
 
 function deleteMpCat(id) {
   if (!confirm('Excluir categoria? Os prompts desta categoria ficam sem categoria.')) return;
@@ -7493,10 +7578,11 @@ function openAddMyPrompt() {
   document.getElementById('mpText').value = '';
   document.getElementById('mpTags').value = '';
   populateMpCatSel('');
+  mpClearImg();
   document.getElementById('addMpOverlay').style.display = 'flex';
 }
 
-function editMyPrompt(id) {
+async function editMyPrompt(id) {
   const p = myPrompts.find(x => x.id === id);
   if (!p) return;
   mpEditId = id;
@@ -7505,6 +7591,11 @@ function editMyPrompt(id) {
   document.getElementById('mpText').value = p.text;
   document.getElementById('mpTags').value = (p.tags||[]).join(', ');
   populateMpCatSel(p.cat || '');
+  mpClearImg();
+  if (p.hasImg) {
+    const dataUrl = await idbGet('mpimg_' + id);
+    if (dataUrl) mpSetImg(dataUrl);
+  }
   document.getElementById('addMpOverlay').style.display = 'flex';
 }
 
@@ -7519,17 +7610,24 @@ function populateMpCatSel(selected) {
     mpCats.map(c => `<option value="${c.id}" ${c.id===selected?'selected':''}>${c.icon} ${c.name}</option>`).join('');
 }
 
-function saveMyPrompt() {
+async function saveMyPrompt() {
   const title = document.getElementById('mpTitle').value.trim();
   const text = document.getElementById('mpText').value.trim();
   if (!title || !text) { toast('⚠ Título e prompt são obrigatórios'); return; }
   const cat = document.getElementById('mpCatSel').value;
   const tags = document.getElementById('mpTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const hasImg = !!mpCurrentImg;
   if (mpEditId) {
     const p = myPrompts.find(x => x.id === mpEditId);
-    if (p) { p.title = title; p.text = text; p.cat = cat; p.tags = tags; }
+    if (p) {
+      p.title = title; p.text = text; p.cat = cat; p.tags = tags; p.hasImg = hasImg;
+      if (hasImg) await idbPut('mpimg_' + mpEditId, mpCurrentImg);
+      else idbDelete('mpimg_' + mpEditId);
+    }
   } else {
-    myPrompts.unshift({ id: 'mp' + Date.now(), title, text, cat, tags, fav: false });
+    const newId = 'mp' + Date.now();
+    myPrompts.unshift({ id: newId, title, text, cat, tags, fav: false, hasImg });
+    if (hasImg) await idbPut('mpimg_' + newId, mpCurrentImg);
   }
   persistMp();
   closeAddMyPrompt();
