@@ -2814,7 +2814,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
     <img id="lightboxImg" src="" alt="">
     <div class="lightbox-info">
       <span class="lightbox-title" id="lightboxTitle"></span>
-      <button class="btn btn-accent btn-sm admin-only" onclick="downloadCurrentLb()">⬇ Download</button>
+      <button class="btn btn-accent btn-sm" onclick="downloadCurrentLb()">⬇ Download</button>
     </div>
     <button id="lbBackBtn" onclick="closeLightbox()" style="margin-top:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;">← Voltar</button>
   </div>
@@ -3163,6 +3163,7 @@ async function initApp() {
       cats = data.cats  || [];
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
+        renderPricing(); // sincroniza com o que veio do Firebase
       }
     } else {
       meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
@@ -3380,7 +3381,7 @@ function render(pool) {
         <div class="photo-card-overlay">
           <div class="photo-card-actions">
             <button class="photo-action-btn" onclick="event.stopPropagation();openLightbox(${idx})">🔍 Ver</button>
-            ${adminMode ? `<button class="photo-action-btn dl" onclick="event.stopPropagation();downloadItem(${idx})">⬇ Baixar</button>` : ''}
+            <button class="photo-action-btn dl" onclick="event.stopPropagation();downloadItem(${idx})">⬇ Baixar</button>
           </div>
         </div>` : ''}
     </div>
@@ -3575,9 +3576,6 @@ function updateLightbox() {
   document.getElementById('lightboxTitle').textContent = it.title || `Foto ${lbIndex + 1}`;
   document.getElementById('lbPrev').style.display = lbIndex > 0 ? 'flex' : 'none';
   document.getElementById('lbNext').style.display = lbIndex < currentView.length - 1 ? 'flex' : 'none';
-  // Atualiza download (admin-only já esconde o botão via CSS, mas garante estado correto)
-  const dlBtn = document.querySelector('#lightboxOverlay .btn-accent.admin-only');
-  if (dlBtn) dlBtn.style.display = adminMode ? '' : 'none';
 }
 
 function closeLightbox() {
@@ -3602,21 +3600,6 @@ function lbKeyDown(e) {
   if (e.key === 'ArrowRight') lbNavigate(1);
   if (e.key === 'Escape')     closeLightbox();
 }
-
-// Swipe touch no lightbox
-(function(){
-  let tsX = 0;
-  const lb = () => document.getElementById('lightboxOverlay');
-  document.addEventListener('touchstart', e => {
-    if (!lb()?.classList.contains('open')) return;
-    tsX = e.touches[0].clientX;
-  }, { passive: true });
-  document.addEventListener('touchend', e => {
-    if (!lb()?.classList.contains('open')) return;
-    const dx = e.changedTouches[0].clientX - tsX;
-    if (Math.abs(dx) > 50) lbNavigate(dx < 0 ? 1 : -1);
-  }, { passive: true });
-})();
 
 function downloadCurrentLb() {
   downloadItem(lbIndex);
