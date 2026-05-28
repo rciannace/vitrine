@@ -805,6 +805,10 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
 .photo-action-btn.dl { background: rgba(0,196,174,.7); border-color: rgba(0,196,174,.5); }
 .photo-action-btn.dl:hover { background: rgba(0,196,174,.9); }
 
+/* Download only visible in admin mode */
+body:not(.admin-mode) .photo-action-btn.dl { display: none; }
+body:not(.admin-mode) .lightbox-download-btn { display: none; }
+
 /* Placeholder card */
 .photo-card-empty {
   display: flex;
@@ -2814,7 +2818,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
     <img id="lightboxImg" src="" alt="">
     <div class="lightbox-info">
       <span class="lightbox-title" id="lightboxTitle"></span>
-      <button class="btn btn-accent btn-sm" onclick="downloadCurrentLb()">⬇ Download</button>
+      <button class="btn btn-accent btn-sm lightbox-download-btn" onclick="downloadCurrentLb()">⬇ Download</button>
     </div>
     <button id="lbBackBtn" onclick="closeLightbox()" style="margin-top:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;">← Voltar</button>
   </div>
