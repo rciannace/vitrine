@@ -1137,6 +1137,7 @@ body{
   </div>
 
   <div class="sb-divider"></div>
+  <div class="sb-footer">
     <button class="sb-footer-btn cyan" onclick="openPromptGen()">
       <span>✦</span> Gerar Prompt
     </button>
@@ -1223,7 +1224,7 @@ body{
 <div class="toolbar">
   <div class="search-wrap">
     <span class="search-ico">⌕</span>
-    <input class="search-input" id="searchInput" placeholder="Buscar título, prompt, tag…" oninput="render()">
+    <input class="search-input" id="searchInput" placeholder="Buscar título, prompt, tag…" oninput="render()" autocomplete="off" autocorrect="off" spellcheck="false">
   </div>
   <div style="display:flex;gap:8px;align-items:center">
     <div class="view-toggle">
@@ -2513,6 +2514,7 @@ body{
           🧬 Clona <strong style="color:var(--cyan)">rosto + corpo exatos do cliente</strong> (biotipo, peso, barba, óculos, cabelo) — coloca ele no <strong style="color:var(--gold)">cenário, roupa e iluminação</strong> da foto de referência. Gordinho continua gordinho.
         </div>
       </div>
+      </div><!-- /pgModeScene -->
 
       <div class="field">
         <div class="field-label">Tipo de análise</div>
