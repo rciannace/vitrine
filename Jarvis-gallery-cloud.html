@@ -7650,32 +7650,38 @@ async function mpGhPull(manual = false) {
     const cloudPrompts = data.myPrompts || [];
     const cloudCats    = data.mpCats    || [];
 
-    let added = 0, updated = 0;
-    cloudPrompts.forEach(np => {
-      const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
-      if (idx === -1) { myPrompts.unshift(np); added++; }
-      else { myPrompts[idx] = np; updated++; }
-    });
-    cloudCats.forEach(nc => {
-      if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
-    });
-
-    if (added || updated) {
+    if (manual) {
+      // Substituição completa — o GitHub é a fonte da verdade
+      myPrompts = cloudPrompts;
+      mpCats    = cloudCats;
       localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
       localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
-      console.log(`[Jarvis] prompts do GitHub: +${added} novo(s), ${updated} atualizado(s)`);
       if (typeof renderMyPrompts === 'function') renderMyPrompts();
       const now = new Date().toISOString();
       localStorage.setItem('jarvis_gh_lastsync', now);
-      if (manual) {
-        const d = new Date(now);
-        cloudSetStatus('✓ +' + added + ' novo(s), ' + updated + ' atualizado(s)', '#22c55e');
-        const el = document.getElementById('cloudLastSync');
-        if (el) el.textContent = 'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-      }
-      toast(`☁ Prompts: +${added} novo(s)`);
+      const d = new Date(now);
+      cloudSetStatus('✓ ' + cloudPrompts.length + ' prompts carregados!', '#22c55e');
+      const el = document.getElementById('cloudLastSync');
+      if (el) el.textContent = 'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      toast('☁ ' + cloudPrompts.length + ' prompts carregados do GitHub!');
     } else {
-      if (manual) cloudSetStatus('✓ Já está atualizado!', '#22c55e');
+      // No auto-pull (ao abrir o app): faz merge para não perder nada local
+      let added = 0, updated = 0;
+      cloudPrompts.forEach(np => {
+        const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
+        if (idx === -1) { myPrompts.unshift(np); added++; }
+        else { myPrompts[idx] = np; updated++; }
+      });
+      cloudCats.forEach(nc => {
+        if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
+      });
+      if (added || updated) {
+        localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
+        localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
+        if (typeof renderMyPrompts === 'function') renderMyPrompts();
+        localStorage.setItem('jarvis_gh_lastsync', new Date().toISOString());
+        console.log(`[Jarvis] prompts do GitHub: +${added} novo(s), ${updated} atualizado(s)`);
+      }
     }
   } catch(e) {
     console.warn('[Jarvis] GitHub pull falhou:', e.message);
