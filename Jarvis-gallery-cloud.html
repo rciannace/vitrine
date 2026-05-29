@@ -1527,12 +1527,16 @@ body{
       <!-- TAB toggle -->
       <div style="display:flex;gap:0;background:var(--s3);border-radius:8px;padding:3px;border:1px solid var(--border);">
         <button id="syncTabExport" onclick="showSyncTab('export')"
-          style="flex:1;padding:8px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:var(--cyan);color:#000;font-family:'DM Sans',sans-serif;">
-          ↑ Exportar (este dispositivo)
+          style="flex:1;padding:8px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:var(--cyan);color:#000;font-family:'DM Sans',sans-serif;">
+          ↑ Exportar
         </button>
         <button id="syncTabImport" onclick="showSyncTab('import')"
-          style="flex:1;padding:8px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;">
-          ↓ Importar (outro dispositivo)
+          style="flex:1;padding:8px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;">
+          ↓ Importar
+        </button>
+        <button id="syncTabCloud" onclick="showSyncTab('cloud')"
+          style="flex:1;padding:8px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;">
+          ☁ Nuvem
         </button>
       </div>
 
@@ -1588,6 +1592,64 @@ body{
         <button onclick="importSyncCode()" class="btn btn-primary" style="width:100%;padding:12px;font-size:13px;margin-top:4px;">
           ✦ Importar Dados
         </button>
+      </div>
+
+      <!-- CLOUD PANEL -->
+      <div id="syncCloudPanel" style="display:none;">
+        <div style="background:var(--s3);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px;">
+          ☁ Sync automático via JSONBin.io (gratuito). Salve do celular e carregue no desktop com 1 clique.<br>
+          <strong style="color:var(--text);">Só Meus Prompts + Categorias</strong> — galeria não é incluída.
+        </div>
+
+        <!-- API KEY + BIN ID config -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+          <div>
+            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;">JSONBin API Key</div>
+            <div style="display:flex;gap:6px;">
+              <input id="cloudApiKey" type="password" placeholder="$2a$10$..." autocomplete="off"
+                style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;min-width:0;"
+                oninput="cloudSaveConfig()">
+              <button onclick="cloudToggleKeyVisible()" title="Mostrar/ocultar"
+                style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:13px;cursor:pointer;color:var(--muted);">👁</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;">Bin ID <span style="color:var(--cyan);font-size:9px;">(criado automaticamente)</span></div>
+            <div style="display:flex;gap:6px;">
+              <input id="cloudBinId" placeholder="— crie uma bin primeiro →"
+                style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;min-width:0;"
+                oninput="cloudSaveConfig()">
+              <button onclick="cloudCreateBin()" title="Criar nova bin"
+                style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:11px;cursor:pointer;color:var(--cyan);white-space:nowrap;font-weight:600;">+ Criar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <button onclick="cloudPush()" id="cloudPushBtn"
+            style="flex:1;padding:11px;background:var(--cyan);color:#000;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+            ↑ Salvar na Nuvem
+          </button>
+          <button onclick="cloudPull()" id="cloudPullBtn"
+            style="flex:1;padding:11px;background:var(--s3);color:var(--text);border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+            ↓ Carregar da Nuvem
+          </button>
+        </div>
+
+        <div id="cloudStatus" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;min-height:16px;"></div>
+        <div id="cloudLastSync" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;margin-top:4px;"></div>
+
+        <!-- How to get API key -->
+        <details style="margin-top:10px;">
+          <summary style="font-size:10px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;">Como obter a API Key?</summary>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7;padding:8px 0;">
+            1. Acesse <strong style="color:var(--cyan);">jsonbin.io</strong> → crie conta gratuita<br>
+            2. Clique no ícone da sua conta → <strong>API Keys</strong><br>
+            3. Crie uma chave com permissão de leitura e escrita<br>
+            4. Cole a chave aqui — ela fica salva no seu dispositivo
+          </div>
+        </details>
       </div>
 
     </div>
@@ -5979,6 +6041,9 @@ async function initApp() {
 
   buildTabs();
   render();
+
+  // Puxa prompts da nuvem em background (sem bloquear o app)
+  mpCloudPull();
 }
 function updateSbStats() {
   const el = id => document.getElementById(id);
@@ -7513,9 +7578,74 @@ let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
 let mpCurrentCat = 'all';
 let mpEditId = null;
 
+// ── MY PROMPTS — CLOUD SYNC VIA CLOUDINARY ──
+const MP_CLOUD_ID  = 'jarvis_myprompts_sync';
+const MP_CLOUD_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/raw/upload/jarvis_gallery/${MP_CLOUD_ID}.json`;
+let   _mpPushTimer = null;
+
 function persistMp() {
   localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
   localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
+  mpCloudPush(); // sync automático ao salvar
+}
+
+// Debounce: espera 1.5s de silêncio antes de subir (evita múltiplos uploads em sequência)
+function mpCloudPush() {
+  clearTimeout(_mpPushTimer);
+  _mpPushTimer = setTimeout(async () => {
+    try {
+      const payload = JSON.stringify({
+        myPrompts: myPrompts || [],
+        mpCats:    mpCats    || [],
+        savedAt:   new Date().toISOString()
+      });
+      const blob = new Blob([payload], { type: 'application/json' });
+      const formData = new FormData();
+      formData.append('file', blob, MP_CLOUD_ID + '.json');
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      formData.append('public_id', 'jarvis_gallery/' + MP_CLOUD_ID);
+      formData.append('resource_type', 'raw');
+      const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`;
+      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('status ' + res.status);
+      console.log('[Jarvis] prompts sincronizados com Cloudinary ✓');
+    } catch(e) {
+      console.warn('[Jarvis] cloud push prompts falhou:', e.message);
+    }
+  }, 1500);
+}
+
+// Puxa prompts da nuvem e mescla com localStorage (roda no initApp)
+async function mpCloudPull() {
+  try {
+    // Cache-bust para garantir versão mais recente
+    const res = await fetch(MP_CLOUD_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return; // primeira vez: arquivo ainda não existe, tudo bem
+    const data = await res.json();
+    const cloudPrompts = data.myPrompts || [];
+    const cloudCats    = data.mpCats    || [];
+    if (!cloudPrompts.length && !cloudCats.length) return;
+
+    let added = 0, updated = 0;
+    cloudPrompts.forEach(np => {
+      const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
+      if (idx === -1) { myPrompts.unshift(np); added++; }
+      else if (np.savedAt > (myPrompts[idx].savedAt||'')) { myPrompts[idx] = np; updated++; }
+    });
+    cloudCats.forEach(nc => {
+      if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
+    });
+
+    if (added || updated) {
+      localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
+      localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
+      console.log(`[Jarvis] prompts da nuvem: +${added} novo(s), ${updated} atualizado(s)`);
+      if (typeof renderMyPrompts === 'function') renderMyPrompts();
+      if (added || updated) toast(`☁ Prompts sincronizados: +${added} novo(s)`);
+    }
+  } catch(e) {
+    console.warn('[Jarvis] cloud pull prompts falhou:', e.message);
+  }
 }
 
 function renderMyPrompts() {
@@ -7796,15 +7926,168 @@ function closeSyncModal() {
 }
 
 function showSyncTab(tab) {
-  const isExport = tab === 'export';
-  document.getElementById('syncExportPanel').style.display = isExport ? 'block' : 'none';
-  document.getElementById('syncImportPanel').style.display = isExport ? 'none'  : 'block';
-  const btnExp = document.getElementById('syncTabExport');
-  const btnImp = document.getElementById('syncTabImport');
-  btnExp.style.background = isExport ? 'var(--cyan)'      : 'transparent';
-  btnExp.style.color      = isExport ? '#000'             : 'var(--muted)';
-  btnImp.style.background = isExport ? 'transparent'      : 'var(--cyan)';
-  btnImp.style.color      = isExport ? 'var(--muted)'     : '#000';
+  const tabs = ['export','import','cloud'];
+  tabs.forEach(t => {
+    const panel = document.getElementById('syncPanel_' + t) || document.getElementById('sync' + t.charAt(0).toUpperCase() + t.slice(1) + 'Panel');
+    if (panel) panel.style.display = (t === tab) ? 'block' : 'none';
+    const btn = document.getElementById('syncTab' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (btn) {
+      btn.style.background = (t === tab) ? 'var(--cyan)' : 'transparent';
+      btn.style.color      = (t === tab) ? '#000'        : 'var(--muted)';
+    }
+  });
+  if (tab === 'cloud') cloudLoadConfig();
+}
+
+// ═══════════════════════════════════════════
+// CLOUD SYNC — JSONBin.io
+// ═══════════════════════════════════════════
+const CLOUD_CFG_KEY = 'jarvis_cloud_cfg';
+
+function cloudLoadConfig() {
+  try {
+    const cfg = JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}');
+    document.getElementById('cloudApiKey').value = cfg.apiKey || '';
+    document.getElementById('cloudBinId').value  = cfg.binId  || '';
+    const ts = cfg.lastSync;
+    if (ts) {
+      const d = new Date(ts);
+      document.getElementById('cloudLastSync').textContent =
+        'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+    }
+  } catch(e) {}
+}
+
+function cloudSaveConfig() {
+  const cfg = {
+    apiKey: document.getElementById('cloudApiKey').value.trim(),
+    binId:  document.getElementById('cloudBinId').value.trim(),
+    lastSync: JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}').lastSync || null
+  };
+  localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(cfg));
+}
+
+function cloudToggleKeyVisible() {
+  const el = document.getElementById('cloudApiKey');
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function cloudGetCfg() {
+  return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}');
+}
+
+function cloudSetStatus(msg, color) {
+  const el = document.getElementById('cloudStatus');
+  if (el) { el.textContent = msg; el.style.color = color || 'var(--muted)'; }
+}
+
+async function cloudCreateBin() {
+  const apiKey = document.getElementById('cloudApiKey').value.trim();
+  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key primeiro', 'var(--red)'); return; }
+  cloudSetStatus('Criando bin…', 'var(--muted)');
+  try {
+    const payload = { myPrompts: [], mpCats: [], createdAt: new Date().toISOString() };
+    const res = await fetch('https://api.jsonbin.io/v3/b', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': apiKey,
+        'X-Bin-Name': 'jarvis-prompts',
+        'X-Bin-Private': 'true'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) { const t = await res.text(); throw new Error(t); }
+    const data = await res.json();
+    const binId = data.metadata.id;
+    document.getElementById('cloudBinId').value = binId;
+    cloudSaveConfig();
+    cloudSetStatus('✓ Bin criada! ID salvo.', '#22c55e');
+    toast('☁ Bin criada com sucesso!');
+  } catch(e) {
+    cloudSetStatus('⚠ Erro: ' + e.message, 'var(--red)');
+  }
+}
+
+async function cloudPush() {
+  const cfg = cloudGetCfg();
+  const apiKey = document.getElementById('cloudApiKey').value.trim();
+  const binId  = document.getElementById('cloudBinId').value.trim();
+  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key', 'var(--red)'); return; }
+  if (!binId)  { cloudSetStatus('⚠ Crie ou insira um Bin ID', 'var(--red)'); return; }
+  cloudSetStatus('Salvando na nuvem…', 'var(--muted)');
+  const btn = document.getElementById('cloudPushBtn');
+  btn.disabled = true; btn.textContent = '…';
+  try {
+    const payload = {
+      myPrompts: myPrompts || [],
+      mpCats:    mpCats    || [],
+      savedAt:   new Date().toISOString()
+    };
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + binId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': apiKey
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) { const t = await res.text(); throw new Error(t); }
+    const now = new Date().toISOString();
+    const saved = Object.assign({}, cfg, { apiKey, binId, lastSync: now });
+    localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(saved));
+    cloudSetStatus('✓ ' + (myPrompts||[]).length + ' prompts salvos na nuvem!', '#22c55e');
+    document.getElementById('cloudLastSync').textContent =
+      'Último sync: ' + new Date(now).toLocaleDateString('pt-BR') + ' ' + new Date(now).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    toast('☁ Prompts salvos na nuvem!');
+  } catch(e) {
+    cloudSetStatus('⚠ Erro ao salvar: ' + e.message, 'var(--red)');
+  } finally {
+    btn.disabled = false; btn.textContent = '↑ Salvar na Nuvem';
+  }
+}
+
+async function cloudPull() {
+  const apiKey = document.getElementById('cloudApiKey').value.trim();
+  const binId  = document.getElementById('cloudBinId').value.trim();
+  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key', 'var(--red)'); return; }
+  if (!binId)  { cloudSetStatus('⚠ Crie ou insira um Bin ID', 'var(--red)'); return; }
+  cloudSetStatus('Carregando da nuvem…', 'var(--muted)');
+  const btn = document.getElementById('cloudPullBtn');
+  btn.disabled = true; btn.textContent = '…';
+  try {
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
+      headers: { 'X-Master-Key': apiKey }
+    });
+    if (!res.ok) { const t = await res.text(); throw new Error(t); }
+    const data = await res.json();
+    const record = data.record;
+    const cloudPrompts = record.myPrompts || [];
+    const cloudCats    = record.mpCats    || [];
+
+    let added = 0, updated = 0;
+    cloudPrompts.forEach(np => {
+      const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
+      if (idx === -1) { myPrompts.unshift(np); added++; }
+      else { myPrompts[idx] = np; updated++; }
+    });
+    cloudCats.forEach(nc => {
+      if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
+    });
+    persistMp(); renderMyPrompts();
+
+    const cfg = cloudGetCfg();
+    const now = new Date().toISOString();
+    localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(Object.assign({}, cfg, { apiKey, binId, lastSync: now })));
+    cloudSetStatus('✓ ' + added + ' novo(s), ' + updated + ' atualizado(s)!', '#22c55e');
+    document.getElementById('cloudLastSync').textContent =
+      'Último sync: ' + new Date(now).toLocaleDateString('pt-BR') + ' ' + new Date(now).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    toast('☁ Prompts carregados da nuvem!');
+  } catch(e) {
+    cloudSetStatus('⚠ Erro ao carregar: ' + e.message, 'var(--red)');
+  } finally {
+    btn.disabled = false; btn.textContent = '↓ Carregar da Nuvem';
+  }
 }
 
 function generateSyncCode() {
