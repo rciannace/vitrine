@@ -900,6 +900,7 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   display: flex; align-items: center; justify-content: center;
   transition: background .15s;
   backdrop-filter: blur(6px);
+  z-index: 510;
 }
 .lightbox-nav:hover { background: rgba(255,255,255,.2); }
 #lbPrev { left: 16px; }
@@ -907,11 +908,15 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 
 @media (max-width: 768px) {
   .lightbox-nav {
-    width: 48px; height: 48px; font-size: 26px;
-    background: rgba(255,255,255,.18);
+    width: 44px; height: 44px; font-size: 28px;
+    background: rgba(255,255,255,.22);
+    z-index: 510;
   }
-  #lbPrev { left: 8px; }
-  #lbNext { right: 8px; }
+  #lbPrev { left: 4px; }
+  #lbNext { right: 4px; }
+  .lightbox-inner {
+    max-width: calc(100vw - 112px);
+  }
 }
 
 /* ── UPLOAD MODAL ── */
