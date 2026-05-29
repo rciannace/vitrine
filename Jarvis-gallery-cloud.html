@@ -1144,6 +1144,9 @@ body{
     <button class="sb-footer-btn" onclick="exportBackup()" style="font-size:11px;opacity:.55;">
       <span>⬇</span> Backup completo
     </button>
+    <button class="sb-footer-btn cyan" onclick="openSyncModal()" style="font-size:12px;">
+      <span>☁</span> Sync / Nuvem
+    </button>
     <button class="sb-footer-btn" id="apiKeyBtn" onclick="openApiKey()">
       <span id="apiDot" style="width:7px;height:7px;border-radius:50%;background:var(--subtle);display:inline-block;border-radius:50%;transition:background .3s;"></span>
       API Key
@@ -5980,6 +5983,19 @@ function persist() {
   updateSbStats();
 }
 
+// ── MY PROMPTS — SYNC VIA GITHUB API ──
+const GH_USER     = 'rciannace';
+const GH_REPO     = 'vitrine';
+const GH_FILE     = 'jarvis_prompts_sync.json';
+const GH_RAW_URL  = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${GH_FILE}`;
+const GH_API_URL  = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+
+// ── MY PROMPTS — dados ──
+let myPrompts     = JSON.parse(localStorage.getItem('jarvis_myprompts') || '[]');
+let mpCats        = JSON.parse(localStorage.getItem('jarvis_mpcats')    || '[]');
+let mpCurrentCat  = 'all';
+let mpEditId      = null;
+
 // Carrega metadados + imagens do Cloudinary (via URLs salvas no localStorage) e inicializa o app
 async function initApp() {
   // Carrega metadados
@@ -7465,7 +7481,6 @@ function clearRestorePrompt() {
 // ═══════════════════════════════════════════
 // V10: MY PROMPTS
 // ═══════════════════════════════════════════
-let myPrompts = JSON.parse(localStorage.getItem('jarvis_myprompts') || '[]');
 let mpCurrentImg  = null; // imagem no modal de edição
 let mpqCurrentImg = null; // imagem no form inline de novo prompt
 let mpqDropFocused = false; // controla 1º/2º clique na zona de foto
@@ -7556,16 +7571,7 @@ document.addEventListener('click', e => {
     mpqBlurDrop();
   }
 });
-let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
-let mpCurrentCat = 'all';
-let mpEditId = null;
 
-// ── MY PROMPTS — SYNC VIA GITHUB API ──
-const GH_USER     = 'rciannace';
-const GH_REPO     = 'vitrine';
-const GH_FILE     = 'jarvis_prompts_sync.json';
-const GH_RAW_URL  = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${GH_FILE}`;
-const GH_API_URL  = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
 let   _mpPushTimer = null;
 
 function ghToken() {
