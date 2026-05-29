@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v2.6 - 2ª Foto em Todos os Modos - 2026-05-29 -->
+<!-- Jarvis Gallery Cloud v3.0 - Todas as Melhorias - 2026-05-29 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -3655,7 +3655,6 @@ function openPromptGen(){
     const overlay = document.getElementById('promptGenOverlay');
     if (!overlay) { alert('⚠ Elemento promptGenOverlay não encontrado!'); return; }
     
-    // Força abertura de duas formas
     overlay.classList.add('open');
     overlay.style.display = 'flex';
     
@@ -3667,6 +3666,10 @@ function openPromptGen(){
     const grid = document.getElementById('pgSimpleGrid');
     if (wrap) wrap.style.display = 'block';
     if (grid) grid.style.gridTemplateColumns = '1fr 1fr';
+    
+    // Restaura último modo usado
+    const lastMode = localStorage.getItem('jarvis_last_genmode') || 'simple';
+    setGenMode(lastMode);
     
     setTimeout(pgAutoActivateFirstZone, 100);
   } catch(e) {
@@ -4577,6 +4580,7 @@ let pgGenMode = 'simple';
 
 function setGenMode(mode){
   pgGenMode = mode;
+  try { localStorage.setItem('jarvis_last_genmode', mode); } catch(e) {}
   document.getElementById('modeSimpleBtn').classList.toggle('active', mode==='simple');
   document.getElementById('modeSubjectBtn').classList.toggle('active', mode==='subject');
   document.getElementById('modeFaceBtn').classList.toggle('active', mode==='faceswap');
@@ -7777,8 +7781,16 @@ document.addEventListener('click', e => {
 
 let   _mpPushTimer = null;
 
+function _setCookie(name, val, days) {
+  const d = new Date(); d.setTime(d.getTime() + days*24*60*60*1000);
+  document.cookie = name + '=' + encodeURIComponent(val) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+}
+function _getCookie(name) {
+  const m = document.cookie.match('(^|;)\\s*' + name + '=([^;]+)');
+  return m ? decodeURIComponent(m[2]) : '';
+}
 function ghToken() {
-  return localStorage.getItem('jarvis_gh_token') || '';
+  return _getCookie('jarvis_gh_token') || localStorage.getItem('jarvis_gh_token') || '';
 }
 
 function persistMp() {
@@ -7787,13 +7799,67 @@ function persistMp() {
   mpGhPush();
 }
 
+function mpSaveHistory(promptId) {
+  try {
+    const prompt = (myPrompts||[]).find(p => p.id === promptId);
+    if (!prompt) return;
+    const key = 'jarvis_history_' + promptId;
+    const hist = JSON.parse(localStorage.getItem(key) || '[]');
+    hist.unshift({ text: prompt.text, title: prompt.title, savedAt: new Date().toISOString() });
+    if (hist.length > 3) hist.length = 3;
+    localStorage.setItem(key, JSON.stringify(hist));
+  } catch(e) {}
+}
+
+function mpRestoreHistory(promptId) {
+  try {
+    const key = 'jarvis_history_' + promptId;
+    const hist = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!hist.length) { toast('⚠ Sem versões anteriores'); return; }
+    const prompt = (myPrompts||[]).find(p => p.id === promptId);
+    if (!prompt) return;
+    const opts = hist.map((h,i) => {
+      const d = new Date(h.savedAt);
+      return `${i+1}. ${d.toLocaleDateString('pt-BR')} ${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})} — "${h.title.substring(0,30)}"`;
+    }).join('\n');
+    const choice = prompt(`Versões anteriores:\n${opts}\n\nDigite 1, 2 ou 3 para restaurar:`);
+    const idx = parseInt(choice) - 1;
+    if (isNaN(idx) || idx < 0 || idx >= hist.length) return;
+    mpSaveHistory(promptId);
+    prompt.text = hist[idx].text;
+    prompt.title = hist[idx].title;
+    persistMp();
+    renderMyPrompts();
+    toast('✓ Versão restaurada!');
+  } catch(e) { toast('⚠ Erro ao restaurar'); }
+}
+
 // Debounce 2s — evita múltiplos uploads em sequência
+
+// ── SYNC STATUS INDICATOR ──
+let _syncStatusTimer = null;
+function showSyncStatus(state, msg) {
+  const bar  = document.getElementById('syncStatusBar');
+  const dot  = document.getElementById('syncStatusDot');
+  const txt  = document.getElementById('syncStatusText');
+  if (!bar) return;
+  clearTimeout(_syncStatusTimer);
+  const colors = { saving:'#facc15', ok:'#22c55e', error:'#ef4444', idle:'#888' };
+  dot.style.background = colors[state] || colors.idle;
+  txt.textContent = msg || 'sincronizado';
+  bar.style.opacity = '1';
+  if (state === 'ok' || state === 'idle') {
+    _syncStatusTimer = setTimeout(() => { bar.style.opacity = '0'; }, 3000);
+  }
+}
+
 function mpGhPush(manual = false) {
   if (!ghToken()) {
     if (manual) cloudSetStatus('⚠ Configure o token GitHub na aba ☁ Nuvem', 'var(--red)');
     return;
   }
   clearTimeout(_mpPushTimer);
+  if (!manual) showSyncStatus('saving', 'salvando...');
   _mpPushTimer = setTimeout(async () => {
     try {
       const payload = JSON.stringify({
@@ -7828,6 +7894,7 @@ function mpGhPush(manual = false) {
       const now = new Date().toISOString();
       localStorage.setItem('jarvis_gh_lastsync', now);
       console.log('[Jarvis] prompts sincronizados com GitHub ✓');
+      showSyncStatus('ok', '✓ salvo no GitHub');
       if (manual) {
         const d = new Date(now);
         cloudSetStatus('✓ ' + (myPrompts||[]).length + ' prompts salvos!', '#22c55e');
@@ -7837,6 +7904,7 @@ function mpGhPush(manual = false) {
       }
     } catch(e) {
       console.warn('[Jarvis] GitHub push falhou:', e.message);
+      showSyncStatus('error', '⚠ falhou: ' + e.message.substring(0,20));
       if (manual) cloudSetStatus('⚠ Erro: ' + e.message, 'var(--red)');
     }
   }, manual ? 0 : 2000);
@@ -7964,6 +8032,7 @@ async function renderMpGrid() {
       <div class="mp-card-actions">
         <button class="copy-btn" onclick="copyMpPrompt('${p.id}')">📋 Copiar</button>
         <button onclick="editMyPrompt('${p.id}')">✏ Editar</button>
+        <button onclick="mpRestoreHistory('${p.id}')" title="Versões anteriores" style="opacity:.7;">🕐 Histórico</button>
         <button onclick="deleteMpPrompt('${p.id}')" style="color:var(--red)!important;border-color:rgba(255,77,109,.3)!important;">✕ Excluir</button>
       </div>
     </div>`).join('');
@@ -7973,8 +8042,21 @@ async function mpViewImg(id) {
   const dataUrl = await idbGet('mpimg_' + id);
   if (!dataUrl) return;
   const w = window.open('', '_blank', 'width=900,height=700');
-  w.document.write(`<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;"></body>`);
+  w.document.write(`<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;">
+
+  <!-- ☁ SYNC STATUS INDICATOR -->
+  <div id="syncStatusBar" style="position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;align-items:center;gap:6px;background:var(--s2,#1a1a1a);border:1px solid var(--border,#333);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted,#888);opacity:0;transition:opacity .3s;pointer-events:none;" aria-live="polite">
+    <span id="syncStatusDot" style="width:6px;height:6px;border-radius:50%;background:#888;transition:background .3s;"></span>
+    <span id="syncStatusText">sincronizado</span>
+  </div>
+  <!-- ☁ MOBILE SYNC BUTTON -->
+  <button id="mobileSyncBtn" onclick="openSyncModal();showSyncTab('cloud')"
+    style="display:none;position:fixed;bottom:70px;right:14px;z-index:9000;width:44px;height:44px;border-radius:50%;background:var(--cyan,#00bcd4);border:none;color:#000;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4);align-items:center;justify-content:center;"
+    title="Sync Nuvem" aria-label="Abrir sync nuvem">☁</button>
+  <style>@media(max-width:600px){#mobileSyncBtn{display:flex!important;}}</style>
+</body>`);
 }
+
 
 function setMpCat(catId) {
   mpCurrentCat = catId;
@@ -8122,6 +8204,7 @@ async function saveMyPrompt() {
   persistMp();
   closeAddMyPrompt();
   renderMyPrompts();
+  if (mpEditId) mpSaveHistory(mpEditId);
   toast(mpEditId ? '✓ Prompt atualizado!' : '✓ Prompt salvo!');
 }
 
@@ -8205,6 +8288,7 @@ function cloudLoadConfig() {
 function ghSaveToken() {
   const val = (document.getElementById('ghTokenInput').value || '').trim();
   localStorage.setItem('jarvis_gh_token', val);
+  _setCookie('jarvis_gh_token', val, 365);
 }
 
 function ghToggleToken() {
