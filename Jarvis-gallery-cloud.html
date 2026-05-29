@@ -1594,60 +1594,41 @@ body{
         </button>
       </div>
 
-      <!-- CLOUD PANEL -->
+      <!-- CLOUD PANEL — GitHub Sync -->
       <div id="syncCloudPanel" style="display:none;">
         <div style="background:var(--s3);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px;">
-          ☁ Sync automático via JSONBin.io (gratuito). Salve do celular e carregue no desktop com 1 clique.<br>
-          <strong style="color:var(--text);">Só Meus Prompts + Categorias</strong> — galeria não é incluída.
+          ☁ Sync via GitHub — salve do celular, carregue no desktop automaticamente.<br>
+          <strong style="color:var(--text);">Só precisa configurar o token uma vez por dispositivo.</strong>
         </div>
-
-        <!-- API KEY + BIN ID config -->
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
-          <div>
-            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;">JSONBin API Key</div>
-            <div style="display:flex;gap:6px;">
-              <input id="cloudApiKey" type="password" placeholder="$2a$10$..." autocomplete="off"
-                style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;min-width:0;"
-                oninput="cloudSaveConfig()">
-              <button onclick="cloudToggleKeyVisible()" title="Mostrar/ocultar"
-                style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:13px;cursor:pointer;color:var(--muted);">👁</button>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;">Bin ID <span style="color:var(--cyan);font-size:9px;">(criado automaticamente)</span></div>
-            <div style="display:flex;gap:6px;">
-              <input id="cloudBinId" placeholder="— crie uma bin primeiro →"
-                style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;min-width:0;"
-                oninput="cloudSaveConfig()">
-              <button onclick="cloudCreateBin()" title="Criar nova bin"
-                style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:11px;cursor:pointer;color:var(--cyan);white-space:nowrap;font-weight:600;">+ Criar</button>
-            </div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;">GitHub Token <span style="color:var(--cyan);">(ghp_...)</span></div>
+          <div style="display:flex;gap:6px;">
+            <input id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"
+              style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;min-width:0;"
+              oninput="ghSaveToken()">
+            <button onclick="ghToggleToken()" title="Mostrar/ocultar"
+              style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:13px;cursor:pointer;color:var(--muted);">👁</button>
           </div>
         </div>
-
-        <!-- Action buttons -->
         <div style="display:flex;gap:8px;margin-bottom:8px;">
-          <button onclick="cloudPush()" id="cloudPushBtn"
+          <button onclick="ghPushManual()" id="cloudPushBtn"
             style="flex:1;padding:11px;background:var(--cyan);color:#000;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
-            ↑ Salvar na Nuvem
+            ↑ Salvar no GitHub
           </button>
-          <button onclick="cloudPull()" id="cloudPullBtn"
+          <button onclick="ghPullManual()" id="cloudPullBtn"
             style="flex:1;padding:11px;background:var(--s3);color:var(--text);border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
-            ↓ Carregar da Nuvem
+            ↓ Carregar do GitHub
           </button>
         </div>
-
         <div id="cloudStatus" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;min-height:16px;"></div>
         <div id="cloudLastSync" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;margin-top:4px;"></div>
-
-        <!-- How to get API key -->
         <details style="margin-top:10px;">
-          <summary style="font-size:10px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;">Como obter a API Key?</summary>
-          <div style="font-size:10px;color:var(--muted);line-height:1.7;padding:8px 0;">
-            1. Acesse <strong style="color:var(--cyan);">jsonbin.io</strong> → crie conta gratuita<br>
-            2. Clique no ícone da sua conta → <strong>API Keys</strong><br>
-            3. Crie uma chave com permissão de leitura e escrita<br>
-            4. Cole a chave aqui — ela fica salva no seu dispositivo
+          <summary style="font-size:10px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;">Como obter o token?</summary>
+          <div style="font-size:10px;color:var(--muted);line-height:1.8;padding:8px 0;">
+            1. Acesse <strong style="color:var(--cyan);">github.com → Settings → Developer settings</strong><br>
+            2. <strong>Personal access tokens → Tokens (classic)</strong><br>
+            3. Generate new token → marque <strong>repo</strong> (escopo completo)<br>
+            4. Cole o token aqui — fica salvo só neste dispositivo
           </div>
         </details>
       </div>
@@ -7578,19 +7559,30 @@ let mpCats = JSON.parse(localStorage.getItem('jarvis_mpcats') || '[]');
 let mpCurrentCat = 'all';
 let mpEditId = null;
 
-// ── MY PROMPTS — CLOUD SYNC VIA CLOUDINARY ──
-const MP_CLOUD_ID  = 'jarvis_myprompts_sync';
-const MP_CLOUD_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/raw/upload/jarvis_gallery/${MP_CLOUD_ID}.json`;
+// ── MY PROMPTS — SYNC VIA GITHUB API ──
+const GH_USER     = 'rciannace';
+const GH_REPO     = 'vitrine';
+const GH_FILE     = 'jarvis_prompts_sync.json';
+const GH_RAW_URL  = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${GH_FILE}`;
+const GH_API_URL  = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
 let   _mpPushTimer = null;
+
+function ghToken() {
+  return localStorage.getItem('jarvis_gh_token') || '';
+}
 
 function persistMp() {
   localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
   localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
-  mpCloudPush(); // sync automático ao salvar
+  mpGhPush();
 }
 
-// Debounce: espera 1.5s de silêncio antes de subir (evita múltiplos uploads em sequência)
-function mpCloudPush() {
+// Debounce 2s — evita múltiplos uploads em sequência
+function mpGhPush(manual = false) {
+  if (!ghToken()) {
+    if (manual) cloudSetStatus('⚠ Configure o token GitHub na aba ☁ Nuvem', 'var(--red)');
+    return;
+  }
   clearTimeout(_mpPushTimer);
   _mpPushTimer = setTimeout(async () => {
     try {
@@ -7598,39 +7590,64 @@ function mpCloudPush() {
         myPrompts: myPrompts || [],
         mpCats:    mpCats    || [],
         savedAt:   new Date().toISOString()
+      }, null, 2);
+      const encoded = btoa(unescape(encodeURIComponent(payload)));
+
+      // Precisa do SHA atual para update
+      let sha = null;
+      try {
+        const check = await fetch(GH_API_URL, {
+          headers: { 'Authorization': 'token ' + ghToken(), 'Accept': 'application/vnd.github+json' }
+        });
+        if (check.ok) { const j = await check.json(); sha = j.sha; }
+      } catch(e) {}
+
+      const body = { message: 'sync prompts ' + new Date().toISOString(), content: encoded };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(GH_API_URL, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'token ' + ghToken(),
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
       });
-      const blob = new Blob([payload], { type: 'application/json' });
-      const formData = new FormData();
-      formData.append('file', blob, MP_CLOUD_ID + '.json');
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      formData.append('public_id', 'jarvis_gallery/' + MP_CLOUD_ID);
-      formData.append('resource_type', 'raw');
-      const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`;
-      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
       if (!res.ok) throw new Error('status ' + res.status);
-      console.log('[Jarvis] prompts sincronizados com Cloudinary ✓');
+      const now = new Date().toISOString();
+      localStorage.setItem('jarvis_gh_lastsync', now);
+      console.log('[Jarvis] prompts sincronizados com GitHub ✓');
+      if (manual) {
+        const d = new Date(now);
+        cloudSetStatus('✓ ' + (myPrompts||[]).length + ' prompts salvos!', '#22c55e');
+        const el = document.getElementById('cloudLastSync');
+        if (el) el.textContent = 'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        toast('☁ Prompts salvos no GitHub!');
+      }
     } catch(e) {
-      console.warn('[Jarvis] cloud push prompts falhou:', e.message);
+      console.warn('[Jarvis] GitHub push falhou:', e.message);
+      if (manual) cloudSetStatus('⚠ Erro: ' + e.message, 'var(--red)');
     }
-  }, 1500);
+  }, manual ? 0 : 2000);
 }
 
-// Puxa prompts da nuvem e mescla com localStorage (roda no initApp)
-async function mpCloudPull() {
+async function mpGhPull(manual = false) {
   try {
-    // Cache-bust para garantir versão mais recente
-    const res = await fetch(MP_CLOUD_URL + '?t=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) return; // primeira vez: arquivo ainda não existe, tudo bem
+    const res = await fetch(GH_RAW_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) {
+      if (manual) cloudSetStatus('⚠ Arquivo não encontrado — salve primeiro do celular', 'var(--red)');
+      return;
+    }
     const data = await res.json();
     const cloudPrompts = data.myPrompts || [];
     const cloudCats    = data.mpCats    || [];
-    if (!cloudPrompts.length && !cloudCats.length) return;
 
     let added = 0, updated = 0;
     cloudPrompts.forEach(np => {
       const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
       if (idx === -1) { myPrompts.unshift(np); added++; }
-      else if (np.savedAt > (myPrompts[idx].savedAt||'')) { myPrompts[idx] = np; updated++; }
+      else { myPrompts[idx] = np; updated++; }
     });
     cloudCats.forEach(nc => {
       if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
@@ -7639,14 +7656,28 @@ async function mpCloudPull() {
     if (added || updated) {
       localStorage.setItem('jarvis_myprompts', JSON.stringify(myPrompts));
       localStorage.setItem('jarvis_mpcats', JSON.stringify(mpCats));
-      console.log(`[Jarvis] prompts da nuvem: +${added} novo(s), ${updated} atualizado(s)`);
+      console.log(`[Jarvis] prompts do GitHub: +${added} novo(s), ${updated} atualizado(s)`);
       if (typeof renderMyPrompts === 'function') renderMyPrompts();
-      if (added || updated) toast(`☁ Prompts sincronizados: +${added} novo(s)`);
+      const now = new Date().toISOString();
+      localStorage.setItem('jarvis_gh_lastsync', now);
+      if (manual) {
+        const d = new Date(now);
+        cloudSetStatus('✓ +' + added + ' novo(s), ' + updated + ' atualizado(s)', '#22c55e');
+        const el = document.getElementById('cloudLastSync');
+        if (el) el.textContent = 'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      }
+      toast(`☁ Prompts: +${added} novo(s)`);
+    } else {
+      if (manual) cloudSetStatus('✓ Já está atualizado!', '#22c55e');
     }
   } catch(e) {
-    console.warn('[Jarvis] cloud pull prompts falhou:', e.message);
+    console.warn('[Jarvis] GitHub pull falhou:', e.message);
+    if (manual) cloudSetStatus('⚠ Erro: ' + e.message, 'var(--red)');
   }
 }
+
+// Alias para initApp chamar
+function mpCloudPull() { return mpGhPull(false); }
 
 function renderMyPrompts() {
   renderMpCatList();
@@ -7940,40 +7971,29 @@ function showSyncTab(tab) {
 }
 
 // ═══════════════════════════════════════════
-// CLOUD SYNC — JSONBin.io
+// CLOUD SYNC — GitHub API
 // ═══════════════════════════════════════════
-const CLOUD_CFG_KEY = 'jarvis_cloud_cfg';
 
 function cloudLoadConfig() {
-  try {
-    const cfg = JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}');
-    document.getElementById('cloudApiKey').value = cfg.apiKey || '';
-    document.getElementById('cloudBinId').value  = cfg.binId  || '';
-    const ts = cfg.lastSync;
-    if (ts) {
-      const d = new Date(ts);
-      document.getElementById('cloudLastSync').textContent =
-        'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-    }
-  } catch(e) {}
+  const token = localStorage.getItem('jarvis_gh_token') || '';
+  const el = document.getElementById('ghTokenInput');
+  if (el) el.value = token;
+  const ts = localStorage.getItem('jarvis_gh_lastsync');
+  if (ts) {
+    const d = new Date(ts);
+    const el2 = document.getElementById('cloudLastSync');
+    if (el2) el2.textContent = 'Último sync: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }
 }
 
-function cloudSaveConfig() {
-  const cfg = {
-    apiKey: document.getElementById('cloudApiKey').value.trim(),
-    binId:  document.getElementById('cloudBinId').value.trim(),
-    lastSync: JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}').lastSync || null
-  };
-  localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(cfg));
+function ghSaveToken() {
+  const val = (document.getElementById('ghTokenInput').value || '').trim();
+  localStorage.setItem('jarvis_gh_token', val);
 }
 
-function cloudToggleKeyVisible() {
-  const el = document.getElementById('cloudApiKey');
+function ghToggleToken() {
+  const el = document.getElementById('ghTokenInput');
   el.type = el.type === 'password' ? 'text' : 'password';
-}
-
-function cloudGetCfg() {
-  return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}');
 }
 
 function cloudSetStatus(msg, color) {
@@ -7981,115 +8001,21 @@ function cloudSetStatus(msg, color) {
   if (el) { el.textContent = msg; el.style.color = color || 'var(--muted)'; }
 }
 
-async function cloudCreateBin() {
-  const apiKey = document.getElementById('cloudApiKey').value.trim();
-  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key primeiro', 'var(--red)'); return; }
-  cloudSetStatus('Criando bin…', 'var(--muted)');
-  try {
-    const payload = { myPrompts: [], mpCats: [], createdAt: new Date().toISOString() };
-    const res = await fetch('https://api.jsonbin.io/v3/b', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': apiKey,
-        'X-Bin-Name': 'jarvis-prompts',
-        'X-Bin-Private': 'true'
-      },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) { const t = await res.text(); throw new Error(t); }
-    const data = await res.json();
-    const binId = data.metadata.id;
-    document.getElementById('cloudBinId').value = binId;
-    cloudSaveConfig();
-    cloudSetStatus('✓ Bin criada! ID salvo.', '#22c55e');
-    toast('☁ Bin criada com sucesso!');
-  } catch(e) {
-    cloudSetStatus('⚠ Erro: ' + e.message, 'var(--red)');
-  }
-}
-
-async function cloudPush() {
-  const cfg = cloudGetCfg();
-  const apiKey = document.getElementById('cloudApiKey').value.trim();
-  const binId  = document.getElementById('cloudBinId').value.trim();
-  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key', 'var(--red)'); return; }
-  if (!binId)  { cloudSetStatus('⚠ Crie ou insira um Bin ID', 'var(--red)'); return; }
-  cloudSetStatus('Salvando na nuvem…', 'var(--muted)');
+async function ghPushManual() {
   const btn = document.getElementById('cloudPushBtn');
   btn.disabled = true; btn.textContent = '…';
-  try {
-    const payload = {
-      myPrompts: myPrompts || [],
-      mpCats:    mpCats    || [],
-      savedAt:   new Date().toISOString()
-    };
-    const res = await fetch('https://api.jsonbin.io/v3/b/' + binId, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': apiKey
-      },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) { const t = await res.text(); throw new Error(t); }
-    const now = new Date().toISOString();
-    const saved = Object.assign({}, cfg, { apiKey, binId, lastSync: now });
-    localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(saved));
-    cloudSetStatus('✓ ' + (myPrompts||[]).length + ' prompts salvos na nuvem!', '#22c55e');
-    document.getElementById('cloudLastSync').textContent =
-      'Último sync: ' + new Date(now).toLocaleDateString('pt-BR') + ' ' + new Date(now).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    toast('☁ Prompts salvos na nuvem!');
-  } catch(e) {
-    cloudSetStatus('⚠ Erro ao salvar: ' + e.message, 'var(--red)');
-  } finally {
-    btn.disabled = false; btn.textContent = '↑ Salvar na Nuvem';
-  }
+  cloudSetStatus('Salvando no GitHub…', 'var(--muted)');
+  await mpGhPush(true);
+  btn.disabled = false; btn.textContent = '↑ Salvar no GitHub';
 }
 
-async function cloudPull() {
-  const apiKey = document.getElementById('cloudApiKey').value.trim();
-  const binId  = document.getElementById('cloudBinId').value.trim();
-  if (!apiKey) { cloudSetStatus('⚠ Insira a API Key', 'var(--red)'); return; }
-  if (!binId)  { cloudSetStatus('⚠ Crie ou insira um Bin ID', 'var(--red)'); return; }
-  cloudSetStatus('Carregando da nuvem…', 'var(--muted)');
+async function ghPullManual() {
   const btn = document.getElementById('cloudPullBtn');
   btn.disabled = true; btn.textContent = '…';
-  try {
-    const res = await fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
-      headers: { 'X-Master-Key': apiKey }
-    });
-    if (!res.ok) { const t = await res.text(); throw new Error(t); }
-    const data = await res.json();
-    const record = data.record;
-    const cloudPrompts = record.myPrompts || [];
-    const cloudCats    = record.mpCats    || [];
-
-    let added = 0, updated = 0;
-    cloudPrompts.forEach(np => {
-      const idx = (myPrompts||[]).findIndex(x => x.id === np.id);
-      if (idx === -1) { myPrompts.unshift(np); added++; }
-      else { myPrompts[idx] = np; updated++; }
-    });
-    cloudCats.forEach(nc => {
-      if (!(mpCats||[]).find(x => x.id === nc.id)) mpCats.push(nc);
-    });
-    persistMp(); renderMyPrompts();
-
-    const cfg = cloudGetCfg();
-    const now = new Date().toISOString();
-    localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(Object.assign({}, cfg, { apiKey, binId, lastSync: now })));
-    cloudSetStatus('✓ ' + added + ' novo(s), ' + updated + ' atualizado(s)!', '#22c55e');
-    document.getElementById('cloudLastSync').textContent =
-      'Último sync: ' + new Date(now).toLocaleDateString('pt-BR') + ' ' + new Date(now).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    toast('☁ Prompts carregados da nuvem!');
-  } catch(e) {
-    cloudSetStatus('⚠ Erro ao carregar: ' + e.message, 'var(--red)');
-  } finally {
-    btn.disabled = false; btn.textContent = '↓ Carregar da Nuvem';
-  }
+  cloudSetStatus('Carregando do GitHub…', 'var(--muted)');
+  await mpGhPull(true);
+  btn.disabled = false; btn.textContent = '↓ Carregar do GitHub';
 }
-
 function generateSyncCode() {
   const incGallery = document.getElementById('syncIncGallery').checked;
   const incPrompts = document.getElementById('syncIncPrompts').checked;
