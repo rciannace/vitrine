@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v2.4 - 4 Images Fix - 2026-05-29 -->
+<!-- Jarvis Gallery Cloud v2.5 - Multi-Photo Client - 2026-05-29 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -2380,7 +2380,22 @@ body{
           </div>
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
-        <textarea id="subjectInfoText" rows="3" style="width:100%;background:rgba(245,200,66,.04);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.7;resize:vertical;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;">O prompt gerado vai preservar o rosto e características físicas da foto do modelo (calvície, barba, tom de pele, estrutura facial) e copiar apenas o estilo, pose, roupa e iluminação da imagem de referência.</textarea>
+        <!-- 2ª foto do cliente (opcional) -->
+        <div id="pgSubject2Wrap" style="margin-top:10px;">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:rgba(34,197,94,.7);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">➕ 2ª Foto do cliente <span style="color:var(--muted);font-size:9px;">(opcional — melhora a precisão)</span></div>
+          <div id="pgSubject2Zone" style="border:1.5px dashed rgba(34,197,94,.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;min-height:80px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
+            onclick="pgZoneClick('subject2')"
+            ondragover="event.preventDefault();this.style.borderColor='#22c55e'"
+            ondragleave="this.style.borderColor='rgba(34,197,94,.3)'"
+            ondrop="pgHandleSubject2Drop(event)">
+            <div style="font-size:20px;opacity:.5" id="pgSubject2Icon">👤</div>
+            <div id="pgSubject2Label" style="font-size:11px;">Clique para adicionar 2ª foto</div>
+            <button id="pgSubject2ClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:24px;height:24px;font-size:12px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearSubject2()" title="Remover">✕</button>
+            <img id="pgSubject2Preview" style="display:none;max-height:80px;max-width:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">
+          </div>
+          <input type="file" id="pgSubject2Input" accept="image/*" style="display:none" onchange="pgHandleSubject2File(event)">
+        </div>
+        <textarea id="subjectInfoText" rows="3" style="width:100%;background:rgba(245,200,66,.04);border:1px solid rgba(245,200,66,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.7;resize:vertical;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;margin-top:10px;">O prompt gerado vai preservar o rosto e características físicas da foto do modelo (calvície, barba, tom de pele, estrutura facial) e copiar apenas o estilo, pose, roupa e iluminação da imagem de referência.</textarea>
       </div>
 
       <!-- MODO FACE SWAP: duas imagens -->
@@ -4022,6 +4037,16 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgSubjectBase64 = base64;
       show('pgSubjectPreview','pgSubjectIcon','pgSubjectLabel','pgSubjectClearBtn',null);
       checkGenBtnReady(); break;
+    case 'subject2':
+      pgSubject2Base64 = base64;
+      const s2prev=document.getElementById('pgSubject2Preview');
+      const s2src='data:image/jpeg;base64,'+base64;
+      s2prev.src=s2src; s2prev.style.display='block';
+      document.getElementById('pgSubject2Icon').style.display='none';
+      document.getElementById('pgSubject2Label').style.display='none';
+      document.getElementById('pgSubject2ClearBtn').style.display='flex';
+      document.getElementById('pgSubject2Zone').style.borderColor='#22c55e';
+      break;
     case 'style':
       pgStyleBase64 = base64;
       show('pgStylePreview','pgStyleIcon','pgStyleLabel','pgStyleClearBtn',null);
@@ -4105,6 +4130,7 @@ function pgZoneOpenFile(zoneKey) {
     simple:      'pgFileInput',
     simplemodel: 'pgModelInput',
     subject:     'pgSubjectInput',
+    subject2:    'pgSubject2Input',
     style:       'pgStyleInput',
     facesubject: 'pgFaceSubjectInput',
     facetarget:  'pgFaceTargetInput',
@@ -4331,6 +4357,7 @@ function pgClearSubject(){
   // pgSubjectChangeBtn (removed — element not in HTML)
   document.getElementById('pgSubjectClearBtn').style.display='none';
   const inp=document.getElementById('pgSubjectInput'); if(inp) inp.value='';
+  pgClearSubject2();
   checkGenBtnReady();
 }
 
@@ -4402,14 +4429,18 @@ function pgHandleDrop(e){
 }
 
 let pgSubjectBase64 = null;
+let pgSubject2Base64 = null; // 2ª foto do cliente (opcional)
 let pgStyleBase64 = null;
 let pgFaceSubjectBase64 = null;
+let pgFaceSubject2Base64 = null; // 2ª foto do cliente faceswap (opcional)
 let pgFaceTargetBase64 = null;
 let pgSceneSubjectBase64 = null;
+let pgSceneSubject2Base64 = null; // 2ª foto do cliente scene (opcional)
 let pgSceneRefBase64 = null;
 let pgModelBase64 = null; // v8: foto do modelo no modo simples
 // Modo Crianças:
 let pgKidsClientBase64 = null;
+let pgKidsClient2Base64 = null; // 2ª foto da criança (opcional)
 let pgKidsTargetBase64 = null;
 let pgKidsType = 'aniversario';
 let pgGenMode = 'simple';
@@ -4540,6 +4571,40 @@ function pgHandleSubjectDrop(e){
   const f=e.dataTransfer.files[0];
   if(f&&f.type.startsWith('image/')){const r=new FileReader();r.onload=ev=>{document.getElementById('pgSubjectInput').files;pgHandleSubjectFile({target:{files:[f]}});};r.readAsDataURL(f);}
 }
+
+// ── 2ª FOTO DO CLIENTE ──
+function pgHandleSubject2File(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    pgSubject2Base64=ev.target.result.split(',')[1];
+    const prev=document.getElementById('pgSubject2Preview');
+    prev.src=ev.target.result; prev.style.display='block';
+    document.getElementById('pgSubject2Icon').style.display='none';
+    document.getElementById('pgSubject2Label').style.display='none';
+    document.getElementById('pgSubject2ClearBtn').style.display='flex';
+    document.getElementById('pgSubject2Zone').style.borderColor='#22c55e';
+  };
+  r.readAsDataURL(f);
+}
+function pgHandleSubject2Drop(e){
+  e.preventDefault();
+  document.getElementById('pgSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) pgHandleSubject2File({target:{files:[f]}});
+}
+function pgClearSubject2(){
+  pgSubject2Base64=null;
+  document.getElementById('pgSubject2Preview').style.display='none';
+  document.getElementById('pgSubject2Preview').src='';
+  document.getElementById('pgSubject2Icon').style.display='';
+  document.getElementById('pgSubject2Label').style.display='';
+  document.getElementById('pgSubject2ClearBtn').style.display='none';
+  document.getElementById('pgSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  document.getElementById('pgSubject2Input').value='';
+}
+
+
 function pgHandleStyleFile(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
@@ -4761,19 +4826,20 @@ async function _pgGenerateInner(){
   let userContent;
 
   if(pgGenMode==='subject'){
+    const has2nd = !!pgSubject2Base64;
     userContent = [
-      { type:'text', text:`You will receive TWO images:
+      { type:'text', text:`You will receive ${has2nd ? 'THREE' : 'TWO'} images:
 - IMAGE 1 (SUBJECT — the REAL person to preserve): Extract ONLY physical traits. Face, hair, beard, SKIN TONE, body type. NOTHING ELSE from IMAGE 1.
-- IMAGE 2 (STYLE REFERENCE): The final image must look like IMAGE 2 where ONLY the person is replaced. Clothing, GAZE DIRECTION, HEAD ANGLE, FACE SCALE IN FRAME, pose, background, lighting — ALL locked to IMAGE 2. IMAGE 1 person's gaze and head position are IRRELEVANT.
+${has2nd ? '- IMAGE 2 (ADDITIONAL CLIENT PHOTO — cross-reference to confirm identity. Compare both photos for the most accurate physical traits.)\n' : ''}- IMAGE ${has2nd ? '3' : '2'} (STYLE REFERENCE): The final image must look like IMAGE ${has2nd ? '3' : '2'} where ONLY the person is replaced. Clothing, GAZE DIRECTION, HEAD ANGLE, FACE SCALE IN FRAME, pose, background, lighting — ALL locked to IMAGE ${has2nd ? '3' : '2'}. Client photo gaze and head position are IRRELEVANT.
 
 ⚠ CRITICAL SEPARATION RULES:
-- FACE FEATURES (shape, nose, eyes, jaw, lips) → EXCLUSIVELY from IMAGE 1
-- SKIN TONE → EXCLUSIVELY from IMAGE 1. NEVER use IMAGE 2 person's skin tone. Fair stays fair.
-- GAZE DIRECTION → EXCLUSIVELY from IMAGE 2. IMAGE 1 gaze is IRRELEVANT.
-- HEAD ANGLE / HEAD TILT → EXCLUSIVELY from IMAGE 2. Do NOT copy IMAGE 1 head angle.
-- FACE SCALE IN FRAME → matches IMAGE 2 exactly. Do NOT resize the face.
-- POSE / BODY ORIENTATION → EXCLUSIVELY from IMAGE 2.
-- HAIR (color, style, length) → EXCLUSIVELY from IMAGE 1.
+- FACE FEATURES (shape, nose, eyes, jaw, lips) → EXCLUSIVELY from client photo(s)
+- SKIN TONE → EXCLUSIVELY from client photo(s). NEVER use style reference person's skin tone. Fair stays fair.
+- GAZE DIRECTION → EXCLUSIVELY from IMAGE ${has2nd ? '3' : '2'}. Client gaze is IRRELEVANT.
+- HEAD ANGLE / HEAD TILT → EXCLUSIVELY from IMAGE ${has2nd ? '3' : '2'}. Do NOT copy client head angle.
+- FACE SCALE IN FRAME → matches IMAGE ${has2nd ? '3' : '2'} exactly. Do NOT resize the face.
+- POSE / BODY ORIENTATION → EXCLUSIVELY from IMAGE ${has2nd ? '3' : '2'}.
+- HAIR (color, style, length) → EXCLUSIVELY from client photo(s).
 - BODY TYPE / WEIGHT → EXCLUSIVELY from IMAGE 1.
 - NEVER blend physical traits between images.
 
@@ -4864,6 +4930,7 @@ If IMAGE 1 has distinctive marks: also add "mole removed, scar removed, marks re
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSubjectBase64 }},
+      ...(pgSubject2Base64 ? [{ type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSubject2Base64 }}] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgStyleBase64 }}
     ];
   } else if(pgGenMode==='faceswap'){
@@ -5558,13 +5625,13 @@ function pgCopyGptPrompt() {
   if (!basePrompt) { toast('⚠ Nenhum prompt encontrado'); return; }
 
   const variationsByMode = {
-    simple:   `\n\n⚙ IMPORTANT — Generate exactly 4 separate images in this single response. Each image must be a distinct variation of the scene above. Subtly vary per image: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.\n\nDo not ask for confirmation. Generate all 4 images now.`,
-    subject:  `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
-    faceswap: `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
-    scene:    `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
-    kids:     `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
-    child:    `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
-    familia:  `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    simple:   `\n\n⚙ GENERATION SETTINGS:\nGenerate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
+    subject:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    faceswap: `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    scene:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    kids:     `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    child:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
+    familia:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
   };
 
   const suffix = variationsByMode[pgGenMode] || variationsByMode.subject;
