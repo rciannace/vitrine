@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v2.3 - Save Token Button - 2026-05-29 -->
+<!-- Jarvis Gallery Cloud v2.4 - 4 Images Fix - 2026-05-29 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -5558,13 +5558,13 @@ function pgCopyGptPrompt() {
   if (!basePrompt) { toast('⚠ Nenhum prompt encontrado'); return; }
 
   const variationsByMode = {
-    simple:   `\n\n⚙ GENERATION SETTINGS:\nGenerate 4 distinct variations of this scene. For each variation, subtly vary: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.`,
-    subject:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
-    faceswap: `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
-    scene:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
-    kids:     `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
-    child:    `\n\n⚙ Gere 4 variações distintas. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.`,
-    familia:  `\n\n⚙ Gere 4 variações distintas. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.`,
+    simple:   `\n\n⚙ IMPORTANT — Generate exactly 4 separate images in this single response. Each image must be a distinct variation of the scene above. Subtly vary per image: lighting angle (shift 10–15°), background depth/blur, or camera framing — but NEVER change the subject's identity, clothing or pose.\nOutput quality: Photorealistic, hyperrealistic detail, natural skin texture, sharp focus, Canon 5D Mark IV, 85mm f/1.8, 4K resolution.\n\nDo not ask for confirmation. Generate all 4 images now.`,
+    subject:  `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    faceswap: `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    scene:    `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou profundidade do fundo. NUNCA altere identidade, pose ou estilo de cor.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    kids:     `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    child:    `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: ângulo de câmera ou detalhe decorativo do cenário. NUNCA altere identidade ou expressão da criança.\nPhotorealistic children portrait, soft natural lighting, Nikon D850, 85mm f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
+    familia:  `\n\n⚙ IMPORTANTE — Gere exatamente 4 imagens separadas nesta única resposta. Cada imagem deve ser uma variação distinta do prompt acima. Varie apenas: intensidade da iluminação ou desfoque do fundo. NUNCA altere identidade, pose ou biotipo de nenhum membro da família.\nPhotorealistic, hyperrealistic facial detail, natural skin pores, Canon 5D, 85mm, f/1.8, 4K.\n\nNão peça confirmação. Gere as 4 imagens agora.`,
   };
 
   const suffix = variationsByMode[pgGenMode] || variationsByMode.subject;
