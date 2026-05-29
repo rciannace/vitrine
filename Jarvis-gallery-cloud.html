@@ -2266,7 +2266,7 @@ body{
 
 <!-- ══ MODAL: PROMPT GENERATOR ══ -->
 <div class="overlay" id="promptGenOverlay">
-  <div class="modal" style="max-width:680px;max-height:96vh;overflow-x:hidden;">
+  <div class="modal" style="max-width:680px;max-height:96vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;">
     <div class="modal-head">
       <div class="modal-title">✦ GERADOR DE PROMPT JSON</div>
       <button class="modal-close" onclick="closePromptGen()">✕</button>
@@ -3231,9 +3231,9 @@ body{
   .list-view .card { grid-template-columns: 80px 1fr; }
 
   .overlay { padding: 0; align-items: flex-end; }
-  .modal { border-radius: 18px 18px 0 0 !important; max-width: 100% !important; width: 100%; max-height: 94vh; }
+  .modal { border-radius: 18px 18px 0 0 !important; max-width: 100% !important; width: 100%; max-height: 94vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .modal-head { padding: 14px 16px; }
-  .modal-body { padding: 14px 16px; gap: 12px; }
+  .modal-body { padding: 14px 16px; gap: 12px; overflow: visible; }
   .modal-foot { padding: 10px 16px; }
   .detail-grid { grid-template-columns: 1fr !important; }
   .detail-img-full { max-height: 50vh; }
