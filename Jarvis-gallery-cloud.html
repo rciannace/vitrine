@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v2.5 - Multi-Photo Client - 2026-05-29 -->
+<!-- Jarvis Gallery Cloud v2.6 - 2ª Foto em Todos os Modos - 2026-05-29 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -2436,6 +2436,22 @@ body{
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
         <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:4px;">
+        <!-- 2ª foto do cliente (opcional) -->
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:rgba(34,197,94,.7);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">➕ 2ª Foto do cliente <span style="color:var(--muted);font-size:9px;">(opcional — melhora a precisão)</span></div>
+          <div id="pgFaceSubject2Zone" style="border:1.5px dashed rgba(34,197,94,.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;min-height:80px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
+            onclick="pgZoneClick('facesubject2')"
+            ondragover="event.preventDefault();this.style.borderColor='#22c55e'"
+            ondragleave="this.style.borderColor='rgba(34,197,94,.3)'"
+            ondrop="pgHandleFaceSubject2Drop(event)">
+            <div style="font-size:20px;opacity:.5" id="pgFaceSubject2Icon">👤</div>
+            <div id="pgFaceSubject2Label" style="font-size:11px;">Clique para adicionar 2ª foto</div>
+            <button id="pgFaceSubject2ClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:24px;height:24px;font-size:12px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearFaceSubject2()" title="Remover">✕</button>
+            <img id="pgFaceSubject2Preview" style="display:none;max-height:80px;max-width:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">
+          </div>
+          <input type="file" id="pgFaceSubject2Input" accept="image/*" style="display:none" onchange="pgHandleFaceSubject2File(event)">
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:10px;">
           🔄 Gera um prompt para <strong style="color:var(--cyan)">trocar apenas o rosto e corpo</strong> pelo do modelo, <strong style="color:var(--gold)">mantendo 100% da pose, posição, roupa e fundo</strong> da foto alvo. Se a foto alvo está olhando pro lado, o modelo ficará na mesma posição.
         </div>
       </div>
@@ -2477,6 +2493,22 @@ body{
         </div>
         <div class="pg-zone-hint">Use <kbd>←</kbd> <kbd>→</kbd> para alternar qual zona recebe o Ctrl+V · Clique 1x = selecionar · Clique 2x = abrir arquivo</div>
         <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:4px;">
+        <!-- 2ª foto do cliente (opcional) -->
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:rgba(34,197,94,.7);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">➕ 2ª Foto do cliente <span style="color:var(--muted);font-size:9px;">(opcional — melhora a precisão)</span></div>
+          <div id="pgSceneSubject2Zone" style="border:1.5px dashed rgba(34,197,94,.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;min-height:80px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
+            onclick="pgZoneClick('scenesubject2')"
+            ondragover="event.preventDefault();this.style.borderColor='#22c55e'"
+            ondragleave="this.style.borderColor='rgba(34,197,94,.3)'"
+            ondrop="pgHandleSceneSubject2Drop(event)">
+            <div style="font-size:20px;opacity:.5" id="pgSceneSubject2Icon">👤</div>
+            <div id="pgSceneSubject2Label" style="font-size:11px;">Clique para adicionar 2ª foto</div>
+            <button id="pgSceneSubject2ClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:24px;height:24px;font-size:12px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearSceneSubject2()" title="Remover">✕</button>
+            <img id="pgSceneSubject2Preview" style="display:none;max-height:80px;max-width:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">
+          </div>
+          <input type="file" id="pgSceneSubject2Input" accept="image/*" style="display:none" onchange="pgHandleSceneSubject2File(event)">
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--border);margin-top:10px;">
           🧬 Clona <strong style="color:var(--cyan)">rosto + corpo exatos do cliente</strong> (biotipo, peso, barba, óculos, cabelo) — coloca ele no <strong style="color:var(--gold)">cenário, roupa e iluminação</strong> da foto de referência. Gordinho continua gordinho.
         </div>
       </div>
@@ -2619,6 +2651,23 @@ body{
             <input type="file" id="pgKidsTargetInput" accept="image/*" style="display:none" onchange="pgHandleKidsTargetFile(event)">
           </div>
 
+        </div>
+
+
+        <!-- 2ª foto da criança (opcional) -->
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:rgba(34,197,94,.7);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">➕ 2ª Foto da criança <span style="color:var(--muted);font-size:9px;">(opcional — melhora a precisão do rosto)</span></div>
+          <div id="pgKidsClient2Zone" style="border:1.5px dashed rgba(34,197,94,.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;min-height:80px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--muted);position:relative;transition:all .2s;"
+            onclick="pgZoneClick('kidsclient2')"
+            ondragover="event.preventDefault();this.style.borderColor='#22c55e'"
+            ondragleave="this.style.borderColor='rgba(34,197,94,.3)'"
+            ondrop="pgHandleKidsClient2Drop(event)">
+            <div style="font-size:20px;opacity:.5" id="pgKidsClient2Icon">👧</div>
+            <div id="pgKidsClient2Label" style="font-size:11px;">Clique para adicionar 2ª foto da criança</div>
+            <button id="pgKidsClient2ClearBtn" style="display:none;position:absolute;top:6px;right:6px;background:rgba(255,77,109,.9);border:1px solid rgba(255,77,109,.8);color:#fff;border-radius:6px;width:24px;height:24px;font-size:12px;cursor:pointer;line-height:1;z-index:20;font-weight:700;" onclick="event.stopPropagation();pgClearKidsClient2()" title="Remover">✕</button>
+            <img id="pgKidsClient2Preview" style="display:none;max-height:80px;max-width:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">
+          </div>
+          <input type="file" id="pgKidsClient2Input" accept="image/*" style="display:none" onchange="pgHandleKidsClient2File(event)">
         </div>
 
         <!-- Info contextual por tipo -->
@@ -4055,6 +4104,11 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgFaceSubjectBase64 = base64;
       show('pgFaceSubjectPreview','pgFaceSubjectIcon','pgFaceSubjectLabel','pgFaceSubjectClearBtn',null);
       checkGenBtnReady(); break;
+    case 'facesubject2':
+      pgFaceSubject2Base64 = base64;
+      show('pgFaceSubject2Preview','pgFaceSubject2Icon','pgFaceSubject2Label','pgFaceSubject2ClearBtn',null);
+      document.getElementById('pgFaceSubject2Zone').style.borderColor='#22c55e';
+      break;
     case 'facetarget':
       pgFaceTargetBase64 = base64;
       show('pgFaceTargetPreview','pgFaceTargetIcon','pgFaceTargetLabel','pgFaceTargetClearBtn',null);
@@ -4063,6 +4117,11 @@ function gpApplyToZone(zone, base64, dataUrl) {
       pgSceneSubjectBase64 = base64;
       show('pgSceneSubjectPreview','pgSceneSubjectIcon','pgSceneSubjectLabel','pgSceneSubjectClearBtn',null);
       checkGenBtnReady(); break;
+    case 'scenesubject2':
+      pgSceneSubject2Base64 = base64;
+      show('pgSceneSubject2Preview','pgSceneSubject2Icon','pgSceneSubject2Label','pgSceneSubject2ClearBtn',null);
+      document.getElementById('pgSceneSubject2Zone').style.borderColor='#22c55e';
+      break;
     case 'sceneref':
       pgSceneRefBase64 = base64;
       show('pgSceneRefPreview','pgSceneRefIcon','pgSceneRefLabel','pgSceneRefClearBtn',null);
@@ -4127,19 +4186,22 @@ function pgZoneClick(zoneKey) {
 
 function pgZoneOpenFile(zoneKey) {
   const map = {
-    simple:      'pgFileInput',
-    simplemodel: 'pgModelInput',
-    subject:     'pgSubjectInput',
-    subject2:    'pgSubject2Input',
-    style:       'pgStyleInput',
-    facesubject: 'pgFaceSubjectInput',
-    facetarget:  'pgFaceTargetInput',
-    scenesubject:'pgSceneSubjectInput',
-    sceneref:    'pgSceneRefInput',
-    familiaRef:  'familiaRefFileInput',
-    familiaAlvo: 'familiaAlvoFileInput',
-    kidsclient:  'pgKidsClientInput',
-    kidstarget:  'pgKidsTargetInput',
+    simple:       'pgFileInput',
+    simplemodel:  'pgModelInput',
+    subject:      'pgSubjectInput',
+    subject2:     'pgSubject2Input',
+    style:        'pgStyleInput',
+    facesubject:  'pgFaceSubjectInput',
+    facesubject2: 'pgFaceSubject2Input',
+    facetarget:   'pgFaceTargetInput',
+    scenesubject: 'pgSceneSubjectInput',
+    scenesubject2:'pgSceneSubject2Input',
+    sceneref:     'pgSceneRefInput',
+    familiaRef:   'familiaRefFileInput',
+    familiaAlvo:  'familiaAlvoFileInput',
+    kidsclient:   'pgKidsClientInput',
+    kidsclient2:  'pgKidsClient2Input',
+    kidstarget:   'pgKidsTargetInput',
   };
   // Zona de pessoa dinâmica
   if (zoneKey.startsWith('fp_')) {
@@ -4377,11 +4439,45 @@ function pgClearFaceSubject(){
   const p=document.getElementById('pgFaceSubjectPreview'); p.src=''; p.style.display='none';
   document.getElementById('pgFaceSubjectIcon').style.display='';
   document.getElementById('pgFaceSubjectLabel').style.display='';
-  // pgFaceSubjectChangeBtn (removed — element not in HTML)
   document.getElementById('pgFaceSubjectClearBtn').style.display='none';
   const inp=document.getElementById('pgFaceSubjectInput'); if(inp) inp.value='';
+  pgClearFaceSubject2();
   checkGenBtnReady();
 }
+
+// ── 2ª FOTO FACESWAP ──
+function pgHandleFaceSubject2File(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    pgFaceSubject2Base64=ev.target.result.split(',')[1];
+    const prev=document.getElementById('pgFaceSubject2Preview');
+    prev.src=ev.target.result; prev.style.display='block';
+    document.getElementById('pgFaceSubject2Icon').style.display='none';
+    document.getElementById('pgFaceSubject2Label').style.display='none';
+    document.getElementById('pgFaceSubject2ClearBtn').style.display='flex';
+    document.getElementById('pgFaceSubject2Zone').style.borderColor='#22c55e';
+  };
+  r.readAsDataURL(f);
+}
+function pgHandleFaceSubject2Drop(e){
+  e.preventDefault();
+  document.getElementById('pgFaceSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) pgHandleFaceSubject2File({target:{files:[f]}});
+}
+function pgClearFaceSubject2(){
+  pgFaceSubject2Base64=null;
+  const el=document.getElementById('pgFaceSubject2Preview'); if(!el) return;
+  el.style.display='none'; el.src='';
+  document.getElementById('pgFaceSubject2Icon').style.display='';
+  document.getElementById('pgFaceSubject2Label').style.display='';
+  document.getElementById('pgFaceSubject2ClearBtn').style.display='none';
+  document.getElementById('pgFaceSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  document.getElementById('pgFaceSubject2Input').value='';
+}
+
+
 
 function pgClearFaceTarget(){
   pgFaceTargetBase64=null;
@@ -4399,11 +4495,45 @@ function pgClearSceneSubject(){
   const p=document.getElementById('pgSceneSubjectPreview'); p.src=''; p.style.display='none';
   document.getElementById('pgSceneSubjectIcon').style.display='';
   document.getElementById('pgSceneSubjectLabel').style.display='';
-  // pgSceneSubjectChangeBtn (removed — element not in HTML)
   document.getElementById('pgSceneSubjectClearBtn').style.display='none';
   const inp=document.getElementById('pgSceneSubjectInput'); if(inp) inp.value='';
+  pgClearSceneSubject2();
   checkGenBtnReady();
 }
+
+// ── 2ª FOTO SCENE ──
+function pgHandleSceneSubject2File(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    pgSceneSubject2Base64=ev.target.result.split(',')[1];
+    const prev=document.getElementById('pgSceneSubject2Preview');
+    prev.src=ev.target.result; prev.style.display='block';
+    document.getElementById('pgSceneSubject2Icon').style.display='none';
+    document.getElementById('pgSceneSubject2Label').style.display='none';
+    document.getElementById('pgSceneSubject2ClearBtn').style.display='flex';
+    document.getElementById('pgSceneSubject2Zone').style.borderColor='#22c55e';
+  };
+  r.readAsDataURL(f);
+}
+function pgHandleSceneSubject2Drop(e){
+  e.preventDefault();
+  document.getElementById('pgSceneSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) pgHandleSceneSubject2File({target:{files:[f]}});
+}
+function pgClearSceneSubject2(){
+  pgSceneSubject2Base64=null;
+  const el=document.getElementById('pgSceneSubject2Preview'); if(!el) return;
+  el.style.display='none'; el.src='';
+  document.getElementById('pgSceneSubject2Icon').style.display='';
+  document.getElementById('pgSceneSubject2Label').style.display='';
+  document.getElementById('pgSceneSubject2ClearBtn').style.display='none';
+  document.getElementById('pgSceneSubject2Zone').style.borderColor='rgba(34,197,94,.3)';
+  document.getElementById('pgSceneSubject2Input').value='';
+}
+
+
 
 function pgClearSceneRef(){
   pgSceneRefBase64=null;
@@ -5050,6 +5180,7 @@ Always add: "slimmer, thinner, idealized physique, weight loss, muscular, differ
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceSubjectBase64 }},
+      ...(pgFaceSubject2Base64 ? [{ type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceSubject2Base64 }}] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgFaceTargetBase64 }}
     ];
   } else if(pgGenMode==='scene'){
@@ -5164,6 +5295,7 @@ If IMAGE 1 has distinctive marks: also add "marks removed, moles removed, scars 
 
 Return ONLY valid JSON. No markdown. No backticks. No explanation.` },
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneSubjectBase64 }},
+      ...(pgSceneSubject2Base64 ? [{ type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneSubject2Base64 }}] : []),
       { type:'image_url', image_url:{ url:'data:image/jpeg;base64,'+pgSceneRefBase64 }}
     ];
   } else {
@@ -8908,8 +9040,43 @@ function pgClearKidsClient() {
   const icon = document.getElementById('pgKidsClientIcon');    if (icon) icon.style.display = '';
   const lbl  = document.getElementById('pgKidsClientLabel');   if (lbl)  lbl.style.display  = '';
   const clr  = document.getElementById('pgKidsClientClearBtn'); if (clr) clr.style.display = 'none';
+  pgClearKidsClient2();
   checkGenBtnReady();
 }
+
+// ── 2ª FOTO KIDS ──
+function pgHandleKidsClient2File(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    pgKidsClient2Base64=ev.target.result.split(',')[1];
+    const prev=document.getElementById('pgKidsClient2Preview');
+    prev.src=ev.target.result; prev.style.display='block';
+    document.getElementById('pgKidsClient2Icon').style.display='none';
+    document.getElementById('pgKidsClient2Label').style.display='none';
+    document.getElementById('pgKidsClient2ClearBtn').style.display='flex';
+    document.getElementById('pgKidsClient2Zone').style.borderColor='#22c55e';
+  };
+  r.readAsDataURL(f);
+}
+function pgHandleKidsClient2Drop(e){
+  e.preventDefault();
+  document.getElementById('pgKidsClient2Zone').style.borderColor='rgba(34,197,94,.3)';
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) pgHandleKidsClient2File({target:{files:[f]}});
+}
+function pgClearKidsClient2(){
+  pgKidsClient2Base64=null;
+  const el=document.getElementById('pgKidsClient2Preview'); if(!el) return;
+  el.style.display='none'; el.src='';
+  document.getElementById('pgKidsClient2Icon').style.display='';
+  document.getElementById('pgKidsClient2Label').style.display='';
+  document.getElementById('pgKidsClient2ClearBtn').style.display='none';
+  document.getElementById('pgKidsClient2Zone').style.borderColor='rgba(34,197,94,.3)';
+  document.getElementById('pgKidsClient2Input').value='';
+}
+
+
 
 function pgClearKidsTarget() {
   pgKidsTargetBase64 = null;
@@ -9020,7 +9187,8 @@ Return JSON:
           max_tokens: 1200,
           messages: [{ role: 'user', content: [
             { type: 'text', text: CHILD_ANALYSIS_PROMPT },
-            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + pgKidsClientBase64 } }
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + pgKidsClientBase64 } },
+            ...(pgKidsClient2Base64 ? [{ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + pgKidsClient2Base64 } }] : [])
           ]}]
         })
       });
