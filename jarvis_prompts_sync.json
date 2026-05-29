@@ -1,17 +1,6 @@
 {
   "myPrompts": [
     {
-      "id": "mp1780053701462",
-      "title": "teste 3",
-      "text": "gdynbfhgfifgigfqiufqf",
-      "cat": "",
-      "tags": [
-        "gdig"
-      ],
-      "fav": false,
-      "hasImg": false
-    },
-    {
       "id": "mp1780014490461",
       "title": "Fotos antigas 3",
       "text": "Restaure esta foto antiga com acabamento profissional, natural, realista e fotorealista. Recupere a imagem preservando ao máximo a identidade da pessoa, os traços faciais, expressões, roupas, cabelos, cenário e elementos originais da fotografia. Corrija de forma cuidadosa e realista os desgastes do tempo, como desbotamento, baixa nitidez, manchas, riscos, rachaduras, rasgos, dobras, vincos, amassados, marcas de sujeira, áreas apagadas, ruídos, granulação excessiva e falhas de impressão. Reconstrua com naturalidade as partes danificadas, sem inventar elementos exagerados e sem alterar a composição original da foto. Se a foto estiver em preto e branco, faça a colorização completa da imagem de forma realista, suave e historicamente plausível, aplicando tons naturais e equilibrados à pele, cabelos, roupas e fundo, sem cores exageradas e sem aparência artificial. Se a foto já estiver colorida, restaure e recupere as cores originais de forma suave, fiel e natural. Melhore levemente a nitidez, o contraste e a definição, mantendo a aparência autêntica da fotografia e respeitando seu valor histórico e emocional. O resultado deve parecer uma fotografia antiga restaurada e colorizada com alta qualidade, limpa, íntegra, bem definida e visualmente preservada, sem perder sua essência original. Gere 3 imagens diferentes ao mesmo tempo desta mesma restauração e colorização, mantendo a mesma pessoa, a mesma identidade e o mesmo estilo de recuperação, com pequenas diferenças sutis no equilíbrio das cores, nitidez, contraste e acabamento final, todas com aparência natural, fiel e profissional.\nNegative prompt\nrosto alterado, mudança de identidade, traços faciais diferentes, expressão modificada, elementos inventados, reconstrução errada, cores exageradas, saturação excessiva, colorização artificial, tons irreais de pele, cabelo com cor artificial, roupas com cores fantasiosas, aparência moderna demais, efeito plástico, filtro pesado, nitidez exagerada, excesso de limpeza, textura falsa, rosto borrado, detalhes distorcidos, mãos deformadas, fundo modificado sem necessidade, perda do aspecto original, restauração agressiva, manchas digitais, reconstrução imprecisa, feições irreais, coloração irregular, cores estouradas, imagem artificial",
@@ -49,5 +38,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-05-29T12:24:03.747Z"
+  "savedAt": "2026-05-29T12:27:27.136Z"
 }
