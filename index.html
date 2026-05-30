@@ -2180,6 +2180,487 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   #drawerToggleBtn { display: none !important; }
 }
 
+/* ══════════════════════════════════════
+   ANTES & DEPOIS — GALERIA ESPECIAL
+   ══════════════════════════════════════ */
+
+/* Sidebar link especial */
+.cat-btn.ad-special {
+  color: var(--accent);
+  font-weight: 700;
+  border-left: 3px solid var(--accent);
+  background: var(--accent3);
+  margin-top: 8px;
+}
+.cat-btn.ad-special:hover { background: var(--accent2); }
+.cat-btn.ad-special.active { background: var(--accent2); color: var(--accent); }
+.cat-btn.ad-special.active::before { display: none; }
+
+/* View container */
+#viewAntesDepois {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+}
+#viewAntesDepois.active { display: flex; }
+
+/* Grid de cards A/D */
+.ad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 24px 28px 80px;
+}
+
+/* Card Antes/Depois */
+.ad-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+  position: relative;
+}
+.ad-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Comparador deslizante */
+.ad-compare {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: var(--surface2);
+  user-select: none;
+}
+.ad-compare-before,
+.ad-compare-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+.ad-compare-after {
+  clip-path: inset(0 50% 0 0);
+  transition: clip-path 0s;
+}
+.ad-compare.dragging .ad-compare-after {
+  transition: none;
+}
+
+/* Divisor central */
+.ad-divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(0,0,0,.4);
+  z-index: 10;
+  pointer-events: none;
+}
+.ad-divider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--text);
+  cursor: ew-resize;
+  z-index: 11;
+  transition: transform .15s;
+}
+.ad-divider-handle:hover { transform: translate(-50%, -50%) scale(1.15); }
+.ad-divider-handle::before { content: '◀'; font-size: 8px; opacity: .5; }
+.ad-divider-handle::after  { content: '▶'; font-size: 8px; opacity: .5; }
+
+/* Labels ANTES / DEPOIS */
+.ad-label-before,
+.ad-label-after {
+  position: absolute;
+  top: 10px;
+  z-index: 12;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.ad-label-before {
+  left: 10px;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+}
+.ad-label-after {
+  right: 10px;
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Info e ações abaixo do card */
+.ad-card-body {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ad-card-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+.ad-card-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.ad-card-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.ad-card-btn:hover { background: #fee; color: var(--red); border-color: var(--red); }
+
+/* Toolbar A/D */
+.ad-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 28px 0;
+  flex-wrap: wrap;
+}
+.ad-toolbar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--text);
+  flex: 1;
+}
+.ad-count {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--muted);
+}
+
+/* Empty state A/D */
+.ad-empty {
+  grid-column: 1/-1;
+  padding: 60px 0;
+  text-align: center;
+}
+.ad-empty-icon { font-size: 52px; opacity: .25; margin-bottom: 16px; }
+.ad-empty-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.ad-empty-sub { font-size: 13px; color: var(--muted); }
+
+/* Upload modal A/D */
+#adUploadOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(10,10,12,.78);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+}
+#adUploadOverlay.open { display: flex; }
+.ad-upload-modal {
+  background: var(--surface);
+  border-radius: 20px;
+  width: min(520px, 94vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  border: 1px solid var(--border2);
+}
+.ad-upload-head {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ad-upload-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+.ad-upload-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ad-pair-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.ad-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 12px;
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface2);
+}
+.ad-zone:hover { border-color: var(--accent); background: var(--accent3); }
+.ad-zone.has-img { border-color: var(--accent); border-style: solid; }
+.ad-zone img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ad-zone-label {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 2;
+}
+.ad-zone-label.before { background: rgba(0,0,0,.7); color: #fff; }
+.ad-zone-label.after  { background: var(--accent); color: #fff; }
+.ad-zone-icon { font-size: 28px; opacity: .3; z-index: 2; }
+.ad-zone-hint { font-size: 11px; color: var(--muted); z-index: 2; }
+.ad-zone-clear {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  background: rgba(220,50,70,.9);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.ad-zone.has-img .ad-zone-clear { display: flex; }
+.ad-zone-col-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: .5px;
+}
+.ad-upload-foot {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Lightbox A/D */
+#adLightboxOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(5,5,8,.96);
+  backdrop-filter: blur(16px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+#adLightboxOverlay.open { display: flex; }
+.ad-lb-inner {
+  position: relative;
+  width: min(800px, 96vw);
+  aspect-ratio: 3/2;
+}
+.ad-lb-compare {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  user-select: none;
+  box-shadow: 0 20px 80px rgba(0,0,0,.6);
+}
+.ad-lb-before,
+.ad-lb-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ad-lb-after {
+  clip-path: inset(0 50% 0 0);
+}
+.ad-lb-divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(0,0,0,.5);
+  z-index: 10;
+  pointer-events: none;
+}
+.ad-lb-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #333;
+  cursor: ew-resize;
+  z-index: 11;
+}
+.ad-lb-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,.12);
+  border: none;
+  color: rgba(255,255,255,.8);
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ad-lb-close:hover { background: rgba(255,255,255,.22); }
+.ad-lb-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.1);
+  border: none;
+  color: rgba(255,255,255,.8);
+  font-size: 24px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.ad-lb-nav:hover { background: rgba(255,255,255,.22); }
+#adLbPrev { left: 16px; }
+#adLbNext { right: 16px; }
+.ad-lb-info {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+}
+
+/* Admin upload FAB para A/D */
+.ad-upload-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 200;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,196,174,.4);
+  transition: all .15s;
+}
+.ad-upload-fab:hover { background: #00a896; transform: translateY(-2px); }
+body.admin-mode .ad-upload-fab { display: flex; }
+
+/* Progress bar upload A/D */
+.ad-upload-progress {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+  display: none;
+  margin-top: 4px;
+}
+.ad-upload-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width .3s;
+  border-radius: 2px;
+}
+
 /* ── MOBILE SYNC BAR ── */
 .mobile-sync-bar {
   display: none;
@@ -2707,6 +3188,14 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-section-title">Galerias</div>
+    <!-- ANTES & DEPOIS link -->
+    <button class="cat-btn ad-special" id="adSidebarBtn" onclick="openAntesDepois()">
+      <div class="cat-btn-info">
+        <div class="cat-btn-name">✦ Antes &amp; Depois</div>
+        <div class="cat-btn-count" id="adSidebarCount">0 pares</div>
+      </div>
+    </button>
+    <div class="sidebar-divider"></div>
     <div id="catList">
     <button class="cat-btn " onclick="selectCat(null)">
       <div class="cat-btn-info">
@@ -3180,6 +3669,12 @@ async function initApp() {
       const data = snap.data();
       meta = data.items || [];
       cats = data.cats  || [];
+      // Carrega pares Antes & Depois
+      if (data.adPairs && data.adPairs.length) {
+        adPairs = data.adPairs;
+        localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+        adUpdateSidebar();
+      }
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
@@ -4262,6 +4757,10 @@ function activateAdmin() {
   document.getElementById('adminBadge').classList.add('visible');
   closeAdminModal();
   toast('✓ Modo admin ativado!');
+  // Mostra FAB do A/D se estiver na view
+  const adFab = document.getElementById('adFab');
+  if (adFab && document.getElementById('viewAntesDepois').classList.contains('active')) adFab.style.display = 'flex';
+  if (typeof adRender === 'function' && document.getElementById('viewAntesDepois').classList.contains('active')) adRender();
   updateSyncLabel();
 }
 
@@ -4713,5 +5212,488 @@ renderPricing();
 
 
 
+
+
+<!-- ══════════════════════════════════════
+     ANTES & DEPOIS — VIEW
+     ══════════════════════════════════════ -->
+<div id="viewAntesDepois">
+
+  <!-- Toolbar -->
+  <div class="ad-toolbar">
+    <div style="display:flex;align-items:center;gap:10px;flex:1;">
+      <button class="btn btn-ghost btn-sm" onclick="closeAntesDepois()" style="font-size:12px;">← Voltar</button>
+      <span class="ad-toolbar-title">✦ Antes &amp; Depois</span>
+      <span class="ad-count" id="adCount">0 pares</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-accent btn-sm admin-only" onclick="openAdUpload()">+ Adicionar par</button>
+    </div>
+  </div>
+
+  <!-- Intro strip -->
+  <div style="margin:14px 28px 0;padding:12px 16px;background:linear-gradient(135deg,var(--accent3),transparent);border:1px solid rgba(0,196,174,.2);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.5;">
+    <strong style="color:var(--accent);">Arraste o divisor</strong> em cada imagem para revelar a transformação. <span style="opacity:.7;">← Antes &nbsp;|&nbsp; Depois →</span>
+  </div>
+
+  <!-- Grid -->
+  <div class="ad-grid" id="adGrid">
+    <div class="ad-empty">
+      <div class="ad-empty-icon">✦</div>
+      <div class="ad-empty-title">Nenhum par ainda</div>
+      <div class="ad-empty-sub">Adicione pares Antes &amp; Depois para mostrar resultados aos clientes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL A/D -->
+<div id="adUploadOverlay" onclick="if(event.target===this)closeAdUpload()">
+  <div class="ad-upload-modal">
+    <div class="ad-upload-head">
+      <span class="ad-upload-title">+ Novo Par Antes &amp; Depois</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeAdUpload()">✕</button>
+    </div>
+    <div class="ad-upload-body">
+      <div>
+        <div class="field-label" style="margin-bottom:4px;">Título do par <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--muted);">(opcional)</span></div>
+        <input id="adPairTitle" class="input-field" type="text" placeholder="Ex: Maria — Transformação Executiva" autocomplete="off">
+      </div>
+      <div class="ad-pair-grid">
+        <div>
+          <div class="ad-zone-col-label" style="margin-bottom:8px;">ANTES</div>
+          <div class="ad-zone" id="adZoneBefore" onclick="adZoneClick('before')">
+            <span class="ad-zone-label before">Antes</span>
+            <span class="ad-zone-icon">📷</span>
+            <span class="ad-zone-hint">Clique para escolher</span>
+            <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('before')" title="Remover">✕</button>
+          </div>
+          <input type="file" id="adFileBefore" accept="image/*" style="display:none" onchange="adFileSelected(event,'before')">
+        </div>
+        <div>
+          <div class="ad-zone-col-label" style="margin-bottom:8px;">DEPOIS</div>
+          <div class="ad-zone" id="adZoneAfter" onclick="adZoneClick('after')">
+            <span class="ad-zone-label after">Depois</span>
+            <span class="ad-zone-icon">✨</span>
+            <span class="ad-zone-hint">Clique para escolher</span>
+            <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('after')" title="Remover">✕</button>
+          </div>
+          <input type="file" id="adFileAfter" accept="image/*" style="display:none" onchange="adFileSelected(event,'after')">
+        </div>
+      </div>
+      <div class="ad-upload-progress" id="adProgress">
+        <div class="ad-upload-progress-bar" id="adProgressBar"></div>
+      </div>
+    </div>
+    <div class="ad-upload-foot">
+      <button class="btn btn-ghost" onclick="closeAdUpload()">Cancelar</button>
+      <button class="btn btn-accent" id="adConfirmBtn" onclick="confirmAdUpload()" disabled>✦ Salvar par</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX A/D -->
+<div id="adLightboxOverlay" onclick="if(event.target===this)closeAdLightbox()">
+  <button class="ad-lb-close" onclick="closeAdLightbox()">✕</button>
+  <button class="ad-lb-nav" id="adLbPrev" onclick="adLbNavigate(-1)">‹</button>
+  <button class="ad-lb-nav" id="adLbNext" onclick="adLbNavigate(1)">›</button>
+  <div class="ad-lb-inner">
+    <div class="ad-lb-compare" id="adLbCompare">
+      <img class="ad-lb-before" id="adLbBefore" src="" alt="Antes">
+      <img class="ad-lb-after"  id="adLbAfter"  src="" alt="Depois">
+      <div class="ad-lb-divider" id="adLbDivider"></div>
+      <div class="ad-lb-handle"  id="adLbHandle">◀▶</div>
+      <div class="ad-label-before">Antes</div>
+      <div class="ad-label-after">Depois</div>
+    </div>
+  </div>
+  <div class="ad-lb-info" id="adLbInfo"></div>
+</div>
+
+<!-- FAB Upload A/D (admin only) -->
+<button class="ad-upload-fab" id="adFab" onclick="openAdUpload()" style="display:none;">
+  + Par A/D
+</button>
+
+
+<script>
+// ══════════════════════════════════════════════
+//  ANTES & DEPOIS — Estado e funções principais
+// ══════════════════════════════════════════════
+
+let adPairs    = [];   // [{id, title, before, after, createdAt}]
+let adLbIndex  = 0;
+let adPending  = { before: null, after: null };
+
+// ── Carregar/salvar ──
+function adLoad() {
+  try { adPairs = JSON.parse(localStorage.getItem('iafoto_ad_pairs') || '[]'); } catch(e) { adPairs = []; }
+}
+
+async function adSave() {
+  localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+  // Sincroniza com Firestore se disponível
+  if (window._fbReady) {
+    try {
+      const db = window._fbDb;
+      const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+      const current = snap.exists() ? snap.data() : {};
+      await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+        ...current,
+        adPairs: adPairs.map(p => ({ id: p.id, title: p.title, before: p.before, after: p.after, createdAt: p.createdAt })),
+        updatedAt: Date.now()
+      });
+    } catch(e) { console.error('A/D Firebase save error:', e); }
+  }
+}
+
+// Carrega pares do Firebase junto com o initApp
+const _origInitApp = typeof initApp === 'function' ? initApp : null;
+async function adLoadFromFirebase() {
+  if (!window._fbReady) return;
+  try {
+    const db   = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    if (snap.exists() && snap.data().adPairs) {
+      adPairs = snap.data().adPairs;
+      localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+    }
+  } catch(e) { /* usa localStorage */ }
+}
+
+// Patch initApp para carregar A/D também
+window.addEventListener('firebase-ready', async () => {
+  await adLoadFromFirebase();
+  adUpdateSidebar();
+});
+
+// ── Abrir/fechar view ──
+function openAntesDepois() {
+  // Esconde a view principal
+  document.querySelector('.main').style.display = 'none';
+  document.getElementById('viewAntesDepois').classList.add('active');
+  // Sidebar: marca ativo
+  document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
+  // FAB admin
+  const fab = document.getElementById('adFab');
+  if (fab && document.body.classList.contains('admin-mode')) fab.style.display = 'flex';
+  adLoad();
+  adRender();
+}
+
+function closeAntesDepois() {
+  document.querySelector('.main').style.display = '';
+  document.getElementById('viewAntesDepois').classList.remove('active');
+  document.querySelectorAll('.ad-special').forEach(b => b.classList.remove('active'));
+  const fab = document.getElementById('adFab');
+  if (fab) fab.style.display = 'none';
+}
+
+// Atualiza contagem na sidebar
+function adUpdateSidebar() {
+  adLoad();
+  const el = document.getElementById('adSidebarCount');
+  if (el) el.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
+}
+
+// ── Render grid ──
+function adRender() {
+  const grid = document.getElementById('adGrid');
+  const countEl = document.getElementById('adCount');
+  if (!grid) return;
+  if (countEl) countEl.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
+  adUpdateSidebar();
+
+  if (!adPairs.length) {
+    grid.innerHTML = `
+      <div class="ad-empty">
+        <div class="ad-empty-icon">✦</div>
+        <div class="ad-empty-title">Nenhum par ainda</div>
+        <div class="ad-empty-sub">Clique em "+ Adicionar par" para mostrar transformações aos seus clientes.</div>
+        ${document.body.classList.contains('admin-mode') ? '<button class="btn btn-accent" style="margin-top:16px" onclick="openAdUpload()">+ Adicionar par</button>' : ''}
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = adPairs.map((pair, idx) => `
+    <div class="ad-card" id="adcard-${pair.id}">
+      <div class="ad-compare" id="adcmp-${pair.id}" data-idx="${idx}"
+           onmousedown="adDragStart(event,'${pair.id}')"
+           ontouchstart="adTouchStart(event,'${pair.id}')">
+        <img class="ad-compare-before" src="${pair.before}" loading="lazy" alt="Antes">
+        <img class="ad-compare-after"  src="${pair.after}"  loading="lazy" alt="Depois">
+        <div class="ad-divider" id="addiv-${pair.id}">
+          <div class="ad-divider-handle" title="Arraste para comparar"></div>
+        </div>
+        <span class="ad-label-before">Antes</span>
+        <span class="ad-label-after">Depois</span>
+      </div>
+      <div class="ad-card-body">
+        <span class="ad-card-label">${pair.title || 'Par ' + (idx + 1)}</span>
+        <div class="ad-card-actions">
+          <button class="ad-card-btn" title="Ver em tela cheia" onclick="event.stopPropagation();openAdLightbox(${idx})" style="color:var(--accent);border-color:rgba(0,196,174,.3);background:var(--accent3);">⤢</button>
+          ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Drag/slide para comparar ──
+let _adDragging = null;
+
+function adSetPos(pairId, pct) {
+  pct = Math.max(2, Math.min(98, pct));
+  const after  = document.querySelector(`#adcmp-${pairId} .ad-compare-after`);
+  const divider = document.getElementById('addiv-' + pairId);
+  if (after)   after.style.clipPath  = `inset(0 ${100 - pct}% 0 0)`;
+  if (divider) divider.style.left    = pct + '%';
+}
+
+function adDragStart(e, pairId) {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  const cmp = document.getElementById('adcmp-' + pairId);
+  if (cmp) cmp.classList.add('dragging');
+  _adDragging = { pairId, el: cmp };
+
+  function onMove(ev) {
+    if (!_adDragging) return;
+    const rect = _adDragging.el.getBoundingClientRect();
+    const pct  = ((ev.clientX - rect.left) / rect.width) * 100;
+    adSetPos(_adDragging.pairId, pct);
+  }
+  function onUp() {
+    if (_adDragging?.el) _adDragging.el.classList.remove('dragging');
+    _adDragging = null;
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup',   onUp);
+  }
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup',   onUp);
+}
+
+function adTouchStart(e, pairId) {
+  const cmp = document.getElementById('adcmp-' + pairId);
+  if (cmp) cmp.classList.add('dragging');
+
+  function onMove(ev) {
+    const t    = ev.touches[0];
+    const rect = cmp.getBoundingClientRect();
+    const pct  = ((t.clientX - rect.left) / rect.width) * 100;
+    adSetPos(pairId, pct);
+  }
+  function onEnd() {
+    if (cmp) cmp.classList.remove('dragging');
+    cmp.removeEventListener('touchmove', onMove);
+    cmp.removeEventListener('touchend',  onEnd);
+  }
+  cmp.addEventListener('touchmove', onMove, { passive: true });
+  cmp.addEventListener('touchend',  onEnd);
+}
+
+// ── Lightbox ──
+function openAdLightbox(idx) {
+  adLbIndex = idx;
+  adLbUpdate();
+  document.getElementById('adLightboxOverlay').classList.add('open');
+  document.addEventListener('keydown', adLbKeyDown);
+  // Inicializa drag no lightbox
+  const cmp = document.getElementById('adLbCompare');
+  if (cmp) {
+    cmp.onmousedown  = (e) => adLbDragStart(e);
+    cmp.ontouchstart = (e) => adLbTouchStart(e);
+  }
+}
+
+function closeAdLightbox() {
+  document.getElementById('adLightboxOverlay').classList.remove('open');
+  document.removeEventListener('keydown', adLbKeyDown);
+}
+
+function adLbUpdate() {
+  const pair = adPairs[adLbIndex];
+  if (!pair) return;
+  document.getElementById('adLbBefore').src = pair.before;
+  document.getElementById('adLbAfter').src  = pair.after;
+  const info = document.getElementById('adLbInfo');
+  if (info) info.textContent = (pair.title || `Par ${adLbIndex + 1}`) + ` — ${adLbIndex + 1} / ${adPairs.length}`;
+  // Reset split to 50%
+  adLbSetPos(50);
+  document.getElementById('adLbPrev').style.display = adLbIndex > 0 ? 'flex' : 'none';
+  document.getElementById('adLbNext').style.display = adLbIndex < adPairs.length - 1 ? 'flex' : 'none';
+}
+
+function adLbNavigate(dir) {
+  const next = adLbIndex + dir;
+  if (next < 0 || next >= adPairs.length) return;
+  adLbIndex = next;
+  adLbUpdate();
+}
+
+function adLbKeyDown(e) {
+  if (e.key === 'Escape')      closeAdLightbox();
+  if (e.key === 'ArrowLeft')   adLbNavigate(-1);
+  if (e.key === 'ArrowRight')  adLbNavigate(1);
+}
+
+function adLbSetPos(pct) {
+  pct = Math.max(2, Math.min(98, pct));
+  const after   = document.getElementById('adLbAfter');
+  const divider = document.getElementById('adLbDivider');
+  const handle  = document.getElementById('adLbHandle');
+  if (after)   after.style.clipPath  = `inset(0 ${100 - pct}% 0 0)`;
+  if (divider) divider.style.left    = pct + '%';
+  if (handle)  handle.style.left     = pct + '%';
+}
+
+function adLbDragStart(e) {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  const cmp = document.getElementById('adLbCompare');
+  function onMove(ev) {
+    const rect = cmp.getBoundingClientRect();
+    adLbSetPos(((ev.clientX - rect.left) / rect.width) * 100);
+  }
+  function onUp() {
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup',   onUp);
+  }
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup',   onUp);
+}
+
+function adLbTouchStart(e) {
+  const cmp = document.getElementById('adLbCompare');
+  function onMove(ev) {
+    const t = ev.touches[0];
+    const rect = cmp.getBoundingClientRect();
+    adLbSetPos(((t.clientX - rect.left) / rect.width) * 100);
+  }
+  function onEnd() {
+    cmp.removeEventListener('touchmove', onMove);
+    cmp.removeEventListener('touchend',  onEnd);
+  }
+  cmp.addEventListener('touchmove', onMove, { passive: true });
+  cmp.addEventListener('touchend',  onEnd);
+}
+
+// ── Upload modal ──
+function openAdUpload() {
+  adPending = { before: null, after: null };
+  document.getElementById('adPairTitle').value = '';
+  adZoneReset('before');
+  adZoneReset('after');
+  document.getElementById('adConfirmBtn').disabled = true;
+  document.getElementById('adProgress').style.display = 'none';
+  document.getElementById('adProgressBar').style.width = '0%';
+  document.getElementById('adUploadOverlay').classList.add('open');
+}
+
+function closeAdUpload() {
+  document.getElementById('adUploadOverlay').classList.remove('open');
+  adPending = { before: null, after: null };
+}
+
+function adZoneClick(side) {
+  document.getElementById('adFile' + (side === 'before' ? 'Before' : 'After')).click();
+}
+
+function adZoneReset(side) {
+  const zone = document.getElementById('adZone' + (side === 'before' ? 'Before' : 'After'));
+  if (!zone) return;
+  zone.classList.remove('has-img');
+  // Restore placeholder content
+  const label = side === 'before'
+    ? '<span class="ad-zone-label before">Antes</span>'
+    : '<span class="ad-zone-label after">Depois</span>';
+  const icon  = side === 'before' ? '📷' : '✨';
+  zone.innerHTML = `
+    ${label}
+    <span class="ad-zone-icon">${icon}</span>
+    <span class="ad-zone-hint">Clique para escolher</span>
+    <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('${side}')" title="Remover">✕</button>`;
+  zone.onclick = () => adZoneClick(side);
+}
+
+function adZoneClear(side) {
+  adPending[side] = null;
+  adZoneReset(side);
+  adCheckConfirmBtn();
+}
+
+function adFileSelected(e, side) {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    adPending[side] = { file, dataUrl: ev.target.result };
+    const zone = document.getElementById('adZone' + (side === 'before' ? 'Before' : 'After'));
+    if (zone) {
+      zone.classList.add('has-img');
+      zone.innerHTML = `
+        <img src="${ev.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('${side}')" title="Remover">✕</button>`;
+      zone.onclick = null; // image is there, don't re-trigger file picker on body click
+    }
+    adCheckConfirmBtn();
+  };
+  reader.readAsDataURL(file);
+}
+
+function adCheckConfirmBtn() {
+  const btn = document.getElementById('adConfirmBtn');
+  if (btn) btn.disabled = !(adPending.before && adPending.after);
+}
+
+async function confirmAdUpload() {
+  if (!adPending.before || !adPending.after) return;
+
+  const btn = document.getElementById('adConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  document.getElementById('adProgress').style.display = 'block';
+  const bar = document.getElementById('adProgressBar');
+
+  try {
+    bar.style.width = '10%';
+    const beforeUrl = await uploadToCloudinary(adPending.before.file, p => { bar.style.width = (10 + p * 40) + '%'; });
+    bar.style.width = '55%';
+    const afterUrl  = await uploadToCloudinary(adPending.after.file,  p => { bar.style.width = (55 + p * 40) + '%'; });
+    bar.style.width = '100%';
+
+    const title = document.getElementById('adPairTitle').value.trim();
+    const pair = {
+      id:        'ad_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      title:     title || '',
+      before:    beforeUrl,
+      after:     afterUrl,
+      createdAt: Date.now()
+    };
+    adPairs.unshift(pair);
+    await adSave();
+    adRender();
+    closeAdUpload();
+    toast('✓ Par Antes & Depois salvo!');
+  } catch(e) {
+    console.error(e);
+    toast('⚠ Erro ao enviar imagens');
+    btn.disabled = false;
+    btn.textContent = '✦ Salvar par';
+  }
+}
+
+async function deleteAdPair(id) {
+  if (!confirm('Apagar este par Antes & Depois?')) return;
+  adPairs = adPairs.filter(p => p.id !== id);
+  await adSave();
+  adRender();
+  toast('🗑 Par removido.');
+}
+
+// Inicializa leitura do localStorage na carga
+adLoad();
+adUpdateSidebar();
+</script>
 
 </body></html>
