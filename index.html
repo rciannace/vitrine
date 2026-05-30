@@ -599,6 +599,31 @@ body.admin-mode .pricing-card .admin-del-btn { display: flex; }
 }
 body.admin-mode .pricing-card .admin-save-btn { display: block; }
 .pricing-card .admin-save-btn:hover { background: #00a896; }
+.pricing-featured-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all .15s;
+  width: 100%;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+}
+.pricing-featured-toggle:hover { border-color: gold; color: #b8860b; background: rgba(255,200,0,.06); }
+.pricing-featured-toggle.is-featured {
+  border-color: gold;
+  background: rgba(255,200,0,.08);
+  color: #b8860b;
+}
+.pricing-featured-toggle .ft-star { font-size: 14px; transition: transform .2s; }
+.pricing-featured-toggle:hover .ft-star { transform: scale(1.2) rotate(10deg); }
 
 /* ── MAIN LAYOUT ── */
 .main {
@@ -5809,6 +5834,20 @@ async function sortPricingByValue() {
   toast('✓ Pacotes ordenados do menor ao maior valor!');
 }
 
+async function togglePricingFeatured(pid) {
+  const data = loadPricing();
+  // Remove featured de todos e coloca só neste
+  const isAlreadyFeatured = data.find(p => p.id === pid)?.featured;
+  data.forEach(p => p.featured = false);
+  if (!isAlreadyFeatured) {
+    const pkg = data.find(p => p.id === pid);
+    if (pkg) pkg.featured = true;
+  }
+  await savePricing(data);
+  renderPricing();
+  toast(isAlreadyFeatured ? '☆ Destaque removido.' : '⭐ Pacote marcado como POPULAR!');
+}
+
 async function savePricingPackage(pid) {
   const data = loadPricing();
   const pkg = data.find(p => p.id === pid);
@@ -5821,6 +5860,7 @@ async function savePricingPackage(pid) {
   if (isNaN(qtyVal) || qtyVal < 1) { toast('⚠ Número de fotos inválido'); return; }
   if (isNaN(totalVal) || totalVal < 0) { toast('⚠ Valor inválido'); return; }
   pkg.qty = qtyVal; pkg.total = totalVal; pkg.desc = descVal || pkg.desc;
+  // featured não muda ao salvar — só muda pelo toggle
   await savePricing(data);
   renderPricing();
   toast('✓ Pacote atualizado!');
@@ -5884,6 +5924,10 @@ function renderPricing() {
         <input type="number" step="0.01" min="0" value="${pkg.total}" data-field="total" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','total',this.value)">
         <label>Descrição</label>
         <input type="text" value="${pkg.desc}" data-field="desc" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','desc',this.value)">
+        <button class="pricing-featured-toggle ${pkg.featured ? 'is-featured' : ''}" id="ft-${pkg.id}" onclick="togglePricingFeatured('${pkg.id}')">
+          <span class="ft-star">${pkg.featured ? '⭐' : '☆'}</span>
+          <span id="ft-label-${pkg.id}">${pkg.featured ? 'Pacote POPULAR (clique para remover)' : 'Marcar como POPULAR'}</span>
+        </button>
         <button class="admin-save-btn" onclick="savePricingPackage('${pkg.id}')">✓ Salvar</button>
       </div>
     `;
