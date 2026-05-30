@@ -2243,7 +2243,7 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 /* Grid de cards A/D */
 .ad-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 24px 28px 80px;
 }
@@ -2264,90 +2264,52 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   box-shadow: var(--shadow-lg);
 }
 
-/* Comparador deslizante */
-.ad-compare {
+/* Par lado a lado */
+.ad-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  aspect-ratio: 2/1.5;
+  overflow: hidden;
+  background: var(--border);
   position: relative;
-  aspect-ratio: 3/4;
+}
+.ad-pair-img {
+  position: relative;
   overflow: hidden;
   background: var(--surface2);
-  user-select: none;
 }
-.ad-compare-before,
-.ad-compare-after {
-  position: absolute;
-  inset: 0;
+.ad-pair-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  pointer-events: none;
+  transition: transform .4s ease;
 }
-.ad-compare-after {
-  clip-path: inset(0 50% 0 0);
-  transition: clip-path 0s;
-}
-.ad-compare.dragging .ad-compare-after {
-  transition: none;
-}
-
-/* Divisor central */
-.ad-divider {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: #fff;
-  box-shadow: 0 0 8px rgba(0,0,0,.4);
-  z-index: 10;
-  pointer-events: none;
-}
-.ad-divider-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36px;
-  height: 36px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 12px rgba(0,0,0,.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: var(--text);
-  cursor: ew-resize;
-  z-index: 11;
-  transition: transform .15s;
-}
-.ad-divider-handle:hover { transform: translate(-50%, -50%) scale(1.15); }
-.ad-divider-handle::before { content: '◀'; font-size: 8px; opacity: .5; }
-.ad-divider-handle::after  { content: '▶'; font-size: 8px; opacity: .5; }
+.ad-card:hover .ad-pair-img img { transform: scale(1.04); }
 
 /* Labels ANTES / DEPOIS */
 .ad-label-before,
 .ad-label-after {
   position: absolute;
-  top: 10px;
-  z-index: 12;
-  font-size: 10px;
+  bottom: 8px;
+  z-index: 5;
+  font-size: 9px;
   font-family: 'DM Mono', monospace;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  padding: 3px 9px;
+  padding: 3px 8px;
   border-radius: 20px;
   pointer-events: none;
 }
 .ad-label-before {
-  left: 10px;
-  background: rgba(0,0,0,.6);
+  left: 8px;
+  background: rgba(0,0,0,.65);
   color: #fff;
 }
 .ad-label-after {
-  right: 10px;
+  right: 8px;
   background: var(--accent);
   color: #fff;
 }
@@ -2560,59 +2522,26 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 #adLightboxOverlay.open { display: flex; }
 .ad-lb-inner {
   position: relative;
-  width: min(800px, 96vw);
-  aspect-ratio: 3/2;
+  width: min(880px, 96vw);
+  aspect-ratio: 16/9;
 }
-.ad-lb-compare {
+.ad-lb-pair {
   width: 100%;
   height: 100%;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
   border-radius: 14px;
   overflow: hidden;
-  user-select: none;
   box-shadow: 0 20px 80px rgba(0,0,0,.6);
+  background: rgba(255,255,255,.1);
 }
 .ad-lb-before,
 .ad-lb-after {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.ad-lb-after {
-  clip-path: inset(0 50% 0 0);
-}
-.ad-lb-divider {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: #fff;
-  box-shadow: 0 0 12px rgba(0,0,0,.5);
-  z-index: 10;
-  pointer-events: none;
-}
-.ad-lb-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 4px 20px rgba(0,0,0,.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-size: 10px;
-  color: #333;
-  cursor: ew-resize;
-  z-index: 11;
+  display: block;
 }
 .ad-lb-close {
   position: fixed;
@@ -5318,13 +5247,15 @@ renderPricing();
   <button class="ad-lb-nav" id="adLbPrev" onclick="adLbNavigate(-1)">‹</button>
   <button class="ad-lb-nav" id="adLbNext" onclick="adLbNavigate(1)">›</button>
   <div class="ad-lb-inner">
-    <div class="ad-lb-compare" id="adLbCompare">
-      <img class="ad-lb-before" id="adLbBefore" src="" alt="Antes">
-      <img class="ad-lb-after"  id="adLbAfter"  src="" alt="Depois">
-      <div class="ad-lb-divider" id="adLbDivider"></div>
-      <div class="ad-lb-handle"  id="adLbHandle">◀▶</div>
-      <div class="ad-label-before">Antes</div>
-      <div class="ad-label-after">Depois</div>
+    <div class="ad-lb-pair" id="adLbCompare">
+      <div style="position:relative;overflow:hidden;">
+        <img class="ad-lb-before" id="adLbBefore" src="" alt="Antes">
+        <span class="ad-label-before">Antes</span>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <img class="ad-lb-after" id="adLbAfter" src="" alt="Depois">
+        <span class="ad-label-after">Depois</span>
+      </div>
     </div>
   </div>
   <div class="ad-lb-info" id="adLbInfo"></div>
@@ -5429,21 +5360,20 @@ function adRender() {
 
   grid.innerHTML = adPairs.map((pair, idx) => `
     <div class="ad-card" id="adcard-${pair.id}">
-      <div class="ad-compare" id="adcmp-${pair.id}" data-idx="${idx}"
-           onmousedown="adDragStart(event,'${pair.id}')"
-           ontouchstart="adTouchStart(event,'${pair.id}')">
-        <img class="ad-compare-before" src="${pair.before}" loading="lazy" alt="Antes">
-        <img class="ad-compare-after"  src="${pair.after}"  loading="lazy" alt="Depois">
-        <div class="ad-divider" id="addiv-${pair.id}">
-          <div class="ad-divider-handle" title="Arraste para comparar"></div>
+      <div class="ad-pair" onclick="openAdLightbox(${idx})">
+        <div class="ad-pair-img">
+          <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes">
+          <span class="ad-label-before">Antes</span>
         </div>
-        <span class="ad-label-before">Antes</span>
-        <span class="ad-label-after">Depois</span>
+        <div class="ad-pair-img">
+          <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
+          <span class="ad-label-after">Depois</span>
+        </div>
       </div>
       <div class="ad-card-body">
         <span class="ad-card-label">${pair.title || 'Par ' + (idx + 1)}</span>
         <div class="ad-card-actions">
-          <button class="ad-card-btn" title="Ver em tela cheia" onclick="event.stopPropagation();openAdLightbox(${idx})" style="color:var(--accent);border-color:rgba(0,196,174,.3);background:var(--accent3);">⤢</button>
+          <button class="ad-card-btn" title="Ver ampliado" onclick="event.stopPropagation();openAdLightbox(${idx})" style="color:var(--accent);border-color:rgba(0,196,174,.3);background:var(--accent3);">⤢</button>
           ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
         </div>
       </div>
@@ -5451,58 +5381,7 @@ function adRender() {
   `).join('');
 }
 
-// ── Drag/slide para comparar ──
-let _adDragging = null;
 
-function adSetPos(pairId, pct) {
-  pct = Math.max(2, Math.min(98, pct));
-  const after  = document.querySelector(`#adcmp-${pairId} .ad-compare-after`);
-  const divider = document.getElementById('addiv-' + pairId);
-  if (after)   after.style.clipPath  = `inset(0 ${100 - pct}% 0 0)`;
-  if (divider) divider.style.left    = pct + '%';
-}
-
-function adDragStart(e, pairId) {
-  if (e.button !== 0) return;
-  e.preventDefault();
-  const cmp = document.getElementById('adcmp-' + pairId);
-  if (cmp) cmp.classList.add('dragging');
-  _adDragging = { pairId, el: cmp };
-
-  function onMove(ev) {
-    if (!_adDragging) return;
-    const rect = _adDragging.el.getBoundingClientRect();
-    const pct  = ((ev.clientX - rect.left) / rect.width) * 100;
-    adSetPos(_adDragging.pairId, pct);
-  }
-  function onUp() {
-    if (_adDragging?.el) _adDragging.el.classList.remove('dragging');
-    _adDragging = null;
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup',   onUp);
-  }
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup',   onUp);
-}
-
-function adTouchStart(e, pairId) {
-  const cmp = document.getElementById('adcmp-' + pairId);
-  if (cmp) cmp.classList.add('dragging');
-
-  function onMove(ev) {
-    const t    = ev.touches[0];
-    const rect = cmp.getBoundingClientRect();
-    const pct  = ((t.clientX - rect.left) / rect.width) * 100;
-    adSetPos(pairId, pct);
-  }
-  function onEnd() {
-    if (cmp) cmp.classList.remove('dragging');
-    cmp.removeEventListener('touchmove', onMove);
-    cmp.removeEventListener('touchend',  onEnd);
-  }
-  cmp.addEventListener('touchmove', onMove, { passive: true });
-  cmp.addEventListener('touchend',  onEnd);
-}
 
 // ── Lightbox ──
 function openAdLightbox(idx) {
@@ -5510,12 +5389,6 @@ function openAdLightbox(idx) {
   adLbUpdate();
   document.getElementById('adLightboxOverlay').classList.add('open');
   document.addEventListener('keydown', adLbKeyDown);
-  // Inicializa drag no lightbox
-  const cmp = document.getElementById('adLbCompare');
-  if (cmp) {
-    cmp.onmousedown  = (e) => adLbDragStart(e);
-    cmp.ontouchstart = (e) => adLbTouchStart(e);
-  }
 }
 
 function closeAdLightbox() {
@@ -5530,8 +5403,6 @@ function adLbUpdate() {
   document.getElementById('adLbAfter').src  = pair.after;
   const info = document.getElementById('adLbInfo');
   if (info) info.textContent = (pair.title || `Par ${adLbIndex + 1}`) + ` — ${adLbIndex + 1} / ${adPairs.length}`;
-  // Reset split to 50%
-  adLbSetPos(50);
   document.getElementById('adLbPrev').style.display = adLbIndex > 0 ? 'flex' : 'none';
   document.getElementById('adLbNext').style.display = adLbIndex < adPairs.length - 1 ? 'flex' : 'none';
 }
@@ -5549,46 +5420,7 @@ function adLbKeyDown(e) {
   if (e.key === 'ArrowRight')  adLbNavigate(1);
 }
 
-function adLbSetPos(pct) {
-  pct = Math.max(2, Math.min(98, pct));
-  const after   = document.getElementById('adLbAfter');
-  const divider = document.getElementById('adLbDivider');
-  const handle  = document.getElementById('adLbHandle');
-  if (after)   after.style.clipPath  = `inset(0 ${100 - pct}% 0 0)`;
-  if (divider) divider.style.left    = pct + '%';
-  if (handle)  handle.style.left     = pct + '%';
-}
 
-function adLbDragStart(e) {
-  if (e.button !== 0) return;
-  e.preventDefault();
-  const cmp = document.getElementById('adLbCompare');
-  function onMove(ev) {
-    const rect = cmp.getBoundingClientRect();
-    adLbSetPos(((ev.clientX - rect.left) / rect.width) * 100);
-  }
-  function onUp() {
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup',   onUp);
-  }
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup',   onUp);
-}
-
-function adLbTouchStart(e) {
-  const cmp = document.getElementById('adLbCompare');
-  function onMove(ev) {
-    const t = ev.touches[0];
-    const rect = cmp.getBoundingClientRect();
-    adLbSetPos(((t.clientX - rect.left) / rect.width) * 100);
-  }
-  function onEnd() {
-    cmp.removeEventListener('touchmove', onMove);
-    cmp.removeEventListener('touchend',  onEnd);
-  }
-  cmp.addEventListener('touchmove', onMove, { passive: true });
-  cmp.addEventListener('touchend',  onEnd);
-}
 
 // ── Upload modal ──
 function openAdUpload() {
