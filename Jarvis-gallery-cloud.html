@@ -1224,7 +1224,7 @@ body{
 <div class="toolbar">
   <div class="search-wrap">
     <span class="search-ico">⌕</span>
-    <input class="search-input" id="searchInput" name="gallery-search-x7" placeholder="Buscar título, prompt, tag…" oninput="render()" autocomplete="new-password" autocorrect="off" spellcheck="false" data-lpignore="true" data-form-type="other">
+    <span id="searchInputWrapper"></span>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
     <div class="view-toggle">
@@ -7430,6 +7430,24 @@ document.querySelectorAll('.overlay').forEach(o => {
 });
 
 // ── INIT ──
+// Cria o campo de busca via JS para evitar que o Chrome associe gerenciador de senhas
+(function() {
+  const wrapper = document.getElementById('searchInputWrapper');
+  if (wrapper) {
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'search-input';
+    inp.id = 'searchInput';
+    inp.setAttribute('placeholder', 'Buscar título, prompt, tag…');
+    inp.setAttribute('autocomplete', 'off');
+    inp.setAttribute('autocorrect', 'off');
+    inp.setAttribute('spellcheck', 'false');
+    inp.setAttribute('data-lpignore', 'true');
+    inp.setAttribute('data-form-type', 'other');
+    inp.addEventListener('input', function() { render(); });
+    wrapper.replaceWith(inp);
+  }
+})();
 initApp();
 
 // ═══════════════════════════════════════════
