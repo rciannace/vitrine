@@ -3949,7 +3949,41 @@ function renderHomeGalleries(grid, title, badge) {
       </div>`;
   }).join('');
 
-  grid.innerHTML = inboxHTML + catsHTML;
+  // Card Antes & Depois — sempre o primeiro
+  adLoad();
+  const adCount = adPairs.length;
+  let adThumbHTML = '';
+  if (adPairs.length >= 2) {
+    // Mostra mini antes/depois como thumbnail
+    adThumbHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:2px;">
+        <img src="${cloudThumb(adPairs[0].before)}" style="width:100%;height:100%;object-fit:cover;">
+        <img src="${cloudThumb(adPairs[0].after)}"  style="width:100%;height:100%;object-fit:cover;">
+      </div>`;
+  } else if (adPairs.length === 1) {
+    adThumbHTML = `<img src="${cloudThumb(adPairs[0].before)}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    adThumbHTML = `<div class="gallery-card-thumb-empty" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:100%;">
+      <span style="font-size:32px;opacity:.35;">✦</span>
+      <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">Antes & Depois</span>
+    </div>`;
+  }
+  const adCardHTML = `
+    <div class="gallery-card" id="gcard-ad" onclick="openAntesDepois()" style="position:relative;">
+      <div class="gallery-card-thumb" style="border:2px solid rgba(0,196,174,.35);background:linear-gradient(135deg,rgba(0,196,174,.08),transparent);">
+        ${adThumbHTML}
+        <div class="gallery-card-thumb-count" style="background:var(--accent);color:#fff;">${adCount} par${adCount !== 1 ? 'es' : ''}</div>
+      </div>
+      <div class="gallery-card-body">
+        <div class="gallery-card-info">
+          <div class="gallery-card-name" style="color:var(--accent);">✦ Antes &amp; Depois</div>
+          <div class="gallery-card-sub">Veja as transformações</div>
+        </div>
+        <span class="gallery-card-arrow" style="color:var(--accent);">›</span>
+      </div>
+    </div>`;
+
+  grid.innerHTML = adCardHTML + inboxHTML + catsHTML;
 
   // No novo modelo imgs são URLs do Cloudinary — carregam direto pelo src
 }
