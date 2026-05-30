@@ -5711,12 +5711,27 @@ renderPricing();
     </div>
   </div>
 
-  <!-- Intro strip -->
-  <div style="margin:14px 28px 0;padding:12px 18px;background:linear-gradient(135deg,var(--accent3),transparent);border:1px solid rgba(0,196,174,.2);border-radius:12px;display:flex;align-items:center;gap:12px;">
-    <span style="font-size:22px;">✦</span>
-    <div>
-      <div style="font-size:13px;font-weight:700;color:var(--text);">Transformações reais dos nossos clientes</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Clique em qualquer par para ver em tela cheia. Deslize para navegar.</div>
+  <!-- Intro strip — chamativa -->
+  <div style="margin:16px 28px 0;position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(110deg,#0c1f1c 0%,#0a0a0f 55%,#071a17 100%);border:1px solid rgba(0,196,174,.25);padding:22px 28px;">
+    <!-- brilho decorativo -->
+    <div style="position:absolute;top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.12) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-30px;right:60px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.07) 0%,transparent 70%);pointer-events:none;"></div>
+    <!-- conteúdo -->
+    <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:adPulseDot 1.8s ease-in-out infinite;"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">Resultados reais com IA</span>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#fff;line-height:1;">VEJA A TRANSFORMAÇÃO <em style="color:var(--accent);font-style:normal;">DOS NOSSOS CLIENTES</em></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;font-family:'DM Sans',sans-serif;">Clique em qualquer par para ampliar. Deslize para navegar entre as transformações.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div style="text-align:center;background:rgba(0,196,174,.08);border:1px solid rgba(0,196,174,.2);border-radius:12px;padding:12px 20px;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);line-height:1;" id="adIntroCount">—</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:2px;">transformações</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -5898,6 +5913,8 @@ function adRender() {
   const countEl = document.getElementById('adCount');
   if (!grid) return;
   if (countEl) countEl.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
+  const introCount = document.getElementById('adIntroCount');
+  if (introCount) introCount.textContent = adPairs.length;
   adUpdateSidebar();
 
   if (!adPairs.length) {
