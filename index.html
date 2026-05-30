@@ -4243,6 +4243,206 @@ body.admin-mode .sala-admin-btn { display: flex; }
   .sala-limite-box { width: 100%; border-radius: 20px 20px 0 0; padding: 24px 20px 28px; }
 }
 
+
+/* ══════════════════════════════════════
+   SALA MODE — sobrepõe o site normal
+   ══════════════════════════════════════ */
+
+/* Barra flutuante da sala no topo do site */
+#salaModeBar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9000;
+  background: rgba(5,5,10,.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 2px solid rgba(0,196,174,.3);
+  height: 56px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+}
+.sala-bar-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.sala-bar-cliente {
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sala-bar-cliente strong { color: rgba(255,255,255,.9); }
+.sala-bar-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,.4);
+  border: 1.5px solid rgba(0,196,174,.3);
+  border-radius: 50px;
+  padding: 5px 12px;
+  flex-shrink: 0;
+}
+.sala-bar-pill.full { border-color: rgba(255,107,53,.5); }
+.sala-bar-nums {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: var(--accent);
+  line-height: 1;
+}
+.sala-bar-pill.full .sala-bar-nums { color: #ff6b35; }
+.sala-bar-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,.4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sala-bar-send {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,196,174,.3);
+}
+.sala-bar-send:disabled {
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.25);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.sala-bar-send:not(:disabled):hover { background: #00b89a; }
+.sala-bar-exit {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.3);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: all .12s;
+}
+.sala-bar-exit:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+
+/* Empurra o conteúdo para baixo da barra */
+body.sala-mode .topbar { margin-top: 56px; }
+
+/* Esconde elementos que o cliente não deve ver */
+body.sala-mode .admin-only,
+body.sala-mode #adminBadge,
+body.sala-mode .sala-admin-btn,
+body.sala-mode .gallery-card-actions,
+body.sala-mode .photo-delete-btn,
+body.sala-mode .photo-move-btn,
+body.sala-mode .photo-fav-star,
+body.sala-mode #backToGalleriesBtn,
+body.sala-mode .gallery-upload-fab,
+body.sala-mode .topbar-right { display: none !important; }
+
+/* Fotos ficam clicáveis para selecionar */
+body.sala-mode .photo-card {
+  cursor: pointer !important;
+}
+
+/* Selecionada — borda verde + overlay */
+body.sala-mode .photo-card.sala-selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,196,174,.22);
+  border: 3px solid var(--accent);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Check de selecionada */
+body.sala-mode .photo-card .sala-check-badge {
+  display: none;
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+body.sala-mode .photo-card.sala-selected .sala-check-badge { display: flex; }
+
+/* Número de ordem */
+body.sala-mode .photo-card .sala-order-badge {
+  display: none;
+  position: absolute;
+  bottom: 28px; left: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  z-index: 25;
+}
+body.sala-mode .photo-card.sala-selected .sala-order-badge { display: block; }
+
+/* Banner dica no topo da galeria */
+#salaModeHint {
+  display: none;
+  padding: 10px 20px;
+  background: linear-gradient(110deg, #0c1f1c, #0a1210);
+  border-bottom: 1px solid rgba(0,196,174,.15);
+  font-size: 12px;
+  color: rgba(255,255,255,.6);
+  text-align: center;
+}
+body.sala-mode #salaModeHint { display: block; }
+#salaModeHint strong { color: var(--accent); }
+
+/* Progress bar no topo */
+#salaModeProgress {
+  display: none;
+  height: 3px;
+  background: rgba(0,196,174,.12);
+  position: sticky;
+  top: 56px;
+  z-index: 8999;
+}
+body.sala-mode #salaModeProgress { display: block; }
+#salaModeProgressFill {
+  height: 100%;
+  background: var(--accent);
+  transition: width .3s;
+  box-shadow: 0 0 8px rgba(0,196,174,.5);
+}
+
+@media (max-width: 768px) {
+  #salaModeBar { height: 52px; padding: 0 12px; gap: 8px; }
+  .sala-bar-brand { font-size: 14px; }
+  .sala-bar-cliente { display: none; }
+  .sala-bar-nums { font-size: 16px; }
+  .sala-bar-send { font-size: 12px; padding: 6px 10px; }
+  body.sala-mode .topbar { margin-top: 52px; }
+  #salaModeProgress { top: 52px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -5280,6 +5480,10 @@ function render(pool) {
         ? `<img src="${cloudThumb(it.img)}" loading="lazy" alt="${it.title || ''}">`
         : `<span>⏳</span>`}
       <div class="photo-card-num">${it.title || (idx + 1)}</div>
+      ${document.body.classList.contains('sala-mode') ? `
+        <div class="sala-check-badge">✓</div>
+        <div class="sala-order-badge">${(()=>{const s=salaSelecao.find(x=>x.id===it.id);return s?s.order:'';})()}</div>
+      ` : ''}
       ${adminMode ? `<button class="photo-delete-btn" onclick="event.stopPropagation();deleteItem('${it.id}')" title="Apagar foto">✕</button>` : ''}
       ${!selectable && adminMode ? `<button class="photo-move-btn" onclick="event.stopPropagation();openMoveModal('${it.id}')" title="Mover para outra galeria">↗</button>` : ''}
       <div class="photo-views-badge">${getPhotoViews(it.id)>0?`👁 ${getPhotoViews(it.id)}`:''}</div>
@@ -5300,6 +5504,18 @@ function render(pool) {
     bar.className='pagination-bar';
     bar.innerHTML=renderPaginationHTML(page,totalPages,pool.length,start,pagePol.length);
     grid.insertAdjacentElement('afterend',bar);
+  }
+
+  // Em sala-mode, restaura estado de seleção nos cards visíveis
+  if (document.body.classList.contains('sala-mode') && salaSelecao.length) {
+    salaSelecao.forEach(s => {
+      const card = document.getElementById('pcard-' + s.id);
+      if (card) {
+        card.classList.add('sala-selected');
+        const ob = card.querySelector('.sala-order-badge');
+        if (ob) ob.textContent = s.order;
+      }
+    });
   }
 
   // Botão de upload flutuante dentro da galeria (admin mode, categoria específica)
@@ -5533,6 +5749,12 @@ function cleanGhostItems() {
 
 // ── LIGHTBOX ──
 function openLightbox(idx) {
+  // Em modo sala, clique na foto seleciona em vez de abrir lightbox
+  if (document.body.classList.contains('sala-mode')) {
+    const it = currentView[idx];
+    if (it) salaToggleByItem(it);
+    return;
+  }
   if (!currentView[idx]?.img) return;
   lbIndex = idx;
   updateLightbox();
@@ -7496,19 +7718,21 @@ function iniciarSala() {
   salaCatFilter = null;
   document.getElementById('salaEntradaOverlay').classList.remove('open');
 
-  // Esconde site principal
-  document.querySelector('.main').style.display = 'none';
-  document.querySelector('.topbar').style.display = 'none';
+  // Ativa modo sala no body — CSS cuida do resto
+  document.body.classList.add('sala-mode');
 
-  // Abre view da Sala
-  document.getElementById('viewSala').classList.add('active');
-  document.getElementById('salaClienteLabel').textContent = salaClienteNome;
+  // Mostra barra flutuante da sala
+  document.getElementById('salaModeBar').style.display = 'flex';
+  document.getElementById('salaBarCliente').textContent = salaClienteNome;
   document.getElementById('salaCountMax').textContent = salaMaxFotos;
+  document.getElementById('salaCountMax2').textContent = salaMaxFotos;
   document.getElementById('salaInstrMax').textContent = salaMaxFotos;
   document.getElementById('salaCountSel').textContent = '0';
 
-  salaRenderCats();
-  salaRender();
+  // Vai para home (galerias) e renderiza normalmente
+  currentCat = null;
+  render();
+  window.scrollTo(0,0);
   salaUpdateCounter();
 }
 
@@ -7517,11 +7741,11 @@ function fecharSala() {
   if (salaSelecao.length > 0) {
     if (!confirm('Tem certeza? Sua seleção será perdida.')) return;
   }
-  document.getElementById('viewSala').classList.remove('active');
-  document.querySelector('.main').style.display = '';
-  document.querySelector('.topbar').style.display = '';
+  document.body.classList.remove('sala-mode');
+  document.getElementById('salaModeBar').style.display = 'none';
   salaSelecao = [];
   salaUpdateCounter();
+  render();
 }
 
 // ── Render categorias ──
@@ -7589,6 +7813,36 @@ function salaCardHTML(it) {
     </div>`;
 }
 
+// ── Toggle por item (usado pelo site normal no sala-mode) ──
+function salaToggleByItem(it) {
+  const existing = salaSelecao.findIndex(s => s.id === it.id);
+  if (existing !== -1) {
+    salaSelecao.splice(existing, 1);
+    salaSelecao.forEach((s, i) => s.order = i + 1);
+  } else {
+    if (salaSelecao.length >= salaMaxFotos) {
+      abrirSalaLimiteModal();
+      return;
+    }
+    const cat = cats.find(c => c.id === it.cat);
+    salaSelecao.push({ id: it.id, img: it.img, title: it.title || '', catName: cat?.name || '', order: salaSelecao.length + 1 });
+  }
+  salaUpdateCounter();
+  // Atualiza apenas o card clicado — sem rerenderizar tudo
+  const card = document.getElementById('pcard-' + it.id);
+  if (card) {
+    const isSel = salaSelecao.find(s => s.id === it.id);
+    card.classList.toggle('sala-selected', !!isSel);
+    const orderBadge = card.querySelector('.sala-order-badge');
+    if (orderBadge) orderBadge.textContent = isSel ? isSel.order : '';
+    // Atualiza números de todos (após reordenação)
+    salaSelecao.forEach(s => {
+      const c = document.getElementById('pcard-' + s.id);
+      if (c) { const b = c.querySelector('.sala-order-badge'); if (b) b.textContent = s.order; }
+    });
+  }
+}
+
 // ── Toggle seleção ──
 function salaToggle(id) {
   const existing = salaSelecao.findIndex(s => s.id === id);
@@ -7616,18 +7870,37 @@ function salaToggle(id) {
 function salaUpdateCounter() {
   const n = salaSelecao.length;
   const max = salaMaxFotos;
-  document.getElementById('salaCountSel').textContent = n;
-  document.getElementById('salaCountMax').textContent = max;
 
-  const pill = document.getElementById('salaCounterPill');
-  pill.classList.toggle('full', n >= max);
+  // Barra flutuante (sala-mode no site normal)
+  const selEls = document.querySelectorAll('#salaCountSel');
+  const maxEls = document.querySelectorAll('#salaCountMax, #salaCountMax2');
+  selEls.forEach(el => el.textContent = n);
+  maxEls.forEach(el => el.textContent = max);
 
+  const barPill = document.getElementById('salaBarPill');
+  if (barPill) barPill.classList.toggle('full', n >= max);
+
+  const barBtn = document.getElementById('salaBarSendBtn');
+  if (barBtn) {
+    barBtn.disabled = n === 0;
+    barBtn.textContent = n > 0 ? `✓ Enviar ${n}` : '✓ Enviar';
+  }
+
+  // Progresso
   const pct = (n / max) * 100;
-  document.getElementById('salaProgressFill').style.width = pct + '%';
+  const pFill = document.getElementById('salaModeProgressFill');
+  if (pFill) pFill.style.width = pct + '%';
+  const pFill2 = document.getElementById('salaProgressFill');
+  if (pFill2) pFill2.style.width = pct + '%';
 
+  // Pill antiga (viewSala)
+  const pill = document.getElementById('salaCounterPill');
+  if (pill) pill.classList.toggle('full', n >= max);
   const btn = document.getElementById('salaEnviarBtn');
-  btn.disabled = n === 0;
-  btn.textContent = n > 0 ? `✓ Enviar ${n} foto${n !== 1 ? 's' : ''}` : '✓ Enviar seleção';
+  if (btn) {
+    btn.disabled = n === 0;
+    btn.textContent = n > 0 ? `✓ Enviar ${n} foto${n !== 1 ? 's' : ''}` : '✓ Enviar seleção';
+  }
 }
 
 // ── Modal de confirmação ──
