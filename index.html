@@ -4070,6 +4070,113 @@ body.admin-mode .sala-admin-btn { display: flex; }
   .sala-qty-btn { font-size: 14px; }
 }
 
+
+/* ── SALA — PAINEL ADMIN ── */
+#salaAdminPanel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(5,5,10,.88);
+  backdrop-filter: blur(16px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#salaAdminPanel.open { display: flex; }
+.sala-admin-panel-box {
+  background: var(--surface);
+  border-radius: 20px;
+  width: min(460px, 96vw);
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.25);
+  border: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: mpop .25s cubic-bezier(.34,1.46,.64,1) both;
+}
+.sala-admin-panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  color: var(--text);
+}
+.sala-admin-panel-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: -8px;
+}
+.sala-link-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--surface2);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.sala-link-url {
+  flex: 1;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+.sala-link-copy {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.sala-link-copy:hover { background: #00a896; }
+.sala-admin-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sala-admin-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.sala-admin-step-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sala-admin-panel-foot {
+  display: flex;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+@media (max-width: 768px) {
+  #salaAdminPanel { align-items: flex-end; padding: 0; }
+  .sala-admin-panel-box { width: 100%; border-radius: 20px 20px 0 0; padding: 24px 20px 28px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -4125,7 +4232,7 @@ body.admin-mode .sala-admin-btn { display: flex; }
   </div>
 
   <div class="topbar-right">
-    <button class="sala-admin-btn" onclick="openSalaEntrada()" title="Abrir Sala de Seleção para cliente">
+    <button class="sala-admin-btn" onclick="openSalaAdminPanel()" title="Gerar link da Sala de Seleção">
       🎯 Sala de Seleção
     </button>
     <button class="btn btn-ghost btn-sm admin-only" onclick="openUpload()">
@@ -7500,4 +7607,82 @@ function enviarParaWhatsApp() {
 })();
 </script>
 
+
+<!-- ── SALA — PAINEL ADMIN ── -->
+<div id="salaAdminPanel">
+  <div class="sala-admin-panel-box">
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="sala-admin-panel-title">🎯 Sala de Seleção</div>
+        <button onclick="document.getElementById('salaAdminPanel').classList.remove('open')" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+      </div>
+      <div class="sala-admin-panel-desc">Envie este link para o cliente escolher as fotos. Ele não tem acesso ao painel admin.</div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;">Link do cliente</div>
+      <div class="sala-link-box">
+        <span class="sala-link-url" id="salaLinkUrl"></span>
+        <button class="sala-link-copy" onclick="copiarLinkSala()">Copiar</button>
+      </div>
+    </div>
+
+    <div class="sala-admin-steps">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;">Como funciona</div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">1</div>
+        <span>Copie o link acima e envie para o cliente pelo WhatsApp</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">2</div>
+        <span>O cliente abre o link, digita o nome e escolhe quantas fotos quer</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">3</div>
+        <span>Ele navega pelas galerias e toca nas fotos que quer</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">4</div>
+        <span>Ao finalizar, clica em "Enviar" e o WhatsApp abre com a lista completa para você</span>
+      </div>
+    </div>
+
+    <div class="sala-admin-panel-foot">
+      <button class="btn btn-ghost" style="flex:1;" onclick="document.getElementById('salaAdminPanel').classList.remove('open')">Fechar</button>
+      <button class="btn btn-accent" style="flex:1;justify-content:center;" onclick="compartilharLinkSala()">
+        📤 Compartilhar no WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SALA — PAINEL ADMIN ──
+function openSalaAdminPanel() {
+  const base = window.location.href.split('?')[0].split('#')[0];
+  const link = base + '?sala=1';
+  document.getElementById('salaLinkUrl').textContent = link;
+  document.getElementById('salaAdminPanel').classList.add('open');
+}
+
+function copiarLinkSala() {
+  const url = document.getElementById('salaLinkUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('#salaAdminPanel .sala-link-copy');
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  }).catch(() => {
+    const inp = document.createElement('input');
+    inp.value = url; document.body.appendChild(inp); inp.select();
+    document.execCommand('copy'); inp.remove();
+    toast('🔗 Link copiado!');
+  });
+}
+
+function compartilharLinkSala() {
+  const url = document.getElementById('salaLinkUrl').textContent;
+  const msg = 'Olá! Acesse o link abaixo para escolher suas fotos favoritas da nossa galeria:\n\n' + url + '\n\nQualquer dúvida, é só chamar! 😊';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
 </body></html>
