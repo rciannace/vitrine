@@ -8038,6 +8038,19 @@ function compartilharLinkSala() {
     <div class="sala-limite-title">Você atingiu o limite!</div>
     <div class="sala-limite-desc">Você já escolheu <strong id="salaLimiteAtual">0</strong> fotos. Quer aumentar a quantidade para escolher mais?</div>
     <div class="sala-limite-qtds" id="salaLimiteQtds"></div>
+    <!-- Campo livre para qualquer quantidade -->
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:11px;color:var(--muted);white-space:nowrap;">ou digite outro número</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input id="salaLimiteCustom" type="number" min="1" max="999" placeholder="Ex: 35"
+        style="flex:1;padding:10px 14px;border:2px solid var(--border2);border-radius:10px;font-size:16px;font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--text);outline:none;text-align:center;"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"
+        onkeydown="if(event.key==='Enter')confirmarSalaLimiteCustom()">
+      <button onclick="confirmarSalaLimiteCustom()" style="padding:10px 16px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:background .15s;" onmouseover="this.style.background='#00a896'" onmouseout="this.style.background='var(--accent)'">OK</button>
+    </div>
     <div class="sala-limite-foot">
       <button class="btn btn-ghost" onclick="fecharSalaLimiteModal()">Cancelar</button>
       <button class="btn btn-accent" onclick="abrirSalaConfirm();fecharSalaLimiteModal()">
@@ -8053,32 +8066,45 @@ function abrirSalaLimiteModal() {
   const n = salaSelecao.length;
   document.getElementById('salaLimiteAtual').textContent = n;
   document.getElementById('salaLimiteEnviarN').textContent = n;
+  document.getElementById('salaLimiteCustom').value = '';
 
-  // Mostra opções maiores que o atual
-  const opcoes = [5, 10, 15, 20, 30];
+  // Opções predefinidas acima do atual + próximos múltiplos de 5
+  const base = [5,10,15,20,25,30,40,50];
+  const opcoes = base.filter(q => q > salaMaxFotos);
+  // Se já está em 50+, sugere +10 e +20
+  if (opcoes.length === 0) {
+    opcoes.push(salaMaxFotos + 10, salaMaxFotos + 20);
+  }
+
   const qtdsEl = document.getElementById('salaLimiteQtds');
-  qtdsEl.innerHTML = opcoes.map(q => {
-    const isAtual = q === salaMaxFotos;
-    const menor = q < salaMaxFotos;
-    if (menor) return ''; // não mostra menores
-    return `<button class="sala-limite-qty-btn ${isAtual ? 'atual' : ''}"
-      onclick="${isAtual ? '' : `aumentarSalaQty(${q})`}"
-      ${isAtual ? 'disabled' : ''}>${q}</button>`;
-  }).join('');
+  qtdsEl.innerHTML = opcoes.slice(0, 5).map(q => `
+    <button class="sala-limite-qty-btn" onclick="aumentarSalaQty(${q})">${q}</button>
+  `).join('');
 
   document.getElementById('salaLimiteOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('salaLimiteCustom').focus(), 300);
 }
 
 function fecharSalaLimiteModal() {
   document.getElementById('salaLimiteOverlay').classList.remove('open');
 }
 
+function confirmarSalaLimiteCustom() {
+  const val = parseInt(document.getElementById('salaLimiteCustom').value);
+  if (!val || val < salaSelecao.length) {
+    const inp = document.getElementById('salaLimiteCustom');
+    inp.style.borderColor = 'var(--red)';
+    inp.placeholder = 'Mín: ' + salaSelecao.length;
+    setTimeout(() => { inp.style.borderColor = 'var(--border2)'; inp.placeholder = 'Ex: 35'; }, 1500);
+    return;
+  }
+  aumentarSalaQty(val);
+}
+
 function aumentarSalaQty(novaQty) {
   salaMaxFotos = novaQty;
-  document.getElementById('salaCountMax').textContent = novaQty;
   document.getElementById('salaInstrMax').textContent = novaQty;
   salaUpdateCounter();
-  salaRender();
   fecharSalaLimiteModal();
   toast('✓ Agora você pode escolher até ' + novaQty + ' fotos!');
 }
