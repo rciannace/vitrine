@@ -326,6 +326,8 @@ body{
   transition:border-color .18s,background .18s;
 }
 .search-input::placeholder{color:var(--subtle);}
+.search-input::-webkit-search-cancel-button{display:none;}
+.search-input::-webkit-search-decoration{display:none;}
 .search-input:focus{border-color:var(--cyan);background:var(--s1);}
 
 .view-toggle{
@@ -7435,7 +7437,7 @@ document.querySelectorAll('.overlay').forEach(o => {
   const wrapper = document.getElementById('searchInputWrapper');
   if (wrapper) {
     const inp = document.createElement('input');
-    inp.type = 'text';
+    inp.type = 'search';
     inp.className = 'search-input';
     inp.id = 'searchInput';
     inp.setAttribute('placeholder', 'Buscar título, prompt, tag…');
