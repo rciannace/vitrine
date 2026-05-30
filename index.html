@@ -3213,6 +3213,115 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-hero-cta { font-size: 11px; padding: 6px 12px; }
 }
 
+
+/* ══════════════════════════════════════
+   ANTES & DEPOIS — MOBILE COMPLETO
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── View principal ── */
+  #viewAntesDepois.active {
+    position: fixed;
+    inset: 0;
+    top: 56px;
+    z-index: 50;
+    background: var(--bg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Toolbar ── */
+  .ad-toolbar { padding: 12px 14px 0; gap: 8px; flex-wrap: nowrap; }
+  .ad-toolbar-title { font-size: 16px; }
+  .ad-count { font-size: 10px; }
+
+  /* ── Intro banner ── */
+  #viewAntesDepois .ad-intro-banner {
+    margin: 10px 12px 0;
+    padding: 16px 14px;
+  }
+
+  /* ── Grid de cards ── */
+  .ad-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px 12px 80px;
+  }
+
+  /* ── Card A/D ── */
+  .ad-card { border-radius: 12px; }
+  .ad-card-body { padding: 8px 10px; }
+  .ad-card-label { font-size: 11px; }
+  .ad-sidebyside { aspect-ratio: 1/1; }
+  .ad-label-before, .ad-label-after { font-size: 7px; padding: 2px 6px; bottom: 5px; }
+  .ad-split-line { display: none; } /* linha fica poluída em card pequeno */
+
+  /* ── Hero card na home ── */
+  .ad-hero-card { grid-column: span 2; aspect-ratio: 3/2; border-radius: 12px; }
+  .ad-hero-title { font-size: 20px; letter-spacing: 1.5px; }
+  .ad-hero-eyebrow-text { font-size: 7px; letter-spacing: 1.5px; }
+  .ad-hero-count-pill { padding: 3px 8px; }
+  .ad-hero-count-num { font-size: 14px; }
+  .ad-hero-count-label { font-size: 8px; }
+  .ad-hero-cta { font-size: 11px; padding: 6px 12px; }
+  .ad-hero-overlay { padding: 24px 12px 12px; }
+
+  /* ── Modal de upload A/D ── */
+  #adUploadOverlay { align-items: flex-end; padding: 0; }
+  .ad-upload-modal {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+    overflow-y: auto;
+  }
+  .ad-upload-head { padding: 16px 18px; }
+  .ad-upload-body { padding: 16px 16px; gap: 14px; }
+  .ad-pair-grid { gap: 10px; }
+  .ad-zone { aspect-ratio: 1/1; } /* quadrado no mobile cabe melhor */
+  .ad-zone-icon { font-size: 22px; }
+  .ad-zone-hint { font-size: 10px; }
+  .ad-upload-foot { padding: 12px 16px; }
+
+  /* ── Lightbox A/D ── */
+  #adLightboxOverlay { padding: 0; }
+  .ad-lb-inner { padding: 48px 8px 70px; }
+  .ad-lb-photos {
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    max-height: calc(100vh - 140px);
+  }
+  .ad-lb-badge { font-size: 8px; padding: 3px 8px; bottom: 8px; }
+  .ad-lb-badge.before { left: 8px; }
+  .ad-lb-badge.after  { right: 8px; }
+  .ad-lb-footer {
+    height: 60px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .ad-lb-title { font-size: 14px; }
+  .ad-lb-counter { font-size: 10px; right: 12px; }
+  .ad-lb-close { width: 36px; height: 36px; font-size: 16px; top: 10px; right: 10px; }
+  .ad-lb-nav { width: 36px; height: 36px; font-size: 18px; }
+  #adLbPrev { left: 4px; }
+  #adLbNext { right: 4px; }
+
+  /* ── Intro banner ── */
+  #viewAntesDepois > div:nth-child(2) {
+    margin: 10px 12px 0 !important;
+    padding: 14px 14px !important;
+  }
+  #viewAntesDepois > div:nth-child(2) > div > div:first-child > div:last-child {
+    font-size: 22px !important;
+  }
+  #adIntroCount { font-size: 28px !important; }
+}
+
+@media (max-width: 480px) {
+  .ad-grid { grid-template-columns: 1fr; }
+  .ad-hero-card { aspect-ratio: 4/3; }
+  .ad-hero-title { font-size: 18px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -5880,14 +5989,12 @@ window.addEventListener('firebase-ready', async () => {
 
 // ── Abrir/fechar view ──
 function openAntesDepois() {
-  // Esconde a view principal
-  document.querySelector('.main').style.display = 'none';
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) document.querySelector('.main').style.display = 'none';
   document.getElementById('viewAntesDepois').classList.add('active');
-  // Sidebar: marca ativo
   document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
-  // FAB admin
-  const fab = document.getElementById('adFab');
-  if (fab && document.body.classList.contains('admin-mode')) fab.style.display = 'flex';
+  // Fecha drawer mobile se estiver aberto
+  if (typeof closeDrawer === 'function') closeDrawer();
   adLoad();
   adRender();
 }
