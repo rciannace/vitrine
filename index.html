@@ -2543,17 +2543,12 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   position: relative;
   overflow: hidden;
   background: #0a0a0c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
 }
 .ad-lb-photo-wrap img {
   width: 100%;
   height: 100%;
-  max-height: calc(100vh - 200px);
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center 20%;
   display: block;
   transition: opacity .35s;
 }
