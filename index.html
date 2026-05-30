@@ -3997,6 +3997,73 @@ body.admin-mode .sala-admin-btn { display: flex; }
   .sala-entrada-qty-row { grid-template-columns: repeat(5, 1fr); }
 }
 
+
+@media (max-width: 768px) {
+
+  /* ── SALA DE SELEÇÃO — view full screen ── */
+  #viewSala {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    overflow: hidden;
+    display: none;
+  }
+  #viewSala.active { display: flex; }
+
+  /* ── Filtro de categorias ── */
+  .sala-cats {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  .sala-cat-chip {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  /* ── Card de foto ── */
+  .sala-photo-card { border-radius: 10px; }
+  .sala-check { width: 24px; height: 24px; font-size: 12px; top: 6px; right: 6px; }
+  .sala-order-num { font-size: 11px; padding: 1px 6px; bottom: 6px; left: 6px; }
+
+  /* ── Tela de entrada ── */
+  #salaEntradaOverlay { align-items: flex-end; padding: 0; }
+  .sala-entrada-box {
+    width: 100%;
+    border-radius: 24px 24px 0 0;
+    padding: 28px 20px 32px;
+    gap: 16px;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  .sala-entrada-title { font-size: 30px; }
+  .sala-entrada-input { font-size: 16px; padding: 12px 14px; }
+  .sala-qty-btn { font-size: 16px; padding: 7px 4px; }
+
+  /* ── Modal de confirmação ── */
+  #salaConfirmOverlay { align-items: flex-end; padding: 0; }
+  .sala-confirm-box {
+    width: 100%;
+    border-radius: 24px 24px 0 0;
+    max-height: 88vh;
+  }
+  .sala-confirm-head { padding: 20px 20px 0; }
+  .sala-confirm-icon { font-size: 36px; }
+  .sala-confirm-title { font-size: 22px; }
+  .sala-confirm-grid { grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 5px; padding: 14px 16px; }
+  .sala-confirm-foot { padding: 10px 16px 20px; }
+  .sala-confirm-wa { font-size: 14px; padding: 12px; }
+
+  /* ── Pricing featured toggle ── */
+  .pricing-featured-toggle { font-size: 11px; padding: 7px 10px; }
+}
+
+@media (max-width: 480px) {
+  .sala-topbar-cliente { display: none; } /* tela muito pequena, economiza espaço */
+  .sala-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
+  .sala-entrada-qty-row { gap: 4px; }
+  .sala-qty-btn { font-size: 14px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
