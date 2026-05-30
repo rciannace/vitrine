@@ -2200,6 +2200,234 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 }
 
 /* ══════════════════════════════════════
+   CARD ESPECIAL ANTES & DEPOIS — HOME
+   ══════════════════════════════════════ */
+.gallery-card.ad-hero-card {
+  grid-column: span 2;
+  aspect-ratio: 16/9;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 6px 32px rgba(0,196,174,.18), 0 2px 12px rgba(0,0,0,.12);
+  border: 2px solid rgba(0,196,174,.35);
+  background: #0a0a0c;
+  transition: transform .2s, box-shadow .2s;
+}
+.gallery-card.ad-hero-card:hover {
+  transform: scale(1.025);
+  box-shadow: 0 12px 48px rgba(0,196,174,.28), 0 4px 20px rgba(0,0,0,.2);
+  z-index: 3;
+}
+
+/* Duas fotos ocupando 50% cada */
+.ad-hero-photos {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(0,196,174,.2);
+}
+.ad-hero-photo {
+  position: relative;
+  overflow: hidden;
+}
+.ad-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform .5s ease;
+  filter: brightness(.85);
+}
+.gallery-card.ad-hero-card:hover .ad-hero-photo img {
+  transform: scale(1.06);
+  filter: brightness(.95);
+}
+
+/* Label ANTES/DEPOIS sobre cada foto */
+.ad-hero-badge {
+  position: absolute;
+  bottom: 10px;
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  z-index: 5;
+}
+.ad-hero-badge.before {
+  left: 10px;
+  background: rgba(0,0,0,.7);
+  color: rgba(255,255,255,.85);
+}
+.ad-hero-badge.after {
+  right: 10px;
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Linha divisória central */
+.ad-hero-split {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: rgba(0,196,174,.7);
+  z-index: 6;
+  pointer-events: none;
+}
+.ad-hero-split::before {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(0,196,174,.25);
+}
+
+/* Gradiente e texto no rodapé */
+.ad-hero-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 40px 16px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, transparent 100%);
+  z-index: 7;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ad-hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+.ad-hero-title em {
+  color: var(--accent);
+  font-style: normal;
+}
+.ad-hero-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,.55);
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 3px;
+}
+.ad-hero-cta {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0,196,174,.4);
+  transition: background .15s;
+}
+.gallery-card.ad-hero-card:hover .ad-hero-cta {
+  background: #00a896;
+}
+
+/* Pulse glow animation */
+@keyframes adHeroPulse {
+  0%,100% { box-shadow: 0 6px 32px rgba(0,196,174,.18), 0 0 0 0 rgba(0,196,174,.3); }
+  50%      { box-shadow: 0 6px 32px rgba(0,196,174,.28), 0 0 0 6px rgba(0,196,174,0); }
+}
+.gallery-card.ad-hero-card {
+  animation: adHeroPulse 3s ease-in-out infinite;
+}
+.gallery-card.ad-hero-card:hover {
+  animation: none;
+}
+
+/* Badge "NOVO" piscante */
+.ad-hero-new-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 8;
+  background: #ff4d6d;
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  animation: adBadgeBlink 2s ease-in-out infinite;
+}
+@keyframes adBadgeBlink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .5; }
+}
+
+/* Count pill */
+.ad-hero-count {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 8;
+  background: rgba(0,0,0,.6);
+  color: rgba(255,255,255,.85);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+/* Empty state */
+.ad-hero-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(0,196,174,.08), transparent 60%);
+}
+.ad-hero-empty-icon {
+  font-size: 36px;
+  opacity: .3;
+}
+.ad-hero-empty-text {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .5px;
+}
+
+/* Mobile: card ocupa 1 coluna em telas pequenas */
+@media (max-width: 600px) {
+  .gallery-card.ad-hero-card {
+    grid-column: span 1;
+    aspect-ratio: 4/3;
+  }
+  .ad-hero-title { font-size: 17px; }
+}
+
+/* ══════════════════════════════════════
    ANTES & DEPOIS — GALERIA ESPECIAL
    ══════════════════════════════════════ */
 
@@ -3949,37 +4177,45 @@ function renderHomeGalleries(grid, title, badge) {
       </div>`;
   }).join('');
 
-  // Card Antes & Depois — sempre o primeiro
+  // Card Antes & Depois — hero card sempre primeiro
   adLoad();
   const adCount = adPairs.length;
-  let adThumbHTML = '';
-  if (adPairs.length >= 2) {
-    // Mostra mini antes/depois como thumbnail
-    adThumbHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:2px;">
-        <img src="${cloudThumb(adPairs[0].before)}" style="width:100%;height:100%;object-fit:cover;">
-        <img src="${cloudThumb(adPairs[0].after)}"  style="width:100%;height:100%;object-fit:cover;">
-      </div>`;
-  } else if (adPairs.length === 1) {
-    adThumbHTML = `<img src="${cloudThumb(adPairs[0].before)}" style="width:100%;height:100%;object-fit:cover;">`;
+
+  let adPhotosHTML = '';
+  if (adPairs.length >= 1) {
+    const p = adPairs[0];
+    const before = cloudThumb(p.before);
+    const after  = cloudThumb(p.after || p.before);
+    adPhotosHTML = `
+      <div class="ad-hero-photos">
+        <div class="ad-hero-photo">
+          <img src="${before}" alt="Antes">
+          <span class="ad-hero-badge before">Antes</span>
+        </div>
+        <div class="ad-hero-photo">
+          <img src="${after}" alt="Depois">
+          <span class="ad-hero-badge after">Depois</span>
+        </div>
+      </div>
+      <div class="ad-hero-split"></div>`;
   } else {
-    adThumbHTML = `<div class="gallery-card-thumb-empty" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:100%;">
-      <span style="font-size:32px;opacity:.35;">✦</span>
-      <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">Antes & Depois</span>
+    adPhotosHTML = `<div class="ad-hero-empty">
+      <div class="ad-hero-empty-icon">✦</div>
+      <div class="ad-hero-empty-text">Transformações em breve</div>
     </div>`;
   }
+
   const adCardHTML = `
-    <div class="gallery-card" id="gcard-ad" onclick="openAntesDepois()" style="position:relative;">
-      <div class="gallery-card-thumb" style="border:2px solid rgba(0,196,174,.35);background:linear-gradient(135deg,rgba(0,196,174,.08),transparent);">
-        ${adThumbHTML}
-        <div class="gallery-card-thumb-count" style="background:var(--accent);color:#fff;">${adCount} par${adCount !== 1 ? 'es' : ''}</div>
-      </div>
-      <div class="gallery-card-body">
-        <div class="gallery-card-info">
-          <div class="gallery-card-name" style="color:var(--accent);">✦ Antes &amp; Depois</div>
-          <div class="gallery-card-sub">Veja as transformações</div>
+    <div class="gallery-card ad-hero-card" id="gcard-ad" onclick="openAntesDepois()">
+      ${adPhotosHTML}
+      ${adCount > 0 ? `<div class="ad-hero-new-badge">● Novo</div>` : ''}
+      ${adCount > 0 ? `<div class="ad-hero-count">${adCount} par${adCount !== 1 ? 'es' : ''}</div>` : ''}
+      <div class="ad-hero-footer">
+        <div>
+          <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
+          <div class="ad-hero-sub">Veja a transformação real dos nossos clientes</div>
         </div>
-        <span class="gallery-card-arrow" style="color:var(--accent);">›</span>
+        <div class="ad-hero-cta">Ver resultados →</div>
       </div>
     </div>`;
 
