@@ -2996,6 +2996,277 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-sidebyside { aspect-ratio: 2/1.8; }
 }
 
+
+/* ══════════════════════════════════════
+   HERO CARD ANTES & DEPOIS — DESTAQUE
+   ══════════════════════════════════════ */
+
+/* O card ocupa toda a largura da grade (todas as colunas) */
+.ad-hero-card {
+  grid-column: 1 / -1;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 340px;
+  background: #0a0a0f;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,196,174,.18);
+  transition: transform .22s, box-shadow .22s;
+}
+.ad-hero-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 60px rgba(0,196,174,.18), 0 0 0 1px rgba(0,196,174,.3);
+}
+
+/* Grade interna: fotos lado a lado mais painel de texto */
+.ad-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 100%;
+}
+
+/* Cada foto ocupa 1 coluna */
+.ad-hero-photo {
+  position: relative;
+  overflow: hidden;
+}
+.ad-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+  transition: transform .6s ease, filter .6s ease;
+  filter: brightness(.75) saturate(.8);
+}
+.ad-hero-card:hover .ad-hero-photo img {
+  transform: scale(1.06);
+  filter: brightness(.9) saturate(1);
+}
+
+/* Foto "antes" — escala de cinza */
+.ad-hero-photo.before img {
+  filter: grayscale(60%) brightness(.7);
+}
+.ad-hero-card:hover .ad-hero-photo.before img {
+  filter: grayscale(30%) brightness(.85);
+}
+
+/* Foto "depois" — vibrante */
+.ad-hero-photo.after img {
+  filter: brightness(.85) saturate(1.1);
+}
+.ad-hero-card:hover .ad-hero-photo.after img {
+  filter: brightness(1) saturate(1.2);
+}
+
+/* Gradiente sobre cada foto */
+.ad-hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55) 100%);
+  pointer-events: none;
+}
+
+/* Badge ANTES / DEPOIS sobre a foto */
+.ad-hero-badge {
+  position: absolute;
+  top: 14px;
+  z-index: 5;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.ad-hero-badge.b { left: 14px; background: rgba(0,0,0,.7); color: rgba(255,255,255,.8); }
+.ad-hero-badge.a { right: 14px; background: var(--accent); color: #fff; box-shadow: 0 2px 10px rgba(0,196,174,.4); }
+
+/* Linha divisória entre as duas fotos */
+.ad-hero-divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  width: 1px;
+  background: rgba(255,255,255,.18);
+  z-index: 4;
+  pointer-events: none;
+}
+/* Linha entre col 2 e col 3 (painel texto) */
+.ad-hero-divider-right {
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 0;
+  width: 1px;
+  background: rgba(0,196,174,.25);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Painel de texto — coluna direita */
+.ad-hero-panel {
+  position: relative;
+  background: linear-gradient(135deg, #0c1a18 0%, #0a0a0f 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 28px;
+  gap: 16px;
+  overflow: hidden;
+  z-index: 3;
+}
+/* Detalhe geométrico no painel */
+.ad-hero-panel::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,196,174,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ad-hero-panel::after {
+  content: '✦';
+  position: absolute;
+  bottom: 20px; right: 24px;
+  font-size: 80px;
+  color: rgba(0,196,174,.04);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.ad-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ad-hero-eyebrow-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: adPulseDot 1.8s ease-in-out infinite;
+}
+@keyframes adPulseDot {
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.4;transform:scale(.6);}
+}
+.ad-hero-eyebrow-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ad-hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 2px;
+  line-height: .95;
+  color: #fff;
+}
+.ad-hero-title em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.ad-hero-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.5);
+  line-height: 1.55;
+  max-width: 200px;
+}
+
+.ad-hero-count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,196,174,.12);
+  border: 1px solid rgba(0,196,174,.25);
+  border-radius: 20px;
+  padding: 5px 12px;
+  width: fit-content;
+}
+.ad-hero-count-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--accent);
+  line-height: 1;
+}
+.ad-hero-count-label {
+  font-size: 11px;
+  color: rgba(255,255,255,.5);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .5px;
+}
+
+.ad-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  width: fit-content;
+  box-shadow: 0 4px 20px rgba(0,196,174,.35);
+  transition: background .15s, transform .15s, box-shadow .15s;
+  margin-top: 4px;
+}
+.ad-hero-card:hover .ad-hero-cta {
+  background: #00b89a;
+  transform: translateX(4px);
+  box-shadow: 0 6px 28px rgba(0,196,174,.5);
+}
+.ad-hero-cta-arrow {
+  transition: transform .2s;
+}
+.ad-hero-card:hover .ad-hero-cta-arrow { transform: translateX(4px); }
+
+/* Animação de entrada sutil */
+@keyframes adHeroIn {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.ad-hero-card { animation: adHeroIn .5s ease both; }
+
+/* Empty state (sem pares ainda) */
+.ad-hero-empty-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0,196,174,.05), transparent);
+}
+.ad-hero-empty-icon { font-size: 48px; opacity: .2; }
+.ad-hero-empty-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--muted); }
+.ad-hero-empty-sub { font-size: 12px; color: var(--muted); opacity: .6; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ad-hero-card { height: auto; }
+  .ad-hero-inner { grid-template-columns: 1fr 1fr; }
+  .ad-hero-photo { height: 200px; }
+  .ad-hero-panel { grid-column: 1 / -1; padding: 20px; gap: 12px; }
+  .ad-hero-title { font-size: 32px; }
+  .ad-hero-panel::after { display: none; }
+}
+@media (max-width: 480px) {
+  .ad-hero-inner { grid-template-columns: 1fr 1fr; }
+  .ad-hero-photo { height: 160px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -4150,7 +4421,64 @@ function renderHomeGalleries(grid, title, badge) {
       </div>`;
   }).join('');
 
-  grid.innerHTML = inboxHTML + catsHTML;
+  // ── HERO CARD ANTES & DEPOIS ──
+  adLoad();
+  const adCount = adPairs.length;
+  let adHeroHTML = '';
+
+  if (adCount > 0) {
+    // Usa o primeiro par como showcase
+    const p0 = adPairs[0];
+    const beforeSrc = cloudThumb(p0.before);
+    const afterSrc  = cloudThumb(p0.after);
+    adHeroHTML = `
+    <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()">
+      <div class="ad-hero-inner">
+        <!-- Foto ANTES — col 1 -->
+        <div class="ad-hero-photo before">
+          <img src="${beforeSrc}" alt="Antes" loading="lazy">
+          <div class="ad-hero-divider"></div>
+          <span class="ad-hero-badge b">Antes</span>
+        </div>
+        <!-- Foto DEPOIS — col 2 -->
+        <div class="ad-hero-photo after">
+          <img src="${afterSrc}" alt="Depois" loading="lazy">
+          <div class="ad-hero-divider-right"></div>
+          <span class="ad-hero-badge a">Depois</span>
+        </div>
+        <!-- Painel de texto — col 3 -->
+        <div class="ad-hero-panel">
+          <div class="ad-hero-eyebrow">
+            <div class="ad-hero-eyebrow-dot"></div>
+            <span class="ad-hero-eyebrow-text">Resultados reais</span>
+          </div>
+          <div class="ad-hero-title">ANTES<br><em>&amp;</em><br>DEPOIS</div>
+          <div class="ad-hero-desc">Veja a transformação real dos nossos clientes com IA.</div>
+          <div class="ad-hero-count-pill">
+            <span class="ad-hero-count-num">${adCount}</span>
+            <span class="ad-hero-count-label">transformaç${adCount === 1 ? 'ão' : 'ões'}</span>
+          </div>
+          <div class="ad-hero-cta">
+            Ver todas <span class="ad-hero-cta-arrow">→</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    // Empty state — só aparece pra admin
+    if (adminMode) {
+      adHeroHTML = `
+      <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()" style="height:180px;">
+        <div class="ad-hero-empty-inner">
+          <div class="ad-hero-empty-icon">✦</div>
+          <div class="ad-hero-empty-title">ANTES &amp; DEPOIS</div>
+          <div class="ad-hero-empty-sub">Adicione transformações para exibir aqui</div>
+        </div>
+      </div>`;
+    }
+  }
+
+  grid.innerHTML = adHeroHTML + inboxHTML + catsHTML;
 
   // No novo modelo imgs são URLs do Cloudinary — carregam direto pelo src
 }
