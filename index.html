@@ -3036,7 +3036,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100%;
-  gap: 3px;
+  gap: 0;
 }
 
 /* Foto — mesmo padrão das galerias normais */
@@ -3054,18 +3054,18 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 }
 .ad-hero-card:hover .ad-hero-photo img { transform: scale(1.06); }
 
-/* Antes — leve dessaturação para destacar o contraste */
-.ad-hero-photo.before img { filter: saturate(.6) brightness(.9); }
-.ad-hero-card:hover .ad-hero-photo.before img { filter: saturate(.8) brightness(.95); }
+/* Antes — leve dessaturação */
+.ad-hero-photo.before img { filter: saturate(.55) brightness(.88); }
+.ad-hero-card:hover .ad-hero-photo.before img { filter: saturate(.75) brightness(.95); }
 .ad-hero-photo.after img  { filter: saturate(1.05); }
 .ad-hero-card:hover .ad-hero-photo.after img  { filter: saturate(1.15) brightness(1.02); }
 
-/* Gradiente base para os textos */
+/* Gradiente base apenas na metade inferior */
 .ad-hero-photo::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.65) 100%);
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.72) 100%);
   pointer-events: none;
 }
 
@@ -3101,18 +3101,19 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   position: absolute;
   bottom: 0; left: 0; right: 0;
   z-index: 6;
-  padding: 36px 18px 16px;
-  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, transparent 100%);
+  padding: 32px 20px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,.78) 0%, transparent 100%);
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
   pointer-events: none;
 }
-.ad-hero-text { pointer-events: none; }
+.ad-hero-text { pointer-events: none; text-align: center; }
 .ad-hero-eyebrow {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   margin-bottom: 5px;
 }
@@ -3149,7 +3150,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 .ad-hero-right {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   gap: 7px;
   flex-shrink: 0;
   pointer-events: auto;
@@ -4396,21 +4397,21 @@ function renderHomeGalleries(grid, title, badge) {
           <span class="ad-hero-badge a">Depois</span>
         </div>
       </div>
-      <!-- Overlay de texto sobreposto na base -->
+      <!-- Overlay centralizado na base -->
       <div class="ad-hero-overlay">
-        <div class="ad-hero-text">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;pointer-events:auto;">
           <div class="ad-hero-eyebrow">
             <div class="ad-hero-eyebrow-dot"></div>
             <span class="ad-hero-eyebrow-text">Resultados reais</span>
           </div>
           <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
-        </div>
-        <div class="ad-hero-right">
-          <div class="ad-hero-count-pill">
-            <span class="ad-hero-count-num">${adCount}</span>
-            <span class="ad-hero-count-label">transformaç${adCount === 1 ? 'ão' : 'ões'}</span>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
+            <div class="ad-hero-count-pill">
+              <span class="ad-hero-count-num">${adCount}</span>
+              <span class="ad-hero-count-label">transformaç${adCount === 1 ? 'ão' : 'ões'}</span>
+            </div>
+            <div class="ad-hero-cta">Ver todas <span class="ad-hero-cta-arrow">→</span></div>
           </div>
-          <div class="ad-hero-cta">Ver todas <span class="ad-hero-cta-arrow">→</span></div>
         </div>
       </div>
     </div>`;
@@ -5932,7 +5933,7 @@ function adRender() {
         <div class="ad-split-line"><div class="ad-split-dot">✦</div></div>
       </div>
       <div class="ad-card-body">
-        <span class="ad-card-label">${pair.title || 'Transformação ' + (idx + 1)}</span>
+        <span class="ad-card-label">${pair.title || ''}</span>
         <div class="ad-card-actions">
           <button class="ad-card-btn expand" title="Ver ampliado" onclick="event.stopPropagation();openAdLightbox(${idx})">⤢</button>
           ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
@@ -5967,7 +5968,7 @@ function adLbUpdate() {
   if (afterImg)  { afterImg.style.opacity='0';  afterImg.src=pair.after;   afterImg.onload=()=>{afterImg.style.opacity='1'; afterImg.style.transition='opacity .3s';} }
   const title = document.getElementById('adLbTitle');
   const info  = document.getElementById('adLbInfo');
-  if (title) title.textContent = pair.title || `Transformação ${adLbIndex + 1}`;
+  if (title) title.textContent = pair.title || '';
   if (info)  info.textContent  = `${adLbIndex + 1} / ${adPairs.length}`;
   document.getElementById('adLbPrev').style.display = adLbIndex > 0 ? 'flex' : 'none';
   document.getElementById('adLbNext').style.display = adLbIndex < adPairs.length - 1 ? 'flex' : 'none';
