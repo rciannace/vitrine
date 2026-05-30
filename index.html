@@ -3044,19 +3044,23 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 .ad-hero-photo {
   position: relative;
   overflow: hidden;
+  background: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ad-hero-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
+  object-fit: contain;
+  object-position: center center;
   display: block;
   transition: transform .6s ease, filter .6s ease;
-  filter: brightness(.75) saturate(.8);
+  filter: brightness(.8) saturate(.85);
 }
 .ad-hero-card:hover .ad-hero-photo img {
-  transform: scale(1.06);
-  filter: brightness(.9) saturate(1);
+  transform: scale(1.04);
+  filter: brightness(.95) saturate(1);
 }
 
 /* Foto "antes" — escala de cinza */
