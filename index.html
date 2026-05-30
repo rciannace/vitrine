@@ -5078,11 +5078,6 @@ async function initApp() {
   render();
   updateHeroStats();
 
-  // Abre Sala de Seleção automaticamente se veio pelo link do cliente
-  if (window._salaAutoOpen) {
-    window._salaAutoOpen = false;
-    setTimeout(openSalaEntrada, 400);
-  }
 }
 
 // ── SIDEBAR ──
@@ -7664,8 +7659,18 @@ function enviarParaWhatsApp() {
   toast('✓ Abrindo WhatsApp com sua seleção!');
 }
 
-// ── URL param: ?sala=1 — detecta na carga ──
-window._salaAutoOpen = new URLSearchParams(window.location.search).get('sala') === '1';
+// ── URL param: ?sala=1 — polling aguarda openSalaEntrada estar disponível ──
+if (new URLSearchParams(window.location.search).get('sala') === '1') {
+  const _salaInterval = setInterval(function() {
+    if (typeof openSalaEntrada === 'function' &&
+        document.getElementById('salaEntradaOverlay')) {
+      clearInterval(_salaInterval);
+      openSalaEntrada();
+    }
+  }, 100);
+  // Para de tentar após 10s
+  setTimeout(function() { clearInterval(_salaInterval); }, 10000);
+}
 </script>
 
 
