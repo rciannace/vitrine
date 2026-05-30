@@ -2232,23 +2232,27 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   gap: 3px;
   background: var(--border);
   position: relative;
-  aspect-ratio: 2/1.6;
   overflow: hidden;
 }
 .ad-side-photo {
   position: relative;
   overflow: hidden;
   background: var(--surface2);
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ad-side-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
+  object-fit: contain;
+  object-position: center center;
   display: block;
   transition: transform .4s ease;
+  background: var(--surface2);
 }
-.ad-card:hover .ad-side-photo img { transform: scale(1.05); }
+.ad-card:hover .ad-side-photo img { transform: scale(1.03); }
 
 /* Labels flutuantes sobre cada foto */
 .ad-label-before,
@@ -2517,8 +2521,9 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px 80px;
+  padding: 60px 70px 80px;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 /* Container das duas fotos */
@@ -2538,13 +2543,17 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   position: relative;
   overflow: hidden;
   background: #0a0a0c;
-  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
 }
 .ad-lb-photo-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
+  max-height: calc(100vh - 200px);
+  object-fit: contain;
+  object-position: center center;
   display: block;
   transition: opacity .35s;
 }
@@ -2620,26 +2629,29 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   position: fixed;
   top: 16px;
   right: 16px;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,.12);
-  border: none;
-  color: rgba(255,255,255,.8);
+  width: 44px;
+  height: 44px;
+  background: rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.9);
   font-size: 20px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  transition: background .15s, transform .15s;
 }
-.ad-lb-close:hover { background: rgba(255,255,255,.22); }
+.ad-lb-close:hover { background: rgba(220,50,70,.8); transform: scale(1.1); }
 .ad-lb-nav {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255,255,255,.1);
-  border: none;
-  color: rgba(255,255,255,.8);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.85);
   font-size: 24px;
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -2647,7 +2659,9 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  transition: background .15s;
 }
 .ad-lb-nav:hover { background: rgba(255,255,255,.22); }
 #adLbPrev { left: 16px; }
@@ -5852,8 +5866,9 @@ renderPricing();
     <div class="ad-lb-split" style="position:absolute;top:60px;bottom:80px;left:50%;width:2px;background:rgba(255,255,255,.2);pointer-events:none;z-index:10;"></div>
   </div>
 
-  <!-- Footer com título e contador -->
+  <!-- Footer com título, voltar e contador -->
   <div class="ad-lb-footer">
+    <button onclick="closeAdLightbox()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);padding:7px 16px;border-radius:8px;font-size:13px;cursor:pointer;flex-shrink:0;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">← Voltar</button>
     <div class="ad-lb-title" id="adLbTitle">Transformação</div>
     <div class="ad-lb-counter" id="adLbInfo">1 / 1</div>
   </div>
