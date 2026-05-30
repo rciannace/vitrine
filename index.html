@@ -2223,6 +2223,23 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
 }
 #viewAntesDepois.active { display: flex; }
 
+/* Mobile: ocupa tela toda abaixo do topbar */
+@media (max-width: 768px) {
+  #viewAntesDepois.active {
+    position: fixed;
+    inset: 0;
+    top: 64px; /* altura do topbar */
+    z-index: 50;
+    background: var(--bg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ad-toolbar { padding: 14px 14px 0; }
+  .ad-grid { padding: 16px 12px 60px; grid-template-columns: 1fr; gap: 16px; }
+  #viewAntesDepois .ad-toolbar-title { font-size: 16px; }
+  #viewAntesDepois > div:nth-child(2) { margin: 10px 12px 0; font-size: 12px; }
+}
+
 /* Grid de cards A/D */
 .ad-grid {
   display: grid;
@@ -3759,7 +3776,17 @@ function buildSidebar() {
   // Drawer mobile - mesmo conteúdo da sidebar
   const drawerBody = document.getElementById('mobileDrawerBody');
   if (drawerBody) {
-    drawerBody.innerHTML = listHTML + `
+    const adCount = (typeof adPairs !== 'undefined') ? adPairs.length : 0;
+    const adBtnHTML = `
+      <div style="padding:0 10px;margin-bottom:4px;">
+        <button class="cat-btn ad-special" id="adDrawerBtn" onclick="openAntesDepois();closeDrawer()">
+          <div class="cat-btn-info">
+            <div class="cat-btn-name">✦ Antes &amp; Depois</div>
+            <div class="cat-btn-count">${adCount} ${adCount === 1 ? 'par' : 'pares'}</div>
+          </div>
+        </button>
+      </div>`;
+    drawerBody.innerHTML = adBtnHTML + listHTML + `
       <div style="padding:0 18px;margin-top:8px;" class="admin-only">
         <button class="sidebar-add-btn" style="width:100%;margin:0;" onclick="openCatManager();closeDrawer()">
           <span class="sidebar-add-btn-icon">＋</span> Gerenciar galerias
@@ -5358,12 +5385,12 @@ window.addEventListener('firebase-ready', async () => {
 
 // ── Abrir/fechar view ──
 function openAntesDepois() {
-  // Esconde a view principal
-  document.querySelector('.main').style.display = 'none';
+  // No mobile a view usa position:fixed, no desktop esconde o .main
+  if (window.innerWidth > 768) {
+    document.querySelector('.main').style.display = 'none';
+  }
   document.getElementById('viewAntesDepois').classList.add('active');
-  // Sidebar: marca ativo
   document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
-
   adLoad();
   adRender();
 }
@@ -5372,7 +5399,6 @@ function closeAntesDepois() {
   document.querySelector('.main').style.display = '';
   document.getElementById('viewAntesDepois').classList.remove('active');
   document.querySelectorAll('.ad-special').forEach(b => b.classList.remove('active'));
-
 }
 
 // Atualiza contagem na sidebar
