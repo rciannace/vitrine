@@ -3579,6 +3579,10 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   gap: 6px;
 }
 .sala-qty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
   padding: 8px 4px;
   border: 2px solid var(--border2);
   border-radius: 10px;
@@ -4220,22 +4224,47 @@ body.admin-mode .sala-admin-btn { display: flex; }
 .sala-limite-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
 .sala-limite-qtds {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
 }
 .sala-limite-qty-btn {
-  padding: 9px 4px;
+  padding: 10px 6px 8px;
   border: 2px solid var(--border2);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--surface2);
-  color: var(--muted);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
+  color: var(--text);
   cursor: pointer;
   transition: all .15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
-.sala-limite-qty-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent3); }
-.sala-limite-qty-btn.atual { border-color: var(--border2); opacity: .35; cursor: not-allowed; }
+.sala-limite-qty-btn:hover { border-color: var(--accent); background: var(--accent3); }
+.sala-limite-qty-btn.pacote-destaque { border-color: var(--accent); background: var(--accent3); }
+.sala-limite-qty-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text);
+}
+.sala-limite-qty-btn:hover .sala-limite-qty-num,
+.sala-limite-qty-btn.pacote-destaque .sala-limite-qty-num { color: var(--accent); }
+.sala-limite-qty-preco {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1;
+}
+.sala-limite-qty-btn:hover .sala-limite-qty-preco,
+.sala-limite-qty-btn.pacote-destaque .sala-limite-qty-preco { color: var(--accent); }
+.sala-limite-qty-desc {
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.2;
+  padding: 0 2px;
+}
 .sala-limite-foot { display: flex; gap: 8px; }
 .sala-limite-foot .btn { flex: 1; justify-content: center; padding: 11px; }
 
@@ -4449,6 +4478,21 @@ body.sala-mode #salaModeProgress { display: block; }
   body.sala-mode .topbar { margin-top: 52px; }
   #salaModeProgress { top: 52px; }
 }
+
+
+.sala-qty-btn-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  line-height: 1;
+}
+.sala-qty-btn-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  opacity: .7;
+  line-height: 1;
+  letter-spacing: .3px;
+}
+.sala-qty-btn.active .sala-qty-btn-price { opacity: 1; }
 
 </style>
 <!-- Firebase -->
@@ -7612,12 +7656,10 @@ if(typeof _oia==='function'){
     <div class="sala-entrada-field">
       <label class="sala-entrada-label">Quantas fotos você quer escolher?</label>
       <div class="sala-entrada-qty-row" id="salaQtyRow">
-        <button class="sala-qty-btn active" data-qty="5" onclick="salaSelectQty(this)">5</button>
-        <button class="sala-qty-btn" data-qty="10" onclick="salaSelectQty(this)">10</button>
-        <button class="sala-qty-btn" data-qty="15" onclick="salaSelectQty(this)">15</button>
-        <button class="sala-qty-btn" data-qty="20" onclick="salaSelectQty(this)">20</button>
-        <button class="sala-qty-btn" data-qty="30" onclick="salaSelectQty(this)">30</button>
+        <!-- Preenchido dinamicamente por salaRenderQtyBtns() -->
       </div>
+      <!-- Preço selecionado -->
+      <div id="salaEntradaPreco" style="text-align:center;padding:6px 0 2px;"></div>
     </div>
     <button class="sala-entrada-btn" onclick="iniciarSala()">Entrar e escolher fotos →</button>
   </div>
@@ -7699,6 +7741,7 @@ let salaCatFilter   = null;
 
 // ── Abrir tela de entrada ──
 function openSalaEntrada() {
+  salaRenderQtyBtns();
   document.getElementById('salaEntradaOverlay').classList.add('open');
   setTimeout(() => document.getElementById('salaClienteNome').focus(), 300);
 }
@@ -7708,6 +7751,43 @@ function salaSelectQty(btn) {
   document.querySelectorAll('.sala-qty-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   salaMaxFotos = parseInt(btn.dataset.qty);
+  salaUpdateEntradaPreco();
+}
+
+function salaRenderQtyBtns() {
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  const qtds = pricing.length > 0
+    ? pricing.map(p => p.qty)
+    : [5, 10, 15, 20, 30];
+
+  const row = document.getElementById('salaQtyRow');
+  if (!row) return;
+
+  row.innerHTML = qtds.map((q, i) => {
+    const p = pricing.find(x => x.qty === q);
+    const preco = p ? 'R$' + p.total.toFixed(0) : '';
+    const isFirst = i === 0;
+    return `<button class="sala-qty-btn ${isFirst ? 'active' : ''}"
+      data-qty="${q}" onclick="salaSelectQty(this)">
+      <span class="sala-qty-btn-num">${q}</span>
+      ${preco ? `<span class="sala-qty-btn-price">${preco}</span>` : ''}
+    </button>`;
+  }).join('');
+
+  // Seleciona o primeiro por padrão
+  salaMaxFotos = qtds[0] || 5;
+  salaUpdateEntradaPreco();
+}
+
+function salaUpdateEntradaPreco() {
+  const el = document.getElementById('salaEntradaPreco');
+  if (!el) return;
+  const p = calcularPreco(salaMaxFotos);
+  if (!p) { el.innerHTML = ''; return; }
+  const pf = formatBRL(p.porFoto);
+  el.innerHTML = `
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--accent);">${formatBRL(p.total)}</span>
+    <span style="font-size:11px;color:var(--muted);margin-left:6px;font-family:'DM Mono',monospace;">${pf} por foto</span>`;
 }
 
 // ── Iniciar Sala ──
@@ -8048,9 +8128,11 @@ function compartilharLinkSala() {
       <input id="salaLimiteCustom" type="number" min="1" max="999" placeholder="Ex: 35"
         style="flex:1;padding:10px 14px;border:2px solid var(--border2);border-radius:10px;font-size:16px;font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--text);outline:none;text-align:center;"
         onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"
+        oninput="salaCustomQtyInput()"
         onkeydown="if(event.key==='Enter')confirmarSalaLimiteCustom()">
       <button onclick="confirmarSalaLimiteCustom()" style="padding:10px 16px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:background .15s;" onmouseover="this.style.background='#00a896'" onmouseout="this.style.background='var(--accent)'">OK</button>
     </div>
+    <div id="salaLimitePrecoCustom" style="font-size:12px;color:var(--muted);text-align:center;min-height:16px;font-family:'DM Mono',monospace;"></div>
     <div class="sala-limite-foot">
       <button class="btn btn-ghost" onclick="fecharSalaLimiteModal()">Cancelar</button>
       <button class="btn btn-accent" onclick="abrirSalaConfirm();fecharSalaLimiteModal()">
@@ -8061,41 +8143,96 @@ function compartilharLinkSala() {
 </div>
 
 <script>
-// ── MODAL LIMITE ──
+// ── MODAL LIMITE — com preços ──
+
+// Calcula preço para N fotos interpolando a tabela de pacotes
+function calcularPreco(qty) {
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  if (!pricing.length) return null;
+  // Pacote exato
+  const exato = pricing.find(p => p.qty === qty);
+  if (exato) return { total: exato.total, porFoto: exato.total / exato.qty, exato: true, desc: exato.desc };
+  // Menor e maior
+  const menor = [...pricing].reverse().find(p => p.qty < qty);
+  const maior = pricing.find(p => p.qty > qty);
+  if (!menor && maior) {
+    // Abaixo do menor pacote — usa preço por foto do menor
+    const pf = maior.total / maior.qty;
+    return { total: pf * qty, porFoto: pf, exato: false };
+  }
+  if (menor && !maior) {
+    // Acima do maior pacote — usa preço por foto do maior (com desconto progressivo)
+    const pf = menor.total / menor.qty;
+    return { total: pf * qty, porFoto: pf, exato: false };
+  }
+  // Interpolação linear entre os dois pacotes vizinhos
+  const ratio = (qty - menor.qty) / (maior.qty - menor.qty);
+  const total = menor.total + ratio * (maior.total - menor.total);
+  const pf = total / qty;
+  return { total, porFoto: pf, exato: false };
+}
+
+function formatBRL(v) {
+  return 'R$ ' + v.toFixed(2).replace('.', ',');
+}
+
 function abrirSalaLimiteModal() {
   const n = salaSelecao.length;
   document.getElementById('salaLimiteAtual').textContent = n;
   document.getElementById('salaLimiteEnviarN').textContent = n;
   document.getElementById('salaLimiteCustom').value = '';
+  document.getElementById('salaLimitePrecoCustom').textContent = '';
 
-  // Opções predefinidas acima do atual + próximos múltiplos de 5
-  const base = [5,10,15,20,25,30,40,50];
-  const opcoes = base.filter(q => q > salaMaxFotos);
-  // Se já está em 50+, sugere +10 e +20
-  if (opcoes.length === 0) {
-    opcoes.push(salaMaxFotos + 10, salaMaxFotos + 20);
-  }
+  // Pacotes disponíveis acima do atual
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  const pacotesAcima = pricing.filter(p => p.qty > salaMaxFotos);
+  
+  // Se não há pacotes acima, sugere +10 e +20 calculados
+  const extras = pacotesAcima.length === 0
+    ? [salaMaxFotos + 10, salaMaxFotos + 20].map(q => {
+        const p = calcularPreco(q);
+        return { qty: q, total: p?.total, porFoto: p?.porFoto, desc: '', featured: false };
+      })
+    : [];
+  const opcoes = [...pacotesAcima, ...extras];
 
   const qtdsEl = document.getElementById('salaLimiteQtds');
-  qtdsEl.innerHTML = opcoes.slice(0, 5).map(q => `
-    <button class="sala-limite-qty-btn" onclick="aumentarSalaQty(${q})">${q}</button>
-  `).join('');
+  qtdsEl.innerHTML = opcoes.slice(0, 6).map(p => {
+    const preco = calcularPreco(p.qty);
+    return `<button class="sala-limite-qty-btn ${p.featured ? 'pacote-destaque' : ''}"
+      onclick="aumentarSalaQty(${p.qty})">
+      <span class="sala-limite-qty-num">${p.qty}</span>
+      <span class="sala-limite-qty-preco">${preco ? formatBRL(preco.total) : ''}</span>
+      <span class="sala-limite-qty-desc">${p.featured ? '⭐ Popular' : (p.desc ? p.desc.slice(0,20) : '')}</span>
+    </button>`;
+  }).join('');
 
   document.getElementById('salaLimiteOverlay').classList.add('open');
-  setTimeout(() => document.getElementById('salaLimiteCustom').focus(), 300);
 }
 
 function fecharSalaLimiteModal() {
   document.getElementById('salaLimiteOverlay').classList.remove('open');
 }
 
+// Atualiza preço em tempo real no campo livre
+function salaCustomQtyInput() {
+  const val = parseInt(document.getElementById('salaLimiteCustom').value);
+  const el = document.getElementById('salaLimitePrecoCustom');
+  if (!val || val < 1) { el.textContent = ''; return; }
+  const p = calcularPreco(val);
+  if (p) {
+    el.textContent = formatBRL(p.total) + ' · ' + formatBRL(p.porFoto) + ' por foto' + (p.exato ? ' ✓ pacote disponível' : ' (estimado)');
+    el.style.color = p.exato ? 'var(--accent)' : 'var(--muted)';
+  }
+}
+
 function confirmarSalaLimiteCustom() {
   const val = parseInt(document.getElementById('salaLimiteCustom').value);
-  if (!val || val < salaSelecao.length) {
+  if (!val || val <= salaMaxFotos) {
     const inp = document.getElementById('salaLimiteCustom');
     inp.style.borderColor = 'var(--red)';
-    inp.placeholder = 'Mín: ' + salaSelecao.length;
-    setTimeout(() => { inp.style.borderColor = 'var(--border2)'; inp.placeholder = 'Ex: 35'; }, 1500);
+    inp.placeholder = 'Digite um número maior que ' + salaMaxFotos;
+    setTimeout(() => { inp.style.borderColor = 'var(--border2)'; inp.placeholder = 'Ex: 35'; }, 2000);
     return;
   }
   aumentarSalaQty(val);
@@ -8106,7 +8243,11 @@ function aumentarSalaQty(novaQty) {
   document.getElementById('salaInstrMax').textContent = novaQty;
   salaUpdateCounter();
   fecharSalaLimiteModal();
-  toast('✓ Agora você pode escolher até ' + novaQty + ' fotos!');
+  const p = calcularPreco(novaQty);
+  const msg = p
+    ? '✓ Até ' + novaQty + ' fotos · ' + formatBRL(p.total)
+    : '✓ Agora você pode escolher até ' + novaQty + ' fotos!';
+  toast(msg);
 }
 </script>
 </body></html>
