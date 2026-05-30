@@ -5077,6 +5077,12 @@ async function initApp() {
   buildSidebar();
   render();
   updateHeroStats();
+
+  // Abre Sala de Seleção automaticamente se veio pelo link do cliente
+  if (window._salaAutoOpen) {
+    window._salaAutoOpen = false;
+    setTimeout(openSalaEntrada, 400);
+  }
 }
 
 // ── SIDEBAR ──
@@ -7658,15 +7664,8 @@ function enviarParaWhatsApp() {
   toast('✓ Abrindo WhatsApp com sua seleção!');
 }
 
-// ── URL param: ?sala=1 abre direto ──
-(function() {
-  const p = new URLSearchParams(window.location.search);
-  if (p.get('sala') === '1') {
-    window.addEventListener('iafoto-ready', () => {
-      setTimeout(openSalaEntrada, 500);
-    }, {once: true});
-  }
-})();
+// ── URL param: ?sala=1 — detecta na carga ──
+window._salaAutoOpen = new URLSearchParams(window.location.search).get('sala') === '1';
 </script>
 
 
