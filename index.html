@@ -5811,4 +5811,192 @@ adLoad();
 adUpdateSidebar();
 </script>
 
-</body></html>
+
+<script>
+// ══════════════════════════════════════════════
+//  PROTEÇÃO DE IMAGENS — clientes não-admin
+// ══════════════════════════════════════════════
+(function() {
+
+  function isAdmin() { return document.body.classList.contains('admin-mode'); }
+
+  // 1. Bloqueia menu de contexto (botão direito) em imagens e no site todo
+  document.addEventListener('contextmenu', function(e) {
+    if (isAdmin()) return; // admin pode usar normalmente
+    e.preventDefault();
+    showProtectionToast();
+    return false;
+  });
+
+  // 2. Bloqueia arrastar imagens
+  document.addEventListener('dragstart', function(e) {
+    if (isAdmin()) return;
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // 3. Bloqueia atalhos de teclado perigosos
+  document.addEventListener('keydown', function(e) {
+    if (isAdmin()) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+
+    // Ctrl+S (salvar), Ctrl+U (ver fonte), Ctrl+Shift+I/J/C (devtools)
+    if (ctrl && (e.key === 's' || e.key === 'S')) { e.preventDefault(); showProtectionToast(); return; }
+    if (ctrl && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return; }
+    if (ctrl && e.shiftKey && ['i','I','j','J','c','C','k','K'].includes(e.key)) { e.preventDefault(); return; }
+
+    // F12 (devtools) e PrintScreen
+    if (e.key === 'F12') { e.preventDefault(); return; }
+  });
+
+  // 4. Aplica proteção CSS em todas as imagens
+  const style = document.createElement('style');
+  style.textContent = `
+    body:not(.admin-mode) img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    /* Restaura pointer-events para cards clicáveis */
+    body:not(.admin-mode) .photo-card,
+    body:not(.admin-mode) .gallery-card,
+    body:not(.admin-mode) .ad-hero-card,
+    body:not(.admin-mode) .ad-card,
+    body:not(.admin-mode) .photo-card-overlay,
+    body:not(.admin-mode) .photo-card-actions,
+    body:not(.admin-mode) button,
+    body:not(.admin-mode) a {
+      pointer-events: auto;
+    }
+    /* Overlay invisível sobre cada imagem no lightbox */
+    body:not(.admin-mode) #lightboxImg {
+      pointer-events: none;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 5. Toast de proteção (aparece uma vez a cada 10s para não ser invasivo)
+  let _lastToast = 0;
+  function showProtectionToast() {
+    const now = Date.now();
+    if (now - _lastToast < 10000) return;
+    _lastToast = now;
+    // Usa o toast do sistema se existir
+    if (typeof toast === 'function') {
+      toast('🔒 As fotos são protegidas por direitos autorais.');
+    } else {
+      const t = document.createElement('div');
+      t.textContent = '🔒 As fotos são protegidas por direitos autorais.';
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,22,.92);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:9999;pointer-events:none;backdrop-filter:blur(8px);';
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+  }
+
+})();
+</script>
+
+</body></html
+/* ── CONFIRM DELETE MODAL ── */
+#confirmDeleteOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  background: rgba(10,10,12,.75);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#confirmDeleteOverlay.open { display: flex; }
+.confirm-delete-modal {
+  background: var(--surface);
+  border-radius: 20px;
+  width: min(380px, 96vw);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.22);
+  border: 1px solid var(--border2);
+  animation: mpop .22s cubic-bezier(.34,1.46,.64,1);
+}
+.confirm-delete-header {
+  padding: 28px 28px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.confirm-delete-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(224,48,80,.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.confirm-delete-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.confirm-delete-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  padding: 0 8px;
+}
+.confirm-delete-preview {
+  margin: 16px 28px;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 3/2;
+  background: var(--surface2);
+}
+.confirm-delete-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.confirm-delete-preview-label {
+  padding: 8px 28px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.confirm-delete-footer {
+  padding: 16px 24px 22px;
+  display: flex;
+  gap: 10px;
+}
+.confirm-delete-footer .btn {
+  flex: 1;
+  justify-content: center;
+  padding: 12px;
+  font-size: 14px;
+}
+.btn-danger {
+  background: #e03050;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  transition: background .15s;
+}
+.btn-danger:hover { background: #c42040; }
+>
