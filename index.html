@@ -4349,9 +4349,12 @@ body.sala-mode .gallery-card-actions,
 body.sala-mode .photo-delete-btn,
 body.sala-mode .photo-move-btn,
 body.sala-mode .photo-fav-star,
-body.sala-mode #backToGalleriesBtn,
 body.sala-mode .gallery-upload-fab,
 body.sala-mode .topbar-right { display: none !important; }
+
+/* Botão voltar — sempre visível no sala-mode */
+body.sala-mode #backToGalleriesBtn.visible { display: flex !important; }
+body.sala-mode #mobileBackBtn.visible { display: flex !important; }
 
 /* Fotos ficam clicáveis para selecionar */
 body.sala-mode .photo-card {
@@ -4375,31 +4378,34 @@ body.sala-mode .photo-card .sala-check-badge {
   display: none;
   position: absolute;
   top: 8px; right: 8px;
-  width: 28px; height: 28px;
+  width: 34px; height: 34px;
   background: var(--accent);
   border-radius: 50%;
   color: #fff;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   align-items: center;
   justify-content: center;
   z-index: 25;
-  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
 }
 body.sala-mode .photo-card.sala-selected .sala-check-badge { display: flex; }
 
-/* Número de ordem */
+/* Número de ordem — maior e bem visível */
 body.sala-mode .photo-card .sala-order-badge {
   display: none;
   position: absolute;
-  bottom: 28px; left: 8px;
+  bottom: 30px; left: 8px;
   background: var(--accent);
   color: #fff;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 13px;
-  padding: 2px 8px;
-  border-radius: 8px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 10px;
   z-index: 25;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+  line-height: 1.2;
 }
 body.sala-mode .photo-card.sala-selected .sala-order-badge { display: block; }
 
