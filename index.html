@@ -3816,6 +3816,44 @@ async function uploadToCloudinary(file, onProgress) {
   });
 }
 
+
+// ── PAGINAÇÃO ──
+function renderPaginationHTML(page, totalPages, total, start, count) {
+  const end = start + count;
+  let pages = '';
+
+  // Lógica de ellipsis: mostra max 7 botões
+  const makeBtn = (i) => `<button class="pg-btn ${i === page ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</button>`;
+  const ellipsis = `<span class="pg-ellipsis">…</span>`;
+
+  if (totalPages <= 7) {
+    for (let i = 0; i < totalPages; i++) pages += makeBtn(i);
+  } else {
+    pages += makeBtn(0);
+    if (page > 3) pages += ellipsis;
+    const lo = Math.max(1, page - 2);
+    const hi = Math.min(totalPages - 2, page + 2);
+    for (let i = lo; i <= hi; i++) pages += makeBtn(i);
+    if (page < totalPages - 4) pages += ellipsis;
+    pages += makeBtn(totalPages - 1);
+  }
+
+  return `
+    <div class="pg-info">Mostrando ${start + 1}–${end} de ${total} fotos</div>
+    <button class="pg-btn" onclick="goToPage(${page - 1})" ${page === 0 ? 'disabled' : ''}>‹</button>
+    ${pages}
+    <button class="pg-btn" onclick="goToPage(${page + 1})" ${page === totalPages - 1 ? 'disabled' : ''}>›</button>
+  `;
+}
+
+function goToPage(p) {
+  window._pgPage = p;
+  render();
+  // Scroll suave ao topo da galeria
+  const grid = document.getElementById('galleryGrid');
+  if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // ── INIT ──
 async function initApp() {
   // Espera Firebase estar pronto — aguarda até _fbDoc estar disponível
@@ -4061,7 +4099,26 @@ function render(pool) {
   const isInbox = currentCat === '__inbox__';
   const selectable = adminMode && (isInbox || selectModeActive);
 
-  grid.innerHTML = pool.map((it, idx) => `
+  // ── PAGINAÇÃO ──
+  const PG_SIZE = 40; // fotos por página
+  const totalPages = Math.ceil(pool.length / PG_SIZE);
+
+  // Reset page se mudou de galeria
+  if (typeof window._pgCurrentCat === 'undefined') window._pgCurrentCat = null;
+  if (window._pgCurrentCat !== currentCat) {
+    window._pgCurrentCat = currentCat;
+    window._pgPage = 0;
+  }
+  if (typeof window._pgPage === 'undefined') window._pgPage = 0;
+  window._pgPage = Math.min(window._pgPage, Math.max(0, totalPages - 1));
+
+  const page    = window._pgPage;
+  const start   = page * PG_SIZE;
+  const pagePol = pool.slice(start, start + PG_SIZE);
+
+  grid.innerHTML = pagePol.map((it, localIdx) => {
+    const idx = start + localIdx; // índice global para o lightbox
+    return `
     <div class="photo-card ${it.img ? '' : 'photo-card-empty'} ${selectable ? 'selectable' : ''}"
          id="pcard-${it.id}"
          onclick="${selectable ? `toggleSelect('${it.id}')` : `openLightbox(${idx})`}">
@@ -4080,7 +4137,22 @@ function render(pool) {
           </div>
         </div>` : ''}
     </div>
-  `).join('');
+  `}).join('');
+
+  // Render pagination bar (só se necessário)
+  if (totalPages > 1) {
+    const bar = document.createElement('div');
+    bar.className = 'pagination-bar';
+    bar.innerHTML = renderPaginationHTML(page, totalPages, pool.length, start, pagePol.length);
+    grid.insertAdjacentElement('afterend', bar);
+    // Remove bar antiga se houver
+    const oldBar = grid.nextElementSibling?.classList?.contains('pagination-bar')
+      ? null : document.querySelector('.pagination-bar:not([data-new])');
+    if (oldBar) oldBar.remove();
+    bar.setAttribute('data-new', '1');
+  } else {
+    document.querySelectorAll('.pagination-bar').forEach(b => b.remove());
+  }
 
   // Botão de upload flutuante dentro da galeria (admin mode, categoria específica)
   if (adminMode && currentCat && currentCat !== '__inbox__') {
@@ -4702,17 +4774,37 @@ function deleteCatFromCard(catId) {
 }
 
 // ── DELETE PHOTO ──
+// ── DELETE com confirmação visual ──
+let _deleteTargetId = null;
+
 function deleteItem(id) {
   const it = items.find(i => i.id === id);
   if (!it) return;
-  if (!confirm(`Apagar "${it.title || 'esta foto'}"?\n\nEssa ação não pode ser desfeita.`)) return;
+  _deleteTargetId = id;
 
-  items = items.filter(i => i.id !== id);
+  document.getElementById('confirmDeleteLabel').textContent = it.title || 'Sem título';
+  const img = document.getElementById('confirmDeleteImg');
+  img.src = it.img ? cloudThumb(it.img) : '';
+  document.getElementById('confirmDeletePreview').style.display = it.img ? 'block' : 'none';
+  document.getElementById('confirmDeleteSub').textContent =
+    'Essa ação é permanente e não pode ser desfeita. A foto será removida do servidor.';
+  document.getElementById('confirmDeleteOverlay').classList.add('open');
+}
+
+function closeConfirmDelete() {
+  document.getElementById('confirmDeleteOverlay').classList.remove('open');
+  _deleteTargetId = null;
+}
+
+function executeDelete() {
+  if (!_deleteTargetId) return;
+  items = items.filter(i => i.id !== _deleteTargetId);
   persist();
   buildSidebar();
   render();
   updateHeroStats();
-  toast(`🗑 Foto apagada.`);
+  toast('🗑 Foto apagada.');
+  closeConfirmDelete();
 }
 
 // ── MOVE PHOTO ──
@@ -5056,7 +5148,24 @@ function toggleSelectMode() {
 function deleteBulk() {
   if (!selectedIds.size) return;
   const n = selectedIds.size;
-  if (!confirm(`Apagar ${n} foto${n !== 1 ? 's' : ''}? Esta ação não pode ser desfeita.`)) return;
+  const ids = [...selectedIds];
+  document.getElementById('confirmBulkTitle').textContent = `Apagar ${n} foto${n !== 1 ? 's' : ''}?`;
+  // Mini grid preview das fotos selecionadas
+  const previewGrid = document.getElementById('confirmBulkGrid');
+  previewGrid.innerHTML = ids.slice(0, 8).map(id => {
+    const it = items.find(i => i.id === id);
+    return it?.img ? `<img src="${cloudThumb(it.img)}" style="width:100%;aspect-ratio:1;object-fit:cover;">` : '';
+  }).join('') + (n > 8 ? `<div style="background:var(--surface2);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);font-weight:600;">+${n - 8}</div>` : '');
+  const ov = document.getElementById('confirmDeleteBulkOverlay');
+  ov.style.display = 'flex';
+}
+
+function closeConfirmDeleteBulk() {
+  document.getElementById('confirmDeleteBulkOverlay').style.display = 'none';
+}
+
+function executeDeleteBulk() {
+  const n = selectedIds.size;
   items = items.filter(it => !selectedIds.has(it.id));
   persist();
   cancelSelectMode();
@@ -5064,6 +5173,7 @@ function deleteBulk() {
   render();
   updateHeroStats();
   toast(`🗑 ${n} foto${n !== 1 ? 's' : ''} apagada${n !== 1 ? 's' : ''}!`);
+  closeConfirmDeleteBulk();
 }
 
 function openMoveBulk() {
@@ -5999,4 +6109,43 @@ adUpdateSidebar();
   transition: background .15s;
 }
 .btn-danger:hover { background: #c42040; }
+
+/* ── PAGINAÇÃO ── */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 20px 48px;
+  flex-wrap: wrap;
+}
+.pg-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.pg-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+.pg-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pg-btn:disabled { opacity: .35; cursor: default; pointer-events: none; }
+.pg-ellipsis { color: var(--muted); font-size: 13px; padding: 0 4px; }
+.pg-info {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  text-align: center;
+  padding-bottom: 4px;
+  width: 100%;
+}
 >
