@@ -1210,8 +1210,9 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   #moveBulkOverlay { align-items: flex-end; }
 
   /* Modal de senha (admin pin) centralizado */
-  .admin-modal-box { padding: 28px 18px 22px; }
-  .admin-pin-wrap input { width: 38px; height: 46px; font-size: 20px; }
+  .admin-modal-box { padding: 28px 16px 24px; }
+  .admin-pin-wrap { gap: 6px; }
+  .admin-pin-wrap input { max-width: 44px; height: 54px; font-size: 20px; border-radius: 10px; }
 
   /* Upload modal ocupa tela inteira no mobile */
   .upload-modal { border-radius: 20px 20px 0 0; max-height: 90vh; overflow-y: auto; }
@@ -1893,74 +1894,92 @@ kbd {
   position: fixed;
   inset: 0;
   z-index: 9000;
-  background: rgba(10,10,12,.7);
-  backdrop-filter: blur(10px);
+  background: rgba(10,10,12,.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 #adminModal.open { display: flex; }
 .admin-modal-box {
   background: var(--surface);
-  border-radius: 18px;
-  width: min(360px, 92vw);
-  padding: 32px 28px 28px;
-  box-shadow: var(--shadow-lg);
+  border-radius: 22px;
+  width: min(460px, 96vw);
+  padding: 40px 36px 32px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(0,196,174,.1);
   border: 1px solid var(--border2);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  align-items: center;
+  gap: 20px;
   text-align: center;
 }
 .admin-modal-icon {
-  font-size: 34px;
+  font-size: 42px;
   line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.12));
 }
 .admin-modal-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: 1px;
+  font-size: 28px;
+  letter-spacing: 2px;
   color: var(--text);
+  line-height: 1;
 }
 .admin-modal-subtitle {
   font-size: 13px;
   color: var(--muted);
   margin-top: -10px;
+  line-height: 1.5;
 }
 .admin-pin-wrap {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  width: 100%;
 }
 .admin-pin-wrap input {
-  width: 44px;
-  height: 52px;
+  flex: 1;
+  min-width: 0;
+  max-width: 52px;
+  height: 60px;
   text-align: center;
   font-family: 'DM Mono', monospace;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
   border: 2px solid var(--border2);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--surface2);
   color: var(--text);
   outline: none;
-  transition: border-color .15s, box-shadow .15s;
+  transition: border-color .15s, box-shadow .15s, background .15s;
   -webkit-text-security: disc;
 }
 .admin-pin-wrap input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0,196,174,.18);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(0,196,174,.15);
 }
 .admin-pin-wrap input.error {
   border-color: var(--red);
+  background: rgba(224,48,80,.05);
   animation: pinShake .3s ease;
 }
 @keyframes pinShake {
-  0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
 }
 .admin-modal-actions {
   display: flex;
   gap: 8px;
   justify-content: center;
+  width: 100%;
+}
+.admin-modal-actions .btn {
+  flex: 1;
+  justify-content: center;
+  padding: 12px 20px;
+  font-size: 14px;
 }
 
 /* ── ADMIN BADGE ── */
