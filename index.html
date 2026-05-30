@@ -3322,6 +3322,124 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-hero-title { font-size: 18px; }
 }
 
+
+/* ══════════════════════════════════════
+   MOBILE — TODAS AS FEATURES DO DIA
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── CONFIRM DELETE MODAL ── */
+  #confirmDeleteOverlay { padding: 16px; align-items: flex-end; }
+  #confirmDeleteBulkOverlay { padding: 16px; align-items: flex-end !important; }
+  .confirm-delete-modal {
+    width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .confirm-delete-header { padding: 20px 20px 0; }
+  .confirm-delete-icon { width: 48px; height: 48px; font-size: 22px; }
+  .confirm-delete-title { font-size: 20px; }
+  .confirm-delete-preview { margin: 12px 20px; }
+  .confirm-delete-preview-label { padding: 6px 20px 0; }
+  .confirm-delete-footer { padding: 12px 20px 20px; }
+  #confirmBulkGrid { grid-template-columns: repeat(4, 1fr) !important; max-height: 120px; }
+
+  /* ── SLIDESHOW ── */
+  .ss-controls {
+    padding: 8px 14px;
+    gap: 8px;
+    bottom: 16px;
+    opacity: 1 !important; /* sempre visível no touch */
+  }
+  .ss-btn { font-size: 18px; padding: 4px 6px; }
+  .ss-counter { font-size: 11px; min-width: 44px; }
+  .ss-speed-btn { font-size: 10px; padding: 2px 7px; }
+  .ss-close { width: 38px; height: 38px; font-size: 17px; }
+  .ss-title { font-size: 12px; top: 14px; opacity: 1 !important; }
+
+  /* ── SHARE TOAST ── */
+  .share-toast {
+    bottom: 16px;
+    min-width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+  .share-toast-url { font-size: 10px; }
+  .share-toast-copy { padding: 5px 10px; font-size: 11px; }
+
+  /* ── PAGINAÇÃO ── */
+  .pagination-bar { padding: 20px 12px 48px; gap: 4px; }
+  .pg-btn { min-width: 32px; height: 32px; font-size: 12px; padding: 0 8px; }
+  .pg-info { font-size: 10px; }
+
+  /* ── SWIPE HINT no lightbox ── */
+  .lb-swipe-hint {
+    bottom: 100px;
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+
+  /* ── VIEWS BADGE ── */
+  .lb-views-info { font-size: 10px; top: 10px; left: 10px; padding: 3px 8px; }
+  .photo-views-badge { font-size: 8px; padding: 2px 5px; bottom: 4px; left: 4px; }
+
+  /* ── ESTRELA FAVORITA ── */
+  .photo-fav-star { width: 26px; height: 26px; font-size: 13px; top: 4px; left: 4px; }
+  .gallery-card-cover-badge { font-size: 7px; padding: 2px 6px; bottom: 6px; left: 6px; }
+
+  /* ── ADMIN PIN MODAL ── */
+  .admin-modal-box { padding: 28px 16px 22px; width: min(380px, 96vw); }
+  .admin-pin-wrap { gap: 6px; }
+  .admin-pin-wrap input { max-width: 44px; height: 54px; font-size: 20px; border-radius: 10px; }
+  .admin-modal-title { font-size: 24px; }
+
+  /* ── AD UPLOAD MODAL ── */
+  #adUploadOverlay { align-items: flex-end !important; padding: 0 !important; }
+  .ad-upload-modal {
+    width: 100% !important;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0 !important;
+    overflow-y: auto;
+  }
+  .ad-upload-head { padding: 14px 16px; }
+  .ad-upload-title { font-size: 17px; }
+  .ad-upload-body { padding: 14px 14px; gap: 12px; }
+  .ad-pair-grid { gap: 8px; }
+  .ad-zone { aspect-ratio: 1/1; border-radius: 10px; }
+  .ad-zone-icon { font-size: 20px; }
+  .ad-zone-hint { font-size: 9px; }
+  .ad-upload-foot { padding: 10px 14px 16px; }
+
+  /* ── LIGHTBOX PRINCIPAL (swipe e badges) ── */
+  .lightbox-inner { padding: 0 8px; }
+  #lightboxImg { border-radius: 10px; }
+  .lightbox-info { padding: 8px 0; gap: 6px; flex-wrap: wrap; }
+  .lightbox-title { font-size: 13px; }
+  #lbBackBtn { padding: 7px 16px; font-size: 12px; }
+  .lb-swipe-hint { bottom: 90px; }
+
+  /* ── INTRO BANNER AD ── */
+  #viewAntesDepois > div:nth-child(2) > div > div:last-child {
+    display: none; /* esconde o contador no mobile pra não quebrar layout */
+  }
+  #viewAntesDepois > div:nth-child(2) > div {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Slideshow: esconde speeds no mobile pequeno */
+  .ss-speed-btn { display: none; }
+  .ss-counter { display: none; }
+  /* Paginação: menos botões */
+  .pg-ellipsis { display: none; }
+  /* Confirm: preview menor */
+  .confirm-delete-preview { aspect-ratio: 2/1; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
