@@ -3835,13 +3835,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 }
 .sala-photo-card.selected .sala-order-num { display: block; }
 
-/* Foto bloqueada (limite atingido e não selecionada) */
-.sala-photo-card.blocked {
-  opacity: .45;
-  cursor: not-allowed;
-}
-.sala-photo-card.blocked:hover { transform: none; }
-.sala-photo-card.blocked img { transform: none !important; }
+/* bloqueio removido — cliente pode sempre escolher mais */
 
 /* Título da categoria na grade */
 .sala-cat-title {
@@ -4186,6 +4180,67 @@ body.admin-mode .sala-admin-btn { display: flex; }
 @media (max-width: 768px) {
   #salaAdminPanel { align-items: flex-end; padding: 0; }
   .sala-admin-panel-box { width: 100%; border-radius: 20px 20px 0 0; padding: 24px 20px 28px; }
+}
+
+
+/* ── SALA — MODAL LIMITE ATINGIDO ── */
+#salaLimiteOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8600;
+  background: rgba(5,5,10,.88);
+  backdrop-filter: blur(14px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#salaLimiteOverlay.open { display: flex; }
+.sala-limite-box {
+  background: var(--surface);
+  border-radius: 20px;
+  width: min(400px, 96vw);
+  padding: 28px 24px 22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.25);
+  border: 1px solid var(--border2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: mpop .22s cubic-bezier(.34,1.46,.64,1) both;
+}
+.sala-limite-icon { font-size: 40px; }
+.sala-limite-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.sala-limite-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.sala-limite-qtds {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.sala-limite-qty-btn {
+  padding: 9px 4px;
+  border: 2px solid var(--border2);
+  border-radius: 10px;
+  background: var(--surface2);
+  color: var(--muted);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sala-limite-qty-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent3); }
+.sala-limite-qty-btn.atual { border-color: var(--border2); opacity: .35; cursor: not-allowed; }
+.sala-limite-foot { display: flex; gap: 8px; }
+.sala-limite-foot .btn { flex: 1; justify-content: center; padding: 11px; }
+
+@media (max-width: 768px) {
+  #salaLimiteOverlay { align-items: flex-end; padding: 0; }
+  .sala-limite-box { width: 100%; border-radius: 20px 20px 0 0; padding: 24px 20px 28px; }
 }
 
 </style>
@@ -7500,7 +7555,6 @@ function salaRender() {
     return;
   }
 
-  const limitHit = salaSelecao.length >= salaMaxFotos;
   let html = '';
 
   // Se "Todas", agrupa por categoria com título
@@ -7511,22 +7565,21 @@ function salaRender() {
     orderedCats.forEach(cat => {
       const catItems = pool.filter(i => i.cat === cat.id);
       html += `<div class="sala-cat-title">${cat.name}</div>`;
-      html += catItems.map(it => salaCardHTML(it, limitHit)).join('');
+      html += catItems.map(it => salaCardHTML(it)).join('');
     });
   } else {
-    html = pool.map(it => salaCardHTML(it, limitHit)).join('');
+    html = pool.map(it => salaCardHTML(it)).join('');
   }
 
   grid.innerHTML = html;
 }
 
-function salaCardHTML(it, limitHit) {
+function salaCardHTML(it) {
   const sel = salaSelecao.find(s => s.id === it.id);
   const isSel = !!sel;
-  const isBlocked = !isSel && limitHit;
   const order = sel ? sel.order : '';
   return `
-    <div class="sala-photo-card ${isSel ? 'selected' : ''} ${isBlocked ? 'blocked' : ''}"
+    <div class="sala-photo-card ${isSel ? 'selected' : ''}"
          id="spcard-${it.id}" onclick="salaToggle('${it.id}')">
       <img src="${cloudThumb(it.img)}" loading="lazy" alt="${it.title || ''}">
       <div class="sala-select-overlay"></div>
@@ -7545,10 +7598,8 @@ function salaToggle(id) {
     salaSelecao.forEach((s, i) => s.order = i + 1);
   } else {
     if (salaSelecao.length >= salaMaxFotos) {
-      // Shake no contador
-      const pill = document.getElementById('salaCounterPill');
-      pill.style.animation = 'pinShake .3s ease';
-      setTimeout(() => pill.style.animation = '', 400);
+      // Mostra modal para aumentar quantidade
+      abrirSalaLimiteModal();
       return;
     }
     const it = items.find(i => i.id === id);
@@ -7694,6 +7745,59 @@ function compartilharLinkSala() {
   const url = document.getElementById('salaLinkUrl').textContent;
   const msg = 'Olá! Acesse o link abaixo para escolher suas fotos favoritas da nossa galeria:\n\n' + url + '\n\nQualquer dúvida, é só chamar! 😊';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
+
+<!-- ── SALA — MODAL LIMITE ATINGIDO ── -->
+<div id="salaLimiteOverlay">
+  <div class="sala-limite-box">
+    <div class="sala-limite-icon">🎯</div>
+    <div class="sala-limite-title">Você atingiu o limite!</div>
+    <div class="sala-limite-desc">Você já escolheu <strong id="salaLimiteAtual">0</strong> fotos. Quer aumentar a quantidade para escolher mais?</div>
+    <div class="sala-limite-qtds" id="salaLimiteQtds"></div>
+    <div class="sala-limite-foot">
+      <button class="btn btn-ghost" onclick="fecharSalaLimiteModal()">Cancelar</button>
+      <button class="btn btn-accent" onclick="abrirSalaConfirm();fecharSalaLimiteModal()">
+        ✓ Enviar as <span id="salaLimiteEnviarN">0</span> selecionadas
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── MODAL LIMITE ──
+function abrirSalaLimiteModal() {
+  const n = salaSelecao.length;
+  document.getElementById('salaLimiteAtual').textContent = n;
+  document.getElementById('salaLimiteEnviarN').textContent = n;
+
+  // Mostra opções maiores que o atual
+  const opcoes = [5, 10, 15, 20, 30];
+  const qtdsEl = document.getElementById('salaLimiteQtds');
+  qtdsEl.innerHTML = opcoes.map(q => {
+    const isAtual = q === salaMaxFotos;
+    const menor = q < salaMaxFotos;
+    if (menor) return ''; // não mostra menores
+    return `<button class="sala-limite-qty-btn ${isAtual ? 'atual' : ''}"
+      onclick="${isAtual ? '' : `aumentarSalaQty(${q})`}"
+      ${isAtual ? 'disabled' : ''}>${q}</button>`;
+  }).join('');
+
+  document.getElementById('salaLimiteOverlay').classList.add('open');
+}
+
+function fecharSalaLimiteModal() {
+  document.getElementById('salaLimiteOverlay').classList.remove('open');
+}
+
+function aumentarSalaQty(novaQty) {
+  salaMaxFotos = novaQty;
+  document.getElementById('salaCountMax').textContent = novaQty;
+  document.getElementById('salaInstrMax').textContent = novaQty;
+  salaUpdateCounter();
+  salaRender();
+  fecharSalaLimiteModal();
+  toast('✓ Agora você pode escolher até ' + novaQty + ' fotos!');
 }
 </script>
 </body></html>
