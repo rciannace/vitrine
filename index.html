@@ -7737,8 +7737,23 @@ if(typeof _oia==='function'){
       <div class="sala-entrada-qty-row" id="salaQtyRow">
         <!-- Preenchido dinamicamente por salaRenderQtyBtns() -->
       </div>
+      <!-- Campo livre para outra quantidade -->
+      <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
+        <div style="flex:1;height:1px;background:var(--border);opacity:.4;"></div>
+        <span style="font-size:10px;color:var(--muted);white-space:nowrap;">ou digite outra quantidade</span>
+        <div style="flex:1;height:1px;background:var(--border);opacity:.4;"></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Mín. 5 fotos"
+          style="flex:1;padding:10px 14px;border:2px solid var(--border2);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--text);outline:none;text-align:center;"
+          onfocus="this.style.borderColor='var(--accent)';document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
+          onblur="if(!this.value)this.style.borderColor='var(--border2)'"
+          oninput="salaEntradaCustomInput(this.value)"
+          onkeydown="if(event.key==='Enter')document.getElementById('salaBtnEntrar').click()">
+      </div>
+
       <!-- Preço selecionado -->
-      <div id="salaEntradaPreco" style="text-align:center;padding:6px 0 2px;"></div>
+      <div id="salaEntradaPreco" style="text-align:center;padding:2px 0;min-height:36px;"></div>
     </div>
     <button class="sala-entrada-btn" onclick="iniciarSala()">Entrar e escolher fotos →</button>
   </div>
@@ -7830,6 +7845,24 @@ function salaSelectQty(btn) {
   document.querySelectorAll('.sala-qty-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   salaMaxFotos = parseInt(btn.dataset.qty);
+  const customEl = document.getElementById('salaEntradaCustomQty');
+  if (customEl) { customEl.value = ''; customEl.style.borderColor = 'var(--border2)'; }
+  salaUpdateEntradaPreco();
+}
+
+function salaEntradaCustomInput(val) {
+  const n = parseInt(val);
+  const inp = document.getElementById('salaEntradaCustomQty');
+  if (!n || n < 5) {
+    salaMaxFotos = 5;
+    if (inp && val.length > 0) inp.style.borderColor = 'var(--red)';
+    document.getElementById('salaEntradaPreco').innerHTML =
+      '<span style="font-size:11px;color:var(--red);">Mínimo de 5 fotos</span>';
+    return;
+  }
+  if (inp) inp.style.borderColor = 'var(--accent)';
+  document.querySelectorAll('.sala-qty-btn').forEach(b => b.classList.remove('active'));
+  salaMaxFotos = n;
   salaUpdateEntradaPreco();
 }
 
@@ -7863,9 +7896,9 @@ function salaUpdateEntradaPreco() {
   if (!el) return;
   const p = calcularPreco(salaMaxFotos);
   if (!p) { el.innerHTML = ''; return; }
-  const pf = formatBRL(p.porFoto);
+  const pf = formatBRLStr(p.porFoto);
   el.innerHTML = `
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--accent);">${formatBRL(p.total)}</span>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--accent);">${formatBRLStr(p.total)}</span>
     <span style="font-size:11px;color:var(--muted);margin-left:6px;font-family:'DM Mono',monospace;">${pf} por foto</span>`;
 }
 
@@ -7878,6 +7911,7 @@ function iniciarSala() {
     setTimeout(() => document.getElementById('salaClienteNome').style.borderColor = '', 1500);
     return;
   }
+  if (salaMaxFotos < 5) { salaMaxFotos = 5; }
   salaClienteNome = nome;
   salaSelecao = [];
   salaCatFilter = null;
@@ -8251,8 +8285,8 @@ function calcularPreco(qty) {
   return { total, porFoto: pf, exato: false };
 }
 
-function formatBRL(v) {
-  return 'R$ ' + v.toFixed(2).replace('.', ',');
+function formatBRLStr(v) {
+  return 'R$ ' + parseFloat(v).toFixed(2).replace('.', ',');
 }
 
 function abrirSalaLimiteModal() {
@@ -8281,7 +8315,7 @@ function abrirSalaLimiteModal() {
     return `<button class="sala-limite-qty-btn ${p.featured ? 'pacote-destaque' : ''}"
       onclick="aumentarSalaQty(${p.qty})">
       <span class="sala-limite-qty-num">${p.qty}</span>
-      <span class="sala-limite-qty-preco">${preco ? formatBRL(preco.total) : ''}</span>
+      <span class="sala-limite-qty-preco">${preco ? formatBRLStr(preco.total) : ''}</span>
       <span class="sala-limite-qty-desc">${p.featured ? '⭐ Popular' : (p.desc ? p.desc.slice(0,20) : '')}</span>
     </button>`;
   }).join('');
@@ -8300,7 +8334,7 @@ function salaCustomQtyInput() {
   if (!val || val < 1) { el.textContent = ''; return; }
   const p = calcularPreco(val);
   if (p) {
-    el.textContent = formatBRL(p.total) + ' · ' + formatBRL(p.porFoto) + ' por foto' + (p.exato ? ' ✓ pacote disponível' : ' (estimado)');
+    el.textContent = formatBRLStr(p.total) + ' · ' + formatBRLStr(p.porFoto) + ' por foto' + (p.exato ? ' ✓ pacote disponível' : ' (estimado)');
     el.style.color = p.exato ? 'var(--accent)' : 'var(--muted)';
   }
 }
@@ -8324,7 +8358,7 @@ function aumentarSalaQty(novaQty) {
   fecharSalaLimiteModal();
   const p = calcularPreco(novaQty);
   const msg = p
-    ? '✓ Até ' + novaQty + ' fotos · ' + formatBRL(p.total)
+    ? '✓ Até ' + novaQty + ' fotos · ' + formatBRLStr(p.total)
     : '✓ Agora você pode escolher até ' + novaQty + ' fotos!';
   toast(msg);
 }
