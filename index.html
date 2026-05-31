@@ -1406,17 +1406,17 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 
 /* Thumb ocupa 100% do card */
 .gallery-card-thumb {
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 3/4;
   background: var(--surface2);
   overflow: hidden;
+  flex-shrink: 0;
 }
 .gallery-card-thumb img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center top;
   display: block;
   transition: transform .35s;
 }
