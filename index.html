@@ -635,24 +635,33 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
 
 /* ── SIDEBAR ── */
 .sidebar {
-  width: 240px;
+  width: 260px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
-  padding: 20px 0;
+  padding: 16px 0 24px;
   position: sticky;
   top: 64px;
   height: calc(100vh - 64px);
   overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
 }
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 .sidebar-section-title {
-  font-size: 9px;
-  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 2px;
   color: var(--muted);
-  padding: 0 18px;
-  margin-bottom: 6px;
+  padding: 0 16px;
+  margin: 12px 0 6px;
+  opacity: .7;
 }
 
 .cat-btn {
@@ -660,29 +669,29 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 10px 18px;
+  padding: 9px 16px 9px 20px;
   background: none;
   border: none;
   cursor: pointer;
   text-align: left;
   border-radius: 0;
-  transition: background .12s;
+  transition: background .12s, color .12s;
   position: relative;
 }
 .cat-btn:hover { background: var(--surface2); }
-.cat-btn.active {
-  background: var(--accent2);
-}
+.cat-btn.active { background: rgba(0,196,174,.08); }
 .cat-btn.active::before {
   content: '';
   position: absolute;
   left: 0; top: 50%;
   transform: translateY(-50%);
-  width: 3px; height: 22px;
-  background: var(--accent);
-  border-radius: 0 2px 2px 0;
+  width: 3px; height: 28px;
+  background: linear-gradient(to bottom, var(--accent), #00a896);
+  border-radius: 0 3px 3px 0;
+  box-shadow: 2px 0 8px rgba(0,196,174,.3);
 }
-.cat-btn-icon { font-size: 18px; flex-shrink: 0; }
+.cat-btn-icon { font-size: 16px; flex-shrink: 0; opacity: .7; }
+.cat-btn.active .cat-btn-icon { opacity: 1; }
 .cat-btn-info { flex: 1; min-width: 0; }
 .cat-btn-name {
   font-size: 13px;
@@ -691,18 +700,35 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
-.cat-btn.active .cat-btn-name { color: var(--accent); font-weight: 600; }
+.cat-btn.active .cat-btn-name {
+  color: var(--accent);
+  font-weight: 700;
+}
 .cat-btn-count {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
+  background: var(--surface2);
+  padding: 1px 6px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: all .12s;
 }
+.cat-btn.active .cat-btn-count {
+  background: rgba(0,196,174,.12);
+  border-color: rgba(0,196,174,.2);
+  color: var(--accent);
+}
+.cat-btn:hover .cat-btn-count { background: var(--border); }
 
 .sidebar-divider {
   height: 1px;
-  background: var(--border);
-  margin: 12px 18px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 10px 16px;
+  opacity: .8;
 }
 
 /* ── CONTENT ── */
@@ -5119,6 +5145,15 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-section-title">Galerias</div>
+    <!-- Branding header sidebar -->
+    <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);margin-bottom:6px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:adPulseDot 1.8s ease-in-out infinite;flex-shrink:0;"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">IA Foto Studio</span>
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--text);margin-top:4px;line-height:1;">GALERIA</div>
+    </div>
+
     <!-- ANTES & DEPOIS link -->
     <button class="cat-btn ad-special" id="adSidebarBtn" onclick="openAntesDepois()">
       <div class="cat-btn-info">
