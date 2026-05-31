@@ -5461,12 +5461,15 @@ body.admin-mode .sala-link-sidebar { display: flex; }
     </div>
     <div class="move-bulk-body">
       <div class="move-bulk-info" id="moveBulkInfo">Mover fotos selecionadas para:</div>
-      <select id="moveBulkSel" class="select-field"></select>
+      <!-- Grade de categorias em ordem alfabética -->
+      <div class="move-bulk-cats-grid" id="moveBulkCatsGrid"></div>
+      <!-- Input oculto para guardar seleção -->
+      <input type="hidden" id="moveBulkSel" value="">
       <div class="move-bulk-newcat" id="moveBulkNewCatRow" style="display:none;">
         <input id="moveBulkNewCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key==='Enter')moveBulkAddCat()">
         <button class="btn btn-accent btn-sm" onclick="moveBulkAddCat()">＋ Criar</button>
       </div>
-      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova categoria</button>
+      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova galeria</button>
     </div>
     <div class="move-bulk-footer">
       <button class="btn btn-ghost" onclick="closeMoveBulk()">Cancelar</button>
@@ -7103,15 +7106,38 @@ function executeDeleteBulk(){
 
 function openMoveBulk() {
   if (!selectedIds.size) return;
-  const sel = document.getElementById('moveBulkSel');
-  sel.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  if (!cats.length) {
-    toast('⚠ Crie uma galeria primeiro!');
-    return;
-  }
+  if (!cats.length) { toast('⚠ Crie uma galeria primeiro!'); return; }
+  renderMoveBulkCats();
   document.getElementById('moveBulkInfo').innerHTML =
     `Mover <strong>${selectedIds.size} foto${selectedIds.size !== 1 ? 's' : ''}</strong> para:`;
   document.getElementById('moveBulkOverlay').classList.add('open');
+}
+
+function renderMoveBulkCats(selectedId) {
+  const sorted = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+  const grid = document.getElementById('moveBulkCatsGrid');
+  const selInput = document.getElementById('moveBulkSel');
+  const first = selectedId || (sorted[0]?.id || '');
+  if (!selectedId) selInput.value = first;
+
+  grid.innerHTML = sorted.map(c => {
+    const cnt = items.filter(i => i.cat === c.id).length;
+    const isSel = (selectedId || first) === c.id;
+    return `<button class="move-bulk-cat-item ${isSel ? 'selected' : ''}"
+      onclick="selectMoveBulkCat('${c.id}')">
+      <div class="move-bulk-cat-initial">${c.name.charAt(0).toUpperCase()}</div>
+      <span class="move-bulk-cat-name">${c.name}</span>
+      <span class="move-bulk-cat-count">${cnt} foto${cnt !== 1 ? 's' : ''}</span>
+      <div class="move-bulk-cat-check">✓</div>
+    </button>`;
+  }).join('');
+}
+
+function selectMoveBulkCat(catId) {
+  document.getElementById('moveBulkSel').value = catId;
+  document.querySelectorAll('.move-bulk-cat-item').forEach(el => el.classList.remove('selected'));
+  const btn = document.querySelector(`.move-bulk-cat-item[onclick*="${catId}"]`);
+  if (btn) btn.classList.add('selected');
 }
 
 function closeMoveBulk() {
@@ -7152,8 +7178,7 @@ function moveBulkAddCat() {
   buildSidebar();
   updateHeroStats();
   // Atualiza o select e seleciona a nova categoria
-  const sel = document.getElementById('moveBulkSel');
-  sel.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  renderMoveBulkCats();
   sel.value = id;
   // Fecha o campo
   document.getElementById('moveBulkNewCatRow').style.display = 'none';
@@ -7164,6 +7189,7 @@ function moveBulkAddCat() {
 
 function confirmMoveBulk() {
   const catId = document.getElementById('moveBulkSel').value;
+  if (!catId) { toast('⚠ Selecione uma galeria!'); return; }
   if (!catId) return;
   const cat = cats.find(c => c.id === catId);
   let moved = 0;
