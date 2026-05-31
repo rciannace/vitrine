@@ -8026,10 +8026,15 @@ if(typeof _oia==='function'){
       </div>
     </div>
 
-    <!-- Botão -->
-    <button class="sala-welcome-btn" onclick="fecharSalaWelcome()">
-      Entendido — vamos começar! →
-    </button>
+    <!-- Botões -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="sala-welcome-btn" onclick="fecharSalaWelcome()">
+        Entendido — vamos começar! →
+      </button>
+      <button onclick="fecharTudoSala()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:6px;text-align:center;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+        ← Voltar à galeria
+      </button>
+    </div>
 
   </div>
 </div>
@@ -8201,6 +8206,11 @@ function abrirSalaEntradaDireta() {
 function fecharSalaEntrada() {
   document.getElementById('salaEntradaOverlay').classList.remove('open');
   document.getElementById('salaWelcomeOverlay').classList.add('open');
+}
+
+function fecharTudoSala() {
+  document.getElementById('salaWelcomeOverlay').classList.remove('open');
+  document.getElementById('salaEntradaOverlay').classList.remove('open');
 }
 
 // Qty selector
@@ -8774,4 +8784,77 @@ function compartilharSalaSidebar() {
 // Popula ao carregar
 document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
 </script>
+
+<script>
+// ══════════════════════════════════════════════
+//  PROTEÇÃO DE IMAGENS — clientes não-admin
+// ══════════════════════════════════════════════
+(function() {
+  function isAdmin() { return document.body.classList.contains('admin-mode'); }
+
+  // 1. Bloqueia menu de contexto (botão direito)
+  document.addEventListener('contextmenu', function(e) {
+    if (isAdmin()) return;
+    e.preventDefault();
+    showProtectionToast();
+    return false;
+  });
+
+  // 2. Bloqueia arrastar imagens
+  document.addEventListener('dragstart', function(e) {
+    if (isAdmin()) return;
+    if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
+  });
+
+  // 3. Bloqueia atalhos de teclado perigosos
+  document.addEventListener('keydown', function(e) {
+    if (isAdmin()) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && (e.key === 's' || e.key === 'S')) { e.preventDefault(); showProtectionToast(); return; }
+    if (ctrl && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return; }
+    if (ctrl && e.shiftKey && ['i','I','j','J','c','C','k','K'].includes(e.key)) { e.preventDefault(); return; }
+    if (e.key === 'F12') { e.preventDefault(); return; }
+  });
+
+  // 4. CSS de proteção
+  const style = document.createElement('style');
+  style.textContent = `
+    body:not(.admin-mode) img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    body:not(.admin-mode) .photo-card,
+    body:not(.admin-mode) .gallery-card,
+    body:not(.admin-mode) .ad-hero-card,
+    body:not(.admin-mode) .ad-card,
+    body:not(.admin-mode) .photo-card-overlay,
+    body:not(.admin-mode) .photo-card-actions,
+    body:not(.admin-mode) button,
+    body:not(.admin-mode) a { pointer-events: auto; }
+    body:not(.admin-mode) #lightboxImg { pointer-events: none; }
+  `;
+  document.head.appendChild(style);
+
+  // 5. Toast de aviso
+  let _lastToast = 0;
+  function showProtectionToast() {
+    const now = Date.now();
+    if (now - _lastToast < 10000) return;
+    _lastToast = now;
+    if (typeof toast === 'function') {
+      toast('🔒 As fotos são protegidas por direitos autorais.');
+    } else {
+      const t = document.createElement('div');
+      t.textContent = '🔒 As fotos são protegidas por direitos autorais.';
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,22,.92);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:9999;pointer-events:none;backdrop-filter:blur(8px);';
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+  }
+})();
+</script>
+
 </body></html>
