@@ -4666,13 +4666,13 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .sala-welcome-box {
   background: var(--surface);
   border-radius: 28px;
-  width: min(480px, 96vw);
-  padding: 36px 32px 32px;
+  width: min(500px, 96vw);
+  padding: 40px 36px 36px;
   box-shadow: 0 40px 100px rgba(0,0,0,.32);
   border: 1px solid var(--border2);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
   animation: mpop .3s cubic-bezier(.34,1.46,.64,1) both;
 }
 .sala-welcome-brand {
@@ -4682,23 +4682,25 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   gap: 8px;
 }
 .sala-welcome-logo {
-  font-size: 32px;
+  font-size: 38px;
 }
 .sala-welcome-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  letter-spacing: 2px;
+  font-size: 42px;
+  letter-spacing: 3px;
   text-align: center;
-  line-height: 1;
+  line-height: 1.05;
   color: var(--text);
+  margin-top: 8px;
 }
 .sala-welcome-title em { color: var(--accent); font-style: normal; }
 .sala-welcome-subtitle {
   font-size: 14px;
   color: var(--muted);
   text-align: center;
-  line-height: 1.5;
-  margin-top: -12px;
+  line-height: 1.6;
+  margin-top: 6px;
+  padding: 0 8px;
 }
 .sala-welcome-steps {
   display: flex;
@@ -8074,7 +8076,10 @@ if(typeof _oia==='function'){
         <!-- Preenchido dinamicamente -->
       </div>
       <!-- Campo livre -->
-      <div class="sala-entrada-custom-wrap" style="margin-top:6px;">
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.4;">
+        Quer uma quantidade diferente? <strong style="color:var(--text);">Digite abaixo e veja o valor na hora!</strong>
+      </div>
+      <div class="sala-entrada-custom-wrap" style="margin-top:4px;">
         <span style="font-size:12px;color:var(--muted);white-space:nowrap;font-family:'DM Mono',monospace;">outro:</span>
         <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Mínimo 5 fotos — digite aqui"
           onfocus="document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
