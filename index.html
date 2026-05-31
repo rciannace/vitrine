@@ -1174,14 +1174,45 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .topbar { padding: 0 14px; gap: 12px; }
+  .topbar {
+    padding: 0 10px;
+    gap: 6px;
+    height: 54px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  .topbar-right {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  /* Esconde itens menos importantes no mobile */
+  .topbar-divider { display: none; }
+  .brand-text { display: none; }
+  .brand-icon { width: 34px; height: 34px; }
+  .topbar-search {
+    max-width: none;
+    flex: 1;
+    min-width: 0;
+  }
+  /* Botões da topbar menores */
+  .topbar-right .btn {
+    font-size: 11px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+  .sala-admin-btn {
+    font-size: 11px;
+    padding: 6px 8px;
+    letter-spacing: .5px;
+  }
   .sidebar { display: none; }
-  .content { padding: 16px 14px 80px; }
-  .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .topbar-search { max-width: none; flex: 1; }
+  .content { padding: 12px 10px 80px; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .brand-tagline { display: none; }
   .upload-preview-grid { grid-template-columns: repeat(3, 1fr); }
-  .gallery-cards-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .gallery-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
   /* Hero mobile: stack tudo verticalmente, centralizado */
   .hero {
