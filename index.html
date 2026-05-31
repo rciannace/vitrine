@@ -8095,10 +8095,15 @@ if(typeof _oia==='function'){
       <div class="sala-entrada-preco-sub">Selecione a quantidade para ver o valor</div>
     </div>
 
-    <!-- Botão entrar -->
-    <button id="salaBtnEntrar" class="sala-entrada-btn" onclick="iniciarSala()">
-      Entrar e escolher minhas fotos →
-    </button>
+    <!-- Botões -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button id="salaBtnEntrar" class="sala-entrada-btn" onclick="iniciarSala()">
+        Entrar e escolher minhas fotos →
+      </button>
+      <button onclick="fecharSalaEntrada()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:6px;text-align:center;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+        ← Voltar ao passo a passo
+      </button>
+    </div>
 
   </div>
 </div>
@@ -8179,17 +8184,10 @@ let salaCatFilter   = null;
 
 // ── Abrir tela de entrada ──
 function openSalaEntrada() {
-  // Mostra tela de boas-vindas antes da entrada
-  // (só na primeira vez por sessão)
-  if (!sessionStorage.getItem('sala_welcome_seen')) {
-    document.getElementById('salaWelcomeOverlay').classList.add('open');
-  } else {
-    abrirSalaEntradaDireta();
-  }
+  document.getElementById('salaWelcomeOverlay').classList.add('open');
 }
 
 function fecharSalaWelcome() {
-  sessionStorage.setItem('sala_welcome_seen', '1');
   document.getElementById('salaWelcomeOverlay').classList.remove('open');
   abrirSalaEntradaDireta();
 }
@@ -8198,6 +8196,11 @@ function abrirSalaEntradaDireta() {
   salaRenderQtyBtns();
   document.getElementById('salaEntradaOverlay').classList.add('open');
   setTimeout(() => document.getElementById('salaClienteNome').focus(), 300);
+}
+
+function fecharSalaEntrada() {
+  document.getElementById('salaEntradaOverlay').classList.remove('open');
+  document.getElementById('salaWelcomeOverlay').classList.add('open');
 }
 
 // Qty selector
