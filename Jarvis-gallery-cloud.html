@@ -18,7 +18,7 @@ window.addEventListener('unhandledrejection', function(e) {
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- v1.4 --><title>Jarvis Gallery v12 Cloud</title>
+<!-- v1.5 --><title>Jarvis Gallery v12 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -8173,27 +8173,53 @@ async function renderMpGrid() {
     const imgHtml = imgs[i]
       ? `<img src="${imgs[i]}" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px 10px 0 0;display:block;cursor:pointer;" onclick="mpViewImg('${p.id}')">`
       : '';
-    const cardBorderColor = p.fav ? '#f5a623' : 'var(--cyan,#00e5cc)';
+    // Icon per category
+    const icons = ['ti-camera','ti-sparkles','ti-history','ti-wand','ti-photo','ti-brush','ti-stars','ti-flask'];
+    const iconBgs = ['#1D9E75','#534AB7','#BA7517','#993556','#185FA5','#993C1D','#3B6D11','#5F5E5A'];
+    const catIndex = Math.abs(p.cat ? p.cat.split('').reduce((a,c)=>a+c.charCodeAt(0),0) : i) % icons.length;
+    const icon = icons[catIndex];
+    const iconBg = iconBgs[catIndex];
+    const tagsLine = p.tags?.length ? p.tags.slice(0,3).join(', ') : 'sem tags';
+    const favColor = p.fav ? '#BA7517' : 'rgba(255,255,255,.2)';
     return `
-    <div style="background:var(--s1,#1a1a22);border:1px solid var(--border,#2a2a3a);border-left:3px solid ${cardBorderColor};border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 24px rgba(0,0,0,.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-      ${imgHtml}
-      <div style="padding:14px 16px 12px;flex:1;">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
-          <div style="font-size:13px;font-weight:700;color:var(--text,#fff);line-height:1.35;flex:1;">${p.title}</div>
-          <span onclick="event.stopPropagation();toggleMpFav('${p.id}')" style="font-size:14px;cursor:pointer;opacity:${p.fav?1:.3};flex-shrink:0;transition:opacity .15s;" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
+    <div id="mpcard-${p.id}" onclick="mpToggleCard('${p.id}')" style="background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .15s;">
+      <div style="padding:14px 16px;display:flex;align-items:center;gap:12px;">
+        <div style="width:38px;height:38px;border-radius:9px;background:${iconBg}22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="${icon}" style="font-size:18px;color:${iconBg};"></i>
         </div>
-        ${catLabel ? `<div style="display:inline-flex;font-size:9px;font-family:'DM Mono',monospace;color:var(--cyan,#00e5cc);background:rgba(0,229,204,.1);border:1px solid rgba(0,229,204,.2);padding:2px 8px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">✦ ${catLabel}</div>` : ''}
-        <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted,#888);line-height:1.65;max-height:56px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;background:var(--s2,#12121a);border-radius:7px;padding:8px 10px;border:1px solid var(--border,#2a2a3a);">${p.text}</div>
-        ${p.tags?.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${p.tags.map(t=>`<span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted,#888);background:var(--s2,#12121a);border:1px solid var(--border,#2a2a3a);padding:2px 7px;border-radius:20px;">${t}</span>`).join('')}</div>` : ''}
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;">${p.title}</div>
+          <div style="font-size:11px;color:var(--muted);">${catLabel || 'Sem categoria'} · ${tagsLine}</div>
+        </div>
+        ${p.fav ? `<span onclick="event.stopPropagation();toggleMpFav('${p.id}')" style="font-size:15px;color:${favColor};cursor:pointer;flex-shrink:0;" title="Favorito">⭐</span>` : `<span onclick="event.stopPropagation();toggleMpFav('${p.id}')" style="font-size:15px;color:${favColor};cursor:pointer;flex-shrink:0;opacity:.4;" title="Favoritar">☆</span>`}
+        <i class="ti ti-chevron-down" id="arrow-${p.id}" style="font-size:16px;color:var(--muted);transition:transform .2s;flex-shrink:0;"></i>
       </div>
-      <div style="display:flex;gap:5px;padding:9px 12px;border-top:1px solid var(--border,#2a2a3a);background:var(--s2,#12121a);flex-wrap:nowrap;">
-        <button onclick="copyMpPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid rgba(0,229,204,.3);background:rgba(0,229,204,.07);color:var(--cyan,#00e5cc);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">📋 Copiar</button>
-        <button onclick="editMyPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">✏ Editar</button>
-        <button onclick="mpRestoreHistory('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;" title="Histórico">🕐</button>
-        <button onclick="deleteMpPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;margin-left:auto;white-space:nowrap;">✕ Excluir</button>
+      <div id="mpbody-${p.id}" style="display:none;border-top:1px solid var(--border);">
+        ${imgs[i] ? `<img src="${imgs[i]}" alt="" style="width:100%;max-height:180px;object-fit:cover;display:block;cursor:pointer;" onclick="event.stopPropagation();mpViewImg('${p.id}')">` : ''}
+        <div style="padding:14px 16px;background:var(--s2);">
+          <div style="font-size:12px;font-family:'DM Mono',monospace;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;">${p.text}</div>
+          ${p.tags?.length ? `<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;">${p.tags.map(t=>`<span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);background:var(--s1);border:1px solid var(--border);padding:2px 8px;border-radius:20px;">${t}</span>`).join('')}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--s2);">
+          <button onclick="event.stopPropagation();copyMpPrompt('${p.id}')" style="display:flex;align-items:center;gap:5px;font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid rgba(0,229,204,.3);background:rgba(0,229,204,.07);color:var(--cyan);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">📋 Copiar</button>
+          <button onclick="event.stopPropagation();editMyPrompt('${p.id}')" style="display:flex;align-items:center;gap:5px;font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">✏ Editar</button>
+          <button onclick="event.stopPropagation();mpRestoreHistory('${p.id}')" style="font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;" title="Histórico">🕐</button>
+          <button onclick="event.stopPropagation();deleteMpPrompt('${p.id}')" style="font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;margin-left:auto;white-space:nowrap;">✕ Excluir</button>
+        </div>
       </div>
     </div>`;
   }).join('');
+}
+
+function mpToggleCard(id) {
+  const body = document.getElementById('mpbody-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  const card = document.getElementById('mpcard-' + id);
+  if (!body) return;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.style.transform = open ? '' : 'rotate(180deg)';
+  if (card) card.style.borderColor = open ? 'var(--border)' : 'var(--cyan)';
 }
 
 async function mpViewImg(id) {
