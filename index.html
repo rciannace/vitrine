@@ -4990,13 +4990,16 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .move-bulk-cat-name {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: .8px;
   flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
+}
+.move-bulk-cat-item.selected .move-bulk-cat-name {
+  color: var(--accent);
 }
 .move-bulk-cat-count {
   font-family: 'DM Mono', monospace;
