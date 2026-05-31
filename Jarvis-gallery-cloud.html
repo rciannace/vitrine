@@ -18,7 +18,7 @@ window.addEventListener('unhandledrejection', function(e) {
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- v1.3 --><title>Jarvis Gallery v12 Cloud</title>
+<!-- v1.4 --><title>Jarvis Gallery v12 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -8173,23 +8173,24 @@ async function renderMpGrid() {
     const imgHtml = imgs[i]
       ? `<img src="${imgs[i]}" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px 10px 0 0;display:block;cursor:pointer;" onclick="mpViewImg('${p.id}')">`
       : '';
+    const cardBorderColor = p.fav ? '#f5a623' : 'var(--cyan,#00e5cc)';
     return `
-    <div class="mp-card ${p.fav?'fav':''}">
+    <div style="background:var(--s1,#1a1a22);border:1px solid var(--border,#2a2a3a);border-left:3px solid ${cardBorderColor};border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 24px rgba(0,0,0,.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
       ${imgHtml}
-      <div class="mp-card-inner">
-        <div class="mp-card-top">
-          <div class="mp-card-title">${p.title}</div>
-          <span class="mp-fav-star" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
+      <div style="padding:14px 16px 12px;flex:1;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text,#fff);line-height:1.35;flex:1;">${p.title}</div>
+          <span onclick="event.stopPropagation();toggleMpFav('${p.id}')" style="font-size:14px;cursor:pointer;opacity:${p.fav?1:.3};flex-shrink:0;transition:opacity .15s;" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
         </div>
-        ${catLabel ? `<div class="mp-card-cat">✦ ${catLabel}</div>` : ''}
-        <div class="mp-card-text">${p.text}</div>
-        ${tagsHtml}
+        ${catLabel ? `<div style="display:inline-flex;font-size:9px;font-family:'DM Mono',monospace;color:var(--cyan,#00e5cc);background:rgba(0,229,204,.1);border:1px solid rgba(0,229,204,.2);padding:2px 8px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">✦ ${catLabel}</div>` : ''}
+        <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted,#888);line-height:1.65;max-height:56px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;background:var(--s2,#12121a);border-radius:7px;padding:8px 10px;border:1px solid var(--border,#2a2a3a);">${p.text}</div>
+        ${p.tags?.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${p.tags.map(t=>`<span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted,#888);background:var(--s2,#12121a);border:1px solid var(--border,#2a2a3a);padding:2px 7px;border-radius:20px;">${t}</span>`).join('')}</div>` : ''}
       </div>
-      <div class="mp-card-actions">
-        <button class="copy-btn" onclick="copyMpPrompt('${p.id}')">📋 Copiar</button>
-        <button onclick="editMyPrompt('${p.id}')">✏ Editar</button>
-        <button onclick="mpRestoreHistory('${p.id}')" title="Histórico">🕐 Histórico</button>
-        <button class="del-btn" onclick="deleteMpPrompt('${p.id}')">✕ Excluir</button>
+      <div style="display:flex;gap:5px;padding:9px 12px;border-top:1px solid var(--border,#2a2a3a);background:var(--s2,#12121a);flex-wrap:nowrap;">
+        <button onclick="copyMpPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid rgba(0,229,204,.3);background:rgba(0,229,204,.07);color:var(--cyan,#00e5cc);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">📋 Copiar</button>
+        <button onclick="editMyPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">✏ Editar</button>
+        <button onclick="mpRestoreHistory('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;" title="Histórico">🕐</button>
+        <button onclick="deleteMpPrompt('${p.id}')" style="font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2,#333);background:transparent;color:var(--muted,#888);cursor:pointer;font-family:'DM Sans',sans-serif;margin-left:auto;white-space:nowrap;">✕ Excluir</button>
       </div>
     </div>`;
   }).join('');
