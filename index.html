@@ -1388,15 +1388,15 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 /* Gallery card: quadrado com imagem de fundo e nome na base */
 .gallery-card {
   position: relative;
-  aspect-ratio: 3 / 4;
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
-  background: var(--surface2);
+  background: var(--surface);
   box-shadow: var(--shadow);
   transition: transform .18s, box-shadow .18s;
-  display: block;
-  border: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
 }
 .gallery-card:hover {
   transform: scale(1.03);
@@ -1404,7 +1404,7 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   z-index: 2;
 }
 
-/* Thumb ocupa 100% do card */
+/* Thumb — aspecto 3/4, foto âncora no topo */
 .gallery-card-thumb {
   position: relative;
   width: 100%;
@@ -6061,7 +6061,7 @@ function renderHomeGalleries(grid, title, badge) {
       <div class="gallery-card inbox-card" id="gcard-${INBOX}" onclick="selectCat('${INBOX}')">
         <div class="gallery-card-thumb" style="border:2px dashed rgba(0,196,174,.35);">
           ${inboxThumbHTML}
-          <div class="gallery-card-thumb-count">${inboxItems.length} foto${inboxItems.length !== 1 ? 's' : ''}</div>
+
         </div>
         <div class="gallery-card-body">
           <div class="gallery-card-info">
@@ -6088,7 +6088,6 @@ function renderHomeGalleries(grid, title, badge) {
       <div class="gallery-card" id="gcard-${cat.id}" onclick="galCardClick(event,'${cat.id}')">
         <div class="gallery-card-thumb">
           ${thumbHTML}
-          <div class="gallery-card-thumb-count">${cnt} foto${cnt !== 1 ? 's' : ''}</div>
           <div class="gallery-card-actions">
             ${adminMode ? `<button class="gallery-card-action-btn edit-btn" onclick="event.stopPropagation();startRenameCard('${cat.id}')" title="Renomear galeria">✏️</button>` : ''}
             ${adminMode ? `<button class="gallery-card-action-btn del-btn" onclick="event.stopPropagation();deleteCatFromCard('${cat.id}')" title="Excluir galeria">✕</button>` : ''}
@@ -6099,7 +6098,7 @@ function renderHomeGalleries(grid, title, badge) {
         <div class="gallery-card-body" id="gcardBody-${cat.id}">
           <div class="gallery-card-info">
             <div class="gallery-card-name" id="gcardName-${cat.id}">${cat.name}</div>
-            <div class="gallery-card-sub">${cnt} foto${cnt !== 1 ? 's' : ''}</div>
+            <div class="gallery-card-sub">${cnt} FOTO${cnt !== 1 ? 'S' : ''}</div>
           </div>
           <span class="gallery-card-arrow">›</span>
         </div>
