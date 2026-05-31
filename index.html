@@ -8239,8 +8239,24 @@ function fecharSalaConfirm() {
 
 // ── Enviar para WhatsApp ──
 function enviarParaWhatsApp() {
-  const linhas = salaSelecao.map((s, i) => (i+1) + '. ' + (s.catName ? s.catName + ' — ' : '') + (s.title || 'Foto ' + s.order) + ': ' + s.img);
-  const msg = 'Olá! Sou ' + salaClienteNome + ' e escolhi minhas ' + salaSelecao.length + ' foto' + (salaSelecao.length !== 1 ? 's' : '') + ':\n\n' + linhas.join('\n') + '\n\nAguardo o retorno! 😊';
+  const n = salaSelecao.length;
+  const preco = calcularPreco(n);
+  const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
+
+  // Linha de cabeçalho
+  const header = '🎉 *' + salaClienteNome + '* escolheu ' + n + ' foto' + (n !== 1 ? 's' : '') + precoStr + '!\n';
+
+  // Uma linha por foto com galeria + link (URL encurtada via cloudThumb)
+  const linhas = salaSelecao.map((s, i) => {
+    const gal = s.catName ? '[' + s.catName + '] ' : '';
+    const titulo = s.title || ('Foto ' + s.order);
+    // Link direto da imagem original (Cloudinary)
+    return (i+1) + '. ' + gal + titulo + '\n   🔗 ' + s.img;
+  });
+
+  const footer = '\n_Aguardando confirmação! 😊_';
+  const msg = header + '\n' + linhas.join('\n\n') + footer;
+
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   fecharSalaConfirm();
   toast('✓ Abrindo WhatsApp com sua seleção!');
