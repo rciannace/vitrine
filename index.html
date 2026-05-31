@@ -638,7 +638,7 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   width: 260px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
-  padding: 16px 0 24px;
+  padding: 0 0 24px;
   position: sticky;
   top: 64px;
   height: calc(100vh - 64px);
@@ -647,10 +647,57 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   background: var(--surface);
   scrollbar-width: thin;
   scrollbar-color: var(--border2) transparent;
+  display: flex;
+  flex-direction: column;
 }
 .sidebar::-webkit-scrollbar { width: 3px; }
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* Header da sidebar */
+.sidebar-header {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+.sidebar-header-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  animation: adPulseDot 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.sidebar-header-studio {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.sidebar-header-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: var(--text);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.sidebar-header-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
 
 .sidebar-section-title {
   font-family: 'DM Mono', monospace;
@@ -659,8 +706,7 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--muted);
-  padding: 0 16px;
-  margin: 12px 0 6px;
+  padding: 12px 16px 5px;
   opacity: .7;
 }
 
@@ -669,66 +715,82 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 9px 16px 9px 20px;
+  padding: 8px 12px 8px 10px;
   background: none;
   border: none;
   cursor: pointer;
   text-align: left;
   border-radius: 0;
-  transition: background .12s, color .12s;
+  transition: background .12s;
   position: relative;
+  margin: 1px 0;
 }
 .cat-btn:hover { background: var(--surface2); }
-.cat-btn.active { background: rgba(0,196,174,.08); }
+.cat-btn.active {
+  background: rgba(0,196,174,.08);
+}
 .cat-btn.active::before {
   content: '';
   position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 3px; height: 28px;
-  background: linear-gradient(to bottom, var(--accent), #00a896);
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
   border-radius: 0 3px 3px 0;
-  box-shadow: 2px 0 8px rgba(0,196,174,.3);
+}
+/* Ícone container */
+.cat-btn-ico {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  transition: background .12s;
+}
+.cat-btn.active .cat-btn-ico {
+  background: rgba(0,196,174,.15);
+  color: var(--accent);
 }
 .cat-btn-icon { font-size: 16px; flex-shrink: 0; opacity: .7; }
 .cat-btn.active .cat-btn-icon { opacity: 1; }
 .cat-btn-info { flex: 1; min-width: 0; }
 .cat-btn-name {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .8px;
 }
-.cat-btn.active .cat-btn-name {
-  color: var(--accent);
-  font-weight: 700;
-}
+.cat-btn.active .cat-btn-name { color: var(--accent); }
 .cat-btn-count {
   font-size: 9px;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
   background: var(--surface2);
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 20px;
   border: 1px solid var(--border);
   flex-shrink: 0;
   transition: all .12s;
+  font-weight: 700;
 }
 .cat-btn.active .cat-btn-count {
   background: rgba(0,196,174,.12);
-  border-color: rgba(0,196,174,.2);
+  border-color: rgba(0,196,174,.25);
   color: var(--accent);
 }
-.cat-btn:hover .cat-btn-count { background: var(--border); }
 
 .sidebar-divider {
   height: 1px;
   background: linear-gradient(to right, transparent, var(--border), transparent);
-  margin: 10px 16px;
-  opacity: .8;
+  margin: 8px 14px;
+  opacity: .7;
 }
 
 /* ── CONTENT ── */
@@ -5144,14 +5206,15 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-section-title">Galerias</div>
-    <!-- Branding header sidebar -->
-    <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);margin-bottom:6px;">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:adPulseDot 1.8s ease-in-out infinite;flex-shrink:0;"></div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">IA Foto Studio</span>
+    <div class="sidebar-section-title">Categorias</div>
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <div class="sidebar-header-brand">
+        <div class="sidebar-header-dot"></div>
+        <span class="sidebar-header-studio">IA Foto Studio</span>
       </div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--text);margin-top:4px;line-height:1;">GALERIA</div>
+      <div class="sidebar-header-title">Galerias</div>
+      <div class="sidebar-header-sub" id="sidebarHeaderSub">— fotos</div>
     </div>
 
     <!-- ANTES & DEPOIS link -->
@@ -5690,6 +5753,9 @@ async function initApp() {
 
 // ── SIDEBAR ──
 function buildSidebar() {
+  // Update header sub count
+  const subEl = document.getElementById('sidebarHeaderSub');
+  if (subEl) subEl.textContent = items.length + ' foto' + (items.length !== 1 ? 's' : '') + ' · ' + cats.length + ' galerias';
   const list   = document.getElementById('catList');
   const chips  = document.getElementById('catChips');
   const selEl  = document.getElementById('uploadCatSel');
