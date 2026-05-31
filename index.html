@@ -3499,27 +3499,27 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 
 .sala-entrada-box {
   background: var(--surface);
-  border-radius: 24px;
-  width: min(440px, 96vw);
-  padding: 40px 36px 32px;
-  box-shadow: 0 32px 80px rgba(0,0,0,.28);
+  border-radius: 28px;
+  width: min(480px, 96vw);
+  padding: 36px 32px 28px;
+  box-shadow: 0 40px 100px rgba(0,0,0,.32);
   border: 1px solid var(--border2);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
   animation: mpop .3s cubic-bezier(.34,1.46,.64,1) both;
 }
 .sala-entrada-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 4px;
+  gap: 8px;
+  justify-content: center;
 }
 .sala-entrada-brand-dot {
-  width: 10px; height: 10px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
+  box-shadow: 0 0 8px var(--accent);
   animation: adPulseDot 1.8s ease-in-out infinite;
 }
 .sala-entrada-eyebrow {
@@ -3532,18 +3532,37 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 }
 .sala-entrada-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px;
+  font-size: 44px;
   letter-spacing: 2px;
   color: var(--text);
-  line-height: 1;
+  line-height: .95;
+  text-align: center;
 }
 .sala-entrada-title em { color: var(--accent); font-style: normal; }
-.sala-entrada-desc {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.55;
-  margin-top: -8px;
+.sala-entrada-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface2);
+  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
 }
+.sala-entrada-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text);
+}
+.sala-entrada-step-icon {
+  font-size: 18px;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.sala-entrada-step-text { line-height: 1.3; }
+.sala-entrada-step-text strong { color: var(--accent); }
 .sala-entrada-field {
   display: flex;
   flex-direction: column;
@@ -3555,18 +3574,20 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   color: var(--muted);
   letter-spacing: .5px;
   text-transform: uppercase;
+  text-align: center;
 }
 .sala-entrada-input {
   padding: 14px 16px;
   border: 2px solid var(--border2);
   border-radius: 12px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   color: var(--text);
   background: var(--surface2);
   outline: none;
   transition: border-color .15s, box-shadow .15s;
   width: 100%;
+  text-align: center;
 }
 .sala-entrada-input:focus {
   border-color: var(--accent);
@@ -3574,42 +3595,111 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 }
 .sala-entrada-input::placeholder { color: var(--subtle); }
 .sala-entrada-qty-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .sala-qty-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 8px 4px;
+  padding: 10px 8px 8px;
   border: 2px solid var(--border2);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--surface2);
-  color: var(--muted);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
+  color: var(--text);
   cursor: pointer;
-  text-align: center;
   transition: all .15s;
+  min-width: 64px;
+  flex: 1;
 }
-.sala-qty-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent3); }
-.sala-qty-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
-.sala-entrada-btn {
-  padding: 14px;
+.sala-qty-btn:hover { border-color: var(--accent); background: var(--accent3); }
+.sala-qty-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0,196,174,.3);
+}
+.sala-qty-btn.active .sala-qty-btn-price { opacity: .85; }
+.sala-entrada-custom-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--surface2);
+  border: 2px solid var(--border2);
+  border-radius: 12px;
+  padding: 4px 4px 4px 14px;
+  transition: border-color .15s;
+}
+.sala-entrada-custom-wrap:focus-within { border-color: var(--accent); }
+.sala-entrada-custom-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  outline: none;
+  padding: 8px 0;
+  min-width: 0;
+}
+.sala-entrada-custom-wrap input::placeholder { color: var(--subtle); }
+.sala-entrada-custom-ok {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 9px;
+  padding: 8px 16px;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: 1.5px;
+  font-size: 15px;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: background .15s, transform .1s;
-  box-shadow: 0 4px 20px rgba(0,196,174,.3);
+  transition: background .15s;
+  white-space: nowrap;
 }
-.sala-entrada-btn:hover { background: #00b89a; transform: translateY(-1px); }
+.sala-entrada-custom-ok:hover { background: #00a896; }
+.sala-entrada-preco-box {
+  text-align: center;
+  padding: 10px 16px 12px;
+  background: linear-gradient(135deg, rgba(0,196,174,.08), transparent);
+  border: 1.5px solid rgba(0,196,174,.2);
+  border-radius: 14px;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.sala-entrada-preco-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  line-height: 1;
+}
+.sala-entrada-preco-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.sala-entrada-btn {
+  padding: 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background .15s, transform .1s, box-shadow .15s;
+  box-shadow: 0 6px 24px rgba(0,196,174,.35);
+  text-align: center;
+}
+.sala-entrada-btn:hover { background: #00b89a; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,196,174,.45); }
 .sala-entrada-btn:active { transform: translateY(0); }
 
 /* ── VIEW DA SALA ── */
@@ -7720,42 +7810,67 @@ if(typeof _oia==='function'){
      ══════════════════════════════════════════════════════ -->
 <div id="salaEntradaOverlay">
   <div class="sala-entrada-box">
-    <div>
-      <div class="sala-entrada-brand">
+
+    <!-- Marca + título -->
+    <div style="text-align:center;">
+      <div class="sala-entrada-brand" style="justify-content:center;margin-bottom:10px;">
         <div class="sala-entrada-brand-dot"></div>
         <span class="sala-entrada-eyebrow">IA Foto Studio</span>
       </div>
       <div class="sala-entrada-title">SALA DE<br><em>SELEÇÃO</em></div>
-      <div class="sala-entrada-desc" style="margin-top:8px;">Escolha suas fotos favoritas e envie a seleção direto para nós pelo WhatsApp. Fácil e rápido!</div>
     </div>
-    <div class="sala-entrada-field">
-      <label class="sala-entrada-label">Seu nome</label>
-      <input class="sala-entrada-input" id="salaClienteNome" type="text" placeholder="Ex: Maria Silva" autocomplete="off" maxlength="50">
+
+    <!-- Como funciona — 3 steps visuais -->
+    <div class="sala-entrada-steps">
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">👤</span>
+        <span class="sala-entrada-step-text"><strong>Digite seu nome</strong> para identificar sua seleção</span>
+      </div>
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">📸</span>
+        <span class="sala-entrada-step-text"><strong>Escolha quantas fotos</strong> deseja do seu ensaio</span>
+      </div>
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">💬</span>
+        <span class="sala-entrada-step-text"><strong>Envie sua lista</strong> direto pelo WhatsApp — simples assim!</span>
+      </div>
     </div>
+
+    <!-- Campo nome -->
     <div class="sala-entrada-field">
-      <label class="sala-entrada-label">Quantas fotos você quer escolher?</label>
+      <label class="sala-entrada-label">✦ Seu nome</label>
+      <input class="sala-entrada-input" id="salaClienteNome" type="text"
+        placeholder="Ex: Maria Silva" autocomplete="off" maxlength="50">
+    </div>
+
+    <!-- Quantidade -->
+    <div class="sala-entrada-field">
+      <label class="sala-entrada-label">✦ Quantas fotos você quer?</label>
       <div class="sala-entrada-qty-row" id="salaQtyRow">
-        <!-- Preenchido dinamicamente por salaRenderQtyBtns() -->
+        <!-- Preenchido dinamicamente -->
       </div>
-      <!-- Campo livre para outra quantidade -->
-      <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
-        <div style="flex:1;height:1px;background:var(--border);opacity:.4;"></div>
-        <span style="font-size:10px;color:var(--muted);white-space:nowrap;">ou digite outra quantidade</span>
-        <div style="flex:1;height:1px;background:var(--border);opacity:.4;"></div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Mín. 5 fotos"
-          style="flex:1;padding:10px 14px;border:2px solid var(--border2);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--text);outline:none;text-align:center;"
-          onfocus="this.style.borderColor='var(--accent)';document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
-          onblur="if(!this.value)this.style.borderColor='var(--border2)'"
+      <!-- Campo livre -->
+      <div class="sala-entrada-custom-wrap" style="margin-top:6px;">
+        <span style="font-size:12px;color:var(--muted);white-space:nowrap;font-family:'DM Mono',monospace;">outro:</span>
+        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Quantidade personalizada (mín. 5)"
+          onfocus="document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
           oninput="salaEntradaCustomInput(this.value)"
           onkeydown="if(event.key==='Enter')document.getElementById('salaBtnEntrar').click()">
+        <button class="sala-entrada-custom-ok" onclick="if(document.getElementById('salaEntradaCustomQty').value)document.getElementById('salaBtnEntrar').click()">OK</button>
       </div>
-
-      <!-- Preço selecionado -->
-      <div id="salaEntradaPreco" style="text-align:center;padding:2px 0;min-height:36px;"></div>
     </div>
-    <button class="sala-entrada-btn" onclick="iniciarSala()">Entrar e escolher fotos →</button>
+
+    <!-- Preço em destaque -->
+    <div class="sala-entrada-preco-box" id="salaEntradaPreco">
+      <div class="sala-entrada-preco-val">—</div>
+      <div class="sala-entrada-preco-sub">Selecione a quantidade para ver o valor</div>
+    </div>
+
+    <!-- Botão entrar -->
+    <button id="salaBtnEntrar" class="sala-entrada-btn" onclick="iniciarSala()">
+      Entrar e escolher minhas fotos →
+    </button>
+
   </div>
 </div>
 
