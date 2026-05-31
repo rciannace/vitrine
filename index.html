@@ -1431,33 +1431,46 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 
 /* Gradiente + nome sobreposto na base */
 .gallery-card-body {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 28px 12px 10px;
-  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 100%);
+  position: relative;
+  padding: 10px 12px 11px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   display: flex;
-  flex-direction: column;
-  gap: 1px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 .gallery-card-icon { display: none; }
-.gallery-card-info { min-width: 0; }
+.gallery-card-info { flex: 1; min-width: 0; }
 .gallery-card-name {
-  font-weight: 700;
-  font-size: 13px;
-  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.25;
-  text-shadow: 0 1px 4px rgba(0,0,0,.5);
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 .gallery-card-sub {
-  font-size: 10px;
-  color: rgba(255,255,255,.65);
+  font-size: 9px;
+  color: var(--muted);
   font-family: 'DM Mono', monospace;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-top: 2px;
   line-height: 1;
 }
-.gallery-card-arrow { display: none; }
+.gallery-card-arrow {
+  display: flex;
+  color: var(--muted);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: color .15s, transform .15s;
+}
+.gallery-card:hover .gallery-card-arrow { color: var(--accent); transform: translateX(3px); }
 
 /* Contagem no canto superior direito */
 .gallery-card-thumb-count {
@@ -1467,11 +1480,13 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   color: #fff;
   font-family: 'DM Mono', monospace;
   font-size: 9px;
-  padding: 3px 7px;
+  font-weight: 700;
+  padding: 3px 8px;
   border-radius: 20px;
   backdrop-filter: blur(6px);
   white-space: nowrap;
   z-index: 5;
+  letter-spacing: .5px;
 }
 
 /* Cards sem foto: placeholder cinza com ícone */
