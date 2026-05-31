@@ -3645,7 +3645,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   padding: 8px 0;
   min-width: 0;
 }
-.sala-entrada-custom-wrap input::placeholder { color: var(--subtle); }
+.sala-entrada-custom-wrap input::placeholder { color: var(--muted); opacity: 1; font-size: 13px; }
 .sala-entrada-custom-ok {
   background: var(--accent);
   color: #fff;
@@ -4647,6 +4647,158 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .sala-link-sidebar-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent3); }
 .sala-link-sidebar-btn.wa { background: rgba(37,211,102,.1); border-color: rgba(37,211,102,.3); color: #1a8c42; }
 .sala-link-sidebar-btn.wa:hover { background: rgba(37,211,102,.2); border-color: #25d366; }
+
+
+/* ── SALA — TELA DE BOAS-VINDAS ── */
+#salaWelcomeOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(5,5,10,.95);
+  backdrop-filter: blur(20px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+#salaWelcomeOverlay.open { display: flex; }
+.sala-welcome-box {
+  background: var(--surface);
+  border-radius: 28px;
+  width: min(480px, 96vw);
+  padding: 36px 32px 32px;
+  box-shadow: 0 40px 100px rgba(0,0,0,.32);
+  border: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: mpop .3s cubic-bezier(.34,1.46,.64,1) both;
+}
+.sala-welcome-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.sala-welcome-logo {
+  font-size: 32px;
+}
+.sala-welcome-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1;
+  color: var(--text);
+}
+.sala-welcome-title em { color: var(--accent); font-style: normal; }
+.sala-welcome-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+  margin-top: -12px;
+}
+.sala-welcome-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.sala-welcome-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.sala-welcome-step:last-child { border-bottom: none; }
+.sala-welcome-step-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.sala-welcome-step:nth-child(5) .sala-welcome-step-num {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+.sala-welcome-step-content { flex: 1; }
+.sala-welcome-step-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.sala-welcome-step-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.sala-welcome-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(0,196,174,.1), rgba(0,196,174,.05));
+  border: 1px solid rgba(0,196,174,.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.sala-welcome-badge-icon { font-size: 22px; }
+.sala-welcome-badge-text {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+}
+.sala-welcome-badge-text span {
+  color: var(--accent);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+.sala-welcome-btn {
+  padding: 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background .15s, transform .1s, box-shadow .15s;
+  box-shadow: 0 6px 24px rgba(0,196,174,.35);
+  text-align: center;
+}
+.sala-welcome-btn:hover { background: #00b89a; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,196,174,.45); }
+
+@media (max-width: 768px) {
+  #salaWelcomeOverlay { align-items: flex-start; padding: 0; }
+  .sala-welcome-box {
+    width: 100%;
+    min-height: 100%;
+    border-radius: 0;
+    padding: 40px 20px 36px;
+    gap: 20px;
+    justify-content: center;
+  }
+  .sala-welcome-title { font-size: 28px; }
+  .sala-welcome-btn { font-size: 17px; padding: 14px; }
+  .sala-welcome-step { padding: 12px 14px; gap: 12px; }
+}
 
 </style>
 <!-- Firebase -->
@@ -7808,6 +7960,78 @@ if(typeof _oia==='function'){
 <!-- ══════════════════════════════════════════════════════
      SALA DE SELEÇÃO — TELA DE ENTRADA
      ══════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════════════════
+     SALA — TELA DE BOAS-VINDAS / PASSO A PASSO
+     ══════════════════════════════════════════════════════ -->
+<div id="salaWelcomeOverlay">
+  <div class="sala-welcome-box">
+
+    <!-- Marca -->
+    <div>
+      <div class="sala-welcome-brand">
+        <span class="sala-welcome-logo">✦</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">IA Foto Studio</span>
+      </div>
+      <div class="sala-welcome-title" style="margin-top:10px;">COMO<br>FUNCIONA?</div>
+      <div class="sala-welcome-subtitle">Em menos de 24h você recebe seu ensaio completo 🎉</div>
+    </div>
+
+    <!-- Passos -->
+    <div class="sala-welcome-steps">
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">1</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">📸 Explore as galerias</div>
+          <div class="sala-welcome-step-desc">Veja todos os estilos disponíveis e inspire-se para o seu ensaio</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">2</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">❤️ Escolha suas fotos favoritas</div>
+          <div class="sala-welcome-step-desc">Toque nas fotos que mais gostou — você escolhe a quantidade do seu pacote</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">3</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">💬 Envie sua seleção pelo WhatsApp</div>
+          <div class="sala-welcome-step-desc">Sua lista vai direto para nós — sem complicação!</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">4</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">🤳 Nos envie suas fotos de referência</div>
+          <div class="sala-welcome-step-desc">Algumas fotos do rosto e corpo inteiro — bem iluminadas e naturais</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">5</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">🎉 Receba seu ensaio!</div>
+          <div class="sala-welcome-step-desc">Fotos únicas criadas com IA, prontas em menos de 24 horas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badge de prazo -->
+    <div class="sala-welcome-badge">
+      <span class="sala-welcome-badge-icon">⚡</span>
+      <div class="sala-welcome-badge-text">
+        Entrega em <span>MENOS DE 24H</span> após suas fotos
+      </div>
+    </div>
+
+    <!-- Botão -->
+    <button class="sala-welcome-btn" onclick="fecharSalaWelcome()">
+      Entendido — vamos começar! →
+    </button>
+
+  </div>
+</div>
+
 <div id="salaEntradaOverlay">
   <div class="sala-entrada-box">
 
@@ -7852,7 +8076,7 @@ if(typeof _oia==='function'){
       <!-- Campo livre -->
       <div class="sala-entrada-custom-wrap" style="margin-top:6px;">
         <span style="font-size:12px;color:var(--muted);white-space:nowrap;font-family:'DM Mono',monospace;">outro:</span>
-        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Quantidade personalizada (mín. 5)"
+        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Mínimo 5 fotos — digite aqui"
           onfocus="document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
           oninput="salaEntradaCustomInput(this.value)"
           onkeydown="if(event.key==='Enter')document.getElementById('salaBtnEntrar').click()">
@@ -7950,6 +8174,22 @@ let salaCatFilter   = null;
 
 // ── Abrir tela de entrada ──
 function openSalaEntrada() {
+  // Mostra tela de boas-vindas antes da entrada
+  // (só na primeira vez por sessão)
+  if (!sessionStorage.getItem('sala_welcome_seen')) {
+    document.getElementById('salaWelcomeOverlay').classList.add('open');
+  } else {
+    abrirSalaEntradaDireta();
+  }
+}
+
+function fecharSalaWelcome() {
+  sessionStorage.setItem('sala_welcome_seen', '1');
+  document.getElementById('salaWelcomeOverlay').classList.remove('open');
+  abrirSalaEntradaDireta();
+}
+
+function abrirSalaEntradaDireta() {
   salaRenderQtyBtns();
   document.getElementById('salaEntradaOverlay').classList.add('open');
   setTimeout(() => document.getElementById('salaClienteNome').focus(), 300);
