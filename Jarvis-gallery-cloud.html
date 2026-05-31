@@ -18,7 +18,7 @@ window.addEventListener('unhandledrejection', function(e) {
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- v1.5 --><title>Jarvis Gallery v12 Cloud</title>
+<!-- v1.6 --><title>Jarvis Gallery v12 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -8217,9 +8217,28 @@ function mpToggleCard(id) {
   const card = document.getElementById('mpcard-' + id);
   if (!body) return;
   const open = body.style.display === 'block';
-  body.style.display = open ? 'none' : 'block';
-  if (arrow) arrow.style.transform = open ? '' : 'rotate(180deg)';
-  if (card) card.style.borderColor = open ? 'var(--border)' : 'var(--cyan)';
+
+  // Fecha todos os outros primeiro
+  document.querySelectorAll('[id^="mpbody-"]').forEach(b => {
+    b.style.display = 'none';
+    const pid = b.id.replace('mpbody-','');
+    const a = document.getElementById('arrow-' + pid);
+    const c = document.getElementById('mpcard-' + pid);
+    if (a) a.style.transform = '';
+    if (c) { c.style.borderColor = 'var(--border)'; c.style.gridColumn = ''; }
+  });
+
+  if (!open) {
+    body.style.display = 'block';
+    if (arrow) arrow.style.transform = 'rotate(180deg)';
+    if (card) {
+      card.style.borderColor = 'var(--cyan)';
+      // Ocupa toda a largura do grid
+      card.style.gridColumn = '1 / -1';
+      // Scroll suave até o card
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+    }
+  }
 }
 
 async function mpViewImg(id) {
