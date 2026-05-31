@@ -6745,9 +6745,8 @@ function render() {
       <button onclick="enterSelectMode()" style="margin-left:auto;background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s;" onmouseover="this.style.borderColor='rgba(0,229,204,.4)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">☑ Selecionar</button>
     </div>`;
 
-  // Update header count
   const hc = document.getElementById('mpHeaderCount');
-  if (hc) hc.textContent = myPrompts.length + ' prompt' + (myPrompts.length !== 1 ? 's' : '');
+  if (hc) hc.textContent = list.length + ' prompt' + (list.length !== 1 ? 's' : '');
   if (!list.length) {
     grid.innerHTML = backBar + `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">◻</div><h3>${q?'NENHUM RESULTADO':'NENHUMA FOTO'}</h3><p>${q?'Tente outra busca.':'Adicione fotos a esta categoria.'}</p></div>`;
     return;
@@ -8171,28 +8170,26 @@ async function renderMpGrid() {
     const tagsHtml = p.tags?.length
       ? `<div class="mp-card-tags">${p.tags.map(t=>`<span class="mp-tag">${t}</span>`).join('')}</div>`
       : '';
-    const visualBg = imgs[i]
-      ? `<img src="${imgs[i]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45;cursor:pointer;" onclick="mpViewImg('${p.id}')">`
+    const imgHtml = imgs[i]
+      ? `<img src="${imgs[i]}" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px 10px 0 0;display:block;cursor:pointer;" onclick="mpViewImg('${p.id}')">`
       : '';
     return `
     <div class="mp-card ${p.fav?'fav':''}">
-      <div class="mp-card-visual">
-        ${visualBg}
-        ${catLabel ? `<div class="mp-card-cat">${catLabel}</div>` : ''}
-        <span class="mp-fav-star" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
-        <div class="mp-card-preview">${p.text}</div>
-      </div>
+      ${imgHtml}
       <div class="mp-card-inner">
         <div class="mp-card-top">
           <div class="mp-card-title">${p.title}</div>
+          <span class="mp-fav-star" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav?'Remover favorito':'Favoritar'}">${p.fav?'⭐':'☆'}</span>
         </div>
+        ${catLabel ? `<div class="mp-card-cat">✦ ${catLabel}</div>` : ''}
+        <div class="mp-card-text">${p.text}</div>
         ${tagsHtml}
       </div>
       <div class="mp-card-actions">
         <button class="copy-btn" onclick="copyMpPrompt('${p.id}')">📋 Copiar</button>
         <button onclick="editMyPrompt('${p.id}')">✏ Editar</button>
-        <button onclick="mpRestoreHistory('${p.id}')">🕐</button>
-        <button class="del-btn" onclick="deleteMpPrompt('${p.id}')">✕</button>
+        <button onclick="mpRestoreHistory('${p.id}')" title="Histórico">🕐 Histórico</button>
+        <button class="del-btn" onclick="deleteMpPrompt('${p.id}')">✕ Excluir</button>
       </div>
     </div>`;
   }).join('');
