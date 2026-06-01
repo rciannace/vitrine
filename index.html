@@ -1339,7 +1339,7 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
 
   /* Barra bulk adaptada para mobile */
   #bulkBar {
-    bottom: 16px;
+    bottom: 80px;
     left: 12px;
     right: 12px;
     transform: none;
@@ -5056,11 +5056,11 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   .toolbar-right { gap: 4px; }
   /* Esconde botões menos usados no mobile para não transbordar */
   #reorderBtn { display: none !important; }
-  #cleanGhostBtn { display: none !important; }
-  #reorderBtn { display: none !important; }
-  /* Botão excluir galeria compacto */
-  #deleteCatBtn { font-size: 11px !important; padding: 5px 8px !important; }
-  #deleteCatBtn span { display: none; }
+  /* Toolbar mobile — duas linhas, tudo visível */
+  .toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
+  .toolbar-left { width: 100%; }
+  .toolbar-right { width: 100%; flex-wrap: wrap; gap: 4px; }
+  .toolbar-right .btn { flex: 1 1 auto; justify-content: center; font-size: 11px !important; padding: 7px 6px !important; white-space: nowrap; }
 }
 
 </style>
