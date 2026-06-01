@@ -3,7 +3,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IA Foto Studio — Vitrine de Referências</title>
-<!-- v2.6 -->
+<!-- v2.7 -->
 <link href="./IA Foto Studio — Vitrine de Referências_files/css2" rel="stylesheet">
 <style>
 :root {
@@ -8775,17 +8775,9 @@ function salaUpdateCounter() {
     btn.textContent = n > 0 ? `✓ Enviar ${n} foto${n !== 1 ? 's' : ''}` : '✓ Enviar seleção';
   }
 
-  // 🎉 Avisa quando atingir exatamente o limite
+  // 🎉 Avisa quando atingir exatamente o limite — abre modal de confirmação
   if (n === max && max > 0) {
-    const preco = calcularPreco(max);
-    const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
-    const msg = `🎉 Você selecionou ${max} foto${max !== 1 ? 's' : ''}${precoStr}! Pronto para enviar?`;
-    // Toast especial em verde
-    const t = document.createElement('div');
-    t.textContent = msg;
-    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;pointer-events:none;box-shadow:0 4px 20px rgba(0,196,174,.4);white-space:nowrap;max-width:90vw;text-align:center;animation:fadeOut 3s ease 2s forwards;';
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 5000);
+    setTimeout(() => abrirSalaLimiteAtingido(), 300);
   }
 }
 
@@ -8994,6 +8986,13 @@ function formatBRLStr(v) {
 
 function abrirSalaLimiteModal() {
   const n = salaSelecao.length;
+  // Reset para tom normal (não celebração)
+  const title = document.querySelector('#salaLimiteOverlay .sala-limite-title');
+  const desc  = document.querySelector('#salaLimiteOverlay .sala-limite-desc');
+  const icon  = document.querySelector('#salaLimiteOverlay .sala-limite-icon');
+  if (icon)  icon.textContent  = '🎯';
+  if (title) title.textContent = 'Você atingiu o limite!';
+  if (desc)  desc.innerHTML    = `Você já escolheu <strong>${n}</strong> fotos. Quer aumentar a quantidade para escolher mais?`;
   document.getElementById('salaLimiteAtual').textContent = n;
   document.getElementById('salaLimiteEnviarN').textContent = n;
   document.getElementById('salaLimiteCustom').value = '';
