@@ -3,7 +3,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IA Foto Studio — Vitrine de Referências</title>
-<!-- v4.1 -->
+<!-- v4.2 -->
 <link href="./IA Foto Studio — Vitrine de Referências_files/css2" rel="stylesheet">
 <style>
 :root {
@@ -5545,33 +5545,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 </div>
 
 <!-- UPLOAD MODAL -->
-<div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
-  <div class="upload-modal">
-    <div class="upload-modal-head">
-      <span class="upload-modal-title">⬆ Upload de Fotos</span>
-      <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
-    </div>
-    <div class="upload-modal-body">
-      <div class="upload-inbox-hint">📂 As fotos serão salvas em <strong>Aniversário</strong>.</div>
-      <div>
-        <div class="field-label">Fotos</div>
-        <div class="drop-zone" id="dropZone" onclick="document.getElementById(&#39;fileInput&#39;).click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
-          <div class="drop-zone-icon">🖼</div>
-          <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" multiple="" style="display:none" onchange="filesSelected(this.files)">
-      </div>
-      <div class="upload-progress" id="uploadProgress" style="display: none;">
-        <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
-      </div>
-      <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
-    </div>
-    <div class="upload-modal-footer">
-      <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
-      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- MOVE BULK MODAL -->
 <div id="moveBulkOverlay" onclick="if(event.target===this)closeMoveBulk()">
@@ -9252,4 +9226,31 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
   </div>
 </div>
 
+<div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
+  <div class="upload-modal">
+    <div class="upload-modal-head">
+      <span class="upload-modal-title">⬆ Upload de Fotos</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
+    </div>
+    <div class="upload-modal-body">
+      <div class="upload-inbox-hint">📂 As fotos serão salvas em <strong>Aniversário</strong>.</div>
+      <div>
+        <div class="field-label">Fotos</div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById(&#39;fileInput&#39;).click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
+          <div class="drop-zone-icon">🖼</div>
+          <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple="" style="display:none" onchange="filesSelected(this.files)">
+      </div>
+      <div class="upload-progress" id="uploadProgress" style="display: none;">
+        <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
+      </div>
+      <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
+    </div>
+    <div class="upload-modal-footer">
+      <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
+      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
+    </div>
+  </div>
+</div>
 </body></html>
