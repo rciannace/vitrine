@@ -26,6 +26,9 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
+html,body{max-width:100vw;overflow-x:hidden;}
+*{max-width:100%;}
+img,video,svg{max-width:100%;height:auto;}
 
 body {
   background: var(--bg);
@@ -502,9 +505,9 @@ body {
   font-weight: 600;
 }
 @media (max-width: 768px) {
-  .pricing-grid { flex-wrap: wrap; gap: 8px; }
-  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); }
-  .pricing-section { padding: 28px 16px 36px; }
+  .pricing-grid { flex-wrap: wrap; gap: 8px; max-width: 100%; overflow: hidden; }
+  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); max-width: calc(50% - 4px); }
+  .pricing-section { padding: 28px 16px 36px; max-width: 100vw; overflow: hidden; }
 }
 @media (max-width: 480px) {
   .pricing-num { font-size: 32px; }
@@ -1180,6 +1183,8 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     height: 54px;
     flex-wrap: nowrap;
     overflow: hidden;
+    max-width: 100vw;
+    width: 100%;
   }
   .topbar-right {
     display: flex;
@@ -1196,16 +1201,25 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     flex: 1;
     min-width: 0;
   }
-  /* Botões da topbar menores */
+  /* Botões da topbar — mobile: só ícone */
   .topbar-right .btn {
-    font-size: 11px;
-    padding: 6px 8px;
+    font-size: 0;
+    padding: 8px 10px;
     white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .topbar-right .btn::first-letter,
+  .topbar-right .btn > *:first-child {
+    font-size: 16px;
   }
   .sala-admin-btn {
-    font-size: 11px;
-    padding: 6px 8px;
+    font-size: 0 !important;
+    padding: 8px 10px;
     letter-spacing: .5px;
+    flex-shrink: 0;
+  }
+  .sala-admin-btn::first-letter {
+    font-size: 16px;
   }
   .sidebar { display: none; }
   .content { padding: 12px 10px 80px; }
@@ -1220,6 +1234,8 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     grid-template-columns: 1fr;
     gap: 16px;
     text-align: center;
+    max-width: 100vw;
+    overflow: hidden;
   }
   .hero-brand {
     flex-direction: column;
