@@ -5056,7 +5056,8 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   .toolbar-right { gap: 4px; }
   /* Esconde botões menos usados no mobile para não transbordar */
   #reorderBtn { display: none !important; }
-  .toolbar .admin-only[onclick*="cleanGhost"] { display: none !important; }
+  #cleanGhostBtn { display: none !important; }
+  #reorderBtn { display: none !important; }
   /* Botão excluir galeria compacto */
   #deleteCatBtn { font-size: 11px !important; padding: 5px 8px !important; }
   #deleteCatBtn span { display: none; }
@@ -5517,7 +5518,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
         <button class="btn btn-ghost btn-sm admin-only" id="reorderBtn" onclick="autoReorder()" title="Ordenar do menor para o maior">⇅ Reordenar</button>
         <button class="btn btn-ghost btn-sm admin-only" id="selectModeBtn" onclick="toggleSelectMode()" title="Selecionar fotos para mover">☑ Selecionar</button>
         <button class="btn btn-ghost btn-sm admin-only" id="deleteCatBtn" onclick="deleteCatCurrent()" title="Excluir esta galeria" style="color:var(--red);display:none;">🗑 Excluir galeria</button>
-        <button class="btn btn-ghost btn-sm admin-only" onclick="cleanGhostItems()" title="Remover registros sem imagem" style="color:var(--red);">🧹 Limpar fantasmas</button>
+        <button id="cleanGhostBtn" class="btn btn-ghost btn-sm admin-only" onclick="cleanGhostItems()" title="Remover registros sem imagem" style="color:var(--red);">🧹 Limpar fantasmas</button>
       </div>
     </div>
 
