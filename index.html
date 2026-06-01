@@ -26,7 +26,6 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{max-width:100vw;overflow-x:hidden;}
 
 body {
   background: var(--bg);
@@ -503,9 +502,9 @@ body {
   font-weight: 600;
 }
 @media (max-width: 768px) {
-  .pricing-grid { flex-wrap: wrap; gap: 8px; max-width: 100%; overflow: hidden; }
-  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); max-width: calc(50% - 4px); }
-  .pricing-section { padding: 28px 16px 36px; max-width: 100vw; overflow: hidden; }
+  .pricing-grid { flex-wrap: wrap; gap: 8px; }
+  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); }
+  .pricing-section { padding: 28px 16px 36px; }
 }
 @media (max-width: 480px) {
   .pricing-num { font-size: 32px; }
@@ -1181,8 +1180,6 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     height: 54px;
     flex-wrap: nowrap;
     overflow: hidden;
-    max-width: 100vw;
-    width: 100%;
   }
   .topbar-right {
     display: flex;
@@ -1199,25 +1196,16 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     flex: 1;
     min-width: 0;
   }
-  /* Botões da topbar — mobile: só ícone */
+  /* Botões da topbar menores */
   .topbar-right .btn {
-    font-size: 0;
-    padding: 8px 10px;
+    font-size: 11px;
+    padding: 6px 8px;
     white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .topbar-right .btn::first-letter,
-  .topbar-right .btn > *:first-child {
-    font-size: 16px;
   }
   .sala-admin-btn {
-    font-size: 0 !important;
-    padding: 8px 10px;
+    font-size: 11px;
+    padding: 6px 8px;
     letter-spacing: .5px;
-    flex-shrink: 0;
-  }
-  .sala-admin-btn::first-letter {
-    font-size: 16px;
   }
   .sidebar { display: none; }
   .content { padding: 12px 10px 80px; }
@@ -1232,8 +1220,6 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     grid-template-columns: 1fr;
     gap: 16px;
     text-align: center;
-    max-width: 100vw;
-    overflow: hidden;
   }
   .hero-brand {
     flex-direction: column;
@@ -1373,21 +1359,13 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   .admin-modal-box { padding: 28px 18px 22px; }
   .admin-pin-wrap input { width: 38px; height: 46px; font-size: 20px; }
 
-  /* Upload modal — centralizado e fixo no mobile */
-
-  #uploadOverlay {
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 16px !important;
-    overflow: hidden !important;
-    touch-action: none !important;
-  }
+  /* Upload modal — bottom sheet fixo no mobile */
 
   .upload-modal {
-    width: 100% !important;
-    max-width: 100% !important;
-    border-radius: 16px !important;
-    max-height: 88vh !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 92vh !important;
     height: auto !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
@@ -6568,19 +6546,10 @@ function openUpload() {
   const hint = document.querySelector('.upload-inbox-hint');
   if (hint) hint.innerHTML = `📥 As fotos serão salvas em <strong>Sem categoria</strong>. Depois você organiza nas galerias.`;
   document.getElementById('uploadOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
 }
-  document.getElementById('uploadOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  document.body.style.position = '';
-  document.body.style.width = '';
+
 function closeUpload() {
   document.getElementById('uploadOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  document.body.style.position = '';
-  document.body.style.width = '';
   pendingFiles = [];
 }
 
@@ -6993,9 +6962,6 @@ function openUploadInCat() {
     if (cat) hint.innerHTML = `📂 As fotos serão salvas em <strong>${cat.name}</strong>.`;
   }
   document.getElementById('uploadOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
 }
 
 // Global paste listener — works anywhere on the page
