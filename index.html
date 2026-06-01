@@ -1359,19 +1359,21 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   .admin-modal-box { padding: 28px 18px 22px; }
   .admin-pin-wrap input { width: 38px; height: 46px; font-size: 20px; }
 
-  /* Upload modal — bottom sheet fixo no mobile */
+  /* Upload modal — centralizado e fixo no mobile */
 
   #uploadOverlay {
-    align-items: flex-end !important;
+    align-items: center !important;
     justify-content: center !important;
-    padding: 0 !important;
+    padding: 16px !important;
+    overflow: hidden !important;
+    touch-action: none !important;
   }
 
   .upload-modal {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    border-radius: 20px 20px 0 0 !important;
-    max-height: 92vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px !important;
+    max-height: 88vh !important;
     height: auto !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
@@ -6552,10 +6554,19 @@ function openUpload() {
   const hint = document.querySelector('.upload-inbox-hint');
   if (hint) hint.innerHTML = `📥 As fotos serão salvas em <strong>Sem categoria</strong>. Depois você organiza nas galerias.`;
   document.getElementById('uploadOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
 }
-
+  document.getElementById('uploadOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
 function closeUpload() {
   document.getElementById('uploadOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
   pendingFiles = [];
 }
 
@@ -6968,6 +6979,9 @@ function openUploadInCat() {
     if (cat) hint.innerHTML = `📂 As fotos serão salvas em <strong>${cat.name}</strong>.`;
   }
   document.getElementById('uploadOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
 }
 
 // Global paste listener — works anywhere on the page
