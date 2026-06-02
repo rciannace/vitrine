@@ -5282,6 +5282,295 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   }
 }
 
+/* ══════════════════════════════════════
+   SEÇÃO MÚSICAS PERSONALIZADAS
+══════════════════════════════════════ */
+.musica-section {
+  background: linear-gradient(135deg, #0a0a14 0%, #0e0e1a 40%, #0a1a14 100%);
+  padding: 72px 32px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.musica-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(0,196,174,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(168,85,247,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.musica-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.musica-eyebrow {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 10px; letter-spacing: 3px; color: #00c4ae;
+  font-family: 'DM Mono', monospace; margin-bottom: 16px;
+}
+.musica-eyebrow::before,
+.musica-eyebrow::after {
+  content: '';
+  width: 32px; height: 1px; background: #00c4ae; opacity: .5;
+}
+.musica-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 8vw, 80px);
+  line-height: .95;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.musica-title span {
+  background: linear-gradient(90deg, #00c4ae, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.musica-sub {
+  text-align: center;
+  font-size: 16px;
+  color: rgba(255,255,255,.55);
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* Player visual animado */
+.musica-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0 auto 40px;
+  height: 60px;
+}
+.musica-bar {
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #a855f7, #00c4ae);
+  animation: musicaBar 1.2s ease-in-out infinite;
+  transform-origin: bottom;
+}
+.musica-bar:nth-child(1)  { height: 20px; animation-delay: 0s; }
+.musica-bar:nth-child(2)  { height: 35px; animation-delay: .1s; }
+.musica-bar:nth-child(3)  { height: 50px; animation-delay: .2s; }
+.musica-bar:nth-child(4)  { height: 40px; animation-delay: .3s; }
+.musica-bar:nth-child(5)  { height: 55px; animation-delay: .15s; }
+.musica-bar:nth-child(6)  { height: 30px; animation-delay: .25s; }
+.musica-bar:nth-child(7)  { height: 45px; animation-delay: .05s; }
+.musica-bar:nth-child(8)  { height: 25px; animation-delay: .35s; }
+.musica-bar:nth-child(9)  { height: 50px; animation-delay: .2s; }
+.musica-bar:nth-child(10) { height: 38px; animation-delay: .1s; }
+.musica-bar:nth-child(11) { height: 20px; animation-delay: .3s; }
+.musica-bar:nth-child(12) { height: 42px; animation-delay: .0s; }
+.musica-bar:nth-child(13) { height: 55px; animation-delay: .15s; }
+.musica-bar:nth-child(14) { height: 28px; animation-delay: .25s; }
+.musica-bar:nth-child(15) { height: 48px; animation-delay: .05s; }
+@keyframes musicaBar {
+  0%, 100% { transform: scaleY(.4); opacity: .6; }
+  50%       { transform: scaleY(1);   opacity: 1; }
+}
+
+/* Card de promoção destaque */
+.musica-promo {
+  background: linear-gradient(135deg, rgba(0,196,174,.15), rgba(168,85,247,.15));
+  border: 1px solid rgba(0,196,174,.4);
+  border-radius: 24px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.musica-promo::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,196,174,.2) 0%, transparent 70%);
+}
+.musica-promo-badge {
+  background: linear-gradient(135deg, #00c4ae, #00a896);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.musica-promo-text {
+  flex: 1;
+}
+.musica-promo-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.musica-promo-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.6);
+  line-height: 1.4;
+}
+.musica-promo-icon {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+/* Grid de estilos musicais */
+.musica-estilos-title {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,.35);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.musica-estilos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.musica-estilo-btn {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px;
+  padding: 10px 20px;
+  color: rgba(255,255,255,.75);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.musica-estilo-btn:hover,
+.musica-estilo-btn.ativo {
+  background: rgba(0,196,174,.15);
+  border-color: #00c4ae;
+  color: #00c4ae;
+  transform: translateY(-2px);
+}
+
+/* Cards de preço */
+.musica-precos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.musica-preco-card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.musica-preco-card:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(0,196,174,.4);
+  transform: translateY(-4px);
+}
+.musica-preco-card.destaque {
+  background: linear-gradient(135deg, rgba(168,85,247,.15), rgba(0,196,174,.1));
+  border-color: rgba(168,85,247,.5);
+}
+.musica-preco-card.destaque::before {
+  content: 'MAIS PEDIDO';
+  position: absolute;
+  top: 12px; right: -22px;
+  background: #a855f7;
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 4px 32px;
+  transform: rotate(45deg);
+  font-weight: 700;
+}
+.musica-preco-icon { font-size: 28px; margin-bottom: 8px; }
+.musica-preco-nome {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 10px;
+}
+.musica-preco-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.musica-preco-val sup { font-size: 16px; vertical-align: super; }
+.musica-preco-val span { font-size: 18px; }
+.musica-preco-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,.4);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* Botão CTA */
+.musica-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.musica-cta-btn {
+  background: linear-gradient(135deg, #00c4ae, #00a896);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 48px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 8px 32px rgba(0,196,174,.35);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.musica-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,196,174,.5);
+}
+.musica-cta-note {
+  font-size: 12px;
+  color: rgba(255,255,255,.35);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .musica-section { padding: 48px 18px 56px; }
+  .musica-precos { grid-template-columns: 1fr; gap: 10px; }
+  .musica-promo { flex-direction: column; text-align: center; gap: 12px; padding: 20px; }
+  .musica-preco-card.destaque::before { font-size: 8px; }
+  .musica-cta-btn { padding: 16px 32px; font-size: 18px; width: 100%; justify-content: center; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -5406,6 +5695,88 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   </div>
 
 </div>
+
+
+<!-- ══════════════════════════════════════
+     SEÇÃO MÚSICAS PERSONALIZADAS
+══════════════════════════════════════ -->
+<section class="musica-section" id="musicaSection">
+  <div class="musica-inner">
+
+    <!-- Eyebrow -->
+    <div class="musica-eyebrow">🎵 NOVO · EXCLUSIVO · IA FOTO STUDIO</div>
+
+    <!-- Título -->
+    <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
+    <p class="musica-sub">Criamos uma música única para você com Inteligência Artificial — feita sob medida para o seu momento especial</p>
+
+    <!-- Animação de barras sonoras -->
+    <div class="musica-player">
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div>
+    </div>
+
+    <!-- Banner de promoção -->
+    <div class="musica-promo">
+      <div class="musica-promo-icon">🎁</div>
+      <div class="musica-promo-text">
+        <div class="musica-promo-title">PACOTE 20 FOTOS = MÚSICA GRÁTIS!</div>
+        <div class="musica-promo-desc">Compre o pacote de 20 fotos e ganhe uma música personalizada — no estilo que você escolher, para guardar para sempre</div>
+      </div>
+      <div class="musica-promo-badge">✦ GRÁTIS</div>
+    </div>
+
+    <!-- Estilos musicais -->
+    <div class="musica-estilos-title">escolha seu estilo</div>
+    <div class="musica-estilos">
+      <button class="musica-estilo-btn ativo">🎤 Pop</button>
+      <button class="musica-estilo-btn">💃 Funk</button>
+      <button class="musica-estilo-btn">🤠 Sertanejo</button>
+      <button class="musica-estilo-btn">💕 Romântico</button>
+      <button class="musica-estilo-btn">🎸 MPB</button>
+      <button class="musica-estilo-btn">✨ Gospel</button>
+      <button class="musica-estilo-btn">🎹 Instrumental</button>
+      <button class="musica-estilo-btn">🔥 R&amp;B</button>
+    </div>
+
+    <!-- Cards de preço -->
+    <div class="musica-precos">
+      <div class="musica-preco-card">
+        <div class="musica-preco-icon">🎵</div>
+        <div class="musica-preco-nome">MÚSICA SOLO</div>
+        <div class="musica-preco-val"><sup>R$</sup>49<span>,90</span></div>
+        <div class="musica-preco-desc">1 música personalizada<br>até 2 min · entrega em 24h</div>
+      </div>
+      <div class="musica-preco-card destaque">
+        <div class="musica-preco-icon">🎶</div>
+        <div class="musica-preco-nome">MÚSICA + FOTOS</div>
+        <div class="musica-preco-val"><sup>R$</sup>89<span>,90</span></div>
+        <div class="musica-preco-desc">1 música + 10 fotos<br>combo perfeito · entrega 24h</div>
+      </div>
+      <div class="musica-preco-card">
+        <div class="musica-preco-icon">👑</div>
+        <div class="musica-preco-nome">ÁLBUM COMPLETO</div>
+        <div class="musica-preco-val"><sup>R$</sup>199<span>,90</span></div>
+        <div class="musica-preco-desc">2 músicas + 20 fotos<br>experiência premium</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="musica-cta">
+      <button class="musica-cta-btn" onclick="pedirMusica()">
+        🎵 QUERO MINHA MÚSICA
+      </button>
+      <span class="musica-cta-note">Entrega em até 24h · Pagamento pelo WhatsApp</span>
+    </div>
+
+  </div>
+</section>
 
 <!-- PRICING -->
 <div class="pricing-section" id="pricingSection">
@@ -9302,6 +9673,26 @@ function fecharSalaObrigada() {
 
 // Inicializar badge de pedidos
 setTimeout(atualizarBadgePedidos, 500);
+
+
+// ── MÚSICAS PERSONALIZADAS ──
+function pedirMusica() {
+  const estilo = document.querySelector('.musica-estilo-btn.ativo')?.textContent?.trim() || 'Pop';
+  const msg = '🎵 Olá! Quero uma música personalizada!\n\n' +
+    '🎸 Estilo escolhido: ' + estilo + '\n\n' +
+    'Pode me contar mais sobre os pacotes disponíveis?';
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// Toggle estilos musicais
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.musica-estilo-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.musica-estilo-btn').forEach(b => b.classList.remove('ativo'));
+      this.classList.add('ativo');
+    });
+  });
+});
 
 // ── URL param: ?sala=1 — com verificação de expiração ──
 (function() {
