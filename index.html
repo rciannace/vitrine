@@ -7176,9 +7176,13 @@ async function confirmPaste() {
 }
 
 // ── ADMIN AUTH ──
-const ADMIN_HASH = '59f0e44b3e308ab4f25f34f94e5b7e7c73c8e8d1a2b3c4d5e6f7a8b9c0d1e2f3'; // obfuscated
-const ADMIN_PASS = btoa('102030@'); // base64 obfuscation
+const ADMIN_PASS = '7dbe67753606f6ea3eb4ebb96043a0293d811ccf0a93361f93168f4b62e0f155'; // SHA-256
 let adminMode = false;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 function openAdminModal() {
   if (adminMode) {
@@ -7225,17 +7229,18 @@ function pinKey(e, idx) {
 function checkAdminPin() {
   let pin = '';
   for (let i = 0; i < 7; i++) pin += document.getElementById('pin' + i).value;
-  if (btoa(pin) === ADMIN_PASS) {
-    activateAdmin();
-  } else {
-    // Wrong password
-    for (let i = 0; i < 7; i++) document.getElementById('pin' + i).classList.add('error');
-    setTimeout(() => {
-      clearPinFields();
-      document.getElementById('pin0').focus();
-    }, 700);
-    toast('⛔ Senha incorreta');
-  }
+  sha256(pin).then(hash => {
+    if (hash === ADMIN_PASS) {
+      activateAdmin();
+    } else {
+      for (let i = 0; i < 7; i++) document.getElementById('pin' + i).classList.add('error');
+      toast('⛔ Senha incorreta');
+      setTimeout(() => {
+        clearPinFields();
+        document.getElementById('pin0').focus();
+      }, 700);
+    }
+  });
 }
 
 function activateAdmin() {
