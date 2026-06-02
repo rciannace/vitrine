@@ -8692,7 +8692,7 @@ function salaRenderQtyBtns() {
 
   row.innerHTML = qtds.map((q, i) => {
     const p = pricing.find(x => x.qty === q);
-    const preco = p ? 'R$' + p.total.toFixed(0) : '';
+    const preco = p ? formatBRLStr(p.total) : '';
     const isFirst = i === 0;
     return `<button class="sala-qty-btn ${isFirst ? 'active' : ''}"
       data-qty="${q}" onclick="salaSelectQty(this)">
