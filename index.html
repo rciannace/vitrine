@@ -4972,27 +4972,30 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .sala-welcome-btn:hover { background: #00b89a; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,196,174,.45); }
 
 @media (max-width: 768px) {
-  #salaWelcomeOverlay { align-items: flex-start; padding: 0; }
+  #salaWelcomeOverlay {
+    align-items: flex-start;
+    padding: 0;
+    overflow-y: auto;
+  }
   .sala-welcome-box {
     width: 100%;
-    min-height: auto;
-    max-height: none;
+    min-height: 100%;
     border-radius: 0;
-    padding: 16px 18px 24px;
+    padding: 20px 18px 28px;
     gap: 10px;
     overflow-y: visible;
     justify-content: flex-start;
   }
   .sala-welcome-brand { margin-bottom: 0; }
-  .sala-welcome-title { font-size: 22px; letter-spacing: 2px; margin-top: 2px; }
+  .sala-welcome-title { font-size: 24px; letter-spacing: 2px; margin-top: 2px; }
   .sala-welcome-subtitle { font-size: 12px; margin-top: 2px; }
   .sala-welcome-steps { gap: 0; }
-  .sala-welcome-step { padding: 8px 12px; gap: 10px; }
-  .sala-welcome-step-num { width: 24px; height: 24px; font-size: 13px; }
-  .sala-welcome-step-title { font-size: 12px; }
+  .sala-welcome-step { padding: 9px 12px; gap: 10px; }
+  .sala-welcome-step-num { width: 26px; height: 26px; font-size: 13px; }
+  .sala-welcome-step-title { font-size: 13px; }
   .sala-welcome-step-desc { font-size: 11px; }
   .sala-welcome-badge { padding: 10px 14px; font-size: 12px; }
-  .sala-welcome-btn { font-size: 15px; padding: 12px; }
+  .sala-welcome-btn { font-size: 16px; padding: 13px; }
 }
 
 
