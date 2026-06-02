@@ -4292,7 +4292,7 @@ body.admin-mode .sala-admin-btn { display: flex; }
   .sala-check { width: 24px; height: 24px; font-size: 12px; top: 6px; right: 6px; }
   .sala-order-num { font-size: 11px; padding: 1px 6px; bottom: 6px; left: 6px; }
 
-  /* ── Tela de entrada — tela cheia no mobile ── */
+  /* ── Tela de entrada — compacta no mobile, tudo em 1 tela ── */
   #salaEntradaOverlay {
     align-items: stretch;
     justify-content: flex-start;
@@ -4304,14 +4304,25 @@ body.admin-mode .sala-admin-btn { display: flex; }
     min-height: auto;
     max-height: none;
     border-radius: 0;
-    padding: 28px 20px 40px;
-    gap: 16px;
+    padding: 16px 18px 24px;
+    gap: 10px;
     overflow-y: visible;
     justify-content: flex-start;
   }
-  .sala-entrada-title { font-size: 30px; }
-  .sala-entrada-input { font-size: 16px; padding: 12px 14px; }
-  .sala-qty-btn { font-size: 16px; padding: 9px 4px; border-radius: 12px; }
+  .sala-entrada-eyebrow { font-size: 8px; margin-bottom: 2px; }
+  .sala-entrada-title { font-size: 22px; line-height: 1; }
+  .sala-entrada-steps { gap: 6px; }
+  .sala-entrada-step { padding: 8px 12px; gap: 8px; }
+  .sala-entrada-step-icon { font-size: 18px; }
+  .sala-entrada-step-text { font-size: 12px; }
+  .sala-entrada-label { font-size: 9px; margin-bottom: 2px; }
+  .sala-entrada-input { font-size: 14px; padding: 9px 12px; }
+  .sala-entrada-qty-row { gap: 4px; }
+  .sala-qty-btn { font-size: 13px; padding: 7px 4px; border-radius: 10px; min-height: auto; }
+  .sala-entrada-custom-wrap { padding: 4px 4px 4px 10px; }
+  .sala-entrada-price-box { padding: 8px 12px; min-height: auto; }
+  .sala-entrada-price-val { font-size: 26px; }
+  .sala-entrada-btn { font-size: 16px; padding: 12px; }
 
   /* ── Modal de confirmação ── */
   #salaConfirmOverlay { align-items: flex-end; padding: 0; }
