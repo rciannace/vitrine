@@ -9214,8 +9214,8 @@ function enviarParaWhatsApp() {
 
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   // Registrar pedido no painel
-  const precoStr = preco ? formatBRLStr(preco.total) : 'N/A';
-  adicionarPedido(salaClienteNome, n, precoStr);
+  const precoForPedido = preco ? formatBRLStr(preco.total) : 'N/A';
+  adicionarPedido(salaClienteNome, n, precoForPedido);
   sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
   fecharSalaConfirm();
   abrirSalaObrigada(n);
