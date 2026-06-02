@@ -1340,16 +1340,17 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
   /* Barra bulk adaptada para mobile */
   #bulkBar {
     bottom: 80px;
-    left: 12px;
-    right: 12px;
+    left: 8px;
+    right: 8px;
     transform: none;
     border-radius: 16px;
-    padding: 10px 12px 10px 16px;
+    padding: 12px 14px;
     flex-wrap: wrap;
     gap: 8px;
     font-size: 13px;
   }
-  #bulkBar .btn { flex: 1; justify-content: center; font-size: 12px; }
+  #bulkBar #bulkCount { width: 100%; text-align: center; font-size: 13px; opacity: 1; margin-bottom: 2px; }
+  #bulkBar .btn { flex: 1; justify-content: center; font-size: 12px; min-width: 70px; }
 
   /* Modal mover em lote — centralizado no mobile */
   .move-bulk-modal { border-radius: 16px; width: 100%; }
