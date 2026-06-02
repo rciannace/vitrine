@@ -9275,18 +9275,20 @@ function renderPedidos() {
     return;
   }
   const statusLabel = { aguardando:'Aguardando', recebido:'Recebido', produzindo:'Produzindo', entregue:'Entregue ✓' };
-  list.innerHTML = pedidos.map(p => `
-    <div class="pedido-item">
-      <div class="pedido-status-dot ${p.status}"></div>
-      <div class="pedido-info">
-        <div class="pedido-nome">${p.nome}</div>
-        <div class="pedido-detalhe">${p.nFotos} fotos · ${p.preco} · ${p.data}</div>
-      </div>
-      <select class="pedido-status-select" onchange="atualizarStatusPedido(${p.id}, this.value)">
-        ${Object.entries(statusLabel).map(([v,l]) => `<option value="${v}" ${p.status===v?'selected':''}>${l}</option>`).join('')}
-      </select>
-      <button class="pedido-del" onclick="deletarPedido(${p.id})" title="Remover">🗑</button>
-    </div>`).join('');
+  list.innerHTML = pedidos.map(p => {
+    const opts = Object.entries(statusLabel).map(([v,l]) =>
+      '<option value="' + v + '"' + (p.status===v?' selected':'') + '>' + l + '</option>'
+    ).join('');
+    return '<div class="pedido-item">' +
+      '<div class="pedido-status-dot ' + p.status + '"></div>' +
+      '<div class="pedido-info">' +
+        '<div class="pedido-nome">' + p.nome + '</div>' +
+        '<div class="pedido-detalhe">' + p.nFotos + ' fotos · ' + p.preco + ' · ' + p.data + '</div>' +
+      '</div>' +
+      '<select class="pedido-status-select" onchange="atualizarStatusPedido(' + p.id + ', this.value)">' + opts + '</select>' +
+      '<button class="pedido-del" onclick="deletarPedido(' + p.id + ')" title="Remover">🗑</button>' +
+      '</div>';
+  }).join('');
 }
 
 function abrirSalaObrigada(n) {
