@@ -9054,6 +9054,49 @@ function formatBRLStr(v) {
   return 'R$ ' + parseFloat(v).toFixed(2).replace('.', ',');
 }
 
+function abrirSalaLimiteAtingido() {
+  const n = salaSelecao.length;
+  if (n !== salaMaxFotos) return; // só dispara quando bate exato
+
+  const title = document.querySelector('#salaLimiteOverlay .sala-limite-title');
+  const desc  = document.querySelector('#salaLimiteOverlay .sala-limite-desc');
+  const icon  = document.querySelector('#salaLimiteOverlay .sala-limite-icon');
+
+  if (icon)  icon.textContent  = '🎉';
+  if (title) title.textContent = 'Você completou sua seleção!';
+  if (desc)  desc.innerHTML    = `Parabéns! Você escolheu as <strong>${n} fotos</strong> do seu pacote.<br><br>Quer adicionar mais fotos? Veja as opções abaixo — o preço já está calculado!`;
+
+  document.getElementById('salaLimiteAtual').textContent = n;
+  document.getElementById('salaLimiteEnviarN').textContent = n;
+  document.getElementById('salaLimiteCustom').value = '';
+  document.getElementById('salaLimitePrecoCustom').textContent = '';
+
+  // Pacotes acima do atual
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  const pacotesAcima = pricing.filter(p => p.qty > salaMaxFotos);
+  const extras = pacotesAcima.length === 0
+    ? [salaMaxFotos + 5, salaMaxFotos + 10, salaMaxFotos + 20].map(q => {
+        const p = calcularPreco(q);
+        return { qty: q, total: p?.total, porFoto: p?.porFoto, desc: '', featured: false };
+      })
+    : [];
+  const opcoes = [...pacotesAcima, ...extras];
+
+  const qtdsEl = document.getElementById('salaLimiteQtds');
+  qtdsEl.innerHTML = opcoes.slice(0, 6).map(p => {
+    const preco = calcularPreco(p.qty);
+    const diff = p.qty - salaMaxFotos;
+    return `<button class="sala-limite-qty-btn ${p.featured ? 'pacote-destaque' : ''}"
+      onclick="aumentarSalaQty(${p.qty})">
+      <span class="sala-limite-qty-num">${p.qty} fotos</span>
+      <span class="sala-limite-qty-preco">${preco ? formatBRLStr(preco.total) : ''}</span>
+      <span class="sala-limite-qty-desc">+${diff} foto${diff !== 1 ? 's' : ''} · ${preco ? formatBRLStr(preco.porFoto) + '/foto' : ''}</span>
+    </button>`;
+  }).join('');
+
+  document.getElementById('salaLimiteOverlay').classList.add('open');
+}
+
 function abrirSalaLimiteModal() {
   const n = salaSelecao.length;
   // Reset para tom normal (não celebração)
