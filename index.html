@@ -5052,15 +5052,28 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 #deleteCatOverlay.open { display: flex !important; }
 
 @media (max-width: 768px) {
-  .toolbar { padding: 8px 10px 6px; gap: 5px; }
-  .toolbar-right { gap: 4px; }
-  /* Esconde botões menos usados no mobile para não transbordar */
-  #reorderBtn { display: none !important; }
-  /* Toolbar mobile — duas linhas, tudo visível */
-  .toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
+  /* Toolbar mobile — 2 linhas, todos os botões visíveis */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 8px 10px;
+  }
   .toolbar-left { width: 100%; }
-  .toolbar-right { width: 100%; flex-wrap: wrap; gap: 4px; }
-  .toolbar-right .btn { flex: 1 1 auto; justify-content: center; font-size: 11px !important; padding: 7px 6px !important; white-space: nowrap; }
+  .toolbar-right {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .toolbar-right .btn {
+    flex: 1 1 calc(33% - 4px);
+    justify-content: center;
+    font-size: 11px !important;
+    padding: 7px 4px !important;
+    white-space: nowrap;
+    text-align: center;
+  }
 }
 
 </style>
