@@ -6584,6 +6584,41 @@ function renderHomeGalleries(grid, title, badge) {
 
   grid.innerHTML = adHeroHTML + inboxHTML + catsHTML;
 
+  // ── Filtro por letra — inserido APÓS o render ──
+  if (cats.length > 4) {
+    const initials = [...new Set(cats.map(c => c.name[0]?.toUpperCase()).filter(Boolean))].sort();
+    let activeFilter = '__all__';
+
+    let bar = document.getElementById('catsFilterBar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'catsFilterBar';
+      bar.className = 'cats-filter-bar';
+      grid.parentNode.insertBefore(bar, grid);
+    }
+
+    function renderFilterBar() {
+      bar.innerHTML = ['__all__', ...initials].map(l =>
+        `<button class="cats-filter-btn ${activeFilter===l?'active':''}" onclick="setCatsFilter('${l}')">${l==='__all__'?'Todas':l}</button>`
+      ).join('');
+    }
+
+    window.setCatsFilter = function(f) {
+      activeFilter = f;
+      renderFilterBar();
+      grid.querySelectorAll('.gallery-card:not(.inbox-card)').forEach(card => {
+        const name = card.querySelector('.gallery-card-name')?.textContent?.trim() || '';
+        card.style.display = (f === '__all__' || name[0]?.toUpperCase() === f) ? '' : 'none';
+      });
+    };
+
+    renderFilterBar();
+  } else {
+    // Remover barra se tiver poucas galerias
+    const bar = document.getElementById('catsFilterBar');
+    if (bar) bar.remove();
+  }
+
   // No novo modelo imgs são URLs do Cloudinary — carregam direto pelo src
 }
 
