@@ -25,6 +25,32 @@
   --r: 14px;
 }
 
+/* ── MODO ESCURO ── */
+body.dark-mode {
+  --bg: #0e0e12;
+  --surface: #1a1a22;
+  --surface2: #22222e;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #f0efe8;
+  --muted: #8888a0;
+  --subtle: #44445a;
+  --shadow: 0 2px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* Botão de tema */
+#themeToggleBtn {
+  position: fixed; bottom: 80px; right: 16px; z-index: 300;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border2);
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background .2s, transform .15s;
+}
+#themeToggleBtn:hover { transform: scale(1.1); }
+
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body {
@@ -181,6 +207,23 @@ body {
   align-items: center;
   gap: 28px;
 }
+.hero-stats {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.hero-stat {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px;
+}
+.hero-stat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--accent); letter-spacing: 1px;
+}
+.hero-stat-label {
+  font-size: 10px; color: rgba(var(--bg-raw, 248,247,244), .55);
+  letter-spacing: .5px; text-transform: uppercase;
+}
+
 .hero-brand {
   display: flex;
   flex-direction: column;
@@ -841,6 +884,58 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   border-radius: 8px;
 }
 
+/* ── SLIDER ANTES DEPOIS ── */
+.ad-slider-wrap {
+  position: relative; overflow: hidden; border-radius: 16px;
+  cursor: ew-resize; user-select: none; touch-action: none;
+}
+.ad-slider-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  pointer-events: none;
+}
+.ad-slider-after {
+  position: absolute; inset: 0; overflow: hidden;
+  clip-path: inset(0 50% 0 0);
+  transition: none;
+}
+.ad-slider-handle {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 3px; background: #fff;
+  transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.ad-slider-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; pointer-events: none;
+}
+.ad-slider-label {
+  position: absolute; bottom: 10px; font-size: 10px;
+  font-weight: 700; letter-spacing: 1px;
+  background: rgba(0,0,0,.5); color: #fff;
+  padding: 3px 8px; border-radius: 20px;
+}
+.ad-slider-label.antes { left: 10px; }
+.ad-slider-label.depois { right: 10px; }
+
+/* ── FILTRO DE GALERIAS ── */
+.cats-filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 0 0 16px; margin-bottom: 4px;
+}
+.cats-filter-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px;
+  font-weight: 600; border: 1px solid var(--border2);
+  background: var(--surface2); color: var(--muted);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.cats-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cats-filter-btn.active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
 /* ── GALLERY GRID ── */
 .gallery-grid {
   display: grid;
@@ -1221,7 +1316,24 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     gap: 16px;
     text-align: center;
   }
-  .hero-brand {
+  .hero-stats {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.hero-stat {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px;
+}
+.hero-stat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--accent); letter-spacing: 1px;
+}
+.hero-stat-label {
+  font-size: 10px; color: rgba(var(--bg-raw, 248,247,244), .55);
+  letter-spacing: .5px; text-transform: uppercase;
+}
+
+.hero-brand {
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -5003,6 +5115,51 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 }
 
 
+/* ── PAINEL DE PEDIDOS ── */
+#pedidosOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9000;
+  background: rgba(5,5,10,.92); backdrop-filter: blur(16px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#pedidosOverlay.open { display: flex; }
+.pedidos-box {
+  background: var(--surface); border-radius: 24px;
+  width: min(600px, 96vw); max-height: 85vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--border2); box-shadow: 0 40px 100px rgba(0,0,0,.4);
+}
+.pedidos-head {
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pedidos-title { font-family: 'Bebas Neue',sans-serif; font-size: 22px; letter-spacing: 1px; }
+.pedidos-list { overflow-y: auto; flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.pedido-item {
+  background: var(--surface2); border-radius: 14px;
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  border: 1px solid var(--border);
+}
+.pedido-status-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.pedido-status-dot.aguardando { background: #f59e0b; }
+.pedido-status-dot.recebido { background: #3b82f6; }
+.pedido-status-dot.produzindo { background: #a855f7; }
+.pedido-status-dot.entregue { background: #22c55e; }
+.pedido-info { flex: 1; min-width: 0; }
+.pedido-nome { font-weight: 700; font-size: 14px; }
+.pedido-detalhe { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pedido-status-select {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 5px 8px; font-size: 12px;
+  color: var(--text); cursor: pointer; outline: none;
+}
+.pedido-del { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 4px; }
+.pedidos-empty { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) {
+  .pedidos-box { width: 100%; max-height: 90vh; border-radius: 20px; }
+}
+
 /* ── MOVE BULK CATS GRID ── */
 .move-bulk-cats-grid {
   display: flex;
@@ -5184,6 +5341,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       🎯 Sala de Seleção
     </button>
 
+    <button class="btn btn-sm admin-only" onclick="abrirPedidos()" style="background:var(--surface2);border:1px solid var(--border2);" title="Ver pedidos">
+      📋 <span id="pedidosBadge" style="display:none;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;align-items:center;justify-content:center;margin-left:2px;"></span>
+    </button>
     <button class="btn btn-accent btn-sm admin-only" onclick="downloadAll()">
       ⬇ Baixar seleção
     </button>
@@ -5228,6 +5388,21 @@ body.admin-mode .sala-link-sidebar { display: flex; }
     <button onclick="openSalaEntrada()" class="hero-cta" style="border:none;cursor:pointer;">
       ✦ Quero meu ensaio
     </button>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statEnsaios">247</span>
+        <span class="hero-stat-label">✓ ensaios entregues</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">24h</span>
+        <span class="hero-stat-label">⚡ tempo de entrega</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">100%</span>
+        <span class="hero-stat-label">★ satisfação garantida</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -5801,6 +5976,19 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
 </div>
 
+<!-- PAINEL DE PEDIDOS -->
+<div id="pedidosOverlay">
+  <div class="pedidos-box">
+    <div class="pedidos-head">
+      <div class="pedidos-title">📋 Pedidos</div>
+      <button onclick="fecharPedidos()" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+    </div>
+    <div class="pedidos-list" id="pedidosList">
+      <div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>
+    </div>
+  </div>
+</div>
+
 <!-- TELA OBRIGADA -->
 <div id="salaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
   <div style="background:var(--surface);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.4);border:1px solid var(--border2);">
@@ -5821,6 +6009,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 
 <!-- PASTE FLASH BORDER -->
 <div class="paste-global-flash" id="pasteFlash"></div>
+
+<!-- THEME TOGGLE -->
+<button id="themeToggleBtn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
 
 <!-- ADMIN LOCK BUTTON -->
 <button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
@@ -6301,6 +6492,34 @@ function renderHomeGalleries(grid, title, badge) {
         </div>
       </div>`;
   }
+
+  // ── Barra de filtro por letra/inicial ──
+  const initials = [...new Set(cats.map(c => c.name[0]?.toUpperCase()).filter(Boolean))].sort();
+  let activeFilter = '__all__';
+
+  function renderFilterBar() {
+    let bar = document.getElementById('catsFilterBar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'catsFilterBar';
+      bar.className = 'cats-filter-bar';
+      grid.parentNode.insertBefore(bar, grid);
+    }
+    bar.innerHTML = `<button class="cats-filter-btn ${activeFilter==='__all__'?'active':''}" onclick="setCatsFilter('__all__')">Todas</button>` +
+      initials.map(l => `<button class="cats-filter-btn ${activeFilter===l?'active':''}" onclick="setCatsFilter('${l}')">${l}</button>`).join('');
+  }
+
+  window.setCatsFilter = function(f) {
+    activeFilter = f;
+    renderFilterBar();
+    const cards = grid.querySelectorAll('.gallery-card:not(.inbox-card)');
+    cards.forEach(card => {
+      const name = card.querySelector('.gallery-card-name')?.textContent || '';
+      card.style.display = (f === '__all__' || name[0]?.toUpperCase() === f) ? '' : 'none';
+    });
+  };
+
+  renderFilterBar();
 
   const sortedCats = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
 
@@ -7175,6 +7394,21 @@ async function confirmPaste() {
   }
 }
 
+// ── TEMA ──
+function toggleTheme() {
+  const dark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('iafoto_theme', dark ? 'dark' : 'light');
+  document.getElementById('themeToggleBtn').textContent = dark ? '☀️' : '🌙';
+}
+// Aplicar tema salvo ao carregar
+(function() {
+  if (localStorage.getItem('iafoto_theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = '☀️';
+  }
+})();
+
 // ── ADMIN AUTH ──
 const ADMIN_PASS = '7dbe67753606f6ea3eb4ebb96043a0293d811ccf0a93361f93168f4b62e0f155'; // SHA-256
 let adminMode = false;
@@ -8017,30 +8251,53 @@ function adRender() {
   }
 
   grid.innerHTML = adPairs.map((pair, idx) => `
-    <div class="ad-card" id="adcard-${pair.id}" onclick="openAdLightbox(${idx})">
-      <div class="ad-sidebyside">
-        <!-- ANTES — esquerda -->
-        <div class="ad-side-photo">
-          <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes">
-          <span class="ad-label-before">Antes</span>
+    <div class="ad-card" id="adcard-${pair.id}">
+      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:3/4;">
+        <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes">
+        <div class="ad-slider-after" id="sliderAfter-${pair.id}">
+          <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois" style="width:100%;height:100%;object-fit:cover;">
         </div>
-        <!-- DEPOIS — direita -->
-        <div class="ad-side-photo">
-          <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
-          <span class="ad-label-after">Depois</span>
+        <div class="ad-slider-handle" id="sliderHandle-${pair.id}">
+          <div class="ad-slider-btn">↔</div>
         </div>
-        <!-- Linha divisória central -->
-        <div class="ad-split-line"><div class="ad-split-dot">✦</div></div>
+        <span class="ad-slider-label antes">ANTES</span>
+        <span class="ad-slider-label depois">DEPOIS</span>
       </div>
       <div class="ad-card-body">
         <span class="ad-card-label">${pair.title || ''}</span>
         <div class="ad-card-actions">
-          <button class="ad-card-btn expand" title="Ver ampliado" onclick="event.stopPropagation();openAdLightbox(${idx})">⤢</button>
+          <button class="ad-card-btn expand" title="Ver ampliado" onclick="openAdLightbox(${idx})">⤢</button>
           ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
         </div>
       </div>
     </div>
   `).join('');
+
+  // Inicializar sliders após render
+  setTimeout(() => adPairs.forEach(pair => initAdSlider(pair.id)), 50);
+}
+
+function initAdSlider(id) {
+  const wrap = document.getElementById('slider-' + id);
+  const after = document.getElementById('sliderAfter-' + id);
+  const handle = document.getElementById('sliderHandle-' + id);
+  if (!wrap || !after || !handle) return;
+
+  let dragging = false;
+
+  function setPos(x) {
+    const rect = wrap.getBoundingClientRect();
+    let pct = Math.max(0, Math.min(100, (x - rect.left) / rect.width * 100));
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    handle.style.left = pct + '%';
+  }
+
+  wrap.addEventListener('mousedown', e => { dragging = true; setPos(e.clientX); });
+  wrap.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
+  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mouseup', () => dragging = false);
+  window.addEventListener('touchend', () => dragging = false);
 }
 
 
@@ -8959,6 +9216,13 @@ function fecharSalaConfirm() {
 
 // ── Enviar para WhatsApp ──
 function enviarParaWhatsApp() {
+  // Evitar envio duplicado — verifica por nome+quantidade
+  const jaEnviou = sessionStorage.getItem('sala_enviado');
+  if (jaEnviou) {
+    const d = JSON.parse(jaEnviou);
+    toast('⚠️ Você já enviou uma seleção de ' + d.n + ' fotos. Recarregue a página para fazer uma nova.');
+    return;
+  }
   const n = salaSelecao.length;
   const preco = calcularPreco(n);
   const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
@@ -8975,8 +9239,80 @@ function enviarParaWhatsApp() {
   const msg = header + '\n' + linhas.join('\n\n') + footer;
 
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  // Registrar pedido no painel
+  const precoStr = preco ? formatBRLStr(preco.total) : 'N/A';
+  adicionarPedido(salaClienteNome, n, precoStr);
+  sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
   fecharSalaConfirm();
   abrirSalaObrigada(n);
+}
+
+// ── PAINEL DE PEDIDOS ──
+function abrirPedidos() {
+  renderPedidos();
+  document.getElementById('pedidosOverlay').classList.add('open');
+}
+function fecharPedidos() {
+  document.getElementById('pedidosOverlay').classList.remove('open');
+}
+function getPedidos() {
+  try { return JSON.parse(localStorage.getItem('iafoto_pedidos') || '[]'); } catch(e) { return []; }
+}
+function savePedidos(p) {
+  localStorage.setItem('iafoto_pedidos', JSON.stringify(p));
+  atualizarBadgePedidos();
+}
+function atualizarBadgePedidos() {
+  const badge = document.getElementById('pedidosBadge');
+  if (!badge) return;
+  const novos = getPedidos().filter(p => p.status === 'aguardando').length;
+  if (novos > 0) {
+    badge.textContent = novos;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+function adicionarPedido(nome, nFotos, preco) {
+  const pedidos = getPedidos();
+  pedidos.unshift({
+    id: Date.now(),
+    nome, nFotos, preco,
+    status: 'aguardando',
+    data: new Date().toLocaleDateString('pt-BR')
+  });
+  savePedidos(pedidos);
+}
+function atualizarStatusPedido(id, status) {
+  const pedidos = getPedidos().map(p => p.id == id ? {...p, status} : p);
+  savePedidos(pedidos);
+  renderPedidos();
+}
+function deletarPedido(id) {
+  const pedidos = getPedidos().filter(p => p.id != id);
+  savePedidos(pedidos);
+  renderPedidos();
+}
+function renderPedidos() {
+  const list = document.getElementById('pedidosList');
+  const pedidos = getPedidos();
+  if (!pedidos.length) {
+    list.innerHTML = '<div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>';
+    return;
+  }
+  const statusLabel = { aguardando:'Aguardando', recebido:'Recebido', produzindo:'Produzindo', entregue:'Entregue ✓' };
+  list.innerHTML = pedidos.map(p => `
+    <div class="pedido-item">
+      <div class="pedido-status-dot ${p.status}"></div>
+      <div class="pedido-info">
+        <div class="pedido-nome">${p.nome}</div>
+        <div class="pedido-detalhe">${p.nFotos} fotos · ${p.preco} · ${p.data}</div>
+      </div>
+      <select class="pedido-status-select" onchange="atualizarStatusPedido(${p.id}, this.value)">
+        ${Object.entries(statusLabel).map(([v,l]) => `<option value="${v}" ${p.status===v?'selected':''}>${l}</option>`).join('')}
+      </select>
+      <button class="pedido-del" onclick="deletarPedido(${p.id})" title="Remover">🗑</button>
+    </div>`).join('');
 }
 
 function abrirSalaObrigada(n) {
@@ -8988,8 +9324,40 @@ function fecharSalaObrigada() {
   document.getElementById('salaObrigadaOverlay').classList.remove('open');
 }
 
-// ── URL param: ?sala=1 — polling aguarda openSalaEntrada estar disponível ──
-if (new URLSearchParams(window.location.search).get('sala') === '1') {
+// Inicializar badge de pedidos
+setTimeout(atualizarBadgePedidos, 500);
+
+// ── URL param: ?sala=1 — com verificação de expiração ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('sala') !== '1') return;
+
+  // Verificar expiração do token
+  const token = params.get('t');
+  if (token) {
+    try {
+      const expiry = parseInt(atob(token));
+      if (Date.now() > expiry) {
+        // Link expirado — mostrar aviso
+        const _waitExp = setInterval(function() {
+          if (document.body) {
+            clearInterval(_waitExp);
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(5,5,10,.97);display:flex;align-items:center;justify-content:center;padding:28px;';
+            overlay.innerHTML = '<div style="background:#1a1a2e;border-radius:24px;padding:40px 32px;text-align:center;max-width:360px;border:1px solid rgba(255,255,255,.1);">' +
+              '<div style="font-size:48px;margin-bottom:16px;">⏰</div>' +
+              '<div style="font-family:Bebas Neue,sans-serif;font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:12px;">Link Expirado</div>' +
+              '<div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:24px;">Este link de seleção expirou.<br>Entre em contato para receber um novo link.</div>' +
+              '<a href="https://wa.me/5511926029852" target="_blank" style="display:block;padding:14px;background:#00c4ae;color:#fff;border-radius:12px;font-size:16px;text-decoration:none;font-weight:700;">💬 Solicitar novo link</a>' +
+              '</div>';
+            document.body.appendChild(overlay);
+          }
+        }, 100);
+        return;
+      }
+    } catch(e) {}
+  }
+
   const _salaInterval = setInterval(function() {
     if (typeof openSalaEntrada === 'function' &&
         document.getElementById('salaEntradaOverlay')) {
@@ -8997,9 +9365,8 @@ if (new URLSearchParams(window.location.search).get('sala') === '1') {
       openSalaEntrada();
     }
   }, 100);
-  // Para de tentar após 10s
   setTimeout(function() { clearInterval(_salaInterval); }, 10000);
-}
+})();
 </script>
 
 
