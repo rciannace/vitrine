@@ -1344,13 +1344,28 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     right: 8px;
     transform: none;
     border-radius: 16px;
-    padding: 12px 14px;
+    padding: 14px 16px 16px;
     flex-wrap: wrap;
     gap: 8px;
     font-size: 13px;
+    align-items: center;
   }
-  #bulkBar #bulkCount { width: 100%; text-align: center; font-size: 13px; opacity: 1; margin-bottom: 2px; }
-  #bulkBar .btn { flex: 1; justify-content: center; font-size: 12px; min-width: 70px; }
+  #bulkBar #bulkCount {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    margin-bottom: 4px;
+    flex-basis: 100%;
+  }
+  #bulkBar .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    font-size: 12px;
+    min-width: 60px;
+    padding: 8px 6px !important;
+  }
 
   /* Modal mover em lote — centralizado no mobile */
   .move-bulk-modal { border-radius: 16px; width: 100%; }
@@ -8804,6 +8819,13 @@ function salaToggle(id) {
     if (!it) return;
     const cat = cats.find(c => c.id === it.cat);
     salaSelecao.push({ id: it.id, img: it.img, title: it.title || '', catName: cat?.name || '', order: salaSelecao.length + 1 });
+    // Avisa quando atingir o limite exato
+    if (salaSelecao.length === salaMaxFotos) {
+      salaUpdateCounter();
+      salaRender();
+      setTimeout(() => abrirSalaLimiteAtingido(), 400);
+      return;
+    }
   }
   salaUpdateCounter();
   salaRender();
@@ -8845,10 +8867,7 @@ function salaUpdateCounter() {
     btn.textContent = n > 0 ? `✓ Enviar ${n} foto${n !== 1 ? 's' : ''}` : '✓ Enviar seleção';
   }
 
-  // 🎉 Avisa quando atingir exatamente o limite — abre modal de confirmação
-  if (n === max && max > 0) {
-    setTimeout(() => abrirSalaLimiteAtingido(), 300);
-  }
+  // (aviso de limite é disparado direto no salaToggle, após o render)
 }
 
 // ── Modal de confirmação ──
