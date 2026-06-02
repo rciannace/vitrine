@@ -6493,34 +6493,6 @@ function renderHomeGalleries(grid, title, badge) {
       </div>`;
   }
 
-  // ── Barra de filtro por letra/inicial ──
-  const initials = [...new Set(cats.map(c => c.name[0]?.toUpperCase()).filter(Boolean))].sort();
-  let activeFilter = '__all__';
-
-  function renderFilterBar() {
-    let bar = document.getElementById('catsFilterBar');
-    if (!bar) {
-      bar = document.createElement('div');
-      bar.id = 'catsFilterBar';
-      bar.className = 'cats-filter-bar';
-      grid.parentNode.insertBefore(bar, grid);
-    }
-    bar.innerHTML = `<button class="cats-filter-btn ${activeFilter==='__all__'?'active':''}" onclick="setCatsFilter('__all__')">Todas</button>` +
-      initials.map(l => `<button class="cats-filter-btn ${activeFilter===l?'active':''}" onclick="setCatsFilter('${l}')">${l}</button>`).join('');
-  }
-
-  window.setCatsFilter = function(f) {
-    activeFilter = f;
-    renderFilterBar();
-    const cards = grid.querySelectorAll('.gallery-card:not(.inbox-card)');
-    cards.forEach(card => {
-      const name = card.querySelector('.gallery-card-name')?.textContent || '';
-      card.style.display = (f === '__all__' || name[0]?.toUpperCase() === f) ? '' : 'none';
-    });
-  };
-
-  renderFilterBar();
-
   const sortedCats = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
 
   const catsHTML = sortedCats.map(cat => {
@@ -8253,9 +8225,9 @@ function adRender() {
   grid.innerHTML = adPairs.map((pair, idx) => `
     <div class="ad-card" id="adcard-${pair.id}">
       <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:3/4;">
-        <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes">
+        <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
         <div class="ad-slider-after" id="sliderAfter-${pair.id}">
-          <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois" style="width:100%;height:100%;object-fit:cover;">
+          <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="ad-slider-handle" id="sliderHandle-${pair.id}">
           <div class="ad-slider-btn">↔</div>
