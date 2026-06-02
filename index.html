@@ -5286,7 +5286,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       <div class="pricing-per">R$ 7,99 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Melhor custo-benefício do catálogo</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2015%20fotos%20por%20R%24119%2C90" target="_blank" class="pricing-btn pricing-btn-accent">Pedir agora</a>
+      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2015%20fotos%20por%20R%24129%2C90" target="_blank" class="pricing-btn pricing-btn-accent">Pedir agora</a>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="15" data-field="qty" data-pid="p3" oninput="pricingFieldChange(&#39;p3&#39;,&#39;qty&#39;,this.value)">
@@ -5305,7 +5305,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       <div class="pricing-per">R$ 7,00 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Ensaio completo, máxima diversidade</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2020%20fotos%20por%20R%24139%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
+      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2020%20fotos%20por%20R%24159%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="20" data-field="qty" data-pid="p4" oninput="pricingFieldChange(&#39;p4&#39;,&#39;qty&#39;,this.value)">
@@ -5799,6 +5799,24 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
   <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
   <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
+</div>
+
+<!-- TELA OBRIGADA -->
+<div id="salaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
+  <div style="background:var(--surface);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.4);border:1px solid var(--border2);">
+    <div style="font-size:64px;">🎉</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);">Seleção enviada!</div>
+    <div style="font-size:15px;color:var(--muted);line-height:1.6;">
+      Suas <strong id="salaObrigadaN" style="color:var(--accent);">0</strong> fotos foram enviadas pelo WhatsApp.<br>
+      Entraremos em contato em breve para confirmar seu ensaio! 😊
+    </div>
+    <div style="background:var(--accent2);border:1px solid var(--accent);border-radius:14px;padding:14px 20px;font-size:13px;color:var(--text);line-height:1.5;">
+      ⚡ Em menos de <strong>24 horas</strong> você recebe seu ensaio completo!
+    </div>
+    <button onclick="fecharSalaObrigada()" style="width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
+      Fechar ✓
+    </button>
+  </div>
 </div>
 
 <!-- PASTE FLASH BORDER -->
@@ -8940,14 +8958,11 @@ function enviarParaWhatsApp() {
   const preco = calcularPreco(n);
   const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
 
-  // Linha de cabeçalho
   const header = '🎉 *' + salaClienteNome + '* escolheu ' + n + ' foto' + (n !== 1 ? 's' : '') + precoStr + '!\n';
 
-  // Uma linha por foto com galeria + link (URL encurtada via cloudThumb)
   const linhas = salaSelecao.map((s, i) => {
     const gal = s.catName ? '[' + s.catName + '] ' : '';
     const titulo = s.title || ('Foto ' + s.order);
-    // Link direto da imagem original (Cloudinary)
     return (i+1) + '. ' + gal + titulo + '\n   🔗 ' + s.img;
   });
 
@@ -8956,7 +8971,16 @@ function enviarParaWhatsApp() {
 
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   fecharSalaConfirm();
-  toast('✓ Abrindo WhatsApp com sua seleção!');
+  abrirSalaObrigada(n);
+}
+
+function abrirSalaObrigada(n) {
+  document.getElementById('salaObrigadaOverlay').classList.add('open');
+  document.getElementById('salaObrigadaN').textContent = n;
+}
+
+function fecharSalaObrigada() {
+  document.getElementById('salaObrigadaOverlay').classList.remove('open');
 }
 
 // ── URL param: ?sala=1 — polling aguarda openSalaEntrada estar disponível ──
