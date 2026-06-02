@@ -1344,27 +1344,32 @@ body:not(.admin-mode) .lightbox-download-btn { display: none; }
     right: 8px;
     transform: none;
     border-radius: 16px;
-    padding: 12px 14px;
+    padding: 10px 10px 12px;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 6px;
-    font-size: 13px;
+    gap: 5px;
     align-items: center;
   }
   #bulkBar #bulkCount {
     width: 100%;
+    flex-basis: 100%;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     opacity: 1;
-    flex-basis: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   #bulkBar .btn {
     flex: 1 1 0;
+    min-width: 0;
     justify-content: center;
-    font-size: 11px;
-    padding: 9px 4px !important;
+    font-size: 10px;
+    padding: 8px 2px !important;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Modal mover em lote — centralizado no mobile */
@@ -2280,6 +2285,8 @@ body.admin-mode .admin-only.paste-fab { display: flex !important; }
   border: 1px solid rgba(255,255,255,.08);
 }
 #bulkBar.visible { display: flex; }
+#bulkBar.visible ~ .paste-fab,
+body:has(#bulkBar.visible) .paste-fab { display: none !important; }
 #bulkCount { font-family: 'DM Mono', monospace; font-size: 12px; opacity: .75; }
 
 /* ── MOVE BULK MODAL ── */
