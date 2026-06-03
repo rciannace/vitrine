@@ -3769,7 +3769,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 8000;
+  z-index: 99000;
   background: rgba(5,5,10,.92);
   backdrop-filter: blur(20px);
   align-items: center;
@@ -4947,7 +4947,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 8000;
+  z-index: 99000;
   background: rgba(5,5,10,.95);
   backdrop-filter: blur(20px);
   align-items: center;
@@ -9671,7 +9671,11 @@ let salaCatFilter   = null;
 // ── Abrir tela de entrada ──
 function openSalaEntrada(qtdPresel) {
   if (qtdPresel) window._salaQtdPresel = qtdPresel;
-  document.getElementById('salaWelcomeOverlay').classList.add('open');
+  const el = document.getElementById('salaWelcomeOverlay');
+  if (el) {
+    el.classList.add('open');
+    el.style.display = 'flex';
+  }
 }
 
 function fecharSalaWelcome() {
