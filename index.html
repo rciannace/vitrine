@@ -6003,6 +6003,11 @@ body:not(.admin-mode) .musica-demo-add {
     <button class="btn btn-sm admin-only" onclick="abrirPedidos()" style="background:var(--surface2);border:1px solid var(--border2);" title="Ver pedidos">
       📋 <span id="pedidosBadge" style="display:none;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;align-items:center;justify-content:center;margin-left:2px;"></span>
     </button>
+    <button class="btn btn-sm admin-only" onclick="forceSyncAdPairs()" 
+      style="background:rgba(255,165,0,.2);border:1px solid orange;color:orange;" 
+      id="syncAdBtn" title="Sincronizar Antes & Depois">
+      🔄 Sync A/D
+    </button>
     <button class="btn btn-accent btn-sm admin-only" onclick="downloadAll()">
       ⬇ Baixar seleção
     </button>
@@ -8997,7 +9002,6 @@ function openAntesDepois() {
   document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
   // Fecha drawer mobile se estiver aberto
   if (typeof closeDrawer === 'function') closeDrawer();
-  adLoad();
   adRender();
 }
 
@@ -10376,6 +10380,29 @@ function abrirSalaObrigadaMusica(nome) {
   if (!overlay) return;
   const title = overlay.querySelector('div[style*="Bebas"]') || overlay.querySelector('div:nth-child(3)');
   document.getElementById('salaObrigadaOverlay').classList.add('open');
+}
+
+// ── Forçar sync dos adPairs no Firebase ──
+async function forceSyncAdPairs() {
+  const btn = document.getElementById('syncAdBtn');
+  if (btn) btn.textContent = '⏳ Salvando...';
+  
+  try {
+    const db = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    const current = snap.exists() ? snap.data() : {};
+    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+      ...current,
+      adPairs: adPairs,
+      updatedAt: Date.now()
+    });
+    if (btn) btn.textContent = '✓ Salvo!';
+    toast('✓ Antes & Depois sincronizado! Agora aparece para todos.');
+    setTimeout(() => { if (btn) btn.textContent = '🔄 Sync A/D'; }, 3000);
+  } catch(e) {
+    if (btn) btn.textContent = '✗ Erro';
+    toast('⚠ Erro ao sincronizar: ' + e.message);
+  }
 }
 
 // ── URL param: ?sala=1 — com verificação de expiração ──
