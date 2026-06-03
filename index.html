@@ -7063,6 +7063,11 @@ function selectCat(catId) {
   buildSidebar();
   render();
   closeDrawer();
+  // Esconder seção de músicas quando uma galeria está aberta
+  const musicaSec = document.getElementById('musicaSection');
+  if (musicaSec) {
+    musicaSec.style.display = catId ? 'none' : '';
+  }
 }
 
 // ── MOBILE DRAWER ──
