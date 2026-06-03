@@ -873,8 +873,8 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   cursor: ew-resize; user-select: none; touch-action: none;
 }
 .ad-slider-wrap img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  pointer-events: none;
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  pointer-events: none; background: #0a0a14;
 }
 .ad-slider-after {
   position: absolute; inset: 0; overflow: hidden;
@@ -3320,7 +3320,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-lb-title { font-size: 15px; }
   .ad-grid { grid-template-columns: 1fr; gap: 14px; padding: 14px 12px 60px; }
   .ad-sidebyside { aspect-ratio: 2/1.8; }
-  .ad-slider-wrap { aspect-ratio: auto !important; max-height: none !important; height: 320px; }
+  .ad-slider-wrap { aspect-ratio: 4/5 !important; height: auto !important; max-height: none !important; }
   .ad-card { overflow: hidden; }
 }
 
@@ -9028,7 +9028,7 @@ function adRender() {
 
   grid.innerHTML = adPairs.map((pair, idx) => `
     <div class="ad-card" id="adcard-${pair.id}">
-      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:3/4;">
+      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:4/5;">
         <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
         <div class="ad-slider-after" id="sliderAfter-${pair.id}">
           <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes" style="width:100%;height:100%;object-fit:cover;">
