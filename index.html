@@ -25,31 +25,7 @@
   --r: 14px;
 }
 
-/* ── MODO ESCURO ── */
-body.dark-mode {
-  --bg: #0e0e12;
-  --surface: #1a1a22;
-  --surface2: #22222e;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #f0efe8;
-  --muted: #8888a0;
-  --subtle: #44445a;
-  --shadow: 0 2px 16px rgba(0,0,0,0.3);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
-}
 
-/* Botão de tema */
-#themeToggleBtn {
-  position: fixed; bottom: 80px; right: 16px; z-index: 300;
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--surface2); border: 1px solid var(--border2);
-  font-size: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--shadow);
-  transition: background .2s, transform .15s;
-}
-#themeToggleBtn:hover { transform: scale(1.1); }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -6774,9 +6750,6 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 <!-- PASTE FLASH BORDER -->
 <div class="paste-global-flash" id="pasteFlash"></div>
 
-<!-- THEME TOGGLE v2 -->
-<button id="themeToggleBtn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
-
 <!-- ADMIN LOCK BUTTON -->
 <button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
 
@@ -6827,6 +6800,7 @@ async function persist() {
       items: items,
       cats:  cats,
       pricing: loadPricing(),
+      musicaDemos: musicaDemos,
       updatedAt: Date.now()
     });
   } catch(e) {
@@ -6926,6 +6900,10 @@ async function initApp() {
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
+      }
+      if (data.musicaDemos && data.musicaDemos.length) {
+        musicaDemos = data.musicaDemos;
+        renderMusicaDemos();
       }
     } else {
       meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
@@ -10088,6 +10066,8 @@ let currentCard = null;
 
 function saveMusicaDemos() {
   localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
+  // Salvar no Firebase para todos verem
+  if (window._fbReady) persistBg();
 }
 
 function renderMusicaDemos() {
