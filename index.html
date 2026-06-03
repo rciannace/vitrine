@@ -5804,83 +5804,6 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 </div>
 
 
-<!-- ══════════════════════════════════════
-     MÚSICAS PERSONALIZADAS
-══════════════════════════════════════ -->
-<section class="musica-section" id="musicaSection">
-  <div class="musica-inner">
-
-    <div class="musica-eyebrow">🎵 NOVO · EXCLUSIVO · IA FOTO STUDIO</div>
-    <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
-    <p class="musica-sub">Criamos uma música única com Inteligência Artificial — feita sob medida para o seu momento especial</p>
-
-    <div class="musica-player">
-      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
-      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
-      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
-      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
-      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
-    </div>
-
-    <div class="musica-estilos-title">escolha seu estilo</div>
-    <div class="musica-estilos">
-      <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)">🎤 Pop</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💃 Funk</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🤠 Sertanejo</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💕 Romântico</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎸 MPB</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">✝️ Gospel</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎹 Instrumental</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🔥 R&amp;B</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
-    </div>
-
-    <!-- Cards de preço com botão WhatsApp -->
-    <div class="musica-precos">
-      <div class="musica-preco-card" onclick="pedirMusica('Solo - R$49,90')">
-        <div class="musica-preco-icon">🎵</div>
-        <div class="musica-preco-nome">MÚSICA SOLO</div>
-        <div class="musica-preco-val"><sup>R$</sup>49<span>,90</span></div>
-        <div class="musica-preco-desc">1 música personalizada<br>até 2 min · entrega em 24h</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Solo - R$49,90')">💬 Pedir no WhatsApp</button>
-      </div>
-      <div class="musica-preco-card destaque" onclick="pedirMusica('Duo - R$89,90')">
-        <div class="musica-preco-icon">🎶</div>
-        <div class="musica-preco-nome">DUO</div>
-        <div class="musica-preco-val"><sup>R$</sup>89<span>,90</span></div>
-        <div class="musica-preco-desc">2 músicas diferentes<br>estilos à sua escolha · 24h</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Duo - R$89,90')">💬 Pedir no WhatsApp</button>
-      </div>
-      <div class="musica-preco-card" onclick="pedirMusica('Premium - R$149,90')">
-        <div class="musica-preco-icon">👑</div>
-        <div class="musica-preco-nome">PREMIUM</div>
-        <div class="musica-preco-val"><sup>R$</sup>149<span>,90</span></div>
-        <div class="musica-preco-desc">3 músicas + letra<br>com voz · versão instrumental · 24h</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Premium - R$149,90')">💬 Pedir no WhatsApp</button>
-      </div>
-    </div>
-
-    <!-- Galeria de demos -->
-    <div class="musica-demos-title">🎧 OUÇA EXEMPLOS</div>
-    <p class="musica-demos-sub">Clique para ouvir músicas criadas com IA — cada uma única, igual será a sua</p>
-
-    <div class="musica-demos-grid" id="musicaDemosGrid">
-      <!-- demos serão renderizadas aqui -->
-      <div class="musica-demo-add" onclick="adicionarMusicaDemo()">
-        <span style="font-size:20px;">＋</span> Adicionar música exemplo
-      </div>
-    </div>
-
-    <div class="musica-cta">
-      <button class="musica-cta-btn" onclick="pedirMusica()">
-        🎵 QUERO MINHA MÚSICA
-      </button>
-      <span class="musica-cta-note">Entrega em até 24h · Pagamento pelo WhatsApp</span>
-    </div>
-
-  </div>
-</section>
 
 <!-- CAT CHIPS (mobile) -->
 <div class="cat-chips" id="catChips"></div>
@@ -6131,6 +6054,84 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
     </button>
   </main>
 </div>
+
+<!-- ══════════════════════════════════════
+     MÚSICAS PERSONALIZADAS
+══════════════════════════════════════ -->
+<section class="musica-section" id="musicaSection">
+  <div class="musica-inner">
+
+    <div class="musica-eyebrow">🎵 NOVO · EXCLUSIVO · IA FOTO STUDIO</div>
+    <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
+    <p class="musica-sub">Criamos uma música única com Inteligência Artificial — feita sob medida para o seu momento especial</p>
+
+    <div class="musica-player">
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+    </div>
+
+    <div class="musica-estilos-title">escolha seu estilo</div>
+    <div class="musica-estilos">
+      <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)">🎤 Pop</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💃 Funk</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🤠 Sertanejo</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💕 Romântico</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎸 MPB</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">✝️ Gospel</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎹 Instrumental</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🔥 R&amp;B</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
+    </div>
+
+    <!-- Cards de preço com botão WhatsApp -->
+    <div class="musica-precos">
+      <div class="musica-preco-card" onclick="pedirMusica('Solo - R$49,90')">
+        <div class="musica-preco-icon">🎵</div>
+        <div class="musica-preco-nome">MÚSICA SOLO</div>
+        <div class="musica-preco-val"><sup>R$</sup>49<span>,90</span></div>
+        <div class="musica-preco-desc">1 música personalizada<br>até 2 min · entrega em 24h</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Solo - R$49,90')">💬 Pedir no WhatsApp</button>
+      </div>
+      <div class="musica-preco-card destaque" onclick="pedirMusica('Duo - R$89,90')">
+        <div class="musica-preco-icon">🎶</div>
+        <div class="musica-preco-nome">DUO</div>
+        <div class="musica-preco-val"><sup>R$</sup>89<span>,90</span></div>
+        <div class="musica-preco-desc">2 músicas diferentes<br>estilos à sua escolha · 24h</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Duo - R$89,90')">💬 Pedir no WhatsApp</button>
+      </div>
+      <div class="musica-preco-card" onclick="pedirMusica('Premium - R$149,90')">
+        <div class="musica-preco-icon">👑</div>
+        <div class="musica-preco-nome">PREMIUM</div>
+        <div class="musica-preco-val"><sup>R$</sup>149<span>,90</span></div>
+        <div class="musica-preco-desc">3 músicas + letra<br>com voz · versão instrumental · 24h</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Premium - R$149,90')">💬 Pedir no WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- Galeria de demos -->
+    <div class="musica-demos-title">🎧 OUÇA EXEMPLOS</div>
+    <p class="musica-demos-sub">Clique para ouvir músicas criadas com IA — cada uma única, igual será a sua</p>
+
+    <div class="musica-demos-grid" id="musicaDemosGrid">
+      <!-- demos serão renderizadas aqui -->
+      <div class="musica-demo-add" onclick="adicionarMusicaDemo()">
+        <span style="font-size:20px;">＋</span> Adicionar música exemplo
+      </div>
+    </div>
+
+    <div class="musica-cta">
+      <button class="musica-cta-btn" onclick="pedirMusica()">
+        🎵 QUERO MINHA MÚSICA
+      </button>
+      <span class="musica-cta-note">Entrega em até 24h · Pagamento pelo WhatsApp</span>
+    </div>
+
+  </div>
+</section>
 
 <!-- LIGHTBOX -->
 <div id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()" ontouchstart="lbTouchStart(event)" ontouchmove="lbTouchMove(event)" ontouchend="lbTouchEnd(event)">
