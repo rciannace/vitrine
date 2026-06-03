@@ -9706,8 +9706,10 @@ function fecharSalaEntrada() {
 }
 
 function fecharTudoSala() {
-  document.getElementById('salaWelcomeOverlay').classList.remove('open');
-  document.getElementById('salaEntradaOverlay').classList.remove('open');
+  const w = document.getElementById('salaWelcomeOverlay');
+  const e = document.getElementById('salaEntradaOverlay');
+  if (w) { w.classList.remove('open'); w.style.display = ''; }
+  if (e) { e.classList.remove('open'); e.style.display = ''; }
 }
 
 // Qty selector
