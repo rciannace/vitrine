@@ -6968,14 +6968,10 @@ async function initApp() {
       const data = snap.data();
       meta = data.items || [];
       cats = data.cats  || [];
-      // Carrega pares Antes & Depois
-      // Carregar adPairs ANTES do render() para aparecer no card
-      if (data.adPairs) {
+      // Carregar adPairs JUNTO com items e cats — antes do render()
+      if (data.adPairs && data.adPairs.length) {
         adPairs = data.adPairs;
         localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
-        adUpdateSidebar();
-        // Re-renderizar home para mostrar fotos do A/D
-        if (currentCat === null) render();
       }
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
@@ -7005,6 +7001,9 @@ async function initApp() {
   buildSidebar();
   render();
   updateHeroStats();
+
+  // Garantir que adPairs está salvo no documento principal
+  if (adPairs.length > 0) persistBg();
 
 }
 
@@ -8982,19 +8981,8 @@ function adLoad() {
 
 async function adSave() {
   localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
-  // Sincroniza com Firestore se disponível
-  if (window._fbReady) {
-    try {
-      const db = window._fbDb;
-      const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
-      const current = snap.exists() ? snap.data() : {};
-      await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
-        ...current,
-        adPairs: adPairs.map(p => ({ id: p.id, title: p.title, before: p.before, after: p.after, createdAt: p.createdAt })),
-        updatedAt: Date.now()
-      });
-    } catch(e) { console.error('A/D Firebase save error:', e); }
-  }
+  // Salva via persist() principal — mesmo jeito que items e cats
+  if (window._fbReady) persistBg();
 }
 
 // Carrega pares do Firebase junto com o initApp
