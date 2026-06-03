@@ -7351,7 +7351,6 @@ function renderHomeGalleries(grid, title, badge) {
   }).join('');
 
   // ── HERO CARD ANTES & DEPOIS ──
-  adLoad();
   const adCount = adPairs.length;
   let adHeroHTML = '';
 
@@ -9012,7 +9011,6 @@ function closeAntesDepois() {
 
 // Atualiza contagem na sidebar
 function adUpdateSidebar() {
-  adLoad();
   const el = document.getElementById('adSidebarCount');
   if (el) el.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
 }
@@ -9254,8 +9252,7 @@ async function deleteAdPair(id) {
   toast('🗑 Par removido.');
 }
 
-// Inicializa leitura do localStorage na carga
-adLoad();
+// adPairs já carregado do cache na declaração
 adUpdateSidebar();
 </script>
 
