@@ -3376,10 +3376,11 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 .ad-hero-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
+  object-fit: contain;
+  object-position: center center;
   display: block;
   transition: transform .4s ease, filter .4s ease;
+  background: #0a0a14;
 }
 .ad-hero-card:hover .ad-hero-photo img { transform: scale(1.06); }
 
