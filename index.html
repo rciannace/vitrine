@@ -8290,6 +8290,8 @@ function activateAdmin() {
   document.body.classList.add('admin-mode');
   // Re-renderizar demos para mostrar botão de adicionar
   if (typeof renderMusicaDemos === 'function') renderMusicaDemos();
+  // Sincronizar adPairs com Firebase para novos visitantes verem
+  if (adPairs.length > 0) persistBg();
   const btn = document.getElementById('adminLockBtn');
   btn.textContent = '🔓';
   btn.classList.add('admin-active');
