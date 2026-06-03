@@ -920,6 +920,20 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   background: var(--accent); color: #fff; border-color: var(--accent);
 }
 
+/* ── SKELETON ANTES & DEPOIS ── */
+.ad-hero-skeleton {
+  position: absolute; inset: 0;
+  display: flex; overflow: hidden;
+}
+.ad-hero-skeleton-half {
+  flex: 1; height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.ad-hero-skeleton-half:first-child { border-right: 1px solid rgba(255,255,255,.1); }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
 /* ── GALLERY GRID ── */
 .gallery-grid {
   display: grid;
@@ -6959,6 +6973,8 @@ async function initApp() {
         adPairs = data.adPairs;
         localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
         adUpdateSidebar();
+        // Re-renderizar home para mostrar fotos do A/D
+        if (currentCat === null) render();
       }
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
@@ -7379,13 +7395,24 @@ function renderHomeGalleries(grid, title, badge) {
       </div>
     </div>`;
   } else {
-    // Empty state — aparece para todos com mensagem adequada
+    // Skeleton animado enquanto Firebase carrega
+    const emptyMsg = adminMode ? 'Adicione transformações para exibir aqui' : '';
     adHeroHTML = `
-    <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()" style="height:180px;">
-      <div class="ad-hero-empty-inner">
-        <div class="ad-hero-empty-icon">✦</div>
-        <div class="ad-hero-empty-title">ANTES &amp; DEPOIS</div>
-        <div class="ad-hero-empty-sub">${adminMode ? 'Adicione transformações para exibir aqui' : 'Veja as transformações reais dos nossos clientes'}</div>
+    <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()">
+      <div class="ad-hero-skeleton">
+        <div class="ad-hero-skeleton-half"></div>
+        <div class="ad-hero-skeleton-half"></div>
+      </div>
+      <div class="ad-hero-overlay">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;pointer-events:auto;">
+          <div class="ad-hero-eyebrow">
+            <div class="ad-hero-eyebrow-dot"></div>
+            <span class="ad-hero-eyebrow-text">Resultados reais com IA</span>
+          </div>
+          <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
+          <div class="ad-hero-cta">Ver transformações <span class="ad-hero-cta-arrow">→</span></div>
+          ${emptyMsg ? `<div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;">${emptyMsg}</div>` : ''}
+        </div>
       </div>
     </div>`;
   }
@@ -8943,6 +8970,9 @@ renderPricing();
 let adPairs    = [];   // [{id, title, before, after, createdAt}]
 let adLbIndex  = 0;
 let adPending  = { before: null, after: null };
+
+// Carregar do cache imediatamente — sem esperar Firebase
+try { adPairs = JSON.parse(localStorage.getItem('iafoto_ad_pairs') || '[]'); } catch(e) { adPairs = []; }
 
 // ── Carregar/salvar ──
 function adLoad() {
