@@ -6496,7 +6496,7 @@ body:not(.admin-mode) .musica-demo-add {
     <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
 
     <div class="musica-pedido-eyebrow">🎵 IA FOTO STUDIO</div>
-    <h2 class="musica-pedido-title">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
+    <h2 class="musica-pedido-title" id="musicaPedidoTitulo">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
 
     <!-- Nome -->
     <div>
@@ -6505,50 +6505,56 @@ body:not(.admin-mode) .musica-demo-add {
         type="text" placeholder="Ex: Maria Silva" autocomplete="off">
     </div>
 
-    <!-- Estilo musical -->
-    <div>
-      <div class="musica-pedido-label">🎸 Estilo musical — toque para escolher</div>
-      <div class="musica-pedido-estilos" id="musicaPedidoEstilos">
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎤 Pop</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">💃 Funk</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🤠 Sertanejo</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">💕 Romântico</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎸 MPB</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">✝️ Gospel</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎹 Instrumental</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🔥 R&amp;B</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🪗 Forró</button>
-        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🥁 Pagode</button>
+    <!-- Container de músicas (1, 2 ou 3 blocos) -->
+    <div id="musicaBlocos" style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- Música 1 -->
+    <div class="musica-bloco" id="musicaBloco1" style="background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">🎵 SUA MÚSICA</div>
+
+      <div>
+        <div class="musica-pedido-label">🎸 Estilo musical</div>
+        <div class="musica-pedido-estilos" id="estilos1">
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎤 Pop</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💃 Funk</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🤠 Sertanejo</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💕 Romântico</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎸 MPB</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">✝️ Gospel</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎹 Instrumental</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🔥 R&amp;B</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🪗 Forró</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🥁 Pagode</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="musica-pedido-label">✨ Tipo / clima</div>
+        <div class="musica-pedido-tipos" id="tipos1">
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">💞 Romântica</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">😄 Alegre</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">😢 Emocionante</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🕺 Animada</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌊 Calma</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🎉 Festiva</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">💪 Motivacional</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌙 Nostálgica</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🔥 Intensa</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌸 Suave</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="musica-pedido-label">💭 Ideia da música </div>
+        <textarea class="musica-pedido-textarea" id="musicaIdeia1"
+          placeholder="Ex: Uma música romântica para o meu ensaio gestante, com o nome da minha filha Sofia..." style="min-height:80px;"></textarea>
       </div>
     </div>
-
-    <!-- Tipo / clima -->
-    <div>
-      <div class="musica-pedido-label">✨ Tipo / clima da música</div>
-      <div class="musica-pedido-tipos" id="musicaPedidoTipos">
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">💞 Romântica</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">😄 Alegre</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">😢 Emocionante</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🕺 Animada</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌊 Calma</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🎉 Festiva</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">💪 Motivacional</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌙 Nostálgica</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🔥 Intensa</button>
-        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌸 Suave</button>
-      </div>
-    </div>
-
-    <!-- Ideia / descrição -->
-    <div>
-      <div class="musica-pedido-label">💭 Conte a ideia da sua música</div>
-      <textarea class="musica-pedido-textarea" id="musicaIdeia"
-        placeholder="Ex: Uma música para o meu ensaio gestante, celebrando a chegada da minha filha Sofia. Quero que fale sobre amor de mãe, a espera e a felicidade de ter ela..."></textarea>
     </div>
 
     <!-- Dica -->
     <div class="musica-pedido-dica">
-      💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará a música!
+      💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará cada música!
       Pode mencionar nomes, datas especiais, o que quer que a letra fale, se quer com ou sem voz...
     </div>
 
@@ -6556,7 +6562,7 @@ body:not(.admin-mode) .musica-demo-add {
     <button class="musica-pedido-btn" id="musicaPedidoBtn" onclick="enviarPedidoMusica()">
       🎵 ENVIAR PELO WHATSAPP
     </button>
-    <div class="musica-pedido-voltar" onclick="fecharMusicaPedido()">← Voltar</div>
+    <div class="musica-pedido-voltar" onclick="voltarParaMusicas()">← Voltar</div>
   </div>
 </div>
 
@@ -10219,17 +10225,61 @@ document.addEventListener('DOMContentLoaded', renderMusicaDemos);
 //  TELA PEDIDO DE MÚSICA
 // ══════════════════════════════════════
 
+// ── Número de músicas do pacote
+function qtdMusicasDoPacote(pacote) {
+  if (!pacote) return 1;
+  const p = pacote.toLowerCase();
+  if (p.includes('premium') || p.includes('3 m')) return 3;
+  if (p.includes('duo') || p.includes('2 m')) return 2;
+  return 1;
+}
+
+// ── Gerar bloco HTML de uma música
+function gerarBlocoMusica(idx) {
+  const num = idx;
+  const cor = idx > 1 ? 'rgba(232,68,0,.12)' : 'transparent';
+  const borda = idx > 1 ? 'rgba(232,68,0,.25)' : 'rgba(255,255,255,.08)';
+  const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
+  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🔥 R&B','🪗 Forró','🥁 Pagode'];
+  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
+  return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:'+cor+';border:1px solid '+borda+';border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
+    '<div style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">'+titulo+'</div>'+
+    '<div><div class="musica-pedido-label">🎸 Estilo musical</div>'+
+    '<div class="musica-pedido-estilos" id="estilos'+idx+'">'+
+    estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+e+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">✨ Tipo / clima</div>'+
+    '<div class="musica-pedido-tipos" id="tipos'+idx+'">'+
+    tipos.map(t => '<button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,'+idx+')">'+t+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">💭 Ideia da música'+(idx>1?' '+idx:'')+'</div>'+
+    '<textarea class="musica-pedido-textarea" id="musicaIdeia'+idx+'" placeholder="Descreva o que quer nesta música — estilo, tema, quem é, o que quer que a letra fale..." style="min-height:80px;"></textarea>'+
+    '</div></div>';
+}
+
 function abrirMusicaPedido(pacote) {
-  // Guardar pacote selecionado
+  const qtd = qtdMusicasDoPacote(pacote);
   document.getElementById('musicaPedidoOverlay').dataset.pacote = pacote || '';
+  document.getElementById('musicaPedidoOverlay').dataset.qtd = qtd;
+
+  // Gerar blocos dinamicamente
+  const container = document.getElementById('musicaBlocos');
+  container.innerHTML = '';
+  for (let i = 1; i <= qtd; i++) container.innerHTML += gerarBlocoMusica(i);
+
+  // Título dinâmico
+  const titulo = document.getElementById('musicaPedidoTitulo');
+  if (titulo) {
+    if (qtd === 1) titulo.innerHTML = 'SUA MÚSICA<br><span>PERSONALIZADA</span>';
+    else if (qtd === 2) titulo.innerHTML = 'SUAS 2 MÚSICAS<br><span>PERSONALIZADAS</span>';
+    else titulo.innerHTML = 'SUAS 3 MÚSICAS<br><span>PERSONALIZADAS</span>';
+  }
+
+  document.getElementById('musicaNome').value = '';
   document.getElementById('musicaPedidoOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.body.style.position = 'fixed';
   document.body.style.width = '100%';
-  // Limpar campos
-  document.getElementById('musicaNome').value = '';
-  document.getElementById('musicaIdeia').value = '';
-  document.querySelectorAll('.musica-pedido-estilo,.musica-pedido-tipo').forEach(b => b.classList.remove('sel'));
 }
 
 function fecharMusicaPedido() {
@@ -10239,21 +10289,37 @@ function fecharMusicaPedido() {
   document.body.style.width = '';
 }
 
+function voltarParaMusicas() {
+  fecharMusicaPedido();
+  // Rolar suavemente para a seção de músicas
+  setTimeout(() => {
+    const sec = document.getElementById('musicaSection');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+function toggleEstiloMusica(btn, idx) {
+  document.querySelectorAll('#estilos'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function toggleTipoMusica(btn, idx) {
+  btn.classList.toggle('sel');
+}
+
 function toggleMusicaTag(btn, tipo) {
   if (tipo === 'estilo') {
-    // Estilo: seleção única
     document.querySelectorAll('.musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
     btn.classList.add('sel');
   } else {
-    // Tipo: múltipla seleção
     btn.classList.toggle('sel');
   }
 }
 
 function enviarPedidoMusica() {
   const nome = document.getElementById('musicaNome').value.trim();
-  const ideia = document.getElementById('musicaIdeia').value.trim();
   const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
+  const qtd = parseInt(document.getElementById('musicaPedidoOverlay').dataset.qtd) || 1;
 
   if (!nome) {
     document.getElementById('musicaNome').focus();
@@ -10261,20 +10327,25 @@ function enviarPedidoMusica() {
     return;
   }
 
-  const estiloBtn = document.querySelector('.musica-pedido-estilo.sel');
-  const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
-
-  const tiposSel = [...document.querySelectorAll('.musica-pedido-tipo.sel')].map(b => b.textContent.trim());
-  const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
-
-  const msg =
-    '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
+  let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
     '👤 Nome: ' + nome + '\n' +
-    '📦 Pacote: ' + pacote + '\n' +
-    '🎸 Estilo: ' + estilo + '\n' +
-    '✨ Clima: ' + tipos + '\n' +
-    (ideia ? '\n💭 Ideia:\n' + ideia + '\n' : '') +
-    '\n_Aguardo retorno! 😊_';
+    '📦 Pacote: ' + pacote + '\n\n';
+
+  for (let i = 1; i <= qtd; i++) {
+    const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
+    const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+    const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
+    const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
+    const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
+
+    if (qtd > 1) msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n';
+    msg += '🎸 Estilo: ' + estilo + '\n';
+    msg += '✨ Clima: ' + tipos + '\n';
+    if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
+    msg += '\n';
+  }
+
+  msg += '_Aguardo retorno! 😊_';
 
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   fecharMusicaPedido();
