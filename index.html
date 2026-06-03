@@ -5595,31 +5595,54 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   position: relative;
   z-index: 1;
 }
-/* Textos do sidebar */
-.sidebar-section-title { color: rgba(255,255,255,.3) !important; }
-.cat-item-name { color: rgba(255,255,255,.75) !important; }
-.cat-item-count { color: rgba(255,255,255,.35) !important; }
-.cat-item:hover, .cat-item.active { background: rgba(0,196,174,.12) !important; }
-.cat-item.active .cat-item-name { color: #00c4ae !important; }
-.sidebar-header-studio { color: rgba(255,255,255,.5) !important; }
+/* ── Sidebar: textos visíveis ── */
+.sidebar-section-title { color: rgba(255,255,255,.4) !important; }
+.sidebar-header-studio { color: rgba(255,255,255,.55) !important; }
 .sidebar-header-title { color: #fff !important; }
-.sidebar-header-sub { color: rgba(255,255,255,.35) !important; }
+.sidebar-header-sub { color: rgba(255,255,255,.4) !important; }
+
+/* Botões de categoria no sidebar */
+.cat-btn { color: rgba(255,255,255,.85) !important; }
+.cat-btn:hover { background: rgba(255,255,255,.08) !important; }
+.cat-btn.active { background: rgba(0,196,174,.15) !important; border-left-color: #00c4ae !important; }
+.cat-btn-name { color: rgba(255,255,255,.85) !important; font-size: 13px; }
+.cat-btn.active .cat-btn-name { color: #00c4ae !important; }
+.cat-btn-count { color: rgba(255,255,255,.4) !important; background: rgba(255,255,255,.08) !important; }
+.cat-btn.active .cat-btn-count { color: #00c4ae !important; background: rgba(0,196,174,.15) !important; }
+
 /* Toolbar textos */
 .cat-title { color: #fff !important; }
 .cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
-.btn-ghost { color: rgba(255,255,255,.6) !important; border-color: rgba(255,255,255,.15) !important; }
-.btn-ghost:hover { background: rgba(255,255,255,.08) !important; }
+.btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; }
+.btn-ghost:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+
 /* Gallery cards */
 .gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
-.gallery-card:hover { border-color: rgba(0,196,174,.4) !important; }
+.gallery-card:hover { border-color: rgba(0,196,174,.4) !important; background: rgba(0,196,174,.06) !important; }
 .gallery-card-name { color: #00c4ae !important; }
-.gallery-card-count { color: rgba(255,255,255,.4) !important; }
-/* Textos gerais na área de conteúdo */
+.gallery-card-count { color: rgba(255,255,255,.45) !important; }
+
+/* Pricing textos */
+.pricing-section .pricing-qty { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-num { color: #fff !important; }
+.pricing-section .accent-price { color: #00c4ae !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.5) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.45) !important; }
+.pricing-section .pricing-btn-ghost {
+  border-color: rgba(255,255,255,.25) !important;
+  color: rgba(255,255,255,.7) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.1) !important;
+  color: #fff !important;
+}
+
+/* Textos gerais */
 .empty-state-title { color: rgba(255,255,255,.7) !important; }
 .empty-state-desc { color: rgba(255,255,255,.35) !important; }
-.back-arrow { color: rgba(255,255,255,.6) !important; }
-#backToGalleriesBtn { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.1) !important; }
-#backToGalleriesBtn:hover { background: rgba(255,255,255,.06) !important; }
+#backToGalleriesBtn { color: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.12) !important; }
+#backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
 
 /* ══════════════════════════════════════
    TELA PEDIDO DE MÚSICA
