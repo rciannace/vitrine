@@ -8754,7 +8754,7 @@ function renderPricing() {
       <div class="pricing-per">R$ ${perPhoto.toFixed(2).replace('.',',')} <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">${pkg.desc}</div>
-      <a href="https://wa.me/5511926029852?text=${waText}" target="_blank" class="pricing-btn ${btnClass}">Pedir agora</a>
+      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="${pkg.qty}" data-field="qty" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','qty',this.value)">
