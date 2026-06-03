@@ -5621,6 +5621,145 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 #backToGalleriesBtn { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.1) !important; }
 #backToGalleriesBtn:hover { background: rgba(255,255,255,.06) !important; }
 
+/* ══════════════════════════════════════
+   TELA PEDIDO DE MÚSICA
+══════════════════════════════════════ */
+#musicaPedidoOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8500;
+  background: rgba(5,5,10,.96);
+  backdrop-filter: blur(20px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0;
+  overflow-y: auto;
+}
+#musicaPedidoOverlay.open { display: flex; }
+
+.musica-pedido-box {
+  background: #12101a;
+  width: 100%;
+  min-height: 100%;
+  padding: 36px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #e84400, #c40060) 1;
+}
+.musica-pedido-close {
+  position: absolute; top: 16px; right: 20px;
+  background: rgba(255,255,255,.08); border: none;
+  color: rgba(255,255,255,.5); font-size: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.musica-pedido-close:hover { background: rgba(255,255,255,.15); color: #fff; }
+.musica-pedido-eyebrow {
+  font-size: 10px; letter-spacing: 3px;
+  color: #e84400; font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: 8px;
+}
+.musica-pedido-eyebrow::after { content: ''; flex: 1; height: 1px; background: #e84400; opacity: .3; }
+.musica-pedido-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 7vw, 52px);
+  line-height: .95; color: #fff; letter-spacing: 2px;
+}
+.musica-pedido-title span {
+  background: linear-gradient(90deg, #e84400, #c40060);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-pedido-label {
+  font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,.4);
+  font-weight: 600; margin-bottom: 6px; text-transform: uppercase;
+}
+.musica-pedido-input {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 16px; color: #fff; outline: none;
+  transition: border-color .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.musica-pedido-input:focus { border-color: #e84400; }
+.musica-pedido-input::placeholder { color: rgba(255,255,255,.25); }
+.musica-pedido-textarea {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 15px; color: #fff; outline: none;
+  transition: border-color .15s; resize: vertical;
+  min-height: 100px; font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+}
+.musica-pedido-textarea:focus { border-color: #e84400; }
+.musica-pedido-textarea::placeholder { color: rgba(255,255,255,.25); }
+/* Estilos clicáveis */
+.musica-pedido-estilos {
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+.musica-pedido-estilo {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 8px 16px;
+  color: rgba(255,255,255,.6); font-size: 12px;
+  cursor: pointer; transition: all .15s;
+}
+.musica-pedido-estilo:hover { border-color: #e84400; color: #ff6622; }
+.musica-pedido-estilo.sel {
+  background: rgba(232,68,0,.2); border-color: #e84400; color: #ff6622; font-weight: 700;
+}
+/* Tipos clicáveis */
+.musica-pedido-tipos {
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+.musica-pedido-tipo {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 8px 16px;
+  color: rgba(255,255,255,.6); font-size: 12px;
+  cursor: pointer; transition: all .15s;
+}
+.musica-pedido-tipo:hover { border-color: #c40060; color: #e040a0; }
+.musica-pedido-tipo.sel {
+  background: rgba(196,0,96,.2); border-color: #c40060; color: #e040a0; font-weight: 700;
+}
+/* Dica */
+.musica-pedido-dica {
+  background: rgba(232,68,0,.08);
+  border: 1px solid rgba(232,68,0,.2);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 12px; color: rgba(255,255,255,.5);
+  line-height: 1.6;
+}
+.musica-pedido-dica strong { color: #e84400; }
+/* Botão */
+.musica-pedido-btn {
+  background: linear-gradient(135deg, #e84400, #c40060);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 16px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 2px; cursor: pointer;
+  transition: all .2s; box-shadow: 0 8px 32px rgba(232,68,0,.35);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.musica-pedido-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,68,0,.5); }
+.musica-pedido-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.musica-pedido-voltar {
+  text-align: center; font-size: 13px; color: rgba(255,255,255,.3);
+  cursor: pointer; transition: color .15s;
+}
+.musica-pedido-voltar:hover { color: rgba(255,255,255,.6); }
+
+@media (max-width: 768px) {
+  .musica-pedido-box { padding: 24px 18px 40px; gap: 16px; }
+  .musica-pedido-title { font-size: 28px; }
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -6185,6 +6324,77 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 
   </div>
 </section>
+
+
+<!-- TELA PEDIDO DE MÚSICA -->
+<div id="musicaPedidoOverlay">
+  <div class="musica-pedido-box">
+    <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
+
+    <div class="musica-pedido-eyebrow">🎵 IA FOTO STUDIO</div>
+    <h2 class="musica-pedido-title">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
+
+    <!-- Nome -->
+    <div>
+      <div class="musica-pedido-label">◆ Seu nome</div>
+      <input class="musica-pedido-input" id="musicaNome"
+        type="text" placeholder="Ex: Maria Silva" autocomplete="off">
+    </div>
+
+    <!-- Estilo musical -->
+    <div>
+      <div class="musica-pedido-label">🎸 Estilo musical — toque para escolher</div>
+      <div class="musica-pedido-estilos" id="musicaPedidoEstilos">
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎤 Pop</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">💃 Funk</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🤠 Sertanejo</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">💕 Romântico</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎸 MPB</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">✝️ Gospel</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🎹 Instrumental</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🔥 R&amp;B</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🪗 Forró</button>
+        <button class="musica-pedido-estilo" onclick="toggleMusicaTag(this,'estilo')">🥁 Pagode</button>
+      </div>
+    </div>
+
+    <!-- Tipo / clima -->
+    <div>
+      <div class="musica-pedido-label">✨ Tipo / clima da música</div>
+      <div class="musica-pedido-tipos" id="musicaPedidoTipos">
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">💞 Romântica</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">😄 Alegre</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">😢 Emocionante</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🕺 Animada</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌊 Calma</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🎉 Festiva</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">💪 Motivacional</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌙 Nostálgica</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🔥 Intensa</button>
+        <button class="musica-pedido-tipo" onclick="toggleMusicaTag(this,'tipo')">🌸 Suave</button>
+      </div>
+    </div>
+
+    <!-- Ideia / descrição -->
+    <div>
+      <div class="musica-pedido-label">💭 Conte a ideia da sua música</div>
+      <textarea class="musica-pedido-textarea" id="musicaIdeia"
+        placeholder="Ex: Uma música para o meu ensaio gestante, celebrando a chegada da minha filha Sofia. Quero que fale sobre amor de mãe, a espera e a felicidade de ter ela..."></textarea>
+    </div>
+
+    <!-- Dica -->
+    <div class="musica-pedido-dica">
+      💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará a música!
+      Pode mencionar nomes, datas especiais, o que quer que a letra fale, se quer com ou sem voz...
+    </div>
+
+    <!-- Botão -->
+    <button class="musica-pedido-btn" id="musicaPedidoBtn" onclick="enviarPedidoMusica()">
+      🎵 ENVIAR PELO WHATSAPP
+    </button>
+    <div class="musica-pedido-voltar" onclick="fecharMusicaPedido()">← Voltar</div>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()" ontouchstart="lbTouchStart(event)" ontouchmove="lbTouchMove(event)" ontouchend="lbTouchEnd(event)">
@@ -9733,13 +9943,7 @@ function selecionarEstilo(btn) {
 }
 
 function pedirMusica(pacote) {
-  const estilo = document.querySelector('.musica-estilo-btn.ativo')?.textContent?.trim() || 'Pop';
-  const pkg = pacote || 'Solo - R$49,90';
-  const msg = '🎵 Olá! Quero uma música personalizada!\n\n' +
-    '🎸 Estilo: ' + estilo + '\n' +
-    '📦 Pacote: ' + pkg + '\n\n' +
-    'Pode me passar mais detalhes?';
-  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  abrirMusicaPedido(pacote || 'Solo - R$49,90');
 }
 
 // ── Galeria de demos ──
@@ -9834,6 +10038,81 @@ function deleteMusicaDemo(i) {
 
 // Inicializar demos ao carregar
 document.addEventListener('DOMContentLoaded', renderMusicaDemos);
+
+
+// ══════════════════════════════════════
+//  TELA PEDIDO DE MÚSICA
+// ══════════════════════════════════════
+
+function abrirMusicaPedido(pacote) {
+  // Guardar pacote selecionado
+  document.getElementById('musicaPedidoOverlay').dataset.pacote = pacote || '';
+  document.getElementById('musicaPedidoOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+  // Limpar campos
+  document.getElementById('musicaNome').value = '';
+  document.getElementById('musicaIdeia').value = '';
+  document.querySelectorAll('.musica-pedido-estilo,.musica-pedido-tipo').forEach(b => b.classList.remove('sel'));
+}
+
+function fecharMusicaPedido() {
+  document.getElementById('musicaPedidoOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
+}
+
+function toggleMusicaTag(btn, tipo) {
+  if (tipo === 'estilo') {
+    // Estilo: seleção única
+    document.querySelectorAll('.musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+  } else {
+    // Tipo: múltipla seleção
+    btn.classList.toggle('sel');
+  }
+}
+
+function enviarPedidoMusica() {
+  const nome = document.getElementById('musicaNome').value.trim();
+  const ideia = document.getElementById('musicaIdeia').value.trim();
+  const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
+
+  if (!nome) {
+    document.getElementById('musicaNome').focus();
+    toast('⚠️ Digite seu nome para continuar!');
+    return;
+  }
+
+  const estiloBtn = document.querySelector('.musica-pedido-estilo.sel');
+  const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+
+  const tiposSel = [...document.querySelectorAll('.musica-pedido-tipo.sel')].map(b => b.textContent.trim());
+  const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
+
+  const msg =
+    '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
+    '👤 Nome: ' + nome + '\n' +
+    '📦 Pacote: ' + pacote + '\n' +
+    '🎸 Estilo: ' + estilo + '\n' +
+    '✨ Clima: ' + tipos + '\n' +
+    (ideia ? '\n💭 Ideia:\n' + ideia + '\n' : '') +
+    '\n_Aguardo retorno! 😊_';
+
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  fecharMusicaPedido();
+  abrirSalaObrigadaMusica(nome);
+}
+
+function abrirSalaObrigadaMusica(nome) {
+  // Reutiliza a tela de obrigada existente adaptada
+  const overlay = document.getElementById('salaObrigadaOverlay');
+  if (!overlay) return;
+  const title = overlay.querySelector('div[style*="Bebas"]') || overlay.querySelector('div:nth-child(3)');
+  document.getElementById('salaObrigadaOverlay').classList.add('open');
+}
 
 // ── URL param: ?sala=1 — com verificação de expiração ──
 (function() {
