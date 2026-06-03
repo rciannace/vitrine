@@ -2527,10 +2527,16 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   display: none;
   flex-direction: column;
   gap: 0;
-  position: relative;
-  z-index: 9200;
 }
-#viewAntesDepois.active { display: flex; }
+#viewAntesDepois.active {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  top: 64px;
+  z-index: 9200;
+  background: linear-gradient(135deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
+  overflow-y: auto;
+}
 
 /* Grid de cards A/D */
 .ad-grid {
@@ -3553,7 +3559,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
     inset: 0;
     top: 56px;
     z-index: 9200;
-    background: #0a0a14;
+    background: linear-gradient(135deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -5874,6 +5880,20 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 
 /* Hero na área principal */
 .hero { position: relative; z-index: 1; }
+
+/* ── ANTES & DEPOIS — fundo escuro ── */
+#viewAntesDepois .ad-intro-banner { background: rgba(0,196,174,.12) !important; border-color: rgba(0,196,174,.25) !important; }
+#viewAntesDepois .ad-toolbar-title { color: #fff !important; }
+#viewAntesDepois .ad-count { color: rgba(255,255,255,.5) !important; background: rgba(255,255,255,.08) !important; }
+#viewAntesDepois .btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.15) !important; }
+#viewAntesDepois .ad-card { background: rgba(255,255,255,.05) !important; border-color: rgba(255,255,255,.1) !important; }
+#viewAntesDepois .ad-card:hover { border-color: rgba(0,196,174,.4) !important; }
+#viewAntesDepois .ad-card-label { color: rgba(255,255,255,.6) !important; }
+#viewAntesDepois .ad-card-btn { background: rgba(255,255,255,.08) !important; color: rgba(255,255,255,.6) !important; }
+#viewAntesDepois .ad-eyebrow { color: #00c4ae !important; }
+#viewAntesDepois .ad-main-title { color: #fff !important; }
+#viewAntesDepois .ad-main-title em { color: #00c4ae !important; }
+#viewAntesDepois .ad-sub { color: rgba(255,255,255,.45) !important; }
 
 </style>
 <!-- Firebase -->
