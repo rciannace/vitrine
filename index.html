@@ -6954,17 +6954,11 @@ async function initApp() {
       meta = data.items || [];
       cats = data.cats  || [];
       // Carrega pares Antes & Depois
-      if (data.adPairs && data.adPairs.length) {
+      // Carregar adPairs ANTES do render() para aparecer no card
+      if (data.adPairs) {
         adPairs = data.adPairs;
         localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
         adUpdateSidebar();
-        // Re-renderizar home para mostrar card Antes & Depois
-        if (typeof renderHomeGalleries === 'function') {
-          const grid = document.getElementById('mainGrid');
-          const title = document.getElementById('catTitle');
-          const badge = document.getElementById('catCountBadge');
-          if (grid) renderHomeGalleries(grid, title, badge);
-        }
       }
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
