@@ -6969,10 +6969,9 @@ async function initApp() {
       meta = data.items || [];
       cats = data.cats  || [];
       // Carregar adPairs JUNTO com items e cats — antes do render()
-      if (data.adPairs && data.adPairs.length) {
-        adPairs = data.adPairs;
-        localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
-      }
+      // Carregar adPairs igual items e cats
+      adPairs = data.adPairs || [];
+      localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
@@ -8987,23 +8986,7 @@ async function adSave() {
 
 // Carrega pares do Firebase junto com o initApp
 const _origInitApp = typeof initApp === 'function' ? initApp : null;
-async function adLoadFromFirebase() {
-  if (!window._fbReady) return;
-  try {
-    const db   = window._fbDb;
-    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
-    if (snap.exists() && snap.data().adPairs) {
-      adPairs = snap.data().adPairs;
-      localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
-    }
-  } catch(e) { /* usa localStorage */ }
-}
-
-// Patch initApp para carregar A/D também
-window.addEventListener('firebase-ready', async () => {
-  await adLoadFromFirebase();
-  adUpdateSidebar();
-});
+// adPairs é carregado diretamente no initApp — igual items e cats
 
 // ── Abrir/fechar view ──
 function openAntesDepois() {
