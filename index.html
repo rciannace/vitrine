@@ -5568,6 +5568,59 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   .musica-demos-grid { grid-template-columns: 1fr; }
 }
 
+/* ══════════════════════════════════════
+   FUNDO ESCURO VERDE/ROXO — ÁREA PRINCIPAL
+══════════════════════════════════════ */
+.main {
+  background: linear-gradient(160deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
+  position: relative;
+}
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 64px 0 0 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 5% 30%, rgba(0,196,174,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 95% 60%, rgba(168,85,247,.07) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.sidebar {
+  background: rgba(10,10,20,.85) !important;
+  border-right-color: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(8px);
+}
+.content {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+/* Textos do sidebar */
+.sidebar-section-title { color: rgba(255,255,255,.3) !important; }
+.cat-item-name { color: rgba(255,255,255,.75) !important; }
+.cat-item-count { color: rgba(255,255,255,.35) !important; }
+.cat-item:hover, .cat-item.active { background: rgba(0,196,174,.12) !important; }
+.cat-item.active .cat-item-name { color: #00c4ae !important; }
+.sidebar-header-studio { color: rgba(255,255,255,.5) !important; }
+.sidebar-header-title { color: #fff !important; }
+.sidebar-header-sub { color: rgba(255,255,255,.35) !important; }
+/* Toolbar textos */
+.cat-title { color: #fff !important; }
+.cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
+.btn-ghost { color: rgba(255,255,255,.6) !important; border-color: rgba(255,255,255,.15) !important; }
+.btn-ghost:hover { background: rgba(255,255,255,.08) !important; }
+/* Gallery cards */
+.gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
+.gallery-card:hover { border-color: rgba(0,196,174,.4) !important; }
+.gallery-card-name { color: #00c4ae !important; }
+.gallery-card-count { color: rgba(255,255,255,.4) !important; }
+/* Textos gerais na área de conteúdo */
+.empty-state-title { color: rgba(255,255,255,.7) !important; }
+.empty-state-desc { color: rgba(255,255,255,.35) !important; }
+.back-arrow { color: rgba(255,255,255,.6) !important; }
+#backToGalleriesBtn { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.1) !important; }
+#backToGalleriesBtn:hover { background: rgba(255,255,255,.06) !important; }
+
 </style>
 <!-- Firebase -->
 <script type="module">
