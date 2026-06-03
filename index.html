@@ -2527,6 +2527,8 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   display: none;
   flex-direction: column;
   gap: 0;
+  position: relative;
+  z-index: 9200;
 }
 #viewAntesDepois.active { display: flex; }
 
@@ -3550,8 +3552,8 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
     position: fixed;
     inset: 0;
     top: 56px;
-    z-index: 50;
-    background: var(--bg);
+    z-index: 9200;
+    background: #0a0a14;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -5782,6 +5784,96 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   .musica-pedido-box { padding: 24px 18px 40px; gap: 16px; }
   .musica-pedido-title { font-size: 28px; }
 }
+
+/* ══ CORREÇÕES GLOBAIS DE VISIBILIDADE ══ */
+
+/* Pricing — todos os textos */
+.pricing-section .pricing-qty { color: rgba(255,255,255,.65) !important; }
+.pricing-section .pricing-num,
+.pricing-section .pricing-num .currency,
+.pricing-section .pricing-num .cents { color: #fff !important; }
+.pricing-section .accent-price,
+.pricing-section .accent-price .currency,
+.pricing-section .accent-price .cents { color: #00c4ae !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.55) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.65) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.5) !important; }
+.pricing-section .pricing-btn-ghost {
+  background: rgba(255,255,255,.08) !important;
+  border: 1px solid rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.75) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.14) !important;
+  color: #fff !important;
+}
+.pricing-section .pricing-btn-accent {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Botões voltar e navegação */
+#backToGalleriesBtn,
+.back-btn,
+#mobileBackBtn,
+.back-arrow {
+  color: rgba(255,255,255,.65) !important;
+  border-color: rgba(255,255,255,.15) !important;
+}
+#backToGalleriesBtn:hover,
+#mobileBackBtn:hover {
+  background: rgba(255,255,255,.08) !important;
+  color: #fff !important;
+}
+
+/* Topbar no modo escuro */
+.topbar {
+  background: rgba(10,10,18,.92) !important;
+  border-bottom-color: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(16px) !important;
+}
+.topbar .brand-name,
+.topbar .brand-tagline { color: rgba(255,255,255,.8) !important; }
+.topbar-search input { 
+  background: rgba(255,255,255,.07) !important;
+  color: rgba(255,255,255,.8) !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,.3) !important; }
+.topbar-search-icon { color: rgba(255,255,255,.35) !important; }
+.topbar-divider { background: rgba(255,255,255,.1) !important; }
+
+/* Sala admin btn */
+.sala-admin-btn {
+  color: rgba(255,255,255,.7) !important;
+  border-color: rgba(255,255,255,.15) !important;
+}
+
+/* Cat chips mobile */
+.cat-chip { 
+  background: rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.7) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+.cat-chip.active {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Foto cards dentro da galeria */
+.photo-card .photo-title { color: rgba(255,255,255,.7) !important; }
+
+/* Toolbar admin buttons */
+.toolbar .btn { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.15) !important; }
+.toolbar .btn:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+.toolbar .btn[style*="color:var(--red)"],
+.toolbar .btn[style*="color: var(--red)"] { color: #ff6b6b !important; }
+
+/* Admin badge */
+#adminBadge { background: rgba(255,255,255,.1) !important; color: rgba(255,255,255,.6) !important; }
+
+/* Hero na área principal */
+.hero { position: relative; z-index: 1; }
 
 </style>
 <!-- Firebase -->
