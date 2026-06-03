@@ -874,8 +874,8 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
   cursor: ew-resize; user-select: none; touch-action: none;
 }
 .ad-slider-wrap img {
-  width: 100%; height: 100%; object-fit: contain; display: block;
-  pointer-events: none; background: #0a0a14;
+  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  display: block; pointer-events: none;
 }
 .ad-slider-after {
   position: absolute; inset: 0; overflow: hidden;
@@ -3372,15 +3372,15 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
 .ad-hero-photo {
   position: relative;
   overflow: hidden;
+  flex: 1;
 }
 .ad-hero-photo img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center top;
   display: block;
   transition: transform .4s ease, filter .4s ease;
-  background: #0a0a14;
 }
 .ad-hero-card:hover .ad-hero-photo img { transform: scale(1.06); }
 
