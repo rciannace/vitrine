@@ -6065,7 +6065,7 @@ body:not(.admin-mode) .musica-demo-add {
       <div class="pricing-per">R$ 9,98 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Ideal para experimentar e ver como fica</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%205%20fotos%20por%20R%2449%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
+      <button onclick="openSalaEntrada(5)" class="pricing-btn pricing-btn-ghost">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="5" data-field="qty" data-pid="p1" oninput="pricingFieldChange(&#39;p1&#39;,&#39;qty&#39;,this.value)">
@@ -6084,7 +6084,7 @@ body:not(.admin-mode) .musica-demo-add {
       <div class="pricing-per">R$ 8,99 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Variedade de looks e cenários</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2010%20fotos%20por%20R%2489%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
+      <button onclick="openSalaEntrada(10)" class="pricing-btn pricing-btn-ghost">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="10" data-field="qty" data-pid="p2" oninput="pricingFieldChange(&#39;p2&#39;,&#39;qty&#39;,this.value)">
@@ -6103,7 +6103,7 @@ body:not(.admin-mode) .musica-demo-add {
       <div class="pricing-per">R$ 7,99 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Melhor custo-benefício do catálogo</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2015%20fotos%20por%20R%24129%2C90" target="_blank" class="pricing-btn pricing-btn-accent">Pedir agora</a>
+      <button onclick="openSalaEntrada(15)" class="pricing-btn pricing-btn-accent">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="15" data-field="qty" data-pid="p3" oninput="pricingFieldChange(&#39;p3&#39;,&#39;qty&#39;,this.value)">
@@ -6122,7 +6122,7 @@ body:not(.admin-mode) .musica-demo-add {
       <div class="pricing-per">R$ 7,00 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">Ensaio completo, máxima diversidade</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2020%20fotos%20por%20R%24159%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
+      <button onclick="openSalaEntrada(20)" class="pricing-btn pricing-btn-ghost">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="20" data-field="qty" data-pid="p4" oninput="pricingFieldChange(&#39;p4&#39;,&#39;qty&#39;,this.value)">
@@ -6141,7 +6141,7 @@ body:not(.admin-mode) .musica-demo-add {
       <div class="pricing-per">R$ 6,00 <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">pra completar o album!!</div>
-      <a href="https://wa.me/5511926029852?text=Ol%C3%A1!%20Quero%20o%20pacote%20de%2030%20fotos%20por%20R%24179%2C90" target="_blank" class="pricing-btn pricing-btn-ghost">Pedir agora</a>
+      <button onclick="openSalaEntrada(30)" class="pricing-btn pricing-btn-ghost">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="30" data-field="qty" data-pid="p1778805513270" oninput="pricingFieldChange(&#39;p1778805513270&#39;,&#39;qty&#39;,this.value)">
@@ -9669,8 +9669,12 @@ let salaSelecao     = []; // array de {id, img, title, catName, order}
 let salaCatFilter   = null;
 
 // ── Abrir tela de entrada ──
-function openSalaEntrada() {
+function openSalaEntrada(qtdPresel) {
   document.getElementById('salaWelcomeOverlay').classList.add('open');
+  // Guardar quantidade pré-selecionada para aplicar após abrir entrada
+  if (qtdPresel) {
+    window._salaQtdPresel = qtdPresel;
+  }
 }
 
 function fecharSalaWelcome() {
@@ -9681,6 +9685,14 @@ function fecharSalaWelcome() {
 function abrirSalaEntradaDireta() {
   salaRenderQtyBtns();
   document.getElementById('salaEntradaOverlay').classList.add('open');
+  // Pré-selecionar quantidade se veio do pricing
+  if (window._salaQtdPresel) {
+    setTimeout(() => {
+      const btn = document.querySelector('#salaQtyRow button[data-qty="' + window._salaQtdPresel + '"]');
+      if (btn) { salaSelectQty(btn); }
+      window._salaQtdPresel = null;
+    }, 100);
+  }
   setTimeout(() => document.getElementById('salaClienteNome').focus(), 300);
 }
 
