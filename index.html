@@ -5887,6 +5887,41 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 #viewAntesDepois .ad-main-title em { color: #00c4ae !important; }
 #viewAntesDepois .ad-sub { color: rgba(255,255,255,.45) !important; }
 
+/* ══ BOTÕES VOLTAR — FORÇAR VISIBILIDADE ══ */
+#backToGalleriesBtn {
+  background: rgba(255,255,255,.1) !important;
+  border: 1.5px solid rgba(255,255,255,.3) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+#backToGalleriesBtn:hover {
+  background: rgba(0,196,174,.2) !important;
+  border-color: #00c4ae !important;
+  color: #00c4ae !important;
+}
+#mobileBackBtn,
+#mobileBackBtn .back-arrow,
+#mobileBackBtn * {
+  color: #00c4ae !important;
+}
+
+/* Botão Voltar à galeria no sala mode */
+#salaVoltarGaleriaBtn,
+.sala-back-btn,
+[onclick*="selectCat(null)"],
+[onclick*="closeGallery"],
+[title*="Voltar"] {
+  color: #fff !important;
+}
+
+/* Botão admin adicionar demo de música — garantir visível */
+.musica-demo-add {
+  display: flex !important;
+}
+body:not(.admin-mode) .musica-demo-add {
+  display: none !important;
+}
+
 </style>
 <!-- Firebase -->
 <script type="module">
@@ -8212,6 +8247,8 @@ function checkAdminPin() {
 function activateAdmin() {
   adminMode = true;
   document.body.classList.add('admin-mode');
+  // Re-renderizar demos para mostrar botão de adicionar
+  if (typeof renderMusicaDemos === 'function') renderMusicaDemos();
   const btn = document.getElementById('adminLockBtn');
   btn.textContent = '🔓';
   btn.classList.add('admin-active');
