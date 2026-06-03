@@ -391,20 +391,20 @@ body {
 .pricing-grid {
   display: flex;
   flex-direction: row;
-  gap: 10px;
-  max-width: 960px;
+  gap: 14px;
+  max-width: 1100px;
   margin: 0 auto;
   align-items: stretch;
 }
 .pricing-card {
   background: var(--surface);
   border: 1px solid var(--border2);
-  border-radius: 14px;
-  padding: 18px 16px 16px;
+  border-radius: 18px;
+  padding: 28px 20px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   transition: transform .15s, box-shadow .15s;
   position: relative;
   text-align: center;
@@ -521,9 +521,16 @@ body {
   font-weight: 600;
 }
 @media (max-width: 768px) {
-  .pricing-grid { flex-wrap: wrap; gap: 8px; }
-  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); }
-  .pricing-section { padding: 28px 16px 36px; }
+  .pricing-grid { flex-wrap: wrap; gap: 6px; }
+  .pricing-card { min-width: calc(50% - 4px); flex: 1 1 calc(50% - 4px); padding: 14px 10px 12px !important; border-radius: 12px !important; gap: 3px !important; }
+  .pricing-section { padding: 20px 12px 28px; }
+  .pricing-qty { font-size: 9px !important; }
+  .pricing-num { font-size: 28px !important; }
+  .pricing-per { font-size: 9px !important; }
+  .pricing-detail { font-size: 10px !important; }
+  .pricing-btn { padding: 7px 8px !important; font-size: 11px !important; }
+  .pricing-title { font-size: 22px !important; }
+  .pricing-subtitle { font-size: 12px !important; }
 }
 @media (max-width: 480px) {
   .pricing-num { font-size: 32px; }
@@ -5795,17 +5802,26 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 }
 
 /* Botões voltar e navegação */
-#backToGalleriesBtn,
-.back-btn,
-#mobileBackBtn,
-.back-arrow {
-  color: rgba(255,255,255,.65) !important;
-  border-color: rgba(255,255,255,.15) !important;
-}
-#backToGalleriesBtn:hover,
-#mobileBackBtn:hover {
+#backToGalleriesBtn {
   background: rgba(255,255,255,.08) !important;
-  color: #fff !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.85) !important;
+}
+#backToGalleriesBtn:hover {
+  background: rgba(255,255,255,.15) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+#mobileBackBtn,
+#mobileBackBtn .back-arrow {
+  color: var(--accent) !important;
+}
+/* Botão dentro do viewAntesDepois */
+#viewAntesDepois #backToGalleriesBtn,
+#viewAntesDepois .btn-ghost {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.85) !important;
 }
 
 /* Topbar no modo escuro */
