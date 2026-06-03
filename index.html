@@ -6877,6 +6877,7 @@ async function persist() {
       cats:  cats,
       pricing: loadPricing(),
       musicaDemos: musicaDemos,
+      adPairs: adPairs,
       updatedAt: Date.now()
     });
   } catch(e) {
@@ -8847,7 +8848,7 @@ renderPricing();
   </div>
 
   <!-- Intro strip — chamativa -->
-  <div style="margin:16px 28px 0;position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(110deg,#0c1f1c 0%,#0a0a0f 55%,#071a17 100%);border:1px solid rgba(0,196,174,.25);padding:22px 28px;">
+  <div style="margin:16px 16px 0;position:relative;overflow:hidden;border-radius:14px;background:linear-gradient(110deg,#0c1f1c 0%,#0a0a0f 55%,#071a17 100%);border:1px solid rgba(0,196,174,.25);padding:14px 16px;">
     <!-- brilho decorativo -->
     <div style="position:absolute;top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.12) 0%,transparent 70%);pointer-events:none;"></div>
     <div style="position:absolute;bottom:-30px;right:60px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.07) 0%,transparent 70%);pointer-events:none;"></div>
@@ -8858,7 +8859,7 @@ renderPricing();
           <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:adPulseDot 1.8s ease-in-out infinite;"></span>
           <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">Resultados reais com IA</span>
         </div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#fff;line-height:1;">VEJA A TRANSFORMAÇÃO <em style="color:var(--accent);font-style:normal;">DOS NOSSOS CLIENTES</em></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4vw,32px);letter-spacing:2px;color:#fff;line-height:1;">VEJA A TRANSFORMAÇÃO <em style="color:var(--accent);font-style:normal;">DOS NOSSOS CLIENTES</em></div>
         <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;font-family:'DM Sans',sans-serif;">Clique em qualquer par para ampliar. Deslize para navegar entre as transformações.</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
