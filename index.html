@@ -7785,7 +7785,7 @@ async function confirmUpload() {
   render();
   updateHeroStats();
   toast(`✅ ${newItems.length} foto${newItems.length !== 1 ? 's' : ''} salva${newItems.length !== 1 ? 's' : ''} com sucesso em "${catName}"!`, 4000);
-  if (targetCat !== INBOX) selectCat(targetCat);
+  selectCat(targetCat === INBOX ? INBOX : targetCat);
 
   // Persiste no Firebase em background (não bloqueia a UI)
   persist().catch(e => {
