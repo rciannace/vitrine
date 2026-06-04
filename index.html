@@ -8500,7 +8500,8 @@ function moveBulkAddCat() {
   updateHeroStats();
   // Atualiza o select e seleciona a nova categoria
   renderMoveBulkCats();
-  sel.value = id;
+  const selEl = document.getElementById('moveBulkSel');
+  if (selEl) selEl.value = id;
   // Fecha o campo
   document.getElementById('moveBulkNewCatRow').style.display = 'none';
   document.getElementById('moveBulkNewCatBtn').textContent = '＋ Nova categoria';
