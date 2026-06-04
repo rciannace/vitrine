@@ -8495,7 +8495,7 @@ function moveBulkAddCat() {
   }
   const id = 'cat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
   cats.push({ id, name, icon: '' });
-  persist();
+  // NÃO persiste aqui — o confirmMoveBulk vai salvar tudo junto
   buildSidebar();
   updateHeroStats();
   // Atualiza o select e seleciona a nova categoria
