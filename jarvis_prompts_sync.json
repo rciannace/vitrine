@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1780660119712",
+      "title": "Juntar 2 pessoas",
+      "text": "Use the uploaded photo as the exact face reference with no change in facial structure, skin tone, eyes, nose, lips, or smile.\n\nConvert, 4k HD realistic, A stunning portrait Please merge both photos that girl is lying in her father shoulder by closing her eyes and holding his hand.\n\nThe background is a plain, warm-toned wall, illuminated by a warm light source from the right, creating a distinct, soft-edged shadow of her profile and hair on the wall behind her. The overall mood is retro and artistic.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1780613380200",
       "title": "Foto escura - clarear",
       "text": "Corrija esta imagem simulando uma iluminação natural suave e realista, preservando 100% dos detalhes originais da foto.\nMantenha exatamente a mesma identidade das pessoas, estrutura facial, expressões, pose, roupas, acessórios, enquadramento, ângulo da câmera, corte e composição do fundo. Não altere anatomia, cabelo, proporções ou qualquer objeto presente na cena.\nA foto original foi tirada em ambiente muito escuro e possui forte predominância de tons azulados/roxos. Remova essa coloração artificial e reequilibre a imagem para que pareça ter sido fotografada com luz natural suave.\nRecupere cuidadosamente os detalhes das sombras, melhore a exposição, restaure tons de pele realistas, aumente a nitidez e a clareza de forma natural, proteja os pontos de luz e mantenha contraste equilibrado.\nO resultado final deve parecer a mesma foto original, apenas com iluminação natural, melhor qualidade de câmera e aparência fotorealista.\nNão aplicar filtro de beleza, não suavizar artificialmente a pele, não modificar rostos, não criar detalhes inexistentes, não estilizar, não adicionar brilho artificial e não alterar a estrutura da imagem.",
@@ -56,5 +65,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-06-04T22:49:42.209Z"
+  "savedAt": "2026-06-05T11:48:44.550Z"
 }
