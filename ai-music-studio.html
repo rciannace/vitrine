@@ -8,49 +8,40 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{background:#0a0f1e;color:#e2e8f0;font-family:'Inter',sans-serif;display:flex;flex-direction:column}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0a0f1e}::-webkit-scrollbar-thumb{background:#1e2d4a;border-radius:3px}
+body{background:#050e1a;color:#c8ddf0;font-family:'Inter',sans-serif;display:flex;flex-direction:column}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#050e1a}::-webkit-scrollbar-thumb{background:#1a3050;border-radius:2px}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif}
 button{font-family:'Inter',sans-serif;cursor:pointer}
-@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse3{0%,100%{opacity:.07}50%{opacity:.13}}
+@keyframes wavepulse{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.2)}}
 
-/* TOP NAV */
-.nav{height:48px;background:#060d1a;border-bottom:1px solid #1a2540;display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;z-index:10}
-.nav-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.nav-title{font-weight:700;font-size:14px;color:#fff}
-.nav-by{font-size:9px;color:#1e3a5f;letter-spacing:2px}
-.nav-tab{padding:5px 14px;border-radius:7px;font-size:12px;font-weight:500;border:none;cursor:pointer;background:transparent;color:#3d5a80;transition:all .2s}
-.nav-tab.active{background:#1a2a45;color:#f97316}
-.nav-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:#2a3f5f}
-.dot{width:7px;height:7px;border-radius:50%;background:#1e2d4a;transition:all .3s}
-.dot.ok{background:#22c55e;box-shadow:0 0 6px #22c55e88}
-.dot.err{background:#ef4444}
+.nav{height:46px;background:#030c18;border-bottom:1px solid #0f2030;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0}
+.nav-logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.nav-tab{padding:5px 12px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;background:transparent;color:#2d5070;transition:all .2s}
+.nav-tab.active{background:#0d1e35;color:#f97316}
 
-/* MAIN LAYOUT — sidebar + content 100% height */
-.app-body{display:flex;flex:1;overflow:hidden;height:calc(100vh - 48px)}
+.app{display:flex;flex:1;overflow:hidden;height:calc(100vh - 46px)}
 
-/* SIDEBAR */
-.sidebar{width:340px;flex-shrink:0;background:#060d1a;border-right:1px solid #1a2540;display:flex;flex-direction:column;height:100%;overflow:hidden}
-.sidebar-scroll{flex:1;overflow-y:auto;padding:14px 16px}
-.sidebar-footer{padding:12px 16px;border-top:1px solid #1a2540;flex-shrink:0}
+.sidebar{width:310px;flex-shrink:0;background:#030c18;border-right:1px solid #0f2030;display:flex;flex-direction:column;overflow:hidden}
+.sb-scroll{flex:1;overflow-y:auto;padding:12px 13px 0}
+.sb-foot{padding:11px 13px;border-top:1px solid #0f2030;flex-shrink:0}
 
-/* CONTENT */
-.content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#0a0f1e}
-.content-scroll{flex:1;overflow-y:auto}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#050e1a}
+.c-scroll{flex:1;overflow-y:auto}
 
-/* FORM ELEMENTS */
-.flabel{font-size:9px;color:#3d5a80;letter-spacing:2px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:7px}
-.finput{width:100%;background:#0d1526;border:1px solid #1a2540;color:#e2e8f0;padding:8px 11px;border-radius:7px;font-size:12px;transition:border-color .2s}
-.finput:focus{border-color:#f97316}
-.ftarea{width:100%;background:#0d1526;border:1px solid #1a2540;color:#e2e8f0;padding:9px 11px;border-radius:7px;font-size:12px;resize:none;line-height:1.6;transition:border-color .2s}
-.ftarea:focus{border-color:#f97316}
-.fsec{margin-bottom:16px}
+.fl{font-size:9px;color:#2d5070;letter-spacing:2px;font-weight:700;text-transform:uppercase;display:block;margin-bottom:6px}
+.fi{width:100%;background:#081525;border:1px solid #1a3050;color:#c8ddf0;padding:7px 10px;border-radius:7px;font-size:11px;transition:border-color .2s}
+.fi:focus{border-color:#f97316}
+.fta{width:100%;background:#081525;border:1px solid #1a3050;color:#c8ddf0;padding:8px 10px;border-radius:7px;font-size:12px;resize:none;line-height:1.6;transition:border-color .2s}
+.fta:focus{border-color:#f97316}
+.fsec{margin-bottom:12px}
+.div{height:1px;background:#0f2030;margin:0 0 12px}
 
-/* CHIPS */
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{padding:4px 10px;border-radius:16px;font-size:11px;border:1px solid #1a2540;background:transparent;color:#3d5a80;transition:all .15s;white-space:nowrap;font-family:'Inter',sans-serif}
-.chip:hover{color:#7a9cc4;border-color:#2a3f5f}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{padding:3px 9px;border-radius:16px;font-size:10px;border:1px solid #1a3050;background:transparent;color:#3d6080;transition:all .15s;white-space:nowrap}
+.chip:hover{color:#5a80a0;border-color:#2a4060}
 .chip.co{border-color:#f97316;background:#f9731620;color:#f97316;font-weight:600}
 .chip.cr{border-color:#ef4444;background:#ef444420;color:#ef4444;font-weight:600}
 .chip.cb{border-color:#3b82f6;background:#3b82f620;color:#3b82f6;font-weight:600}
@@ -58,216 +49,197 @@ button{font-family:'Inter',sans-serif;cursor:pointer}
 .chip.cp{border-color:#a855f7;background:#a855f720;color:#a855f7;font-weight:600}
 .chip.cy{border-color:#eab308;background:#eab30820;color:#eab308;font-weight:600}
 
-/* VALIDATE BTN */
-.btn-val{width:100%;margin-top:7px;padding:8px;border-radius:7px;border:1px solid #f9731640;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dur-card{padding:8px;border-radius:8px;cursor:pointer;text-align:left;border:1px solid #1a3050;background:#081525;transition:all .15s}
+.dur-card.sel{border-color:#f97316;background:#f9731618}
+
+.btn-val{width:100%;margin-top:5px;padding:7px;border-radius:7px;border:1px solid #f9731440;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s}
 .btn-val.ok{border-color:#22c55e50;background:#22c55e15;color:#22c55e}
 .btn-val.err{border-color:#ef444450;background:#ef444415;color:#ef4444}
 
-/* GENERATE BTN */
-.btn-gen{width:100%;padding:14px;border-radius:10px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:14px;font-weight:700;transition:all .3s;box-shadow:0 4px 20px #f9731630;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-gen:disabled{background:#1a2540;color:#2a3f5f;box-shadow:none;cursor:not-allowed}
+.btn-gen{width:100%;padding:13px;border-radius:9px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:13px;font-weight:700;transition:all .3s;box-shadow:0 4px 18px #f9731635;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gen:disabled{background:#0d1e35;color:#1e3a5f;box-shadow:none;cursor:not-allowed}
 
-/* DIVIDER */
-.divider{height:1px;background:#1a2540;margin:14px 0}
-
-/* EMPTY STATE */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;padding:40px;text-align:center}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;max-width:380px}
+.feat-card{background:#081525;border:1px solid #0f2030;border-radius:8px;padding:9px 12px;font-size:11px;color:#1a3050;display:flex;align-items:center;gap:7px}
 
-/* RESULT HEADER */
-.r-header{padding:20px 26px 16px;border-bottom:1px solid #1a2540;background:#060d1a;flex-shrink:0}
-.r-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:2px}
-.r-sub{font-size:12px;color:#f97316;margin-bottom:4px}
-.r-vibe{font-size:11px;color:#2a3f5f;font-style:italic;margin-bottom:8px}
-.r-tags{display:flex;gap:5px;flex-wrap:wrap}
-.r-tag{padding:2px 8px;border-radius:20px;font-size:10px;background:#1a2540;color:#3d5a80;border:1px solid #1e3055}
-.meta-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
-.meta-pill{background:#1a2540;border:1px solid #1e3055;border-radius:7px;padding:6px 11px;text-align:center}
-.chords-row{margin-top:11px;padding:7px 12px;background:#1a2540;border-radius:7px;border:1px solid #1e3055;display:inline-flex;align-items:center;gap:10px}
+.r-head{padding:18px 22px 14px;border-bottom:1px solid #0f2030;background:#030c18}
+.r-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:1px}
+.r-sub{font-size:11px;color:#f97316;margin-bottom:3px}
+.r-vibe{font-size:10px;color:#1e3a5f;font-style:italic;margin-bottom:7px}
+.r-tags{display:flex;gap:4px;flex-wrap:wrap}
+.r-tag{padding:2px 8px;border-radius:20px;font-size:10px}
+.meta-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.meta-p{background:#0d1e35;border:1px solid #1a3050;border-radius:7px;padding:6px 10px;text-align:center}
+.chords-row{margin-top:10px;padding:6px 12px;background:#0d1e35;border-radius:7px;border:1px solid #1a3050;display:inline-flex;align-items:center;gap:10px}
 
-/* TABS */
-.tabs{display:flex;border-bottom:1px solid #1a2540;background:#060d1a;padding:0 26px;flex-shrink:0}
-.tab{padding:11px 15px;background:none;border:none;color:#2a3f5f;font-size:12px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.tabs{display:flex;border-bottom:1px solid #0f2030;background:#030c18;padding:0 22px;flex-shrink:0}
+.tab{padding:10px 14px;background:none;border:none;color:#1e3a5f;font-size:12px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s}
 .tab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
-.tab-body{padding:20px 26px}
+.tab-body{padding:18px 22px}
 
-/* SECTION BLOCKS */
-.sec-block{border:1px solid #1a2540;border-radius:11px;overflow:hidden;margin-bottom:9px}
-.sec-head{padding:9px 13px;display:flex;align-items:center;justify-content:space-between;background:#0d1526}
+.sec-block{border:1px solid #1a3050;border-radius:10px;overflow:hidden;margin-bottom:8px;background:#081525}
+.sec-head{padding:8px 13px;display:flex;align-items:center;justify-content:space-between;background:#0d1e35;flex-wrap:wrap;gap:5px}
 .sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .sec-lbl{font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
-.sbtn{padding:3px 9px;border-radius:5px;border:1px solid #1a2540;background:transparent;color:#2a3f5f;font-size:10px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
-.sbtn:hover{color:#5a7fa0}
-.sbtn.eon{border-color:#f9731645;background:#f9731618;color:#f97316}
-.sbtn.ron{border-color:#ef444445;background:#ef444418;color:#ef4444}
-.sec-text{color:#7a9cc4;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
-.sec-ta{width:100%;background:#060d1a;border:1px solid #1e3055;color:#e2e8f0;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
-.ia-area{padding:0 13px 12px;border-top:1px solid #1a2540;display:none}
-.ia-ta{width:100%;background:#060d1a;border:1px solid #1a2540;color:#e2e8f0;padding:8px 10px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:62px;font-family:'Inter',sans-serif}
+.sbtn{padding:3px 9px;border-radius:6px;border:1px solid #1e3a5f;background:transparent;color:#2d5070;font-size:10px;cursor:pointer;transition:all .15s}
+.sbtn.eon{border-color:#f9731660;background:#f9731618;color:#f97316;font-weight:600}
+.sbtn.ron{border-color:#ef444460;background:#ef444418;color:#ef4444;font-weight:600}
+.sbtn.son{border-color:#22c55e60;background:#22c55e18;color:#22c55e;font-weight:600}
+.sec-text{color:#6a9bbf;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
+.sec-ta{width:100%;background:#050e1a;border:1px solid #1a3050;color:#c8ddf0;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px}
+.ia-panel{padding:0 13px 12px;border-top:1px solid #0f2030;display:none}
+.ia-ta{width:100%;background:#050e1a;border:1px solid #1a3050;color:#c8ddf0;padding:8px 10px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:60px}
+.ext-panel{padding:0 13px 14px;border-top:1px solid #0f2030;display:none}
+.vtabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+.vtab{padding:8px 10px;border-radius:7px;cursor:pointer;text-align:left;border:1px solid #1a3050;background:#060f1c;transition:all .15s}
+.vtab.active{border-color:#22c55e;background:#22c55e18}
+.mic-area{background:#060f1c;border:1px solid #1a3050;border-radius:9px;padding:13px;margin-bottom:9px}
+.btn-mic{width:50px;height:50px;border-radius:50%;border:none;background:#22c55e;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 0 0 4px #22c55e30}
+.btn-mic.rec{background:#ef4444;box-shadow:0 0 0 4px #ef444430}
+.wave-wrap{display:flex;align-items:center;gap:3px;height:36px}
+.wb{width:4px;border-radius:2px;background:#1a3050;min-height:4px;transition:height .08s}
+.wb.active{background:#22c55e}
+.trecho-preview{background:#060f1c;border:1px solid #22c55e33;border-radius:7px;padding:8px 11px;margin-bottom:9px;font-size:11px;color:#2d5070}
+.btn-ext{width:100%;padding:9px;border-radius:8px;border:none;background:linear-gradient(135deg,#22c55e,#14b8a6);color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-ext:disabled{background:#1a3050;color:#2d5070;cursor:not-allowed}
 .btn-rw{margin-top:7px;padding:7px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:11px;cursor:pointer;font-weight:700}
-.btn-rw:disabled{background:#1a2540;color:#2a3f5f;cursor:not-allowed}
+.btn-rw:disabled{background:#1a3050;color:#2d5070;cursor:not-allowed}
 
-/* EXPORT */
-.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
-.step-card{background:#0d1526;border-radius:9px;padding:12px 13px}
-.ex-box{background:#0d1526;border:1px solid #1a2540;border-radius:10px;overflow:hidden;margin-bottom:12px}
-.ex-head{padding:9px 13px;background:#1a2540;display:flex;justify-content:space-between;align-items:center}
-.ex-pre{color:#7a9cc4;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:13px 15px}
-.btn-copy{padding:4px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.ex-box{background:#081525;border:1px solid #1a3050;border-radius:9px;overflow:hidden;margin-bottom:11px}
+.ex-head{padding:8px 13px;background:#0d1e35;display:flex;justify-content:space-between;align-items:center}
+.ex-pre{color:#4a7099;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:12px 14px}
+.btn-copy{padding:3px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer}
 
-/* INFO */
-.info-box{background:#0d1526;border:1px solid #1a2540;border-radius:10px;padding:16px;margin-bottom:12px}
-.inst-pill{background:#060d1a;border:1px solid #1a2540;border-radius:6px;padding:6px 12px;font-size:12px;color:#3d5a80}
+.info-box{background:#081525;border:1px solid #1a3050;border-radius:9px;padding:15px;margin-bottom:11px}
+.inst-pill{background:#050e1a;border:1px solid #1a3050;border-radius:6px;padding:6px 11px;font-size:12px;color:#2d5070}
 
-/* LIBRARY */
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.lib-card{background:#0d1526;border:1px solid #1a2540;border-radius:10px;padding:15px;transition:border-color .2s}
-.lib-card:hover{border-color:#2a3f5f}
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.lib-card{background:#081525;border:1px solid #1a3050;border-radius:10px;padding:14px;transition:border-color .2s}
+.lib-card:hover{border-color:#2a4060}
 
-/* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;z-index:999;padding:10px 16px;border-radius:9px;font-size:12px;font-weight:600;background:#0d1526;animation:fadeup .3s ease;max-width:300px;display:none;box-shadow:0 8px 24px #00000090}
+.toast{position:fixed;bottom:18px;right:18px;z-index:999;padding:10px 15px;border-radius:9px;font-size:12px;font-weight:600;background:#081525;animation:fadeup .3s ease;max-width:280px;display:none;box-shadow:0 8px 24px #00000090}
 .toast.show{display:block}
 .toast.ok{border:1px solid #f9731660;color:#f97316}
 .toast.err{border:1px solid #ef444460;color:#ef4444}
-.spinner{width:12px;height:12px;border-radius:50%;border:2px solid #1e3055;border-top-color:#f97316;animation:spin .7s linear infinite;display:inline-block}
+.spinner{width:12px;height:12px;border-radius:50%;border:2px solid #1a3050;border-top-color:#f97316;animation:spin .7s linear infinite;display:inline-block}
+
+.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.step-card{background:#081525;border-radius:9px;padding:11px 12px}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-bottom:7px}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <div class="nav">
   <div class="nav-logo">🎵</div>
-  <span class="nav-title">AI Music Studio</span>
-  <span class="nav-by">BY CLAUDE</span>
+  <span style="font-weight:700;font-size:13px;color:#fff">AI Music Studio</span>
+  <span style="font-size:8px;color:#0f2030;letter-spacing:2px">BY CLAUDE</span>
   <button class="nav-tab active" id="nt-criar" onclick="setPage('criar')">🎵 Criar</button>
   <button class="nav-tab" id="nt-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
-  <div class="nav-status">
-    <div class="dot" id="sdot"></div>
-    <span id="stxt">API não validada</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+    <div class="sec-dot" id="sdot" style="background:#1e3a5f"></div>
+    <span style="font-size:10px;color:#1e3a5f" id="stxt">API não validada</span>
   </div>
 </div>
 
-<div class="app-body">
-
-  <!-- ═══ SIDEBAR ═══ -->
+<div class="app">
   <div class="sidebar">
-    <div class="sidebar-scroll">
+    <div class="sb-scroll">
 
-      <!-- API KEY -->
       <div class="fsec">
-        <label class="flabel">🔑 API Key Anthropic</label>
+        <label class="fl">🔑 API Key Anthropic</label>
         <div style="position:relative">
-          <input type="password" id="api-key" class="finput" placeholder="sk-ant-api03-..." oninput="resetKey()"/>
-          <span id="key-ic" style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:13px"></span>
+          <input type="password" id="api-key" class="fi" placeholder="sk-ant-api03-..." oninput="resetKey()"/>
+          <span id="key-ic" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px"></span>
         </div>
         <button class="btn-val" id="btn-val" onclick="validateKey()">🔍 Validar Chave</button>
-        <div style="font-size:9px;color:#1e3055;margin-top:4px">console.anthropic.com</div>
+        <div style="font-size:9px;color:#0f2030;margin-top:3px">console.anthropic.com</div>
+      </div>
+      <div class="div"></div>
+
+      <div class="fsec">
+        <label class="fl">💡 Como você imagina sua música?</label>
+        <textarea id="idea" class="fta" rows="3" placeholder="Ex: Uma sertaneja sobre saudade da roça, vovó fazendo bolo, cheiro de mato molhado depois da chuva..."></textarea>
       </div>
 
-      <div class="divider"></div>
-
-      <!-- IDEIA -->
-      <div class="fsec">
-        <label class="flabel">💡 Como você imagina sua música?</label>
-        <textarea id="idea" class="ftarea" rows="4" placeholder="Ex: Uma música sertaneja romântica sobre saudade da roça, da vovó fazendo bolo, cheiro de mato molhado depois da chuva..."></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+        <div><label class="fl">🎵 Nome (opcional)</label><input id="titulo" class="fi" placeholder="Título..."/></div>
+        <div><label class="fl">🎤 Referência</label><input id="artist" class="fi" placeholder="Marília, Wesley..."/></div>
       </div>
+      <div class="div"></div>
 
-      <!-- NOME DA MÚSICA -->
       <div class="fsec">
-        <label class="flabel">🎵 Nome da Música (opcional)</label>
-        <input type="text" id="titulo" class="finput" placeholder="Ex: Amor de Verão, Saudade do Interior..."/>
+        <label class="fl">⏱ Duração da Música</label>
+        <div class="dur-grid" id="dur-grid"></div>
       </div>
+      <div class="div"></div>
 
-      <!-- REFERÊNCIA -->
       <div class="fsec">
-        <label class="flabel">🎤 Artista de Referência (opcional)</label>
-        <input type="text" id="artist" class="finput" placeholder="Ex: Marília Mendonça, Wesley Safadão, MC Ryan..."/>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- GÊNERO -->
-      <div class="fsec">
-        <label class="flabel">🎸 Estilo Musical</label>
+        <label class="fl">🎸 Estilo Musical</label>
         <div class="chips" id="genre-chips"></div>
       </div>
+      <div class="div"></div>
 
-      <div class="divider"></div>
-
-      <!-- MOOD -->
       <div class="fsec">
-        <label class="flabel">🌈 Mood / Clima</label>
+        <label class="fl">🌈 Mood / Clima</label>
         <div class="chips" id="mood-chips"></div>
       </div>
+      <div class="div"></div>
 
-      <div class="divider"></div>
-
-      <!-- EXTRAS / INSTRUMENTOS -->
       <div class="fsec">
-        <label class="flabel">🎛 Extras — Efeitos e Instrumentos</label>
+        <label class="fl">🎛 Efeitos e Instrumentos</label>
         <div class="chips" id="extras-chips"></div>
       </div>
+      <div class="div"></div>
 
-      <div class="divider"></div>
-
-      <!-- TIPO DE VOZ -->
-      <div class="fsec">
-        <label class="flabel">🎙 Tipo de Voz</label>
-        <div class="chips" id="voice-chips"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div><label class="fl">🎙 Voz</label><div class="chips" id="voice-chips" style="flex-direction:column"></div></div>
+        <div><label class="fl">⏱ BPM</label><div class="chips" id="tempo-chips" style="flex-direction:column"></div></div>
       </div>
 
-      <!-- BPM -->
-      <div class="fsec" style="margin-top:12px">
-        <label class="flabel">⏱ Andamento</label>
-        <div class="chips" id="tempo-chips"></div>
+      <div id="struct-wrap">
+        <div class="div"></div>
+        <div class="fsec">
+          <label class="fl">🗺 Estrutura</label>
+          <div class="chips" id="struct-chips"></div>
+        </div>
       </div>
+      <div class="div"></div>
 
-      <div class="divider"></div>
-
-      <!-- ESTRUTURA -->
-      <div class="fsec">
-        <label class="flabel">🗺 Estrutura da Música</label>
-        <div class="chips" id="struct-chips"></div>
+      <div class="fsec" style="margin-bottom:14px">
+        <label class="fl">🎚 Detalhes da Produção (opcional)</label>
+        <textarea id="producao" class="fta" rows="2" placeholder="Ex: Bateria marcada, guitarra suave, voz potente no refrão..."></textarea>
       </div>
-
-      <div class="divider"></div>
-
-      <!-- DETALHES DE PRODUÇÃO -->
-      <div class="fsec">
-        <label class="flabel">🎚 Detalhes da Produção (opcional)</label>
-        <textarea id="producao" class="ftarea" rows="3" placeholder="Ex: Quero bateria marcada, guitarra suave, voz potente no refrão, ritmo mais lento no verso, piano de fundo..."></textarea>
-      </div>
-
     </div>
 
-    <!-- BOTÃO FIXO -->
-    <div class="sidebar-footer">
+    <div class="sb-foot">
       <button class="btn-gen" id="btn-gen" onclick="generate()">🎵 Compor com IA</button>
     </div>
   </div>
 
-  <!-- ═══ CONTENT ═══ -->
   <div class="content">
-    <!-- CRIAR PAGE -->
     <div id="page-criar" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
-      <div class="content-scroll" id="content-scroll">
+      <div class="c-scroll" id="c-scroll">
         <div class="empty" id="empty-state">
-          <div style="font-size:56px;opacity:.08">🎵</div>
-          <div style="font-size:18px;font-weight:600;color:#1a2540">Sua música aparece aqui</div>
-          <div style="font-size:13px;color:#1a3055;max-width:400px;line-height:1.7">Configure os parâmetros na barra lateral e clique em <strong style="color:#f97316">Compor com IA</strong> para receber a letra completa, pronta para editar e exportar pro Suno.</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px">
-            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">✏ Edite seção por seção</div>
-            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">🔄 Refaça o que não gostou</div>
-            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">🚀 Exporte formatado pro Suno</div>
+          <div style="font-size:72px;animation:pulse3 3s ease-in-out infinite">🎵</div>
+          <div style="font-size:20px;font-weight:600;color:#0f2030">Sua música aparece aqui</div>
+          <div style="font-size:13px;color:#0a1a2a;max-width:440px;line-height:1.8">Configure ao lado e clique em <strong style="color:#f97316">Compor com IA</strong> para criar sua música.</div>
+          <div class="feat-grid">
+            <div class="feat-card"><span style="font-size:16px">✏</span>Edite cada seção</div>
+            <div class="feat-card"><span style="font-size:16px">🔄</span>Refaça com instruções</div>
+            <div class="feat-card"><span style="font-size:16px">🎙</span>Cante seu trecho</div>
+            <div class="feat-card"><span style="font-size:16px">✨</span>IA completa e estende</div>
           </div>
         </div>
         <div id="result-area" style="display:none"></div>
       </div>
     </div>
 
-    <!-- LIBRARY PAGE -->
-    <div id="page-lib" style="display:none;padding:24px;overflow-y:auto;height:100%">
-      <div style="font-size:19px;font-weight:700;color:#fff;margin-bottom:4px">Sua Biblioteca</div>
-      <div style="font-size:12px;color:#2a3f5f;margin-bottom:20px">Músicas salvas automaticamente no navegador.</div>
+    <div id="page-lib" style="display:none;padding:22px;overflow-y:auto;height:100%">
+      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px">Biblioteca</div>
+      <div style="font-size:12px;color:#1e3a5f;margin-bottom:18px">Músicas salvas automaticamente no navegador.</div>
       <div class="lib-grid" id="lib-grid"></div>
     </div>
   </div>
@@ -276,85 +248,88 @@ button{font-family:'Inter',sans-serif;cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
-// DADOS
-// ══════════════════════════════════════
 const GENRES=[
-  {id:"sertanejo",l:"Sertanejo",e:"🤠"},{id:"sertanejo_univ",l:"Sertanejo Universitário",e:"🎸"},
-  {id:"modao",l:"Modão",e:"🎺"},{id:"viola_caipira",l:"Viola Caipira",e:"🪕"},
-  {id:"sola_bota",l:"Sola da Bota",e:"👢"},{id:"funk",l:"Funk Carioca",e:"🔥"},
-  {id:"pagode",l:"Pagode",e:"🥁"},{id:"forro",l:"Forró",e:"🪗"},
-  {id:"forro_eletro",l:"Forró Eletrônico",e:"⚡"},{id:"piseiro",l:"Piseiro",e:"👟"},
-  {id:"brega_funk",l:"Brega Funk",e:"💥"},{id:"tecnobrega",l:"Tecnobrega",e:"🔊"},
-  {id:"axe",l:"Axé",e:"🎉"},{id:"pagode_baiano",l:"Pagode Baiano",e:"🎭"},
+  {id:"sertanejo",l:"Sertanejo",e:"🤠"},{id:"sertuniv",l:"Sertanejo Univ.",e:"🎸"},
+  {id:"modao",l:"Modão",e:"🎺"},{id:"viola",l:"Viola Caipira",e:"🪕"},
+  {id:"funk",l:"Funk Carioca",e:"🔥"},{id:"pagode",l:"Pagode",e:"🥁"},
+  {id:"forro",l:"Forró",e:"🪗"},{id:"piseiro",l:"Piseiro",e:"👟"},
+  {id:"bregafunk",l:"Brega Funk",e:"💥"},{id:"axe",l:"Axé",e:"🎉"},
   {id:"samba",l:"Samba",e:"🎺"},{id:"mpb",l:"MPB",e:"🎸"},
-  {id:"bossanova",l:"Bossa Nova",e:"🎷"},{id:"baiao",l:"Baião",e:"🥁"},
-  {id:"carnaval",l:"Frevo",e:"🎊"},{id:"carimbo",l:"Carimbó",e:"🌴"},
-  {id:"kizomba",l:"Kizomba",e:"💃"},{id:"kuduro",l:"Kuduro",e:"🔥"},
-  {id:"afrobeat",l:"Afrobeat",e:"🌍"},{id:"pop",l:"Pop",e:"⭐"},
+  {id:"bossanova",l:"Bossa Nova",e:"🎷"},{id:"pop",l:"Pop",e:"⭐"},
   {id:"rnb",l:"R&B",e:"🎤"},{id:"hiphop",l:"Hip-Hop",e:"🎧"},
   {id:"trap",l:"Trap",e:"💎"},{id:"rock",l:"Rock",e:"🎸"},
-  {id:"indie",l:"Indie",e:"🌿"},{id:"country",l:"Country",e:"🤠"},
-  {id:"gospel",l:"Gospel",e:"🙏"},{id:"worship",l:"Worship",e:"✝️"},
-  {id:"eletro",l:"Eletrônica",e:"🎛"},{id:"lofi",l:"Lo-fi",e:"☕"},
-  {id:"jazz",l:"Jazz",e:"🎷"},{id:"blues",l:"Blues",e:"🎸"},
-  {id:"folk",l:"Folk",e:"🌾"},{id:"acustico",l:"Acústico",e:"🎸"},
-  {id:"reggae",l:"Reggae",e:"🌿"},{id:"ragga",l:"Reggaeton",e:"💃"},
+  {id:"gospel",l:"Gospel",e:"🙏"},{id:"eletro",l:"Eletrônica",e:"🎛"},
+  {id:"lofi",l:"Lo-fi",e:"☕"},{id:"country",l:"Country",e:"🤠"},
+  {id:"folk",l:"Folk",e:"🌾"},{id:"reggae",l:"Reggae",e:"🌿"},
+  {id:"acustico",l:"Acústico",e:"🎸"},{id:"jazz",l:"Jazz",e:"🎷"},
+  {id:"kizomba",l:"Kizomba",e:"💃"},{id:"afrobeat",l:"Afrobeat",e:"🌍"},
+  {id:"worship",l:"Worship",e:"✝️"},{id:"tecnobrega",l:"Tecnobrega",e:"🔊"},
 ];
 const MOODS=[
   {id:"romantico",l:"Romântico",e:"❤️"},{id:"alegre",l:"Alegre",e:"😄"},
   {id:"melancolico",l:"Melancólico",e:"😢"},{id:"saudosista",l:"Saudosista",e:"🌅"},
   {id:"energetico",l:"Energético",e:"⚡"},{id:"sensual",l:"Sensual",e:"🔥"},
   {id:"espiritual",l:"Espiritual",e:"✨"},{id:"festivo",l:"Festivo",e:"🎊"},
-  {id:"agitado",l:"Agitado",e:"🤘"},{id:"relaxante",l:"Relaxante",e:"😌"},
-  {id:"nostalgico",l:"Nostálgico",e:"🌙"},{id:"epico",l:"Épico",e:"🏆"},
+  {id:"nostalgico",l:"Nostálgico",e:"🌙"},{id:"agitado",l:"Agitado",e:"🤘"},
 ];
-const EXTRAS=[
-  {id:"lento",l:"Lento"},{id:"rapido",l:"Rápido"},{id:"emotivo",l:"Emotivo"},
-  {id:"relaxante",l:"Relaxante"},{id:"agressivo",l:"Agressivo"},{id:"suave",l:"Suave"},
-  {id:"piano",l:"Piano"},{id:"guitarra",l:"Guitarra"},{id:"violao",l:"Violão"},
-  {id:"bateria",l:"Bateria marcada"},{id:"baixo",l:"Baixo grave"},{id:"808",l:"808"},
-  {id:"sintetizador",l:"Sintetizador"},{id:"cordas",l:"Cordas"},{id:"orquestra",l:"Orquestra"},
-  {id:"coral",l:"Coral"},{id:"sanfona",l:"Sanfona"},{id:"viola",l:"Viola caipira"},
-  {id:"grave_pesado",l:"Grave Pesado"},{id:"autotune",l:"Autotune"},
-];
-const VOICES=[
-  {id:"f_suave",l:"Feminino Suave"},{id:"f_potente",l:"Feminino Potente"},
-  {id:"m_grave",l:"Masculino Grave"},{id:"m_jovem",l:"Masculino Jovem"},
-  {id:"dueto",l:"Dueto M+F"},
-];
-const TEMPOS=[
-  {id:"0",l:"Lento · 70 BPM",bpm:70},{id:"1",l:"Moderado · 90 BPM",bpm:90},
-  {id:"2",l:"Animado · 110 BPM",bpm:110},{id:"3",l:"Rápido · 130 BPM",bpm:130},
-];
+const EXTRAS=["Piano","Guitarra","Violão","Sanfona","Bateria forte","Baixo grave","808","Sintetizador","Orquestra","Coral","Autotune","Grave pesado","Lento","Rápido","Emotivo","Suave","Agressivo"];
+const VOICES=[{id:"fs",l:"Feminino Suave"},{id:"fp",l:"Feminino Potente"},{id:"mg",l:"Masculino Grave"},{id:"mj",l:"Masculino Jovem"},{id:"dt",l:"Dueto M+F"}];
+const TEMPOS=[{id:"0",l:"Lento · 70",bpm:70},{id:"1",l:"Moderado · 90",bpm:90},{id:"2",l:"Animado · 110",bpm:110},{id:"3",l:"Rápido · 130",bpm:130}];
 const STRUCTS=["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final","Outro"];
+const DURATIONS=[
+  {id:"jingle",l:"Jingle",desc:"30s–1min",icon:"⚡",note:"Gere APENAS 1 refrão curto e impactante com 4-6 linhas.",struct:["Refrão"]},
+  {id:"curta",l:"Curta",desc:"1–2min",icon:"🎵",note:"Estrutura enxuta, seções com 4-5 linhas.",struct:["Verso 1","Refrão","Refrão Final"]},
+  {id:"normal",l:"Normal",desc:"3–4min",icon:"🎶",note:"Padrão de rádio, seções com 5-8 linhas bem desenvolvidas.",struct:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"]},
+  {id:"longa",l:"Longa",desc:"5min+",icon:"🎼",note:"Música elaborada, seções com 6-10 linhas e repetições.",struct:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Pré-Refrão","Refrão","Bridge","Refrão Final","Outro"]},
+];
 const SEC_COLORS={"Intro":"#f97316","Verso 1":"#22c55e","Verso 2":"#22c55e","Pré-Refrão":"#eab308","Refrão":"#ef4444","Refrão Final":"#ef4444","Bridge":"#a855f7","Outro":"#64748b"};
 const SEC_TAGS={"Intro":"[Intro]","Verso 1":"[Verse]","Verso 2":"[Verse 2]","Pré-Refrão":"[Pre-Chorus]","Refrão":"[Chorus]","Refrão Final":"[Chorus]","Bridge":"[Bridge]","Outro":"[Outro]"};
-const SUNO_STYLES={sertanejo:"sertanejo, viola caipira, voz emotiva",sertanejo_univ:"sertanejo universitário, pop country brasileiro",modao:"modão caipira, voz grave, saudosista",funk:"funk carioca, baile funk, batida pesada",pagode:"pagode brasileiro, pandeiro, cavaquinho",forro:"forró pé de serra, sanfona, zabumba",forro_eletro:"forró eletrônico, piseiro, batida moderna",piseiro:"piseiro nordestino, dançante",brega_funk:"brega funk, produção pesada, voz urbana",axe:"axé music, percussão, festivo",samba:"samba tradicional, surdo, gingado",mpb:"MPB brasileira, violão, harmonia rica",bossanova:"bossa nova, jazz brasileiro, suave",pop:"pop brasileiro, produção moderna",rnb:"R&B soul, groove, melismático",hiphop:"hip hop brasileiro, rap, beat",trap:"trap, 808, hi-hats rápidos",rock:"rock brasileiro, guitarras distorcidas",gospel:"gospel brasileiro, coral, piano",worship:"worship, louvor, espiritual",eletro:"eletrônica, sintetizadores, drop",lofi:"lo-fi, relaxante, beats suaves",jazz:"jazz, improvisação, sofisticado",reggae:"reggae roots, riddim",country:"country, guitar, americana",folk:"folk, acústico, intimista",acustico:"acústico, violão, voz e instrumento"};
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-let selGenre="sertanejo",selMood="romantico",selVoice="f_suave",selTempo="1";
+let selGenre="sertanejo",selMood="romantico",selVoice="fs",selTempo="1";
 let selStruct=["Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"];
-let selExtras=[];
-let currentSong=null,currentSections={},activeTab="editor";
-let keyStatus=null,currentPage="criar";
-let history=[];
-try{history=JSON.parse(localStorage.getItem("ams_h")||"[]");}catch{}
+let selExtras=[],selDuration="normal";
+let currentSong=null,currentSections={},activeTab="editor",currentPage="criar";
+let history=[];try{history=JSON.parse(localStorage.getItem("ams5")||"[]");}catch{}
+let micRecognition=null,micRecording=false,waveTimer=null;
 
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
 window.onload=()=>{
+  buildDurCards();
   buildSingle("genre-chips",GENRES,"co",()=>selGenre,v=>selGenre=v);
   buildSingle("mood-chips",MOODS,"cr",()=>selMood,v=>selMood=v);
   buildSingle("voice-chips",VOICES,"cp",()=>selVoice,v=>selVoice=v);
   buildSingle("tempo-chips",TEMPOS,"cb",()=>selTempo,v=>selTempo=v);
   buildMulti("struct-chips",STRUCTS,"cg",()=>selStruct,v=>selStruct=v);
-  buildMultiObj("extras-chips",EXTRAS,"cy",()=>selExtras,v=>selExtras=v);
+  buildMultiArr("extras-chips",EXTRAS,"cy",()=>selExtras,v=>selExtras=v);
   updateLibN();
+  updateStructWrap();
 };
+
+function buildDurCards(){
+  const el=document.getElementById("dur-grid");
+  DURATIONS.forEach(d=>{
+    const b=document.createElement("button");
+    b.className="dur-card"+(selDuration===d.id?" sel":"");
+    b.id="dc-"+d.id;
+    b.innerHTML=`<div style="font-size:14px;margin-bottom:1px">${d.icon}</div><div style="font-size:11px;font-weight:700;color:${selDuration===d.id?"#f97316":"#c8ddf0"}">${d.l}</div><div style="font-size:10px;color:${selDuration===d.id?"#f97316aa":"#2d5070"}">${d.desc}</div>`;
+    b.onclick=()=>{
+      selDuration=d.id;
+      document.querySelectorAll(".dur-card").forEach(x=>{
+        x.className="dur-card";
+        x.querySelector("div:nth-child(2)").style.color="#c8ddf0";
+        x.querySelector("div:nth-child(3)").style.color="#2d5070";
+      });
+      b.className="dur-card sel";
+      b.querySelector("div:nth-child(2)").style.color="#f97316";
+      b.querySelector("div:nth-child(3)").style.color="#f97316aa";
+      updateStructWrap();
+    };
+    el.appendChild(b);
+  });
+}
+
+function updateStructWrap(){
+  document.getElementById("struct-wrap").style.display=(selDuration==="normal"||selDuration==="longa")?"block":"none";
+}
 
 function buildSingle(cid,items,cls,getter,setter){
   const el=document.getElementById(cid);
@@ -377,20 +352,17 @@ function buildMulti(cid,items,cls,getter,setter){
     el.appendChild(b);
   });
 }
-function buildMultiObj(cid,items,cls,getter,setter){
+function buildMultiArr(cid,items,cls,getter,setter){
   const el=document.getElementById(cid);
   items.forEach(item=>{
     const b=document.createElement("button");
-    b.className="chip"+(getter().includes(item.id)?" "+cls:"");
-    b.textContent=item.l;
-    b.onclick=()=>{const c=getter();c.includes(item.id)?setter(c.filter(x=>x!==item.id)):setter([...c,item.id]);b.className="chip"+(getter().includes(item.id)?" "+cls:"");};
+    b.className="chip"+(getter().includes(item)?" "+cls:"");
+    b.textContent=item;
+    b.onclick=()=>{const c=getter();c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);b.className="chip"+(getter().includes(item)?" "+cls:"");};
     el.appendChild(b);
   });
 }
 
-// ══════════════════════════════════════
-// PAGES
-// ══════════════════════════════════════
 function setPage(p){
   currentPage=p;
   document.getElementById("page-criar").style.display=p==="criar"?"flex":"none";
@@ -400,100 +372,68 @@ function setPage(p){
   if(p==="lib")renderLib();
 }
 
-// ══════════════════════════════════════
-// VALIDATE KEY
-// ══════════════════════════════════════
 function resetKey(){
-  keyStatus=null;
-  document.getElementById("btn-val").className="btn-val";
-  document.getElementById("btn-val").innerHTML="🔍 Validar Chave";
+  const btn=document.getElementById("btn-val");
+  btn.className="btn-val";btn.innerHTML="🔍 Validar Chave";btn.disabled=false;
   document.getElementById("key-ic").textContent="";
-  document.getElementById("api-key").style.borderColor="#1a2540";
-  document.getElementById("sdot").className="dot";
+  document.getElementById("api-key").style.borderColor="#1a3050";
+  document.getElementById("sdot").style.background="#1e3a5f";
   document.getElementById("stxt").textContent="API não validada";
 }
+
 async function validateKey(){
   const key=document.getElementById("api-key").value.trim();
-  if(!key){showToast("Cole a API Key primeiro!","err");return;}
-  keyStatus="checking";
+  if(!key){showToast("Cole a API Key!","err");return;}
   const btn=document.getElementById("btn-val");
   btn.innerHTML='<span class="spinner"></span> Validando...';btn.disabled=true;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:10,messages:[{role:"user",content:"hi"}]})});
-    if(res.ok){
-      keyStatus="ok";
+    if(r.ok){
       btn.className="btn-val ok";btn.innerHTML="✅ Chave Válida!";
       document.getElementById("key-ic").textContent="✓";document.getElementById("key-ic").style.color="#22c55e";
       document.getElementById("api-key").style.borderColor="#22c55e";
-      document.getElementById("sdot").className="dot ok";document.getElementById("stxt").textContent="API Conectada";
-      showToast("✅ Chave válida! Pronto para compor!","ok");
+      document.getElementById("sdot").style.background="#22c55e";document.getElementById("sdot").style.boxShadow="0 0 6px #22c55e";
+      document.getElementById("stxt").textContent="API Conectada";
+      showToast("✅ Chave válida!","ok");
     }else throw new Error();
   }catch{
-    keyStatus="err";
-    btn.className="btn-val err";btn.innerHTML="❌ Inválida — tentar novamente";
+    btn.className="btn-val err";btn.innerHTML="❌ Tentar novamente";btn.disabled=false;
     document.getElementById("key-ic").textContent="✗";document.getElementById("key-ic").style.color="#ef4444";
     document.getElementById("api-key").style.borderColor="#ef4444";
-    document.getElementById("sdot").className="dot err";document.getElementById("stxt").textContent="Chave Inválida";
+    document.getElementById("sdot").style.background="#ef4444";
+    document.getElementById("stxt").textContent="Chave Inválida";
     showToast("❌ Chave inválida","err");
-  }finally{btn.disabled=false;}
+  }
 }
 
-// ══════════════════════════════════════
-// GENERATE
-// ══════════════════════════════════════
 async function generate(){
   const apiKey=document.getElementById("api-key").value.trim();
   const idea=document.getElementById("idea").value.trim();
-  if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
-  if(!idea){showToast("Descreva sua ideia musical!","err");return;}
-
+  if(!apiKey){showToast("Cole sua API Key!","err");return;}
+  if(!idea){showToast("Descreva sua ideia!","err");return;}
   const g=GENRES.find(x=>x.id===selGenre)||GENRES[0];
   const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
   const v=VOICES.find(x=>x.id===selVoice)||VOICES[0];
   const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
-  const artist=document.getElementById("artist").value.trim();
+  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
+  const secsToUse=dur.id==="jingle"||dur.id==="curta"?dur.struct:selStruct;
+  const extrasStr=selExtras.join(", ");
   const titulo=document.getElementById("titulo").value.trim();
+  const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
-  const extrasLabels=selExtras.map(id=>EXTRAS.find(x=>x.id===id)?.l||id).join(", ");
-  const sunoBase=SUNO_STYLES[selGenre]||g.l.toLowerCase();
-
-  const artistHint=artist?`\n- Referência artística: ${artist}`:"";
-  const tituloHint=titulo?`\n- Nome sugerido para a música: "${titulo}"`:"";
-  const producaoHint=producao?`\n- Detalhes de produção desejados: ${producao}`:"";
-  const extrasHint=extrasLabels?`\n- Efeitos/instrumentos extras: ${extrasLabels}`:"";
-
   setLoading(true);currentSong=null;currentSections={};
   document.getElementById("empty-state").style.display="none";
   document.getElementById("result-area").style.display="none";
-
-  const prompt=`Você é compositor musical profissional brasileiro de elite. Crie uma música COMPLETA e ORIGINAL.
-
-ESPECIFICAÇÕES:
-- Tema/Ideia: ${idea}
-- Gênero: ${g.l}
-- Mood/Clima: ${m.l}
-- BPM/Andamento: ${t.bpm}
-- Tipo de Voz: ${v.l}
-- Seções: ${selStruct.join(", ")}${artistHint}${tituloHint}${producaoHint}${extrasHint}
-
-QUALIDADE EXIGIDA: Letra PROFISSIONAL com rimas ricas e naturais, imagens poéticas vívidas, emoção real. Mínimo 4 linhas por seção, refrão mínimo 6 linhas marcantes e inesquecíveis. Vocabulário autêntico do gênero.
-
-Responda SOMENTE com JSON válido, sem markdown, sem texto fora:
-{
-  "title": "Título da música",
-  "subtitle": "Subtítulo ou tagline criativa",
-  "key": "Tom musical (ex: Lá menor)",
-  "chords": "Progressão de acordes (ex: Am - F - C - G)",
-  "vibe": "Uma frase poética de uma linha descrevendo o clima",
-  "style_tags": ["tag1","tag2","tag3"],
-  "sections": {${selStruct.map(s=>`"${s}": "letra COMPLETA desta seção com quebras de linha \\n"`).join(", ")}},
-  "suno_style_prompt": "Prompt técnico detalhado em INGLÊS para o Suno (mínimo 60 palavras): ${sunoBase}, ${v.l.toLowerCase()}, ${t.bpm} BPM, ${m.l.toLowerCase()}${extrasLabels?", "+extrasLabels:""} — descreva instrumentos, energia, dinâmica vocal, referências de artistas",
-  "instruments": ["instrumento 1","instrumento 2","instrumento 3","instrumento 4","instrumento 5"],
-  "production_notes": "Notas de produção detalhadas: como deve soar, dinâmicas, breakdown, build-up, efeitos"
-}`;
-
+  const prompt=`Compositor musical profissional brasileiro de elite. Crie música COMPLETA e ORIGINAL.
+- Tema: ${idea} | Gênero: ${g.l} | Mood: ${m.l} | BPM: ${t.bpm} | Voz: ${v.l}
+- Duração: ${dur.l} (${dur.desc}) | Seções: ${secsToUse.join(", ")}
+${titulo?`- Título sugerido: "${titulo}"`:""}${artist?`\n- Referência: ${artist}`:""}${extrasStr?`\n- Extras: ${extrasStr}`:""}${producao?`\n- Produção: ${producao}`:""}
+INSTRUÇÃO DE DURAÇÃO: ${dur.note}
+Letra PROFISSIONAL: rimas ricas, imagens poéticas, emoção real.
+SOMENTE JSON válido:
+{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style_prompt":"Prompt técnico em inglês para o Suno (min 60 palavras)","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção detalhadas"}`;
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
@@ -502,23 +442,20 @@ Responda SOMENTE com JSON válido, sem markdown, sem texto fora:
     if(!res.ok)throw new Error(data?.error?.message||"Erro API "+res.status);
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:v.l,genreId:selGenre};
+    currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:v.l,duration:dur.l,durationDesc:dur.desc};
     currentSections=Object.assign({},parsed.sections||{});
-    activeTab="editor";
-    saveHistory();renderResult();
-    showToast("🎵 Música criada! Edite e exporte pro Suno!","ok");
-    document.getElementById("content-scroll").scrollTop=0;
+    if(dur.id==="jingle"||dur.id==="curta")selStruct=dur.struct;
+    activeTab="editor";saveHistory();renderResult();
+    showToast("🎵 Música criada!","ok");
+    document.getElementById("c-scroll").scrollTop=0;
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
 }
 
-// ══════════════════════════════════════
-// REWRITE
-// ══════════════════════════════════════
 async function rewriteSection(secName){
   const apiKey=document.getElementById("api-key").value.trim();
   if(!apiKey||!currentSong)return;
-  const sid=secName.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");
+  const sid=safeid(secName);
   const instrEl=document.getElementById("ia-ta-"+sid);
   const instruction=instrEl?instrEl.value.trim():"";
   if(!instruction){showToast("Descreva o que quer mudar!","err");return;}
@@ -526,9 +463,9 @@ async function rewriteSection(secName){
   if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Reescrevendo...';}
   const prompt=`Compositor profissional. Reescreva SOMENTE esta seção.
 Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}
-Seção "${secName}" atual:\n${currentSections[secName]}
-Instrução do usuário: "${instruction}"
-Reescreva mantendo qualidade profissional, gênero e mood. JSON: {"lyrics":"nova letra com \\n"}`;
+Seção "${secName}": ${currentSections[secName]}
+Instrução: "${instruction}"
+JSON: {"lyrics":"nova letra com \\n"}`;
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
@@ -538,70 +475,175 @@ Reescreva mantendo qualidade profissional, gênero e mood. JSON: {"lyrics":"nova
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     currentSections[secName]=parsed.lyrics;
     renderResult();showToast("✨ "+secName+" reescrita!","ok");
-  }catch(e){
-    showToast("Erro: "+e.message,"err");
-    if(btn){btn.disabled=false;btn.textContent="✨ Reescrever com IA";}
+  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="🔄 Reescrever com IA";}}
+}
+
+async function extendSection(secName){
+  const apiKey=document.getElementById("api-key").value.trim();
+  if(!apiKey||!currentSong)return;
+  const sid=safeid(secName);
+  const trEl=document.getElementById("ext-trecho-"+sid);
+  const trecho=trEl?trEl.value.trim():"";
+  if(!trecho){showToast("Escreva ou grave seu trecho!","err");return;}
+  const btn=document.getElementById("btn-ext-"+sid);
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Gerando...';}
+  const prompt=`Compositor musical profissional brasileiro. Complete esta seção.
+Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}
+Seção: "${secName}"
+TRECHO DO USUÁRIO (mantenha EXATAMENTE no início):
+${trecho}
+Complete com mais 3-6 linhas mantendo o trecho exato, mesmo ritmo e esquema de rimas.
+JSON: {"lyrics":"trecho do usuário + continuação com \\n"}`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    const text=(data.content||[]).map(b=>b.text||"").join("");
+    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    currentSections[secName]=parsed.lyrics;
+    renderResult();showToast("✨ "+secName+" estendida!","ok");
+  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender com IA";}}
+}
+
+function startMic(sid){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const statusEl=document.getElementById("mic-status-"+sid);
+  if(!SR){if(statusEl)statusEl.textContent="⚠ Use Chrome/Edge para gravar voz";return;}
+  micRecognition=new SR();micRecognition.lang="pt-BR";micRecognition.continuous=true;micRecognition.interimResults=true;
+  micRecognition.onresult=e=>{
+    let fin="";
+    for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("ext-trecho-"+sid);if(ta)ta.value+=(ta.value?" ":"")+fin.trim();}
+  };
+  micRecognition.onerror=()=>stopMic(sid);
+  micRecognition.onend=()=>{if(micRecording)stopMic(sid);};
+  micRecognition.start();micRecording=true;
+  const btn=document.getElementById("mic-btn-"+sid);
+  if(btn){btn.className="btn-mic rec";btn.textContent="⏹";}
+  if(statusEl){statusEl.textContent="🔴 Gravando... cante ou fale!";statusEl.style.color="#ef4444";}
+  const ww=document.getElementById("wave-wrap-"+sid);
+  if(ww){
+    ww.style.display="flex";
+    waveTimer=setInterval(()=>{
+      ww.querySelectorAll(".wb").forEach(b=>{b.style.height=(4+Math.random()*28)+"px";});
+    },100);
+  }
+}
+function stopMic(sid){
+  if(micRecognition){micRecognition.stop();micRecognition=null;}
+  clearInterval(waveTimer);micRecording=false;
+  const btn=document.getElementById("mic-btn-"+sid);
+  if(btn){btn.className="btn-mic";btn.textContent="🎙";}
+  const statusEl=document.getElementById("mic-status-"+sid);
+  if(statusEl){statusEl.textContent="✅ Gravação finalizada! Edite se precisar.";statusEl.style.color="#22c55e";}
+  const ww=document.getElementById("wave-wrap-"+sid);
+  if(ww){ww.style.display="none";ww.querySelectorAll(".wb").forEach(b=>{b.style.height="4px";});}
+}
+function toggleMic(sid){micRecording?stopMic(sid):startMic(sid);}
+
+function switchVtab(sid,tab){
+  const pe=document.getElementById("vp-escrever-"+sid);
+  const pg=document.getElementById("vp-gravar-"+sid);
+  const te=document.getElementById("vt-escrever-"+sid);
+  const tg=document.getElementById("vt-gravar-"+sid);
+  if(tab==="escrever"){
+    pe.style.display="block";pg.style.display="none";
+    te.className="vtab active";tg.className="vtab";
+  }else{
+    pe.style.display="none";pg.style.display="block";
+    tg.className="vtab active";te.className="vtab";
   }
 }
 
-// ══════════════════════════════════════
-// RENDER RESULT
-// ══════════════════════════════════════
+function toggleSecMode(sid,mode){
+  const ia=document.getElementById("ia-panel-"+sid);
+  const ext=document.getElementById("ext-panel-"+sid);
+  const rb=document.getElementById("rb-"+sid);
+  const sb=document.getElementById("sb-"+sid);
+  const curIA=(ia&&ia.style.display==="block");
+  const curEXT=(ext&&ext.style.display==="block");
+  if(ia)ia.style.display="none";if(ext)ext.style.display="none";
+  if(rb)rb.className="sbtn";if(sb)sb.className="sbtn";
+  if(mode==="refazer"&&!curIA){if(ia)ia.style.display="block";if(rb)rb.className="sbtn ron";}
+  if(mode==="estender"&&!curEXT){if(ext)ext.style.display="block";if(sb)sb.className="sbtn son";}
+}
+
+function toggleEdit(sid,sec){
+  const body=document.getElementById("body-"+sid);
+  const btn=document.getElementById("eb-"+sid);
+  if(body.querySelector("textarea")){
+    currentSections[sec]=body.querySelector("textarea").value;
+    body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
+    btn.className="sbtn";btn.textContent="✏ Editar";
+    const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();
+  }else{
+    body.innerHTML=`<textarea class="sec-ta">${esc(currentSections[sec]||"")}</textarea>`;
+    body.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
+    btn.className="sbtn eon";btn.textContent="✓ Salvar";
+  }
+}
+
 function renderResult(){
   const s=currentSong;
+  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
   document.getElementById("empty-state").style.display="none";
   const ra=document.getElementById("result-area");
   ra.style.display="block";
   ra.innerHTML=`<div style="animation:fadeup .4s ease">
-    <div class="r-header">
-      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div class="r-head">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <div>
           <div class="r-title">${esc(s.title)}</div>
           <div class="r-sub">${esc(s.subtitle||"")}</div>
           <div class="r-vibe">"${esc(s.vibe||"")}"</div>
-          <div class="r-tags">${(s.style_tags||[]).map(t=>`<span class="r-tag">#${esc(t)}</span>`).join("")}</div>
+          <div class="r-tags">
+            <span class="r-tag" style="background:#f9731618;color:#f97316;border:1px solid #f9731440">${dur.icon} ${esc(s.duration||dur.l)} · ${esc(s.durationDesc||dur.desc)}</span>
+            ${(s.style_tags||[]).map(t=>`<span class="r-tag" style="background:#0d1e35;color:#2d5070;border:1px solid #1a3050">#${esc(t)}</span>`).join("")}
+          </div>
         </div>
-        <div class="meta-pills">
+        <div class="meta-row">
           ${[["🎵",s.bpm+" BPM"],["🎸",s.genre],["🎭",s.mood],["🎙",s.voice]].map(([ic,v])=>`
-            <div class="meta-pill"><div style="font-size:9px;color:#2a3f5f;margin-bottom:1px">${ic}</div><div style="font-size:11px;color:#4a7099;font-family:monospace;font-weight:600">${esc(String(v))}</div></div>
+            <div class="meta-p"><div style="font-size:9px;color:#1e3a5f;margin-bottom:1px">${ic}</div><div style="font-size:11px;color:#4a7099;font-family:monospace;font-weight:600">${esc(String(v))}</div></div>
           `).join("")}
         </div>
       </div>
       <div class="chords-row">
-        <span style="font-size:9px;color:#2a3f5f;letter-spacing:2px">ACORDES</span>
+        <span style="font-size:9px;color:#1e3a5f;letter-spacing:2px">ACORDES</span>
         <span style="font-family:monospace;font-size:14px;color:#f97316;font-weight:700">${esc(s.chords||"")}</span>
-        <span style="font-size:9px;color:#2a3f5f;letter-spacing:2px;margin-left:4px">TOM</span>
+        <span style="font-size:9px;color:#1e3a5f;letter-spacing:2px;margin-left:4px">TOM</span>
         <span style="font-family:monospace;font-size:14px;color:#3b82f6">${esc(s.key||"")}</span>
       </div>
     </div>
     <div class="tabs">
-      <button class="tab ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor de Letra</button>
+      <button class="tab ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor</button>
       <button class="tab ${activeTab==="suno"?"active":""}" onclick="switchTab('suno')">🚀 Exportar pro Suno</button>
       <button class="tab ${activeTab==="info"?"active":""}" onclick="switchTab('info')">🎛 Produção</button>
     </div>
     <div class="tab-body" id="tc-editor" style="display:${activeTab==="editor"?"block":"none"}">
-      <div style="max-width:720px">
-        <div style="background:#0d1526;border:1px solid #1a2540;border-radius:9px;padding:10px 14px;margin-bottom:16px;display:flex;gap:10px">
-          <span>💡</span>
-          <div style="font-size:11px;color:#2a3f5f;line-height:1.6"><strong style="color:#f97316">✏ Editar</strong> para modificar diretamente · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever com suas instruções</div>
+      <div style="max-width:780px">
+        <div style="background:#081525;border:1px solid #1a3050;border-radius:8px;padding:9px 13px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          ${[["✏ Editar","#f97316","Modifique o texto"],["🔄 Refazer","#ef4444","IA reescreve com suas instruções"],["✨ Estender","#22c55e","Escreva ou cante · IA completa"]].map(([btn,c,desc])=>`
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px"><span style="color:${c};font-weight:600">${btn}</span><span style="color:#1e3a5f">${desc}</span></div>
+          `).join("")}
         </div>
-        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSec(sec)).join("")}
+        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
       </div>
     </div>
     <div class="tab-body" id="tc-suno" style="display:${activeTab==="suno"?"block":"none"}">
-      <div style="max-width:780px">
+      <div style="max-width:800px">
         <div class="steps-row">
-          ${[{n:"1",t:"Copie o Estilo",d:"Cole em 'Style of Music' no Suno",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Cole em 'Lyrics' no Suno",c:"#ef4444"},{n:"3",t:"Gere no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
+          ${[{n:"1",t:"Copie o Estilo",d:"Cole em 'Style of Music'",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Cole em 'Lyrics'",c:"#ef4444"},{n:"3",t:"Gere no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
           <div class="step-card" style="border:1px solid ${st.c}22">
-            <div style="width:24px;height:24px;border-radius:50%;background:${st.c}20;color:${st.c};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-bottom:8px">${st.n}</div>
-            <div style="font-size:12px;color:#e2e8f0;font-weight:600;margin-bottom:2px">${st.t}</div>
-            <div style="font-size:10px;color:#2a3f5f;line-height:1.5">${st.d}</div>
+            <div class="step-num" style="background:${st.c}20;color:${st.c}">${st.n}</div>
+            <div style="font-size:12px;color:#c8ddf0;font-weight:600;margin-bottom:1px">${st.t}</div>
+            <div style="font-size:10px;color:#1e3a5f">${st.d}</div>
           </div>`).join("")}
         </div>
         <div class="ex-box">
           <div class="ex-head">
             <span style="font-size:10px;color:#f97316;letter-spacing:2px;font-weight:700">STYLE OF MUSIC → cole no Suno</span>
-            <button class="btn-copy" style="border:1px solid #f9731440;background:#f9731418;color:#f97316" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
+            <button class="btn-copy" style="border:1px solid #f9731440;background:#f9731618;color:#f97316" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
           </div>
           <pre class="ex-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
         </div>
@@ -615,13 +657,13 @@ function renderResult(){
       </div>
     </div>
     <div class="tab-body" id="tc-info" style="display:${activeTab==="info"?"block":"none"}">
-      <div style="max-width:680px">
+      <div style="max-width:700px">
         <div class="info-box">
-          <div style="font-size:9px;color:#2a3f5f;letter-spacing:3px;margin-bottom:11px;font-weight:700">🎸 INSTRUMENTAÇÃO</div>
-          <div style="display:flex;flex-wrap:wrap;gap:7px">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
+          <div style="font-size:9px;color:#1e3a5f;letter-spacing:3px;margin-bottom:10px;font-weight:700">🎸 INSTRUMENTAÇÃO</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
         </div>
         <div class="info-box">
-          <div style="font-size:9px;color:#2a3f5f;letter-spacing:3px;margin-bottom:11px;font-weight:700">🎛 NOTAS DE PRODUÇÃO</div>
+          <div style="font-size:9px;color:#1e3a5f;letter-spacing:3px;margin-bottom:10px;font-weight:700">🎛 NOTAS DE PRODUÇÃO</div>
           <div style="font-size:13px;color:#4a7099;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
         </div>
       </div>
@@ -629,65 +671,71 @@ function renderResult(){
   </div>`;
 }
 
-function buildSec(sec){
+function buildSecBlock(sec){
   const color=SEC_COLORS[sec]||"#f97316";
-  const sid=sec.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");
+  const sid=safeid(sec);
+  const waveBars=Array(12).fill('<div class="wb"></div>').join("");
   return `
   <div class="sec-block" style="border-left:3px solid ${color}">
     <div class="sec-head">
       <div style="display:flex;align-items:center;gap:7px">
-        <div class="sec-dot" style="background:${color};box-shadow:0 0 6px ${color}66"></div>
+        <div class="sec-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
         <span class="sec-lbl" style="color:${color}">${esc(sec)}</span>
       </div>
-      <div style="display:flex;gap:5px">
+      <div style="display:flex;gap:4px">
         <button class="sbtn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
-        <button class="sbtn" id="rb-${sid}" onclick="toggleRedo('${sid}')">🔄 Refazer</button>
+        <button class="sbtn" id="rb-${sid}" onclick="toggleSecMode('${sid}','refazer')">🔄 Refazer</button>
+        <button class="sbtn" id="sb-${sid}" onclick="toggleSecMode('${sid}','estender')">✨ Estender</button>
       </div>
     </div>
-    <div id="body-${sid}" style="padding:11px 14px">
+    <div id="body-${sid}" style="padding:10px 13px">
       <pre class="sec-text">${esc(currentSections[sec]||"")}</pre>
     </div>
-    <div class="ia-area" id="ia-${sid}">
-      <div style="font-size:10px;color:#2a3f5f;margin-bottom:6px;padding-top:10px">O que quer mudar nesta seção?</div>
-      <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Quero mais emoção", "Muda as rimas", "Fala de saudade"...'></textarea>
-      <button class="btn-rw" id="btn-rw-${sid}" onclick="rewriteSection('${sec}')">✨ Reescrever com IA</button>
+
+    <div class="ia-panel" id="ia-panel-${sid}">
+      <div style="font-size:10px;color:#2d5070;margin-bottom:6px;padding-top:10px">O que quer mudar nesta seção?</div>
+      <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Mais emotivo", "Rimas mais fluidas", "Fala de saudade"...'></textarea>
+      <button class="btn-rw" id="btn-rw-${sid}" onclick="rewriteSection('${sec}')">🔄 Reescrever com IA</button>
+    </div>
+
+    <div class="ext-panel" id="ext-panel-${sid}">
+      <div style="padding:10px 0 10px">
+        <div style="font-size:10px;color:#22c55e;letter-spacing:2px;font-weight:700;margin-bottom:10px">✨ ESTENDER — A IA completa a partir do seu trecho</div>
+        <div class="vtabs">
+          <button class="vtab active" id="vt-escrever-${sid}" onclick="switchVtab('${sid}','escrever')">
+            <div style="font-size:12px">✏ Escrever</div>
+            <div style="font-size:10px;color:#2d5070">Digite o trecho</div>
+          </button>
+          <button class="vtab" id="vt-gravar-${sid}" onclick="switchVtab('${sid}','gravar')">
+            <div style="font-size:12px">🎙 Cantar / Falar</div>
+            <div style="font-size:10px;color:#2d5070">Use o microfone</div>
+          </button>
+        </div>
+        <div id="vp-escrever-${sid}">
+          <div style="font-size:10px;color:#2d5070;margin-bottom:6px">Cole ou escreva 1-3 linhas que vieram na sua cabeça:</div>
+          <textarea id="ext-trecho-${sid}" class="ia-ta" style="height:70px;border-color:#22c55e44" placeholder='Ex: "Quando a chuva cai lá no sertão&#10;Lembrança boa vem de coração..."'></textarea>
+        </div>
+        <div id="vp-gravar-${sid}" style="display:none">
+          <div class="mic-area">
+            <div id="mic-status-${sid}" style="font-size:11px;color:#2d5070;text-align:center;margin-bottom:10px">Clique no microfone e cante ou fale seu trecho</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:14px">
+              <button class="btn-mic" id="mic-btn-${sid}" onclick="toggleMic('${sid}')">🎙</button>
+              <div class="wave-wrap" id="wave-wrap-${sid}" style="display:none">${waveBars}</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#1e3a5f;margin-bottom:6px">Transcrição (edite se precisar):</div>
+          <textarea id="ext-trecho-${sid}" class="ia-ta" style="height:65px" placeholder="O texto transcrito aparece aqui automaticamente..."></textarea>
+        </div>
+        <div style="font-size:10px;color:#1e3a5f;margin:7px 0">A IA mantém seu trecho exatamente e completa com o mesmo ritmo e rima.</div>
+        <button class="btn-ext" id="btn-ext-${sid}" onclick="extendSection('${sec}')">✨ Estender com IA</button>
+      </div>
     </div>
   </div>`;
 }
 
-function toggleEdit(sid,sec){
-  const body=document.getElementById("body-"+sid);
-  const btn=document.getElementById("eb-"+sid);
-  const ia=document.getElementById("ia-"+sid);
-  const rb=document.getElementById("rb-"+sid);
-  if(body.querySelector("textarea")){
-    currentSections[sec]=body.querySelector("textarea").value;
-    body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
-    btn.className="sbtn";btn.textContent="✏ Editar";
-    const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();
-  }else{
-    if(ia){ia.style.display="none";rb.className="sbtn";}
-    body.innerHTML=`<textarea class="sec-ta">${esc(currentSections[sec]||"")}</textarea>`;
-    body.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
-    btn.className="sbtn eon";btn.textContent="✓ Salvar";
-  }
-}
-
-function toggleRedo(sid){
-  const ia=document.getElementById("ia-"+sid);
-  const rb=document.getElementById("rb-"+sid);
-  const body=document.getElementById("body-"+sid);
-  const eb=document.getElementById("eb-"+sid);
-  if(!ia)return;
-  if(ia.style.display==="none"||!ia.style.display){
-    if(body.querySelector("textarea")){
-      const sec=sid.replace(/_/g," ");
-      currentSections[sec]=body.querySelector("textarea").value;
-      body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
-      eb.className="sbtn";eb.textContent="✏ Editar";
-    }
-    ia.style.display="block";rb.className="sbtn ron";
-  }else{ia.style.display="none";rb.className="sbtn";}
+function buildSunoLyrics(){
+  if(!currentSong||!currentSections)return"";
+  return selStruct.filter(s=>currentSections[s]).map(s=>(SEC_TAGS[s]||"["+s+"]")+"\n"+currentSections[s]).join("\n\n");
 }
 
 function switchTab(tab){
@@ -701,58 +749,38 @@ function switchTab(tab){
   });
 }
 
-function buildSunoLyrics(){
-  if(!currentSong||!currentSections)return"";
-  return selStruct.filter(s=>currentSections[s]).map(s=>(SEC_TAGS[s]||"["+s+"]")+"\n"+currentSections[s]).join("\n\n");
-}
-
-// ══════════════════════════════════════
-// LIBRARY
-// ══════════════════════════════════════
 function saveHistory(){
-  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:Object.assign({},currentSections),struct:[...selStruct]};
+  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:Object.assign({},currentSections),struct:[...selStruct]};
   history=[entry,...history].slice(0,30);
-  try{localStorage.setItem("ams_h",JSON.stringify(history));}catch{}
+  try{localStorage.setItem("ams5",JSON.stringify(history));}catch{}
   updateLibN();
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
   const el=document.getElementById("lib-grid");
-  if(!history.length){
-    el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px 20px">
-      <div style="font-size:40px;opacity:.15;margin-bottom:12px">🎵</div>
-      <div style="font-size:15px;color:#1e3055;margin-bottom:6px">Nenhuma música ainda</div>
-      <div style="font-size:12px;color:#1a2540">Crie sua primeira música!</div>
-    </div>`;return;
-  }
+  if(!history.length){el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:36px;opacity:.15;margin-bottom:10px">🎵</div><div style="font-size:13px;color:#1e3a5f">Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="display:flex;justify-content:space-between;margin-bottom:9px">
-        <div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">${esc(e.title)}</div><div style="font-size:11px;color:#f97316">${esc(e.genre)} · ${e.bpm} BPM</div></div>
-        <div style="font-size:10px;color:#1e3055">${e.date}</div>
-      </div>
-      <div style="font-size:11px;color:#2a3f5f;margin-bottom:12px">Mood: ${esc(e.mood)}</div>
-      <div style="display:flex;gap:6px">
-        <button onclick="loadEntry(${e.id})" style="flex:1;padding:7px;border-radius:6px;border:1px solid #f9731440;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer">✏ Editar</button>
-        <button onclick="delEntry(${e.id})" style="padding:7px 11px;border-radius:6px;border:1px solid #1a2540;background:transparent;color:#2a3f5f;font-size:11px;font-family:'Inter',sans-serif;cursor:pointer">🗑</button>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">${esc(e.title)}</div>
+      <div style="font-size:11px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${esc(e.duration||"Normal")}</div>
+      <div style="font-size:10px;color:#1e3a5f;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
+      <div style="display:flex;gap:5px">
+        <button onclick="loadEntry(${e.id})" style="flex:1;padding:6px;border-radius:6px;border:1px solid #f9731440;background:#f9731618;color:#f97316;font-size:11px;font-weight:600;cursor:pointer">✏ Editar</button>
+        <button onclick="delEntry(${e.id})" style="padding:6px 10px;border-radius:6px;border:1px solid #1a3050;background:transparent;color:#1e3a5f;font-size:11px;cursor:pointer">🗑</button>
       </div>
     </div>`).join("");
 }
 function loadEntry(id){
   const e=history.find(x=>x.id===id);if(!e)return;
-  currentSong=e.song;currentSections=e.sections;
-  if(e.struct)selStruct=e.struct;
-  activeTab="editor";setPage("criar");renderResult();showToast("Música carregada!","ok");
+  currentSong=e.song;currentSections=e.sections;if(e.struct)selStruct=e.struct;
+  activeTab="editor";setPage("criar");renderResult();showToast("Carregada!","ok");
 }
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  try{localStorage.setItem("ams_h",JSON.stringify(history));}catch{}
+  try{localStorage.setItem("ams5",JSON.stringify(history));}catch{}
   updateLibN();renderLib();showToast("Removida","ok");
 }
 
-// ══════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════
 function copyEl(id,msg){
   const el=document.getElementById(id);if(!el)return;
   const text=el.textContent||el.innerText;
@@ -765,9 +793,11 @@ function showToast(msg,type){
 }
 function setLoading(on){
   const btn=document.getElementById("btn-gen");
-  btn.disabled=on;btn.innerHTML=on?'<span class="spinner"></span> Compondo com IA...':"🎵 Compor com IA";
+  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
+  btn.disabled=on;btn.innerHTML=on?'<span class="spinner"></span> Compondo com IA...':`${dur.icon} Compor ${dur.l} com IA`;
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function safeid(s){return s.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");}
 </script>
 </body>
 </html>
