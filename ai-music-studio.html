@@ -7,115 +7,128 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#020817;color:#e2e8f0;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0f172a}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Inter',sans-serif;display:flex;flex-direction:column}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0a0f1e}::-webkit-scrollbar-thumb{background:#1e2d4a;border-radius:3px}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif}
 button{font-family:'Inter',sans-serif;cursor:pointer}
-@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* NAV */
-.nav{height:54px;background:#0f172a;border-bottom:1px solid #1e293b;display:flex;align-items:center;padding:0 22px;gap:14px;flex-shrink:0}
-.nav-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.nav-title{font-weight:700;font-size:15px;color:#fff;letter-spacing:.3px}
-.nav-by{font-size:9px;color:#334155;letter-spacing:2px}
-.nav-tab{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:500;border:none;transition:all .2s;background:transparent;color:#475569}
-.nav-tab.active{background:#1e293b;color:#f97316}
-.nav-status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:11px;color:#475569}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#334155;transition:background .3s}
-.status-dot.ok{background:#22c55e;box-shadow:0 0 6px #22c55e}
-.status-dot.err{background:#ef4444}
+/* TOP NAV */
+.nav{height:48px;background:#060d1a;border-bottom:1px solid #1a2540;display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;z-index:10}
+.nav-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.nav-title{font-weight:700;font-size:14px;color:#fff}
+.nav-by{font-size:9px;color:#1e3a5f;letter-spacing:2px}
+.nav-tab{padding:5px 14px;border-radius:7px;font-size:12px;font-weight:500;border:none;cursor:pointer;background:transparent;color:#3d5a80;transition:all .2s}
+.nav-tab.active{background:#1a2a45;color:#f97316}
+.nav-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:#2a3f5f}
+.dot{width:7px;height:7px;border-radius:50%;background:#1e2d4a;transition:all .3s}
+.dot.ok{background:#22c55e;box-shadow:0 0 6px #22c55e88}
+.dot.err{background:#ef4444}
 
-/* CONFIG BAR */
-.config-bar{background:#0f172a;border-bottom:1px solid #1e293b;padding:16px 22px;flex-shrink:0}
-.field-label{font-size:10px;color:#64748b;letter-spacing:2px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:7px}
-.txt-input{background:#020817;border:1.5px solid #334155;color:#e2e8f0;padding:9px 12px;border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;width:100%;transition:border-color .2s}
-.txt-input:focus{border-color:#f97316}
-.txt-area{background:#020817;border:1.5px solid #334155;color:#e2e8f0;padding:9px 12px;border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;width:100%;resize:none;height:80px;line-height:1.6;transition:border-color .2s}
-.txt-area:focus{border-color:#f97316}
-.grid-2{display:grid;grid-template-columns:1fr 2fr;gap:18px;margin-bottom:14px}
-.grid-5{display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr 2fr;gap:14px;margin-bottom:14px}
+/* MAIN LAYOUT — sidebar + content 100% height */
+.app-body{display:flex;flex:1;overflow:hidden;height:calc(100vh - 48px)}
 
-.chip{padding:4px 11px;border-radius:20px;font-size:11px;border:1px solid #1e293b;background:transparent;color:#475569;transition:all .15s;display:inline-flex;align-items:center;gap:3px;font-family:'Inter',sans-serif;white-space:nowrap}
-.chip:hover{color:#94a3b8;border-color:#334155}
-.chip.c-o{border-color:#f97316;background:#f9731620;color:#f97316;font-weight:600}
-.chip.c-r{border-color:#ef4444;background:#ef444420;color:#ef4444;font-weight:600}
-.chip.c-b{border-color:#3b82f6;background:#3b82f620;color:#3b82f6;font-weight:600}
-.chip.c-g{border-color:#22c55e;background:#22c55e20;color:#22c55e;font-weight:600}
-.chip.c-p{border-color:#a855f7;background:#a855f720;color:#a855f7;font-weight:600}
-.chip-wrap{display:flex;flex-wrap:wrap;gap:5px}
+/* SIDEBAR */
+.sidebar{width:340px;flex-shrink:0;background:#060d1a;border-right:1px solid #1a2540;display:flex;flex-direction:column;height:100%;overflow:hidden}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:14px 16px}
+.sidebar-footer{padding:12px 16px;border-top:1px solid #1a2540;flex-shrink:0}
 
-.btn-validate{width:100%;margin-top:7px;padding:8px;border-radius:8px;border:1px solid #f9731640;background:#f9731618;color:#f97316;font-size:12px;font-weight:600;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.btn-validate.ok{border-color:#22c55e40;background:#22c55e18;color:#22c55e}
-.btn-validate.err{border-color:#ef444440;background:#ef444418;color:#ef4444}
+/* CONTENT */
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#0a0f1e}
+.content-scroll{flex:1;overflow-y:auto}
 
-.btn-gen{width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px;transition:all .3s;box-shadow:0 4px 20px #f9731635;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-gen:disabled{background:#1e293b;color:#334155;box-shadow:none;cursor:not-allowed}
+/* FORM ELEMENTS */
+.flabel{font-size:9px;color:#3d5a80;letter-spacing:2px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:7px}
+.finput{width:100%;background:#0d1526;border:1px solid #1a2540;color:#e2e8f0;padding:8px 11px;border-radius:7px;font-size:12px;transition:border-color .2s}
+.finput:focus{border-color:#f97316}
+.ftarea{width:100%;background:#0d1526;border:1px solid #1a2540;color:#e2e8f0;padding:9px 11px;border-radius:7px;font-size:12px;resize:none;line-height:1.6;transition:border-color .2s}
+.ftarea:focus{border-color:#f97316}
+.fsec{margin-bottom:16px}
 
-/* MAIN */
-.main{flex:1;overflow-y:auto;background:#020817}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;gap:14px;padding:40px;text-align:center}
-.empty-icon{font-size:50px;opacity:.15}
-.empty-title{font-size:18px;font-weight:600;color:#1e293b}
-.empty-desc{font-size:13px;color:#0f172a;max-width:400px;line-height:1.7}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:4px 10px;border-radius:16px;font-size:11px;border:1px solid #1a2540;background:transparent;color:#3d5a80;transition:all .15s;white-space:nowrap;font-family:'Inter',sans-serif}
+.chip:hover{color:#7a9cc4;border-color:#2a3f5f}
+.chip.co{border-color:#f97316;background:#f9731620;color:#f97316;font-weight:600}
+.chip.cr{border-color:#ef4444;background:#ef444420;color:#ef4444;font-weight:600}
+.chip.cb{border-color:#3b82f6;background:#3b82f620;color:#3b82f6;font-weight:600}
+.chip.cg{border-color:#22c55e;background:#22c55e20;color:#22c55e;font-weight:600}
+.chip.cp{border-color:#a855f7;background:#a855f720;color:#a855f7;font-weight:600}
+.chip.cy{border-color:#eab308;background:#eab30820;color:#eab308;font-weight:600}
 
-/* RESULT */
-.result-header{padding:22px 26px 16px;border-bottom:1px solid #1e293b;background:#0f172a}
-.song-title{font-size:24px;font-weight:700;color:#fff;margin-bottom:2px}
-.song-sub{font-size:12px;color:#f97316;margin-bottom:5px}
-.song-vibe{font-size:11px;color:#334155;font-style:italic;margin-bottom:9px}
-.tag-pill{padding:2px 9px;border-radius:20px;font-size:10px;background:#1e293b;color:#475569;border:1px solid #334155}
-.meta-pill{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:7px 12px;text-align:center}
-.chords-bar{margin-top:13px;padding:7px 13px;background:#1e293b;border-radius:8px;border:1px solid #334155;display:inline-flex;align-items:center;gap:10px}
+/* VALIDATE BTN */
+.btn-val{width:100%;margin-top:7px;padding:8px;border-radius:7px;border:1px solid #f9731640;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.btn-val.ok{border-color:#22c55e50;background:#22c55e15;color:#22c55e}
+.btn-val.err{border-color:#ef444450;background:#ef444415;color:#ef4444}
 
-.tabs{display:flex;border-bottom:1px solid #1e293b;background:#0f172a;padding:0 26px}
-.tab-btn{padding:12px 16px;background:none;border:none;color:#334155;font-size:12px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s}
-.tab-btn.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
-.tab-body{padding:22px 26px}
+/* GENERATE BTN */
+.btn-gen{width:100%;padding:14px;border-radius:10px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:14px;font-weight:700;transition:all .3s;box-shadow:0 4px 20px #f9731630;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gen:disabled{background:#1a2540;color:#2a3f5f;box-shadow:none;cursor:not-allowed}
 
-/* SEC BLOCKS */
-.sec-block{border:1px solid #1e293b;border-radius:12px;overflow:hidden;margin-bottom:10px}
-.sec-head{padding:9px 14px;display:flex;align-items:center;justify-content:space-between;background:#0f172a}
+/* DIVIDER */
+.divider{height:1px;background:#1a2540;margin:14px 0}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;padding:40px;text-align:center}
+
+/* RESULT HEADER */
+.r-header{padding:20px 26px 16px;border-bottom:1px solid #1a2540;background:#060d1a;flex-shrink:0}
+.r-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:2px}
+.r-sub{font-size:12px;color:#f97316;margin-bottom:4px}
+.r-vibe{font-size:11px;color:#2a3f5f;font-style:italic;margin-bottom:8px}
+.r-tags{display:flex;gap:5px;flex-wrap:wrap}
+.r-tag{padding:2px 8px;border-radius:20px;font-size:10px;background:#1a2540;color:#3d5a80;border:1px solid #1e3055}
+.meta-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.meta-pill{background:#1a2540;border:1px solid #1e3055;border-radius:7px;padding:6px 11px;text-align:center}
+.chords-row{margin-top:11px;padding:7px 12px;background:#1a2540;border-radius:7px;border:1px solid #1e3055;display:inline-flex;align-items:center;gap:10px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid #1a2540;background:#060d1a;padding:0 26px;flex-shrink:0}
+.tab{padding:11px 15px;background:none;border:none;color:#2a3f5f;font-size:12px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.tab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
+.tab-body{padding:20px 26px}
+
+/* SECTION BLOCKS */
+.sec-block{border:1px solid #1a2540;border-radius:11px;overflow:hidden;margin-bottom:9px}
+.sec-head{padding:9px 13px;display:flex;align-items:center;justify-content:space-between;background:#0d1526}
 .sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sec-label{font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
-.sec-btn{padding:3px 10px;border-radius:6px;border:1px solid #1e293b;background:transparent;color:#334155;font-size:10px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
-.sec-btn:hover{color:#64748b;border-color:#334155}
-.sec-btn.edit-on{border-color:#f9731640;background:#f9731618;color:#f97316}
-.sec-btn.redo-on{border-color:#ef444440;background:#ef444418;color:#ef4444}
-.sec-text{color:#94a3b8;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
-.sec-textarea{width:100%;background:#020817;border:1px solid #334155;color:#e2e8f0;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
-.instr-area{padding:0 14px 12px;border-top:1px solid #1e293b;display:none}
-.instr-ta{width:100%;background:#020817;border:1px solid #1e293b;color:#e2e8f0;padding:8px 11px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:65px;font-family:'Inter',sans-serif}
-.btn-rewrite{margin-top:7px;padding:7px 18px;border-radius:7px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:11px;cursor:pointer;font-weight:700}
-.btn-rewrite:disabled{background:#1e293b;color:#334155;cursor:not-allowed}
+.sec-lbl{font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
+.sbtn{padding:3px 9px;border-radius:5px;border:1px solid #1a2540;background:transparent;color:#2a3f5f;font-size:10px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.sbtn:hover{color:#5a7fa0}
+.sbtn.eon{border-color:#f9731645;background:#f9731618;color:#f97316}
+.sbtn.ron{border-color:#ef444445;background:#ef444418;color:#ef4444}
+.sec-text{color:#7a9cc4;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
+.sec-ta{width:100%;background:#060d1a;border:1px solid #1e3055;color:#e2e8f0;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
+.ia-area{padding:0 13px 12px;border-top:1px solid #1a2540;display:none}
+.ia-ta{width:100%;background:#060d1a;border:1px solid #1a2540;color:#e2e8f0;padding:8px 10px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:62px;font-family:'Inter',sans-serif}
+.btn-rw{margin-top:7px;padding:7px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:11px;cursor:pointer;font-weight:700}
+.btn-rw:disabled{background:#1a2540;color:#2a3f5f;cursor:not-allowed}
 
 /* EXPORT */
-.steps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
-.step-card{background:#0f172a;border-radius:10px;padding:13px 14px}
-.export-box{background:#0f172a;border:1px solid #1e293b;border-radius:11px;overflow:hidden;margin-bottom:14px}
-.export-head{padding:10px 14px;background:#1e293b;display:flex;justify-content:space-between;align-items:center}
-.btn-copy{padding:4px 13px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;border:none}
-.export-pre{color:#94a3b8;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:14px 16px}
-
-/* LIBRARY */
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.lib-card{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;transition:border-color .2s}
-.lib-card:hover{border-color:#334155}
+.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.step-card{background:#0d1526;border-radius:9px;padding:12px 13px}
+.ex-box{background:#0d1526;border:1px solid #1a2540;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.ex-head{padding:9px 13px;background:#1a2540;display:flex;justify-content:space-between;align-items:center}
+.ex-pre{color:#7a9cc4;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:13px 15px}
+.btn-copy{padding:4px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
 
 /* INFO */
-.info-box{background:#0f172a;border:1px solid #1e293b;border-radius:11px;padding:18px;margin-bottom:14px}
-.inst-pill{background:#020817;border:1px solid #1e293b;border-radius:7px;padding:7px 13px;font-size:12px;color:#64748b}
+.info-box{background:#0d1526;border:1px solid #1a2540;border-radius:10px;padding:16px;margin-bottom:12px}
+.inst-pill{background:#060d1a;border:1px solid #1a2540;border-radius:6px;padding:6px 12px;font-size:12px;color:#3d5a80}
+
+/* LIBRARY */
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.lib-card{background:#0d1526;border:1px solid #1a2540;border-radius:10px;padding:15px;transition:border-color .2s}
+.lib-card:hover{border-color:#2a3f5f}
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;z-index:999;padding:11px 18px;border-radius:10px;font-size:12px;font-weight:600;background:#0f172a;animation:fadeup .3s ease;max-width:320px;display:none;box-shadow:0 8px 28px #00000080}
+.toast{position:fixed;bottom:20px;right:20px;z-index:999;padding:10px 16px;border-radius:9px;font-size:12px;font-weight:600;background:#0d1526;animation:fadeup .3s ease;max-width:300px;display:none;box-shadow:0 8px 24px #00000090}
 .toast.show{display:block}
 .toast.ok{border:1px solid #f9731660;color:#f97316}
 .toast.err{border:1px solid #ef444460;color:#ef4444}
-
-.spinner{width:13px;height:13px;border-radius:50%;border:2px solid #334155;border-top-color:#f97316;animation:spin .7s linear infinite;display:inline-block}
-
-@media(max-width:900px){.grid-5{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}.steps-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.grid-5{grid-template-columns:1fr}.nav-title{font-size:13px}}
+.spinner{width:12px;height:12px;border-radius:50%;border:2px solid #1e3055;border-top-color:#f97316;animation:spin .7s linear infinite;display:inline-block}
 </style>
 </head>
 <body>
@@ -125,76 +138,138 @@ button{font-family:'Inter',sans-serif;cursor:pointer}
   <div class="nav-logo">🎵</div>
   <span class="nav-title">AI Music Studio</span>
   <span class="nav-by">BY CLAUDE</span>
-  <button class="nav-tab active" id="nav-criar" onclick="setPage('criar')">🎵 Criar</button>
-  <button class="nav-tab" id="nav-library" onclick="setPage('library')">📚 Biblioteca (<span id="lib-count">0</span>)</button>
+  <button class="nav-tab active" id="nt-criar" onclick="setPage('criar')">🎵 Criar</button>
+  <button class="nav-tab" id="nt-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
   <div class="nav-status">
-    <div class="status-dot" id="status-dot"></div>
-    <span id="status-txt">API não validada</span>
+    <div class="dot" id="sdot"></div>
+    <span id="stxt">API não validada</span>
   </div>
 </div>
 
-<!-- CONFIG BAR -->
-<div class="config-bar" id="config-bar">
-  <div class="grid-2">
-    <div>
-      <label class="field-label">🔑 API Key Anthropic</label>
-      <div style="position:relative">
-        <input type="password" id="api-key" class="txt-input" placeholder="sk-ant-api03-..." oninput="resetKey()"/>
-        <span id="key-icon" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px"></span>
+<div class="app-body">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <div class="sidebar">
+    <div class="sidebar-scroll">
+
+      <!-- API KEY -->
+      <div class="fsec">
+        <label class="flabel">🔑 API Key Anthropic</label>
+        <div style="position:relative">
+          <input type="password" id="api-key" class="finput" placeholder="sk-ant-api03-..." oninput="resetKey()"/>
+          <span id="key-ic" style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:13px"></span>
+        </div>
+        <button class="btn-val" id="btn-val" onclick="validateKey()">🔍 Validar Chave</button>
+        <div style="font-size:9px;color:#1e3055;margin-top:4px">console.anthropic.com</div>
       </div>
-      <button class="btn-validate" id="btn-val" onclick="validateKey()">🔍 Validar Chave</button>
-      <div style="font-size:9px;color:#1e293b;margin-top:4px">console.anthropic.com</div>
+
+      <div class="divider"></div>
+
+      <!-- IDEIA -->
+      <div class="fsec">
+        <label class="flabel">💡 Como você imagina sua música?</label>
+        <textarea id="idea" class="ftarea" rows="4" placeholder="Ex: Uma música sertaneja romântica sobre saudade da roça, da vovó fazendo bolo, cheiro de mato molhado depois da chuva..."></textarea>
+      </div>
+
+      <!-- NOME DA MÚSICA -->
+      <div class="fsec">
+        <label class="flabel">🎵 Nome da Música (opcional)</label>
+        <input type="text" id="titulo" class="finput" placeholder="Ex: Amor de Verão, Saudade do Interior..."/>
+      </div>
+
+      <!-- REFERÊNCIA -->
+      <div class="fsec">
+        <label class="flabel">🎤 Artista de Referência (opcional)</label>
+        <input type="text" id="artist" class="finput" placeholder="Ex: Marília Mendonça, Wesley Safadão, MC Ryan..."/>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- GÊNERO -->
+      <div class="fsec">
+        <label class="flabel">🎸 Estilo Musical</label>
+        <div class="chips" id="genre-chips"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- MOOD -->
+      <div class="fsec">
+        <label class="flabel">🌈 Mood / Clima</label>
+        <div class="chips" id="mood-chips"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- EXTRAS / INSTRUMENTOS -->
+      <div class="fsec">
+        <label class="flabel">🎛 Extras — Efeitos e Instrumentos</label>
+        <div class="chips" id="extras-chips"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- TIPO DE VOZ -->
+      <div class="fsec">
+        <label class="flabel">🎙 Tipo de Voz</label>
+        <div class="chips" id="voice-chips"></div>
+      </div>
+
+      <!-- BPM -->
+      <div class="fsec" style="margin-top:12px">
+        <label class="flabel">⏱ Andamento</label>
+        <div class="chips" id="tempo-chips"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ESTRUTURA -->
+      <div class="fsec">
+        <label class="flabel">🗺 Estrutura da Música</label>
+        <div class="chips" id="struct-chips"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- DETALHES DE PRODUÇÃO -->
+      <div class="fsec">
+        <label class="flabel">🎚 Detalhes da Produção (opcional)</label>
+        <textarea id="producao" class="ftarea" rows="3" placeholder="Ex: Quero bateria marcada, guitarra suave, voz potente no refrão, ritmo mais lento no verso, piano de fundo..."></textarea>
+      </div>
+
     </div>
-    <div>
-      <label class="field-label">💡 Sua Ideia</label>
-      <textarea id="idea" class="txt-area" placeholder="Descreva o tema, história, sentimento... Quanto mais detalhe, melhor a música gerada!"></textarea>
+
+    <!-- BOTÃO FIXO -->
+    <div class="sidebar-footer">
+      <button class="btn-gen" id="btn-gen" onclick="generate()">🎵 Compor com IA</button>
     </div>
   </div>
 
-  <div class="grid-5">
-    <div>
-      <label class="field-label">🎸 Gênero</label>
-      <div class="chip-wrap" id="genre-chips"></div>
+  <!-- ═══ CONTENT ═══ -->
+  <div class="content">
+    <!-- CRIAR PAGE -->
+    <div id="page-criar" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+      <div class="content-scroll" id="content-scroll">
+        <div class="empty" id="empty-state">
+          <div style="font-size:56px;opacity:.08">🎵</div>
+          <div style="font-size:18px;font-weight:600;color:#1a2540">Sua música aparece aqui</div>
+          <div style="font-size:13px;color:#1a3055;max-width:400px;line-height:1.7">Configure os parâmetros na barra lateral e clique em <strong style="color:#f97316">Compor com IA</strong> para receber a letra completa, pronta para editar e exportar pro Suno.</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">✏ Edite seção por seção</div>
+            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">🔄 Refaça o que não gostou</div>
+            <div style="background:#0d1526;border:1px solid #1a2540;border-radius:8px;padding:9px 14px;font-size:11px;color:#2a3f5f">🚀 Exporte formatado pro Suno</div>
+          </div>
+        </div>
+        <div id="result-area" style="display:none"></div>
+      </div>
     </div>
-    <div>
-      <label class="field-label">🌈 Mood</label>
-      <div class="chip-wrap" id="mood-chips"></div>
-    </div>
-    <div>
-      <label class="field-label">🎙 Voz</label>
-      <div class="chip-wrap" id="voice-chips" style="flex-direction:column"></div>
-    </div>
-    <div>
-      <label class="field-label">⏱ BPM</label>
-      <div class="chip-wrap" id="tempo-chips" style="flex-direction:column"></div>
-    </div>
-    <div>
-      <label class="field-label">🗺 Estrutura</label>
-      <div class="chip-wrap" id="struct-chips"></div>
-      <input id="artist" class="txt-input" style="margin-top:8px;font-size:11px" placeholder="🎤 Referência: Marília Mendonça..."/>
-    </div>
-  </div>
 
-  <button class="btn-gen" id="btn-gen" onclick="generate()">🎵 Compor com IA</button>
-</div>
-
-<!-- MAIN -->
-<div class="main" id="main-area">
-  <!-- CRIAR PAGE -->
-  <div id="page-criar">
-    <div class="empty" id="empty-state">
-      <div class="empty-icon">🎵</div>
-      <div class="empty-title">Sua música aparece aqui</div>
-      <div class="empty-desc">Configure os parâmetros acima, clique em <strong style="color:#f97316">Compor com IA</strong> e receba a letra completa para editar e exportar pro Suno.</div>
+    <!-- LIBRARY PAGE -->
+    <div id="page-lib" style="display:none;padding:24px;overflow-y:auto;height:100%">
+      <div style="font-size:19px;font-weight:700;color:#fff;margin-bottom:4px">Sua Biblioteca</div>
+      <div style="font-size:12px;color:#2a3f5f;margin-bottom:20px">Músicas salvas automaticamente no navegador.</div>
+      <div class="lib-grid" id="lib-grid"></div>
     </div>
-    <div id="result-area" style="display:none"></div>
-  </div>
-
-  <!-- LIBRARY PAGE -->
-  <div id="page-library" style="display:none;padding:26px">
-    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:4px">Sua Biblioteca</div>
-    <div style="font-size:13px;color:#334155;margin-bottom:22px">Músicas geradas salvas automaticamente no seu navegador.</div>
-    <div class="lib-grid" id="lib-grid"></div>
   </div>
 </div>
 
@@ -205,70 +280,86 @@ button{font-family:'Inter',sans-serif;cursor:pointer}
 // DADOS
 // ══════════════════════════════════════
 const GENRES=[
-  {id:"sertanejo",l:"Sertanejo",e:"🤠",s:"sertanejo universitário, viola caipira, voz emotiva"},
-  {id:"funk",l:"Funk",e:"🔥",s:"funk carioca, baile funk, batida pesada"},
-  {id:"pagode",l:"Pagode",e:"🥁",s:"pagode brasileiro, pandeiro, cavaquinho"},
-  {id:"forro",l:"Forró",e:"🪗",s:"forró pé de serra, sanfona, zabumba"},
-  {id:"mpb",l:"MPB",e:"🎸",s:"MPB brasileira, voz expressiva, violão"},
-  {id:"bossanova",l:"Bossa Nova",e:"🎷",s:"bossa nova, jazz brasileiro, violão suave"},
-  {id:"pop",l:"Pop",e:"⭐",s:"pop brasileiro, produção moderna, voz clara"},
-  {id:"rnb",l:"R&B",e:"🎤",s:"R&B soul, voz melismática, groove"},
-  {id:"hiphop",l:"Hip-Hop",e:"🎧",s:"hip hop brasileiro, rap, beat"},
-  {id:"rock",l:"Rock",e:"🎸",s:"rock brasileiro, guitarras, voz potente"},
-  {id:"gospel",l:"Gospel",e:"🙏",s:"gospel brasileiro, coral, piano"},
-  {id:"eletro",l:"Eletrônico",e:"🎛",s:"eletrônico brasileiro, sintetizadores"},
-  {id:"piseiro",l:"Piseiro",e:"👟",s:"piseiro nordestino, forró eletrônico"},
-  {id:"axe",l:"Axé",e:"🎉",s:"axé music baiano, percussão, festivo"},
-  {id:"reggae",l:"Reggae",e:"🌿",s:"reggae roots brasileiro"},
-  {id:"samba",l:"Samba",e:"🎺",s:"samba tradicional, surdo, cavaquinho"},
+  {id:"sertanejo",l:"Sertanejo",e:"🤠"},{id:"sertanejo_univ",l:"Sertanejo Universitário",e:"🎸"},
+  {id:"modao",l:"Modão",e:"🎺"},{id:"viola_caipira",l:"Viola Caipira",e:"🪕"},
+  {id:"sola_bota",l:"Sola da Bota",e:"👢"},{id:"funk",l:"Funk Carioca",e:"🔥"},
+  {id:"pagode",l:"Pagode",e:"🥁"},{id:"forro",l:"Forró",e:"🪗"},
+  {id:"forro_eletro",l:"Forró Eletrônico",e:"⚡"},{id:"piseiro",l:"Piseiro",e:"👟"},
+  {id:"brega_funk",l:"Brega Funk",e:"💥"},{id:"tecnobrega",l:"Tecnobrega",e:"🔊"},
+  {id:"axe",l:"Axé",e:"🎉"},{id:"pagode_baiano",l:"Pagode Baiano",e:"🎭"},
+  {id:"samba",l:"Samba",e:"🎺"},{id:"mpb",l:"MPB",e:"🎸"},
+  {id:"bossanova",l:"Bossa Nova",e:"🎷"},{id:"baiao",l:"Baião",e:"🥁"},
+  {id:"carnaval",l:"Frevo",e:"🎊"},{id:"carimbo",l:"Carimbó",e:"🌴"},
+  {id:"kizomba",l:"Kizomba",e:"💃"},{id:"kuduro",l:"Kuduro",e:"🔥"},
+  {id:"afrobeat",l:"Afrobeat",e:"🌍"},{id:"pop",l:"Pop",e:"⭐"},
+  {id:"rnb",l:"R&B",e:"🎤"},{id:"hiphop",l:"Hip-Hop",e:"🎧"},
+  {id:"trap",l:"Trap",e:"💎"},{id:"rock",l:"Rock",e:"🎸"},
+  {id:"indie",l:"Indie",e:"🌿"},{id:"country",l:"Country",e:"🤠"},
+  {id:"gospel",l:"Gospel",e:"🙏"},{id:"worship",l:"Worship",e:"✝️"},
+  {id:"eletro",l:"Eletrônica",e:"🎛"},{id:"lofi",l:"Lo-fi",e:"☕"},
+  {id:"jazz",l:"Jazz",e:"🎷"},{id:"blues",l:"Blues",e:"🎸"},
+  {id:"folk",l:"Folk",e:"🌾"},{id:"acustico",l:"Acústico",e:"🎸"},
+  {id:"reggae",l:"Reggae",e:"🌿"},{id:"ragga",l:"Reggaeton",e:"💃"},
 ];
 const MOODS=[
   {id:"romantico",l:"Romântico",e:"❤️"},{id:"alegre",l:"Alegre",e:"😄"},
-  {id:"melancolico",l:"Melancólico",e:"😢"},{id:"energetico",l:"Energético",e:"⚡"},
-  {id:"saudosista",l:"Saudosista",e:"🌅"},{id:"sensual",l:"Sensual",e:"🔥"},
+  {id:"melancolico",l:"Melancólico",e:"😢"},{id:"saudosista",l:"Saudosista",e:"🌅"},
+  {id:"energetico",l:"Energético",e:"⚡"},{id:"sensual",l:"Sensual",e:"🔥"},
   {id:"espiritual",l:"Espiritual",e:"✨"},{id:"festivo",l:"Festivo",e:"🎊"},
+  {id:"agitado",l:"Agitado",e:"🤘"},{id:"relaxante",l:"Relaxante",e:"😌"},
+  {id:"nostalgico",l:"Nostálgico",e:"🌙"},{id:"epico",l:"Épico",e:"🏆"},
+];
+const EXTRAS=[
+  {id:"lento",l:"Lento"},{id:"rapido",l:"Rápido"},{id:"emotivo",l:"Emotivo"},
+  {id:"relaxante",l:"Relaxante"},{id:"agressivo",l:"Agressivo"},{id:"suave",l:"Suave"},
+  {id:"piano",l:"Piano"},{id:"guitarra",l:"Guitarra"},{id:"violao",l:"Violão"},
+  {id:"bateria",l:"Bateria marcada"},{id:"baixo",l:"Baixo grave"},{id:"808",l:"808"},
+  {id:"sintetizador",l:"Sintetizador"},{id:"cordas",l:"Cordas"},{id:"orquestra",l:"Orquestra"},
+  {id:"coral",l:"Coral"},{id:"sanfona",l:"Sanfona"},{id:"viola",l:"Viola caipira"},
+  {id:"grave_pesado",l:"Grave Pesado"},{id:"autotune",l:"Autotune"},
 ];
 const VOICES=[
-  {id:"f_suave",l:"Feminino Suave",s:"female voice, soft, melodic"},
-  {id:"f_potente",l:"Feminino Potente",s:"female voice, powerful, emotional"},
-  {id:"m_grave",l:"Masculino Grave",s:"male voice, deep, strong"},
-  {id:"m_jovem",l:"Masculino Jovem",s:"male voice, young, clear"},
-  {id:"dueto",l:"Dueto M+F",s:"male and female duet"},
+  {id:"f_suave",l:"Feminino Suave"},{id:"f_potente",l:"Feminino Potente"},
+  {id:"m_grave",l:"Masculino Grave"},{id:"m_jovem",l:"Masculino Jovem"},
+  {id:"dueto",l:"Dueto M+F"},
 ];
 const TEMPOS=[
-  {l:"Lento · 70 BPM",bpm:70},{l:"Moderado · 90 BPM",bpm:90},
-  {l:"Animado · 110 BPM",bpm:110},{l:"Rápido · 130 BPM",bpm:130},
+  {id:"0",l:"Lento · 70 BPM",bpm:70},{id:"1",l:"Moderado · 90 BPM",bpm:90},
+  {id:"2",l:"Animado · 110 BPM",bpm:110},{id:"3",l:"Rápido · 130 BPM",bpm:130},
 ];
 const STRUCTS=["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final","Outro"];
 const SEC_COLORS={"Intro":"#f97316","Verso 1":"#22c55e","Verso 2":"#22c55e","Pré-Refrão":"#eab308","Refrão":"#ef4444","Refrão Final":"#ef4444","Bridge":"#a855f7","Outro":"#64748b"};
 const SEC_TAGS={"Intro":"[Intro]","Verso 1":"[Verse]","Verso 2":"[Verse 2]","Pré-Refrão":"[Pre-Chorus]","Refrão":"[Chorus]","Refrão Final":"[Chorus]","Bridge":"[Bridge]","Outro":"[Outro]"};
+const SUNO_STYLES={sertanejo:"sertanejo, viola caipira, voz emotiva",sertanejo_univ:"sertanejo universitário, pop country brasileiro",modao:"modão caipira, voz grave, saudosista",funk:"funk carioca, baile funk, batida pesada",pagode:"pagode brasileiro, pandeiro, cavaquinho",forro:"forró pé de serra, sanfona, zabumba",forro_eletro:"forró eletrônico, piseiro, batida moderna",piseiro:"piseiro nordestino, dançante",brega_funk:"brega funk, produção pesada, voz urbana",axe:"axé music, percussão, festivo",samba:"samba tradicional, surdo, gingado",mpb:"MPB brasileira, violão, harmonia rica",bossanova:"bossa nova, jazz brasileiro, suave",pop:"pop brasileiro, produção moderna",rnb:"R&B soul, groove, melismático",hiphop:"hip hop brasileiro, rap, beat",trap:"trap, 808, hi-hats rápidos",rock:"rock brasileiro, guitarras distorcidas",gospel:"gospel brasileiro, coral, piano",worship:"worship, louvor, espiritual",eletro:"eletrônica, sintetizadores, drop",lofi:"lo-fi, relaxante, beats suaves",jazz:"jazz, improvisação, sofisticado",reggae:"reggae roots, riddim",country:"country, guitar, americana",folk:"folk, acústico, intimista",acustico:"acústico, violão, voz e instrumento"};
 
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let selGenre="sertanejo",selMood="romantico",selVoice="f_suave",selTempo=1;
+let selGenre="sertanejo",selMood="romantico",selVoice="f_suave",selTempo="1";
 let selStruct=["Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"];
+let selExtras=[];
 let currentSong=null,currentSections={},activeTab="editor";
 let keyStatus=null,currentPage="criar";
 let history=[];
-try{history=JSON.parse(localStorage.getItem("ams_history")||"[]");}catch{}
+try{history=JSON.parse(localStorage.getItem("ams_h")||"[]");}catch{}
 
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
 window.onload=()=>{
-  buildChips("genre-chips",GENRES,"c-o",()=>selGenre,v=>selGenre=v);
-  buildChips("mood-chips",MOODS,"c-r",()=>selMood,v=>selMood=v);
-  buildChips("voice-chips",VOICES.map(v=>({id:v.id,l:v.l})),"c-p",()=>selVoice,v=>selVoice=v);
-  buildChips("tempo-chips",TEMPOS.map((t,i)=>({id:String(i),l:t.l})),"c-b",()=>String(selTempo),v=>selTempo=parseInt(v));
-  buildMulti("struct-chips",STRUCTS,"c-g",()=>selStruct,v=>selStruct=v);
-  updateLibCount();
+  buildSingle("genre-chips",GENRES,"co",()=>selGenre,v=>selGenre=v);
+  buildSingle("mood-chips",MOODS,"cr",()=>selMood,v=>selMood=v);
+  buildSingle("voice-chips",VOICES,"cp",()=>selVoice,v=>selVoice=v);
+  buildSingle("tempo-chips",TEMPOS,"cb",()=>selTempo,v=>selTempo=v);
+  buildMulti("struct-chips",STRUCTS,"cg",()=>selStruct,v=>selStruct=v);
+  buildMultiObj("extras-chips",EXTRAS,"cy",()=>selExtras,v=>selExtras=v);
+  updateLibN();
 };
 
-function buildChips(cid,items,cls,getter,setter){
+function buildSingle(cid,items,cls,getter,setter){
   const el=document.getElementById(cid);
   items.forEach(item=>{
-    const id=item.id!==undefined?String(item.id):item.l;
+    const id=item.id||item.l;
     const b=document.createElement("button");
     b.className="chip"+(getter()===id?" "+cls:"");
     b.innerHTML=(item.e?"<span>"+item.e+"</span> ":"")+item.l;
@@ -282,12 +373,17 @@ function buildMulti(cid,items,cls,getter,setter){
     const b=document.createElement("button");
     b.className="chip"+(getter().includes(item)?" "+cls:"");
     b.textContent=item;
-    b.onclick=()=>{
-      const c=getter();
-      if(c.includes(item))setter(c.filter(x=>x!==item));
-      else setter([...c,item]);
-      b.className="chip"+(getter().includes(item)?" "+cls:"");
-    };
+    b.onclick=()=>{const c=getter();c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);b.className="chip"+(getter().includes(item)?" "+cls:"");};
+    el.appendChild(b);
+  });
+}
+function buildMultiObj(cid,items,cls,getter,setter){
+  const el=document.getElementById(cid);
+  items.forEach(item=>{
+    const b=document.createElement("button");
+    b.className="chip"+(getter().includes(item.id)?" "+cls:"");
+    b.textContent=item.l;
+    b.onclick=()=>{const c=getter();c.includes(item.id)?setter(c.filter(x=>x!==item.id)):setter([...c,item.id]);b.className="chip"+(getter().includes(item.id)?" "+cls:"");};
     el.appendChild(b);
   });
 }
@@ -297,11 +393,11 @@ function buildMulti(cid,items,cls,getter,setter){
 // ══════════════════════════════════════
 function setPage(p){
   currentPage=p;
-  document.getElementById("page-criar").style.display=p==="criar"?"block":"none";
-  document.getElementById("page-library").style.display=p==="library"?"block":"none";
-  document.getElementById("nav-criar").className="nav-tab"+(p==="criar"?" active":"");
-  document.getElementById("nav-library").className="nav-tab"+(p==="library"?" active":"");
-  if(p==="library")renderLibrary();
+  document.getElementById("page-criar").style.display=p==="criar"?"flex":"none";
+  document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
+  document.getElementById("nt-criar").className="nav-tab"+(p==="criar"?" active":"");
+  document.getElementById("nt-lib").className="nav-tab"+(p==="lib"?" active":"");
+  if(p==="lib")renderLib();
 }
 
 // ══════════════════════════════════════
@@ -309,43 +405,38 @@ function setPage(p){
 // ══════════════════════════════════════
 function resetKey(){
   keyStatus=null;
-  document.getElementById("btn-val").className="btn-validate";
+  document.getElementById("btn-val").className="btn-val";
   document.getElementById("btn-val").innerHTML="🔍 Validar Chave";
-  document.getElementById("key-icon").textContent="";
-  document.getElementById("api-key").style.borderColor="#334155";
-  document.getElementById("status-dot").className="status-dot";
-  document.getElementById("status-txt").textContent="API não validada";
+  document.getElementById("key-ic").textContent="";
+  document.getElementById("api-key").style.borderColor="#1a2540";
+  document.getElementById("sdot").className="dot";
+  document.getElementById("stxt").textContent="API não validada";
 }
 async function validateKey(){
   const key=document.getElementById("api-key").value.trim();
   if(!key){showToast("Cole a API Key primeiro!","err");return;}
   keyStatus="checking";
   const btn=document.getElementById("btn-val");
-  btn.innerHTML='<span class="spinner"></span> Validando...';
-  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Validando...';btn.disabled=true;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:10,messages:[{role:"user",content:"hi"}]})
-    });
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:10,messages:[{role:"user",content:"hi"}]})});
     if(res.ok){
       keyStatus="ok";
-      btn.className="btn-validate ok";btn.innerHTML="✅ Chave Válida!";
-      document.getElementById("key-icon").textContent="✓";document.getElementById("key-icon").style.color="#22c55e";
+      btn.className="btn-val ok";btn.innerHTML="✅ Chave Válida!";
+      document.getElementById("key-ic").textContent="✓";document.getElementById("key-ic").style.color="#22c55e";
       document.getElementById("api-key").style.borderColor="#22c55e";
-      document.getElementById("status-dot").className="status-dot ok";
-      document.getElementById("status-txt").textContent="API Conectada";
+      document.getElementById("sdot").className="dot ok";document.getElementById("stxt").textContent="API Conectada";
       showToast("✅ Chave válida! Pronto para compor!","ok");
-    }else{throw new Error();}
+    }else throw new Error();
   }catch{
     keyStatus="err";
-    btn.className="btn-validate err";btn.innerHTML="❌ Inválida — tentar novamente";
-    document.getElementById("key-icon").textContent="✗";document.getElementById("key-icon").style.color="#ef4444";
+    btn.className="btn-val err";btn.innerHTML="❌ Inválida — tentar novamente";
+    document.getElementById("key-ic").textContent="✗";document.getElementById("key-ic").style.color="#ef4444";
     document.getElementById("api-key").style.borderColor="#ef4444";
-    document.getElementById("status-dot").className="status-dot err";
-    document.getElementById("status-txt").textContent="Chave Inválida";
-    showToast("❌ Chave inválida. Verifique no console.anthropic.com","err");
+    document.getElementById("sdot").className="dot err";document.getElementById("stxt").textContent="Chave Inválida";
+    showToast("❌ Chave inválida","err");
   }finally{btn.disabled=false;}
 }
 
@@ -358,39 +449,65 @@ async function generate(){
   if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
   if(!idea){showToast("Descreva sua ideia musical!","err");return;}
 
-  const g=GENRES.find(x=>x.id===selGenre),m=MOODS.find(x=>x.id===selMood);
-  const v=VOICES.find(x=>x.id===selVoice),bpm=TEMPOS[selTempo].bpm;
+  const g=GENRES.find(x=>x.id===selGenre)||GENRES[0];
+  const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
+  const v=VOICES.find(x=>x.id===selVoice)||VOICES[0];
+  const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
   const artist=document.getElementById("artist").value.trim();
-  const artistHint=artist?"\n- Referência: "+artist:"";
+  const titulo=document.getElementById("titulo").value.trim();
+  const producao=document.getElementById("producao").value.trim();
+  const extrasLabels=selExtras.map(id=>EXTRAS.find(x=>x.id===id)?.l||id).join(", ");
+  const sunoBase=SUNO_STYLES[selGenre]||g.l.toLowerCase();
+
+  const artistHint=artist?`\n- Referência artística: ${artist}`:"";
+  const tituloHint=titulo?`\n- Nome sugerido para a música: "${titulo}"`:"";
+  const producaoHint=producao?`\n- Detalhes de produção desejados: ${producao}`:"";
+  const extrasHint=extrasLabels?`\n- Efeitos/instrumentos extras: ${extrasLabels}`:"";
 
   setLoading(true);currentSong=null;currentSections={};
   document.getElementById("empty-state").style.display="none";
   document.getElementById("result-area").style.display="none";
 
   const prompt=`Você é compositor musical profissional brasileiro de elite. Crie uma música COMPLETA e ORIGINAL.
-- Tema: ${idea}
-- Gênero: ${g.l} | Mood: ${m.l} | BPM: ${bpm} | Voz: ${v.l}
-- Seções: ${selStruct.join(", ")}${artistHint}
-Letra PROFISSIONAL: rimas ricas, emoção real, mínimo 4 linhas por seção, refrão 6+.
-Responda SOMENTE JSON válido, sem markdown:
-{"title":"Título","subtitle":"Subtítulo criativo","key":"Tom","chords":"Acordes","vibe":"Frase poética","style_tags":["tag1","tag2","tag3"],"sections":{${selStruct.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style_prompt":"Prompt técnico em inglês para o Suno (min 50 palavras) — gênero, mood, instrumentos, BPM, voz, energia","instruments":["i1","i2","i3","i4"],"production_tips":"3-4 dicas de produção"}`;
+
+ESPECIFICAÇÕES:
+- Tema/Ideia: ${idea}
+- Gênero: ${g.l}
+- Mood/Clima: ${m.l}
+- BPM/Andamento: ${t.bpm}
+- Tipo de Voz: ${v.l}
+- Seções: ${selStruct.join(", ")}${artistHint}${tituloHint}${producaoHint}${extrasHint}
+
+QUALIDADE EXIGIDA: Letra PROFISSIONAL com rimas ricas e naturais, imagens poéticas vívidas, emoção real. Mínimo 4 linhas por seção, refrão mínimo 6 linhas marcantes e inesquecíveis. Vocabulário autêntico do gênero.
+
+Responda SOMENTE com JSON válido, sem markdown, sem texto fora:
+{
+  "title": "Título da música",
+  "subtitle": "Subtítulo ou tagline criativa",
+  "key": "Tom musical (ex: Lá menor)",
+  "chords": "Progressão de acordes (ex: Am - F - C - G)",
+  "vibe": "Uma frase poética de uma linha descrevendo o clima",
+  "style_tags": ["tag1","tag2","tag3"],
+  "sections": {${selStruct.map(s=>`"${s}": "letra COMPLETA desta seção com quebras de linha \\n"`).join(", ")}},
+  "suno_style_prompt": "Prompt técnico detalhado em INGLÊS para o Suno (mínimo 60 palavras): ${sunoBase}, ${v.l.toLowerCase()}, ${t.bpm} BPM, ${m.l.toLowerCase()}${extrasLabels?", "+extrasLabels:""} — descreva instrumentos, energia, dinâmica vocal, referências de artistas",
+  "instruments": ["instrumento 1","instrumento 2","instrumento 3","instrumento 4","instrumento 5"],
+  "production_notes": "Notas de produção detalhadas: como deve soar, dinâmicas, breakdown, build-up, efeitos"
+}`;
 
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
-    });
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API "+res.status);
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSong={...parsed,bpm,genre:g.l,mood:m.l,voice:v.l,genreId:selGenre};
+    currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:v.l,genreId:selGenre};
     currentSections=Object.assign({},parsed.sections||{});
     activeTab="editor";
-    saveHistory();
-    renderResult();
+    saveHistory();renderResult();
     showToast("🎵 Música criada! Edite e exporte pro Suno!","ok");
+    document.getElementById("content-scroll").scrollTop=0;
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
 }
@@ -401,32 +518,26 @@ Responda SOMENTE JSON válido, sem markdown:
 async function rewriteSection(secName){
   const apiKey=document.getElementById("api-key").value.trim();
   if(!apiKey||!currentSong)return;
-  const sid=secName.replace(/\s/g,"_");
+  const sid=secName.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");
   const instrEl=document.getElementById("ia-ta-"+sid);
   const instruction=instrEl?instrEl.value.trim():"";
   if(!instruction){showToast("Descreva o que quer mudar!","err");return;}
-
   const btn=document.getElementById("btn-rw-"+sid);
-  if(btn){btn.disabled=true;btn.textContent="Reescrevendo...";}
-
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Reescrevendo...';}
   const prompt=`Compositor profissional. Reescreva SOMENTE esta seção.
 Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}
-Seção "${secName}": ${currentSections[secName]}
-Instrução: "${instruction}"
-JSON apenas: {"lyrics":"nova letra com \\n"}`;
-
+Seção "${secName}" atual:\n${currentSections[secName]}
+Instrução do usuário: "${instruction}"
+Reescreva mantendo qualidade profissional, gênero e mood. JSON: {"lyrics":"nova letra com \\n"}`;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
-    });
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     currentSections[secName]=parsed.lyrics;
-    renderResult();
-    showToast("✨ "+secName+" reescrita!","ok");
+    renderResult();showToast("✨ "+secName+" reescrita!","ok");
   }catch(e){
     showToast("Erro: "+e.message,"err");
     if(btn){btn.disabled=false;btn.textContent="✨ Reescrever com IA";}
@@ -441,112 +552,105 @@ function renderResult(){
   document.getElementById("empty-state").style.display="none";
   const ra=document.getElementById("result-area");
   ra.style.display="block";
-  ra.innerHTML=`
-  <div style="animation:fadeup .4s ease">
-    <div class="result-header">
-      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px">
+  ra.innerHTML=`<div style="animation:fadeup .4s ease">
+    <div class="r-header">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
         <div>
-          <div class="song-title">${esc(s.title)}</div>
-          <div class="song-sub">${esc(s.subtitle||"")}</div>
-          <div class="song-vibe">"${esc(s.vibe||"")}"</div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">${(s.style_tags||[]).map(t=>`<span class="tag-pill">#${esc(t)}</span>`).join("")}</div>
+          <div class="r-title">${esc(s.title)}</div>
+          <div class="r-sub">${esc(s.subtitle||"")}</div>
+          <div class="r-vibe">"${esc(s.vibe||"")}"</div>
+          <div class="r-tags">${(s.style_tags||[]).map(t=>`<span class="r-tag">#${esc(t)}</span>`).join("")}</div>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-self:flex-start">
+        <div class="meta-pills">
           ${[["🎵",s.bpm+" BPM"],["🎸",s.genre],["🎭",s.mood],["🎙",s.voice]].map(([ic,v])=>`
-            <div class="meta-pill"><div style="font-size:10px;color:#334155;margin-bottom:1px">${ic}</div><div style="font-size:11px;color:#64748b;font-family:monospace;font-weight:600">${esc(String(v))}</div></div>
+            <div class="meta-pill"><div style="font-size:9px;color:#2a3f5f;margin-bottom:1px">${ic}</div><div style="font-size:11px;color:#4a7099;font-family:monospace;font-weight:600">${esc(String(v))}</div></div>
           `).join("")}
         </div>
       </div>
-      <div class="chords-bar">
-        <span style="font-size:9px;color:#334155;letter-spacing:2px">ACORDES</span>
-        <span style="font-family:monospace;font-size:15px;color:#f97316;font-weight:700">${esc(s.chords||"")}</span>
-        <span style="font-size:9px;color:#334155;letter-spacing:2px;margin-left:4px">TOM</span>
+      <div class="chords-row">
+        <span style="font-size:9px;color:#2a3f5f;letter-spacing:2px">ACORDES</span>
+        <span style="font-family:monospace;font-size:14px;color:#f97316;font-weight:700">${esc(s.chords||"")}</span>
+        <span style="font-size:9px;color:#2a3f5f;letter-spacing:2px;margin-left:4px">TOM</span>
         <span style="font-family:monospace;font-size:14px;color:#3b82f6">${esc(s.key||"")}</span>
       </div>
     </div>
-
     <div class="tabs">
-      <button class="tab-btn ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor de Letra</button>
-      <button class="tab-btn ${activeTab==="suno"?"active":""}" onclick="switchTab('suno')">🚀 Exportar pro Suno</button>
-      <button class="tab-btn ${activeTab==="info"?"active":""}" onclick="switchTab('info')">🎛 Produção</button>
+      <button class="tab ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor de Letra</button>
+      <button class="tab ${activeTab==="suno"?"active":""}" onclick="switchTab('suno')">🚀 Exportar pro Suno</button>
+      <button class="tab ${activeTab==="info"?"active":""}" onclick="switchTab('info')">🎛 Produção</button>
     </div>
-
     <div class="tab-body" id="tc-editor" style="display:${activeTab==="editor"?"block":"none"}">
-      <div style="max-width:700px">
-        <div style="background:#0f172a;border:1px solid #1e293b;border-radius:9px;padding:11px 14px;margin-bottom:18px;display:flex;gap:10px">
+      <div style="max-width:720px">
+        <div style="background:#0d1526;border:1px solid #1a2540;border-radius:9px;padding:10px 14px;margin-bottom:16px;display:flex;gap:10px">
           <span>💡</span>
-          <div style="font-size:12px;color:#334155;line-height:1.6">
-            <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever a seção
-          </div>
+          <div style="font-size:11px;color:#2a3f5f;line-height:1.6"><strong style="color:#f97316">✏ Editar</strong> para modificar diretamente · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever com suas instruções</div>
         </div>
-        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
+        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSec(sec)).join("")}
       </div>
     </div>
-
     <div class="tab-body" id="tc-suno" style="display:${activeTab==="suno"?"block":"none"}">
-      <div style="max-width:750px">
-        <div class="steps-grid">
-          ${[{n:"1",t:"Copie o Estilo",d:"Cole em 'Style of Music' no Suno",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Cole em 'Lyrics' no Suno",c:"#ef4444"},{n:"3",t:"Crie no Suno",d:"Clique em Create e aproveite!",c:"#22c55e"}].map(st=>`
+      <div style="max-width:780px">
+        <div class="steps-row">
+          ${[{n:"1",t:"Copie o Estilo",d:"Cole em 'Style of Music' no Suno",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Cole em 'Lyrics' no Suno",c:"#ef4444"},{n:"3",t:"Gere no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
           <div class="step-card" style="border:1px solid ${st.c}22">
-            <div style="width:26px;height:26px;border-radius:50%;background:${st.c}20;color:${st.c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-bottom:9px">${st.n}</div>
-            <div style="font-size:12px;color:#e2e8f0;font-weight:600;margin-bottom:3px">${st.t}</div>
-            <div style="font-size:10px;color:#334155;line-height:1.5">${st.d}</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:${st.c}20;color:${st.c};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-bottom:8px">${st.n}</div>
+            <div style="font-size:12px;color:#e2e8f0;font-weight:600;margin-bottom:2px">${st.t}</div>
+            <div style="font-size:10px;color:#2a3f5f;line-height:1.5">${st.d}</div>
           </div>`).join("")}
         </div>
-        <div class="export-box">
-          <div class="export-head">
+        <div class="ex-box">
+          <div class="ex-head">
             <span style="font-size:10px;color:#f97316;letter-spacing:2px;font-weight:700">STYLE OF MUSIC → cole no Suno</span>
-            <button class="btn-copy" style="border:1px solid #f9731640;background:#f9731618;color:#f97316" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
+            <button class="btn-copy" style="border:1px solid #f9731440;background:#f9731418;color:#f97316" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
           </div>
-          <pre class="export-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
+          <pre class="ex-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
         </div>
-        <div class="export-box">
-          <div class="export-head">
+        <div class="ex-box">
+          <div class="ex-head">
             <span style="font-size:10px;color:#ef4444;letter-spacing:2px;font-weight:700">LYRICS → cole no Suno</span>
             <button class="btn-copy" style="border:1px solid #ef444440;background:#ef444418;color:#ef4444" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar Letra</button>
           </div>
-          <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics())}</pre>
+          <pre class="ex-pre" id="ex-lyrics">${esc(buildSunoLyrics())}</pre>
         </div>
       </div>
     </div>
-
     <div class="tab-body" id="tc-info" style="display:${activeTab==="info"?"block":"none"}">
-      <div style="max-width:650px">
+      <div style="max-width:680px">
         <div class="info-box">
-          <div style="font-size:9px;color:#334155;letter-spacing:3px;margin-bottom:12px;font-weight:700">🎸 INSTRUMENTAÇÃO</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
+          <div style="font-size:9px;color:#2a3f5f;letter-spacing:3px;margin-bottom:11px;font-weight:700">🎸 INSTRUMENTAÇÃO</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
         </div>
         <div class="info-box">
-          <div style="font-size:9px;color:#334155;letter-spacing:3px;margin-bottom:12px;font-weight:700">🎛 DICAS DE PRODUÇÃO</div>
-          <div style="font-size:13px;color:#64748b;line-height:1.9;white-space:pre-wrap">${esc(s.production_tips||"")}</div>
+          <div style="font-size:9px;color:#2a3f5f;letter-spacing:3px;margin-bottom:11px;font-weight:700">🎛 NOTAS DE PRODUÇÃO</div>
+          <div style="font-size:13px;color:#4a7099;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-function buildSecBlock(sec){
+function buildSec(sec){
   const color=SEC_COLORS[sec]||"#f97316";
-  const sid=sec.replace(/\s/g,"_");
+  const sid=sec.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");
   return `
   <div class="sec-block" style="border-left:3px solid ${color}">
     <div class="sec-head">
       <div style="display:flex;align-items:center;gap:7px">
         <div class="sec-dot" style="background:${color};box-shadow:0 0 6px ${color}66"></div>
-        <span class="sec-label" style="color:${color}">${esc(sec)}</span>
+        <span class="sec-lbl" style="color:${color}">${esc(sec)}</span>
       </div>
       <div style="display:flex;gap:5px">
-        <button class="sec-btn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
-        <button class="sec-btn" id="rb-${sid}" onclick="toggleRedo('${sid}')">🔄 Refazer</button>
+        <button class="sbtn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
+        <button class="sbtn" id="rb-${sid}" onclick="toggleRedo('${sid}')">🔄 Refazer</button>
       </div>
     </div>
-    <div class="sec-body" id="body-${sid}" style="padding:12px 16px">
+    <div id="body-${sid}" style="padding:11px 14px">
       <pre class="sec-text">${esc(currentSections[sec]||"")}</pre>
     </div>
-    <div class="instr-area" id="ia-${sid}">
-      <div style="font-size:10px;color:#334155;margin-bottom:6px;padding-top:10px">O que quer mudar nesta seção?</div>
-      <textarea class="instr-ta" id="ia-ta-${sid}" placeholder='Ex: "Quero mais emoção", "Muda as rimas", "Fala de saudade"...'></textarea>
-      <button class="btn-rewrite" id="btn-rw-${sid}" onclick="rewriteSection('${sec}')">✨ Reescrever com IA</button>
+    <div class="ia-area" id="ia-${sid}">
+      <div style="font-size:10px;color:#2a3f5f;margin-bottom:6px;padding-top:10px">O que quer mudar nesta seção?</div>
+      <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Quero mais emoção", "Muda as rimas", "Fala de saudade"...'></textarea>
+      <button class="btn-rw" id="btn-rw-${sid}" onclick="rewriteSection('${sec}')">✨ Reescrever com IA</button>
     </div>
   </div>`;
 }
@@ -557,16 +661,15 @@ function toggleEdit(sid,sec){
   const ia=document.getElementById("ia-"+sid);
   const rb=document.getElementById("rb-"+sid);
   if(body.querySelector("textarea")){
-    const ta=body.querySelector("textarea");
-    currentSections[sec]=ta.value;
+    currentSections[sec]=body.querySelector("textarea").value;
     body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
-    btn.className="sec-btn";btn.textContent="✏ Editar";
+    btn.className="sbtn";btn.textContent="✏ Editar";
     const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();
   }else{
-    ia.style.display="none";rb.className="sec-btn";
-    body.innerHTML=`<textarea class="sec-textarea">${esc(currentSections[sec]||"")}</textarea>`;
+    if(ia){ia.style.display="none";rb.className="sbtn";}
+    body.innerHTML=`<textarea class="sec-ta">${esc(currentSections[sec]||"")}</textarea>`;
     body.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
-    btn.className="sec-btn edit-on";btn.textContent="✓ Salvar";
+    btn.className="sbtn eon";btn.textContent="✓ Salvar";
   }
 }
 
@@ -578,14 +681,13 @@ function toggleRedo(sid){
   if(!ia)return;
   if(ia.style.display==="none"||!ia.style.display){
     if(body.querySelector("textarea")){
-      const ta=body.querySelector("textarea");
       const sec=sid.replace(/_/g," ");
-      currentSections[sec]=ta.value;
+      currentSections[sec]=body.querySelector("textarea").value;
       body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
-      eb.className="sec-btn";eb.textContent="✏ Editar";
+      eb.className="sbtn";eb.textContent="✏ Editar";
     }
-    ia.style.display="block";rb.className="sec-btn redo-on";
-  }else{ia.style.display="none";rb.className="sec-btn";}
+    ia.style.display="block";rb.className="sbtn ron";
+  }else{ia.style.display="none";rb.className="sbtn";}
 }
 
 function switchTab(tab){
@@ -593,9 +695,9 @@ function switchTab(tab){
   if(tab==="suno"){const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();}
   ["editor","suno","info"].forEach(t=>{
     const tc=document.getElementById("tc-"+t);
-    const btn=document.querySelector(`.tab-btn[onclick="switchTab('${t}')"]`);
+    const btn=document.querySelector(`.tab[onclick="switchTab('${t}')"]`);
     if(tc)tc.style.display=t===tab?"block":"none";
-    if(btn)btn.className="tab-btn"+(t===tab?" active":"");
+    if(btn)btn.className="tab"+(t===tab?" active":"");
   });
 }
 
@@ -610,55 +712,42 @@ function buildSunoLyrics(){
 function saveHistory(){
   const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:Object.assign({},currentSections),struct:[...selStruct]};
   history=[entry,...history].slice(0,30);
-  try{localStorage.setItem("ams_history",JSON.stringify(history));}catch{}
-  updateLibCount();
+  try{localStorage.setItem("ams_h",JSON.stringify(history));}catch{}
+  updateLibN();
 }
-
-function updateLibCount(){
-  document.getElementById("lib-count").textContent=history.length;
-}
-
-function renderLibrary(){
+function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
+function renderLib(){
   const el=document.getElementById("lib-grid");
-  if(history.length===0){
-    el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#1e293b">
-      <div style="font-size:40px;margin-bottom:12px">🎵</div>
-      <div style="font-size:15px;color:#334155;margin-bottom:6px">Nenhuma música ainda</div>
-      <div style="font-size:12px">Crie sua primeira música na aba Criar!</div>
+  if(!history.length){
+    el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px 20px">
+      <div style="font-size:40px;opacity:.15;margin-bottom:12px">🎵</div>
+      <div style="font-size:15px;color:#1e3055;margin-bottom:6px">Nenhuma música ainda</div>
+      <div style="font-size:12px;color:#1a2540">Crie sua primeira música!</div>
     </div>`;return;
   }
-  el.innerHTML=history.map(entry=>`
+  el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-        <div>
-          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:2px">${esc(entry.title)}</div>
-          <div style="font-size:11px;color:#f97316">${esc(entry.genre)} · ${entry.bpm} BPM</div>
-        </div>
-        <div style="font-size:10px;color:#1e293b">${entry.date}</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px">
+        <div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">${esc(e.title)}</div><div style="font-size:11px;color:#f97316">${esc(e.genre)} · ${e.bpm} BPM</div></div>
+        <div style="font-size:10px;color:#1e3055">${e.date}</div>
       </div>
-      <div style="font-size:12px;color:#334155;margin-bottom:14px">Mood: ${esc(entry.mood)}</div>
+      <div style="font-size:11px;color:#2a3f5f;margin-bottom:12px">Mood: ${esc(e.mood)}</div>
       <div style="display:flex;gap:6px">
-        <button onclick="loadEntry(${entry.id})" style="flex:1;padding:7px;border-radius:7px;border:1px solid #f9731640;background:#f9731618;color:#f97316;font-size:11px;font-weight:600;font-family:'Inter',sans-serif">✏ Editar</button>
-        <button onclick="deleteEntry(${entry.id})" style="padding:7px 12px;border-radius:7px;border:1px solid #1e293b;background:transparent;color:#334155;font-size:11px;font-family:'Inter',sans-serif">🗑</button>
+        <button onclick="loadEntry(${e.id})" style="flex:1;padding:7px;border-radius:6px;border:1px solid #f9731440;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer">✏ Editar</button>
+        <button onclick="delEntry(${e.id})" style="padding:7px 11px;border-radius:6px;border:1px solid #1a2540;background:transparent;color:#2a3f5f;font-size:11px;font-family:'Inter',sans-serif;cursor:pointer">🗑</button>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
-
 function loadEntry(id){
-  const entry=history.find(x=>x.id===id);
-  if(!entry)return;
-  currentSong=entry.song;currentSections=entry.sections;
-  if(entry.struct)selStruct=entry.struct;
-  activeTab="editor";setPage("criar");renderResult();
-  showToast("Música carregada! ✓","ok");
+  const e=history.find(x=>x.id===id);if(!e)return;
+  currentSong=e.song;currentSections=e.sections;
+  if(e.struct)selStruct=e.struct;
+  activeTab="editor";setPage("criar");renderResult();showToast("Música carregada!","ok");
 }
-
-function deleteEntry(id){
+function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  try{localStorage.setItem("ams_history",JSON.stringify(history));}catch{}
-  updateLibCount();renderLibrary();
-  showToast("Removida da biblioteca","ok");
+  try{localStorage.setItem("ams_h",JSON.stringify(history));}catch{}
+  updateLibN();renderLib();showToast("Removida","ok");
 }
 
 // ══════════════════════════════════════
@@ -678,7 +767,7 @@ function setLoading(on){
   const btn=document.getElementById("btn-gen");
   btn.disabled=on;btn.innerHTML=on?'<span class="spinner"></span> Compondo com IA...':"🎵 Compor com IA";
 }
-function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 </script>
 </body>
 </html>
