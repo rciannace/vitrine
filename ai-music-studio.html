@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Music Studio 🎵</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'DM Sans',sans-serif;min-height:100vh}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:#222;border-radius:3px}
+textarea,input{outline:none!important;font-family:'DM Sans',sans-serif}
+button{font-family:'DM Sans',sans-serif;cursor:pointer}
+@keyframes fadeup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:300px;flex-shrink:0;background:#0f0f0f;border-right:1px solid #1a1a1a;display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto}
+.main{flex:1;overflow-y:auto;background:#0a0a0a}
+
+/* SIDEBAR */
+.logo-area{padding:18px 18px 14px;border-bottom:1px solid #1a1a1a}
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1db954,#1e90ff);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.logo-name{font-family:'DM Mono',monospace;font-size:14px;color:#fff;letter-spacing:.5px}
+.logo-sub{font-size:9px;color:#333;letter-spacing:2px;margin-top:1px}
+
+.api-area{padding:12px 18px;border-bottom:1px solid #1a1a1a}
+.field-label{font-size:10px;color:#444;letter-spacing:2px;margin-bottom:6px;display:block}
+.api-input{width:100%;background:#151515;border:1px solid #222;color:#bbb;padding:7px 10px;border-radius:6px;font-size:11px;font-family:'DM Mono',monospace}
+.api-hint{font-size:9px;color:#2a2a2a;margin-top:4px}
+
+.form-area{padding:14px 18px;flex:1;overflow-y:auto}
+.form-section{margin-bottom:15px}
+
+.chip-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:4px 11px;border-radius:20px;font-size:11px;border:1px solid #222;background:transparent;color:#555;transition:all .15s;display:inline-flex;align-items:center;gap:3px}
+.chip:hover{color:#888;border-color:#333}
+.chip.g{border-color:#1db954;background:#1db95412;color:#1db954}
+.chip.p{border-color:#f72585;background:#f7258512;color:#f72585}
+.chip.b{border-color:#1e90ff;background:#1e90ff12;color:#1e90ff}
+.chip.o{border-color:#ff9f1c;background:#ff9f1c12;color:#ff9f1c}
+.chip.pu{border-color:#b040ff;background:#b040ff12;color:#b040ff}
+
+.btn-generate{width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(135deg,#1db954,#1e90ff);color:#000;font-size:13px;font-weight:600;letter-spacing:.3px;transition:all .3s;box-shadow:0 4px 18px #1db95428}
+.btn-generate:disabled{background:#1a1a1a;color:#333;box-shadow:none;cursor:not-allowed}
+.btn-area{padding:14px 18px;border-top:1px solid #1a1a1a}
+
+/* MAIN EMPTY */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:18px;padding:40px;text-align:center}
+.empty-icon{font-size:44px}
+.empty-title{font-family:'DM Mono',monospace;font-size:20px;color:#1f1f1f;letter-spacing:2px}
+.empty-desc{font-size:13px;color:#2a2a2a;max-width:360px;line-height:1.7}
+.empty-cards{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.empty-card{background:#0f0f0f;border:1px solid #1a1a1a;border-radius:9px;padding:10px 16px;font-size:11px;color:#333}
+
+/* RESULT */
+.result-header{padding:24px 28px 18px;border-bottom:1px solid #1a1a1a;background:linear-gradient(180deg,#111 0%,#0a0a0a 100%)}
+.song-title{font-family:'DM Mono',monospace;font-size:22px;color:#fff;margin-bottom:3px}
+.song-sub{font-size:12px;color:#1db954;margin-bottom:5px}
+.song-vibe{font-size:11px;color:#333;font-style:italic}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.meta-pill{background:#111;border:1px solid #1e1e1e;border-radius:7px;padding:6px 11px;text-align:center;font-size:10px}
+.meta-pill-label{color:#333;margin-bottom:1px}
+.meta-pill-val{color:#777;font-family:'DM Mono',monospace;font-size:11px}
+.chords-bar{margin-top:14px;padding:7px 12px;background:#111;border-radius:7px;border:1px solid #1a1a1a;display:inline-flex;align-items:center;gap:10px;font-size:11px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid #1a1a1a;background:#0f0f0f;padding:0 28px}
+.tab-btn{padding:12px 16px;background:none;border:none;color:#444;font-size:12px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn.active{color:#1db954;border-bottom-color:#1db954}
+.tab-content{padding:22px 28px}
+
+/* SECTION EDITOR */
+.sec-block{border:1px solid #1e1e1e;border-radius:11px;overflow:hidden;margin-bottom:9px;transition:all .2s}
+.sec-head{padding:9px 14px;display:flex;align-items:center;justify-content:space-between;background:#131313}
+.sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sec-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.sec-actions{display:flex;gap:5px}
+.sec-btn{padding:3px 9px;border-radius:5px;border:1px solid #222;background:transparent;font-size:10px;cursor:pointer;transition:all .15s;color:#555}
+.sec-btn:hover{color:#999;border-color:#333}
+.sec-btn.edit-active{background:#1db95415;border-color:#1db95440;color:#1db954}
+.sec-btn.redo-active{background:#f7258515;border-color:#f7258540;color:#f72585}
+.sec-body{padding:10px 14px}
+.sec-text{color:#bbb;font-size:13px;line-height:1.9;white-space:pre-wrap}
+.sec-textarea{width:100%;background:#0a0a0a;border:1px solid #252525;color:#ddd;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px}
+.instr-area{padding:0 14px 12px;border-top:1px solid #161616}
+.instr-hint{font-size:10px;color:#333;margin-bottom:6px;padding-top:10px}
+.instr-textarea{width:100%;background:#0a0a0a;border:1px solid #1e1e1e;color:#ddd;padding:8px 11px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:65px}
+.btn-rewrite{margin-top:7px;padding:6px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,#f72585,#b040ff);color:#fff;font-size:11px;cursor:pointer;transition:all .2s}
+.btn-rewrite:disabled{background:#1a1a1a;color:#333;cursor:not-allowed}
+
+/* SUNO EXPORT */
+.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.step-card{background:#111;border-radius:9px;padding:12px 14px}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:9px;font-family:'DM Mono',monospace}
+.step-title{font-size:12px;color:#ddd;font-weight:500;margin-bottom:3px}
+.step-desc{font-size:10px;color:#444;line-height:1.5}
+.export-box{background:#111;border:1px solid #1a1a1a;border-radius:11px;overflow:hidden;margin-bottom:14px}
+.export-head{padding:10px 14px;background:#141414;display:flex;justify-content:space-between;align-items:center}
+.export-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px}
+.btn-copy{padding:4px 13px;border-radius:5px;font-size:10px;cursor:pointer;transition:all .15s;border:1px solid}
+.export-body{padding:14px 16px}
+.export-text{color:#aaa;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'DM Sans',sans-serif}
+.tags-hint{margin-top:14px;padding:10px 14px;background:#0f0f0f;border-radius:7px;border:1px solid #1a1a1a}
+.tags-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tag-pill{padding:2px 8px;border-radius:3px;font-size:10px;background:#1a1a1a;color:#555;font-family:'DM Mono',monospace}
+
+/* PRODUCTION */
+.info-box{background:#111;border:1px solid #1a1a1a;border-radius:11px;padding:18px;margin-bottom:14px}
+.info-box-label{font-size:10px;color:#333;letter-spacing:3px;margin-bottom:12px}
+.inst-wrap{display:flex;flex-wrap:wrap;gap:7px}
+.inst-pill{background:#0a0a0a;border:1px solid #1e1e1e;border-radius:7px;padding:7px 13px;font-size:12px;color:#888}
+.prod-text{font-size:13px;color:#888;line-height:1.9;white-space:pre-wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;z-index:999;padding:10px 18px;border-radius:9px;font-size:12px;background:#151515;animation:fadeup .3s ease;max-width:320px;box-shadow:0 8px 28px #00000090;display:none}
+.toast.show{display:block}
+.toast.ok{border:1px solid #1db954;color:#1db954}
+.toast.err{border:1px solid #f72585;color:#f72585}
+
+/* SPINNER */
+.spinner{width:13px;height:13px;border-radius:50%;border:2px solid #1a1a1a;border-top-color:#1db954;animation:spin .7s linear infinite;display:inline-block}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative}
+  .steps-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <div class="sidebar">
+
+    <div class="logo-area">
+      <div class="logo-row">
+        <div class="logo-icon">🎵</div>
+        <div>
+          <div class="logo-name">AI Music Studio</div>
+          <div class="logo-sub">PARA SUNO · BY CLAUDE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="api-area">
+      <label class="field-label">🔑 API KEY ANTHROPIC</label>
+      <input type="password" id="api-key" class="api-input" placeholder="sk-ant-api03-..."/>
+      <div class="api-hint">Obtenha em console.anthropic.com</div>
+    </div>
+
+    <div class="form-area">
+
+      <div class="form-section">
+        <label class="field-label">💡 SUA IDEIA</label>
+        <textarea id="idea" rows="4" style="width:100%;background:#151515;border:1px solid #222;color:#ddd;padding:9px 11px;border-radius:7px;font-size:12px;resize:vertical;line-height:1.6" placeholder="Descreva o tema, história, sentimento... Quanto mais detalhe, melhor!"></textarea>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">🎤 REFERÊNCIA (opcional)</label>
+        <input type="text" id="artist" style="width:100%;background:#151515;border:1px solid #222;color:#ddd;padding:8px 11px;border-radius:7px;font-size:11px" placeholder="Ex: Marília Mendonça, Wesley Safadão..."/>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">🎸 GÊNERO</label>
+        <div class="chip-wrap" id="genre-chips"></div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">🌈 MOOD</label>
+        <div class="chip-wrap" id="mood-chips"></div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">🎙 TIPO DE VOZ</label>
+        <div class="chip-wrap" id="voice-chips"></div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">⏱ ANDAMENTO</label>
+        <div class="chip-wrap" id="tempo-chips"></div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">🗺 ESTRUTURA</label>
+        <div class="chip-wrap" id="structure-chips"></div>
+      </div>
+
+    </div>
+
+    <div class="btn-area">
+      <button class="btn-generate" id="btn-gen" onclick="generate()">✦ Compor com IA</button>
+    </div>
+
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main" id="main-content">
+    <div class="empty-state">
+      <div class="empty-icon">🎵</div>
+      <div class="empty-title">AI MUSIC STUDIO</div>
+      <div class="empty-desc">Configure sua música na barra lateral, clique em <strong style="color:#1db954">Compor com IA</strong> e receba a letra completa — edite, refaça o que não gostou e exporte formatado pro Suno.</div>
+      <div class="empty-cards">
+        <div class="empty-card">✏ Edite seção por seção</div>
+        <div class="empty-card">🔄 Refaça o que não gostou</div>
+        <div class="empty-card">📋 Exporte formatado pro Suno</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DADOS
+// ═══════════════════════════════════════
+const GENRES=[
+  {id:"sertanejo",l:"Sertanejo",e:"🤠",s:"sertanejo universitário, viola caipira, voz emotiva, emotivo"},
+  {id:"funk",l:"Funk",e:"🔥",s:"funk carioca, baile funk, batida pesada, voz urbana"},
+  {id:"pagode",l:"Pagode",e:"🥁",s:"pagode brasileiro, pandeiro, cavaquinho, voz suingada"},
+  {id:"forro",l:"Forró",e:"🪗",s:"forró pé de serra, sanfona, zabumba, triângulo"},
+  {id:"mpb",l:"MPB",e:"🎸",s:"MPB brasileira, voz expressiva, violão, harmonia rica"},
+  {id:"bossanova",l:"Bossa Nova",e:"🎷",s:"bossa nova, jazz brasileiro, violão suave, voz íntima"},
+  {id:"pop",l:"Pop",e:"⭐",s:"pop brasileiro, produção moderna, voz clara, hit"},
+  {id:"rnb",l:"R&B",e:"🎤",s:"R&B soul, voz melismática, groove, produção suave"},
+  {id:"hiphop",l:"Hip-Hop",e:"🎧",s:"hip hop brasileiro, rap, beat, voz rítmica"},
+  {id:"rock",l:"Rock",e:"🎸",s:"rock brasileiro, guitarras distorcidas, voz potente"},
+  {id:"gospel",l:"Gospel",e:"🙏",s:"gospel brasileiro, coral, piano, voz poderosa"},
+  {id:"eletro",l:"Eletrônico",e:"🎛",s:"eletrônico brasileiro, sintetizadores, drop, energia"},
+  {id:"piseiro",l:"Piseiro",e:"👟",s:"piseiro nordestino, forró eletrônico, batida dançante"},
+  {id:"axe",l:"Axé",e:"🎉",s:"axé music baiano, percussão, animado, festivo"},
+  {id:"reggae",l:"Reggae",e:"🌿",s:"reggae roots brasileiro, riddim, voz relaxada"},
+  {id:"samba",l:"Samba",e:"🎺",s:"samba tradicional, surdo, cavaquinho, gingado"},
+];
+const MOODS=[
+  {id:"romantico",l:"Romântico",e:"❤️"},
+  {id:"alegre",l:"Alegre",e:"😄"},
+  {id:"melancolico",l:"Melancólico",e:"😢"},
+  {id:"energetico",l:"Energético",e:"⚡"},
+  {id:"saudosista",l:"Saudosista",e:"🌅"},
+  {id:"sensual",l:"Sensual",e:"🔥"},
+  {id:"espiritual",l:"Espiritual",e:"✨"},
+  {id:"festivo",l:"Festivo",e:"🎊"},
+];
+const VOICES=[
+  {id:"f_suave",l:"Feminino Suave",s:"female voice, soft, melodic, delicate"},
+  {id:"f_potente",l:"Feminino Potente",s:"female voice, powerful, emotional, strong"},
+  {id:"m_grave",l:"Masculino Grave",s:"male voice, deep, strong, bass"},
+  {id:"m_jovem",l:"Masculino Jovem",s:"male voice, young, clear, energetic"},
+  {id:"dueto",l:"Dueto M+F",s:"male and female duet, harmonized, call and response"},
+];
+const TEMPOS=[
+  {l:"Lento · 70 BPM",bpm:70},
+  {l:"Moderado · 90 BPM",bpm:90},
+  {l:"Animado · 110 BPM",bpm:110},
+  {l:"Rápido · 130 BPM",bpm:130},
+];
+const STRUCTS=["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final","Outro"];
+const SEC_COLORS={
+  "Intro":"#1e90ff","Verso 1":"#1db954","Verso 2":"#1db954",
+  "Pré-Refrão":"#ff9f1c","Refrão":"#f72585","Refrão Final":"#f72585",
+  "Bridge":"#b040ff","Outro":"#666"
+};
+const SEC_TAG_MAP={
+  "Intro":"[Intro]","Verso 1":"[Verse]","Verso 2":"[Verse 2]",
+  "Pré-Refrão":"[Pre-Chorus]","Refrão":"[Chorus]","Refrão Final":"[Chorus]",
+  "Bridge":"[Bridge]","Outro":"[Outro]"
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let selGenre="sertanejo";
+let selMood="romantico";
+let selVoice="f_suave";
+let selTempo=1;
+let selStruct=["Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"];
+let currentSong=null;
+let currentSections={};
+let activeTab="editor";
+let rewritingSection=null;
+
+// ═══════════════════════════════════════
+// INIT CHIPS
+// ═══════════════════════════════════════
+function initChips(){
+  buildChips("genre-chips",GENRES,"g",()=>selGenre,v=>{selGenre=v;});
+  buildChips("mood-chips",MOODS,"p",()=>selMood,v=>{selMood=v;});
+  buildChips("voice-chips",VOICES,"pu",()=>selVoice,v=>{selVoice=v;});
+  buildChips("tempo-chips",TEMPOS.map((t,i)=>({id:String(i),l:t.l})),"o",()=>String(selTempo),v=>{selTempo=parseInt(v);});
+  buildMulti("structure-chips",STRUCTS,"b",()=>selStruct,v=>{selStruct=v;});
+}
+
+function buildChips(containerId,items,cls,getter,setter){
+  const el=document.getElementById(containerId);
+  items.forEach(item=>{
+    const id=item.id!==undefined?item.id:item.l;
+    const btn=document.createElement("button");
+    btn.className="chip"+(getter()===id?" "+cls:"");
+    btn.innerHTML=(item.e?"<span>"+item.e+"</span>":"")+item.l;
+    btn.onclick=()=>{
+      setter(id);
+      el.querySelectorAll(".chip").forEach(b=>{b.className="chip";});
+      btn.className="chip "+cls;
+    };
+    el.appendChild(btn);
+  });
+}
+
+function buildMulti(containerId,items,cls,getter,setter){
+  const el=document.getElementById(containerId);
+  items.forEach(item=>{
+    const btn=document.createElement("button");
+    btn.className="chip"+(getter().includes(item)?" "+cls:"");
+    btn.textContent=item;
+    btn.onclick=()=>{
+      const cur=getter();
+      if(cur.includes(item)) setter(cur.filter(x=>x!==item));
+      else setter([...cur,item]);
+      btn.className="chip"+(getter().includes(item)?" "+cls:"");
+    };
+    el.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════
+// GENERATE
+// ═══════════════════════════════════════
+async function generate(){
+  const apiKey=document.getElementById("api-key").value.trim();
+  const idea=document.getElementById("idea").value.trim();
+  if(!apiKey){showToast("Cole sua API Key da Anthropic!","err");return;}
+  if(!idea){showToast("Descreva sua ideia musical!","err");return;}
+
+  const g=GENRES.find(x=>x.id===selGenre);
+  const m=MOODS.find(x=>x.id===selMood);
+  const v=VOICES.find(x=>x.id===selVoice);
+  const bpm=TEMPOS[selTempo].bpm;
+  const artist=document.getElementById("artist").value.trim();
+  const artistHint=artist?"\n- Referência artística: "+artist:"";
+
+  setLoading(true);
+  currentSong=null; currentSections={};
+
+  const prompt=`Você é compositor musical profissional brasileiro de elite. Crie uma música COMPLETA e ORIGINAL.
+
+ESPECIFICAÇÕES:
+- Tema/Ideia: ${idea}
+- Gênero: ${g.l}
+- Mood: ${m.l}
+- BPM: ${bpm}
+- Voz: ${v.l}
+- Seções: ${selStruct.join(", ")}${artistHint}
+
+QUALIDADE EXIGIDA:
+- Rimas ricas e naturais que fluem bem cantadas
+- Imagens poéticas vívidas e emocionantes
+- Cada seção mínimo 4 linhas (refrão mínimo 6)
+- Vocabulário autêntico do gênero ${g.l}
+- Parecer música de artista consagrado
+
+Responda SOMENTE com JSON válido, sem markdown:
+{
+  "title": "Título",
+  "subtitle": "Subtítulo criativo",
+  "key": "Tom musical",
+  "chords": "Progressão de acordes",
+  "vibe": "Frase poética de uma linha",
+  "style_tags": ["tag1","tag2","tag3"],
+  "sections": {${selStruct.map(s=>`"${s}": "letra COMPLETA com quebras \\n"`).join(",")}},
+  "suno_style_prompt": "Prompt técnico detalhado em inglês para o Suno (mínimo 50 palavras): gênero, mood, instrumentos, BPM, características vocais, energia, referências",
+  "instruments": ["inst1","inst2","inst3","inst4"],
+  "production_tips": "3-4 dicas de produção específicas"
+}`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
+    });
+    const data=await res.json();
+    if(!res.ok) throw new Error(data?.error?.message||"Erro API "+res.status);
+    const text=(data.content||[]).map(b=>b.text||"").join("");
+    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    currentSong={...parsed,bpm,genre:g.l,mood:m.l,voice:v.l,genreId:selGenre};
+    currentSections=Object.assign({},parsed.sections||{});
+    renderResult();
+    showToast("🎵 Música criada! Edite à vontade antes de levar pro Suno.","ok");
+  }catch(e){
+    showToast("Erro: "+e.message,"err");
+  }finally{
+    setLoading(false);
+  }
+}
+
+// ═══════════════════════════════════════
+// REWRITE SECTION
+// ═══════════════════════════════════════
+async function rewriteSection(secName){
+  const apiKey=document.getElementById("api-key").value.trim();
+  if(!apiKey||!currentSong) return;
+  const instrEl=document.getElementById("instr-"+secName.replace(/\s/g,"_"));
+  const instruction=instrEl?instrEl.value.trim():"";
+  if(!instruction){showToast("Descreva o que quer mudar!","err");return;}
+
+  rewritingSection=secName;
+  const g=GENRES.find(x=>x.id===currentSong.genreId);
+  const btn=document.getElementById("btn-rewrite-"+secName.replace(/\s/g,"_"));
+  if(btn){btn.disabled=true;btn.textContent="Reescrevendo...";}
+
+  const prompt=`Você é compositor musical profissional. Reescreva SOMENTE esta seção.
+
+CONTEXTO:
+- Título: "${currentSong.title}"
+- Tema: ${document.getElementById("idea").value}
+- Gênero: ${g?g.l:currentSong.genre}
+- Mood: ${currentSong.mood}
+
+SEÇÃO ATUAL — "${secName}":
+${currentSections[secName]}
+
+INSTRUÇÃO: "${instruction}"
+
+Reescreva mantendo gênero, mood e tema. Qualidade profissional.
+Responda SOMENTE com JSON: {"lyrics": "nova letra com quebras \\n"}`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
+    });
+    const data=await res.json();
+    const text=(data.content||[]).map(b=>b.text||"").join("");
+    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    currentSections[secName]=parsed.lyrics;
+    renderResult();
+    showToast("✨ "+secName+" reescrita!","ok");
+  }catch(e){
+    showToast("Erro: "+e.message,"err");
+  }finally{
+    rewritingSection=null;
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
+function renderResult(){
+  activeTab=activeTab||"editor";
+  const s=currentSong;
+  const html=`
+  <div style="animation:fadeup .4s ease">
+    <div class="result-header">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="song-title">${esc(s.title)}</div>
+          <div class="song-sub">${esc(s.subtitle||"")}</div>
+          <div class="song-vibe">"${esc(s.vibe||"")}"</div>
+          <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
+            ${(s.style_tags||[]).map(t=>`<span style="padding:2px 9px;border-radius:20px;font-size:10px;background:#1a1a1a;color:#444;border:1px solid #222">#${esc(t)}</span>`).join("")}
+          </div>
+        </div>
+        <div class="meta-row">
+          ${[["🎵",s.bpm+" BPM"],["🎸",s.genre],["🎭",s.mood],["🎙",s.voice]].map(([ic,v])=>`
+            <div class="meta-pill"><div class="meta-pill-label">${ic}</div><div class="meta-pill-val">${esc(String(v))}</div></div>
+          `).join("")}
+        </div>
+      </div>
+      <div class="chords-bar">
+        <span style="color:#333;letter-spacing:2px">ACORDES</span>
+        <span style="font-family:'DM Mono',monospace;color:#ff9f1c">${esc(s.chords||"")}</span>
+        <span style="color:#333;letter-spacing:2px;margin-left:6px">TOM</span>
+        <span style="font-family:'DM Mono',monospace;color:#1e90ff">${esc(s.key||"")}</span>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor de Letra</button>
+      <button class="tab-btn ${activeTab==="suno"?"active":""}" onclick="switchTab('suno')">🚀 Exportar pro Suno</button>
+      <button class="tab-btn ${activeTab==="info"?"active":""}" onclick="switchTab('info')">🎛 Produção</button>
+    </div>
+
+    <div class="tab-content" id="tab-editor" style="display:${activeTab==="editor"?"block":"none"}">
+      <div style="max-width:680px">
+        <div style="background:#111;border:1px solid #1a1a1a;border-radius:9px;padding:11px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:16px">💡</span>
+          <div style="font-size:11px;color:#444;line-height:1.6">
+            Clique em <strong style="color:#1db954">✏ Editar</strong> para modificar manualmente, ou em <strong style="color:#f72585">🔄 Refazer</strong> para descrever o que quer mudar e a IA reescreve!
+          </div>
+        </div>
+        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSectionBlock(sec)).join("")}
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-suno" style="display:${activeTab==="suno"?"block":"none"}">
+      <div style="max-width:750px">
+        <div class="steps-row">
+          ${[
+            {n:"1",t:"Copie o Estilo",d:"Cole no campo \"Style of Music\" do Suno",c:"#1db954"},
+            {n:"2",t:"Copie a Letra",d:"Cole no campo \"Lyrics\" do Suno",c:"#1e90ff"},
+            {n:"3",t:"Gere no Suno",d:"Clique em Create e aproveite!",c:"#f72585"},
+          ].map(step=>`
+            <div class="step-card" style="border:1px solid ${step.c}18">
+              <div class="step-num" style="background:${step.c}18;color:${step.c}">${step.n}</div>
+              <div class="step-title">${step.t}</div>
+              <div class="step-desc">${step.d}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="export-box">
+          <div class="export-head">
+            <div class="export-label" style="color:#1db954">STYLE OF MUSIC → cole no Suno</div>
+            <button class="btn-copy" style="border-color:#1db95440;background:#1db95412;color:#1db954" onclick="copyText('suno-style','Estilo copiado! ✓')">📋 Copiar Estilo</button>
+          </div>
+          <div class="export-body"><pre class="export-text" id="suno-style">${esc(s.suno_style_prompt||"")}</pre></div>
+        </div>
+
+        <div class="export-box">
+          <div class="export-head">
+            <div class="export-label" style="color:#1e90ff">LYRICS → cole no Suno</div>
+            <button class="btn-copy" style="border-color:#1e90ff40;background:#1e90ff12;color:#1e90ff" onclick="copyText('suno-lyrics','Letra copiada para o Suno! ✓')">📋 Copiar Letra</button>
+          </div>
+          <div class="export-body"><pre class="export-text" id="suno-lyrics">${esc(buildSunoLyrics())}</pre></div>
+        </div>
+
+        <div class="tags-hint">
+          <div style="font-size:10px;color:#333">Tags do Suno usadas nesta letra:</div>
+          <div class="tags-row">
+            ${["[Verse]","[Chorus]","[Pre-Chorus]","[Bridge]","[Intro]","[Outro]"].map(t=>`<span class="tag-pill">${t}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-info" style="display:${activeTab==="info"?"block":"none"}">
+      <div style="max-width:650px">
+        <div class="info-box">
+          <div class="info-box-label">🎸 INSTRUMENTAÇÃO</div>
+          <div class="inst-wrap">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-label">🎛 DICAS DE PRODUÇÃO</div>
+          <div class="prod-text">${esc(s.production_tips||"")}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById("main-content").innerHTML=html;
+}
+
+function buildSectionBlock(sec){
+  const color=SEC_COLORS[sec]||"#1db954";
+  const safeId=sec.replace(/\s/g,"_");
+  return `
+  <div class="sec-block" id="secblock-${safeId}" style="border-left:3px solid ${color}">
+    <div class="sec-head">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div class="sec-dot" style="background:${color}"></div>
+        <span class="sec-label" style="color:${color}">${esc(sec)}</span>
+      </div>
+      <div class="sec-actions">
+        <button class="sec-btn" id="editbtn-${safeId}" onclick="toggleEdit('${safeId}')">✏ Editar</button>
+        <button class="sec-btn" id="redobtn-${safeId}" onclick="toggleRedo('${safeId}')">🔄 Refazer</button>
+      </div>
+    </div>
+    <div class="sec-body" id="secbody-${safeId}">
+      <pre class="sec-text" id="sectext-${safeId}">${esc(currentSections[sec]||"")}</pre>
+    </div>
+    <div class="instr-area" id="instr-area-${safeId}" style="display:none">
+      <div class="instr-hint">O que você quer mudar nesta seção?</div>
+      <textarea class="instr-textarea" id="instr-${safeId}" placeholder='Ex: "Quero algo mais melancólico", "Muda as rimas", "Fala de saudade"...'></textarea>
+      <button class="btn-rewrite" id="btn-rewrite-${safeId}" onclick="rewriteSection('${sec}')">✨ Reescrever com IA</button>
+    </div>
+  </div>`;
+}
+
+function toggleEdit(safeId){
+  const bodyEl=document.getElementById("secbody-"+safeId);
+  const textEl=document.getElementById("sectext-"+safeId);
+  const btnEl=document.getElementById("editbtn-"+safeId);
+  const redoEl=document.getElementById("instr-area-"+safeId);
+  const sec=safeId.replace(/_/g," ");
+
+  if(bodyEl.querySelector("textarea")){
+    const ta=bodyEl.querySelector("textarea");
+    currentSections[sec]=ta.value;
+    bodyEl.innerHTML=`<pre class="sec-text" id="sectext-${safeId}">${esc(currentSections[sec])}</pre>`;
+    btnEl.className="sec-btn";
+    btnEl.textContent="✏ Editar";
+  }else{
+    redoEl.style.display="none";
+    document.getElementById("redobtn-"+safeId).className="sec-btn";
+    bodyEl.innerHTML=`<textarea class="sec-textarea" style="margin-top:4px">${esc(currentSections[sec]||"")}</textarea>`;
+    bodyEl.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
+    btnEl.className="sec-btn edit-active";
+    btnEl.textContent="✓ Salvar";
+  }
+}
+
+function toggleRedo(safeId){
+  const instrArea=document.getElementById("instr-area-"+safeId);
+  const btn=document.getElementById("redobtn-"+safeId);
+  const editArea=document.getElementById("secbody-"+safeId);
+  const editBtn=document.getElementById("editbtn-"+safeId);
+
+  if(instrArea.style.display==="none"||!instrArea.style.display){
+    // Fechar edição se aberta
+    if(editArea.querySelector("textarea")){
+      const ta=editArea.querySelector("textarea");
+      const sec=safeId.replace(/_/g," ");
+      currentSections[sec]=ta.value;
+      editArea.innerHTML=`<pre class="sec-text" id="sectext-${safeId}">${esc(currentSections[sec])}</pre>`;
+      editBtn.className="sec-btn";editBtn.textContent="✏ Editar";
+    }
+    instrArea.style.display="block";
+    btn.className="sec-btn redo-active";
+  }else{
+    instrArea.style.display="none";
+    btn.className="sec-btn";
+  }
+}
+
+function buildSunoLyrics(){
+  if(!currentSong||!currentSections) return"";
+  let out="";
+  selStruct.filter(s=>currentSections[s]).forEach(s=>{
+    out+=(SEC_TAG_MAP[s]||"["+s+"]")+"\n"+currentSections[s]+"\n\n";
+  });
+  return out.trim();
+}
+
+function switchTab(tab){
+  activeTab=tab;
+  // Update suno-lyrics if switching to suno tab
+  if(tab==="suno"){
+    const el=document.getElementById("suno-lyrics");
+    if(el) el.textContent=buildSunoLyrics();
+  }
+  ["editor","suno","info"].forEach(t=>{
+    const el=document.getElementById("tab-"+t);
+    if(el) el.style.display=t===tab?"block":"none";
+    const btn=document.querySelector(`.tab-btn[onclick="switchTab('${t}')"]`);
+    if(btn) btn.className="tab-btn"+(t===tab?" active":"");
+  });
+}
+
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+function esc(s){
+  return String(s||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+function copyText(elementId, msg){
+  const el=document.getElementById(elementId);
+  if(!el) return;
+  const text=el.textContent||el.innerText;
+  navigator.clipboard.writeText(text).then(()=>showToast(msg||"Copiado!","ok")).catch(()=>{
+    const ta=document.createElement("textarea");
+    ta.value=text; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
+    showToast(msg||"Copiado!","ok");
+  });
+}
+
+function showToast(msg, type){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.className="toast show "+(type||"ok");
+  setTimeout(()=>el.className="toast",3500);
+}
+
+function setLoading(on){
+  const btn=document.getElementById("btn-gen");
+  if(on){
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner"></span> Compondo...';
+  }else{
+    btn.disabled=false;
+    btn.innerHTML="✦ Compor com IA";
+  }
+}
+
+// ═══════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════
+window.onload=initChips;
+</script>
+</body>
+</html>
