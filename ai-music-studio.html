@@ -584,7 +584,7 @@ async function validateKey(){
   try{
     const r=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
+      body:JSON.stringify({model:"deepseek/deepseek-chat-v3-0324:free",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
     const d=await r.json();
     if(r.ok&&d.choices){
       localStorage.setItem("or_key",key);
@@ -741,7 +741,7 @@ SOMENTE JSON válido:
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"deepseek/deepseek-chat-v3-0324:free",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -771,7 +771,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
+      body:JSON.stringify({model:"deepseek/deepseek-chat-v3-0324:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -791,7 +791,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
+      body:JSON.stringify({model:"deepseek/deepseek-chat-v3-0324:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
