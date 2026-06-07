@@ -686,7 +686,7 @@ function toggleMicCant(){
 // GENERATE
 // ══════════════════════════════════════
 async function generate(){
-  const apiKey=document.getElementById("api-key").value.trim();
+  const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
   if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
 
   const g=GENRES.find(x=>x.id===selGenre)||GENRES[0];
@@ -740,7 +740,7 @@ SOMENTE JSON válido:
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
       body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
@@ -761,7 +761,7 @@ SOMENTE JSON válido:
 // REWRITE / EXTEND
 // ══════════════════════════════════════
 async function rewriteSec(sec){
-  const apiKey=document.getElementById("api-key").value.trim();
+  const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
   if(!apiKey||!currentSong)return;
   const sid=safeid(sec);
   const instr=document.getElementById("ia-ta-"+sid)?.value.trim();
@@ -770,7 +770,7 @@ async function rewriteSec(sec){
   if(btn){btn.disabled=true;btn.textContent="Reescrevendo...";}
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
       body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -781,7 +781,7 @@ async function rewriteSec(sec){
 }
 
 async function extendSec(sec){
-  const apiKey=document.getElementById("api-key").value.trim();
+  const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
   if(!apiKey||!currentSong)return;
   const sid=safeid(sec);
   const trecho=document.getElementById("ext-trecho-"+sid)?.value.trim();
@@ -790,7 +790,7 @@ async function extendSec(sec){
   if(btn){btn.disabled=true;btn.textContent="Gerando...";}
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
       body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
