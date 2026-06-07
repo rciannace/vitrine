@@ -190,9 +190,23 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   </div>
   <div class="header-actions">
     <button class="btn-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
-    <div class="api-dot" id="api-dot"></div>
+    <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
 </div>
+
+<!-- API PANEL DROPDOWN -->
+<div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:300px;box-shadow:0 8px 32px #0000001a">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 OPENROUTER API KEY</span>
+    <button onclick="toggleApiPanel()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#aaa;line-height:1">×</button>
+  </div>
+  <div class="api-row">
+    <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
+    <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
+  </div>
+  <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
+</div>
+<div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
 
 <!-- MAIN -->
 <div class="main">
@@ -223,15 +237,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       </div>
     </div>
 
-    <!-- API KEY -->
-    <div class="card">
-      <div class="card-title">🔑 API Key OpenRouter</div>
-      <div class="api-row">
-        <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()"/>
-        <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
-      </div>
-      <div style="font-size:10px;color:#bbb;margin-top:5px">Obtenha gratuitamente em openrouter.ai</div>
-    </div>
+
 
     <!-- ── TAB: DESCREVER ── -->
     <div id="tab-descrever">
@@ -570,6 +576,14 @@ function selDur(d){
 // ══════════════════════════════════════
 // API KEY
 // ══════════════════════════════════════
+function toggleApiPanel(){
+  const panel=document.getElementById("api-panel");
+  const overlay=document.getElementById("api-overlay");
+  const isOpen=panel.style.display==="block";
+  panel.style.display=isOpen?"none":"block";
+  overlay.style.display=isOpen?"none":"block";
+  if(!isOpen)setTimeout(()=>document.getElementById("api-key").focus(),100);
+}
 function resetApiStatus(){
   document.getElementById("api-key").className="api-input";
   document.getElementById("btn-api").className="btn-api";
@@ -592,6 +606,7 @@ async function validateKey(){
       btn.className="btn-api ok";btn.textContent="✓ OK";
       document.getElementById("api-dot").className="api-dot ok";
       showToast("✅ Chave válida!","ok");
+      setTimeout(toggleApiPanel,800);
     }else throw new Error(d?.error?.message||"erro");
   }catch(e){
     document.getElementById("api-key").className="api-input err";
