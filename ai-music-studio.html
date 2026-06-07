@@ -2,571 +2,966 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI Music Studio 🎵</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>AI Music Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{background:#050e1a;color:#c8ddf0;font-family:'Inter',sans-serif;display:flex;flex-direction:column}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#050e1a}::-webkit-scrollbar-thumb{background:#1a3050;border-radius:2px}
-textarea,input{outline:none!important;font-family:'Inter',sans-serif}
-button{font-family:'Inter',sans-serif;cursor:pointer}
-@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse3{0%,100%{opacity:.07}50%{opacity:.13}}
-@keyframes wavepulse{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.2)}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f5f5f5;color:#1a1a1a;font-family:'Inter',sans-serif;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
+textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
+button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
-.nav{height:46px;background:#030c18;border-bottom:1px solid #0f2030;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0}
-.nav-logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.nav-tab{padding:5px 12px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;background:transparent;color:#2d5070;transition:all .2s}
-.nav-tab.active{background:#0d1e35;color:#f97316}
+/* HEADER */
+.header{background:#fff;border-bottom:1px solid #eee;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo-name{font-weight:700;font-size:15px;color:#1a1a1a}
+.header-actions{display:flex;align-items:center;gap:8px}
+.btn-lib{padding:6px 14px;border-radius:20px;border:1px solid #e5e5e5;background:#fff;font-size:12px;color:#666;cursor:pointer}
+.api-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;flex-shrink:0}
+.api-dot.ok{background:#22c55e;box-shadow:0 0 0 3px #22c55e22}
 
-.app{display:flex;flex:1;overflow:hidden;height:calc(100vh - 46px)}
+/* MAIN */
+.main{max-width:600px;margin:0 auto;padding:24px 16px 100px}
 
-.sidebar{width:310px;flex-shrink:0;background:#030c18;border-right:1px solid #0f2030;display:flex;flex-direction:column;overflow:hidden}
-.sb-scroll{flex:1;overflow-y:auto;padding:12px 13px 0}
-.sb-foot{padding:11px 13px;border-top:1px solid #0f2030;flex-shrink:0}
+/* CARD */
+.card{background:#fff;border-radius:16px;padding:20px;margin-bottom:14px;border:1px solid #eee}
+.card-title{font-size:11px;color:#999;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-bottom:14px}
 
-.content{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#050e1a}
-.c-scroll{flex:1;overflow-y:auto}
+/* TABS — tipo MoneyVoz */
+.tab-row{display:flex;gap:0;border-bottom:2px solid #f0f0f0;margin-bottom:20px}
+.tab-item{flex:1;text-align:center;padding:12px 4px;font-size:12px;color:#999;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.tab-item.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
+.tab-icon{font-size:18px}
+.tab-badge{background:#ef4444;color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700}
 
-.fl{font-size:9px;color:#2d5070;letter-spacing:2px;font-weight:700;text-transform:uppercase;display:block;margin-bottom:6px}
-.fi{width:100%;background:#081525;border:1px solid #1a3050;color:#c8ddf0;padding:7px 10px;border-radius:7px;font-size:11px;transition:border-color .2s}
-.fi:focus{border-color:#f97316}
-.fta{width:100%;background:#081525;border:1px solid #1a3050;color:#c8ddf0;padding:8px 10px;border-radius:7px;font-size:12px;resize:none;line-height:1.6;transition:border-color .2s}
-.fta:focus{border-color:#f97316}
-.fsec{margin-bottom:12px}
-.div{height:1px;background:#0f2030;margin:0 0 12px}
+/* INPUTS */
+.field-label{font-size:13px;color:#444;font-weight:500;margin-bottom:8px;display:block}
+.field-hint{font-size:11px;color:#aaa;margin-top:5px}
+.txt-input{width:100%;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:12px 14px;border-radius:12px;font-size:14px;transition:all .2s}
+.txt-input:focus{border-color:#f97316;background:#fff}
+.txt-area{width:100%;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:12px 14px;border-radius:12px;font-size:14px;resize:none;line-height:1.6;transition:all .2s}
+.txt-area:focus{border-color:#f97316;background:#fff}
 
-.chips{display:flex;flex-wrap:wrap;gap:4px}
-.chip{padding:3px 9px;border-radius:16px;font-size:10px;border:1px solid #1a3050;background:transparent;color:#3d6080;transition:all .15s;white-space:nowrap}
-.chip:hover{color:#5a80a0;border-color:#2a4060}
-.chip.co{border-color:#f97316;background:#f9731620;color:#f97316;font-weight:600}
-.chip.cr{border-color:#ef4444;background:#ef444420;color:#ef4444;font-weight:600}
-.chip.cb{border-color:#3b82f6;background:#3b82f620;color:#3b82f6;font-weight:600}
-.chip.cg{border-color:#22c55e;background:#22c55e20;color:#22c55e;font-weight:600}
-.chip.cp{border-color:#a855f7;background:#a855f720;color:#a855f7;font-weight:600}
-.chip.cy{border-color:#eab308;background:#eab30820;color:#eab308;font-weight:600}
+/* API KEY */
+.api-row{display:flex;gap:8px}
+.api-input{flex:1;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:11px 13px;border-radius:11px;font-size:12px;font-family:monospace}
+.api-input.ok{border-color:#22c55e}
+.api-input.err{border-color:#ef4444}
+.btn-api{padding:11px 16px;border-radius:11px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.btn-api.ok{background:#22c55e}
 
-.dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.dur-card{padding:8px;border-radius:8px;cursor:pointer;text-align:left;border:1px solid #1a3050;background:#081525;transition:all .15s}
-.dur-card.sel{border-color:#f97316;background:#f9731618}
+/* MIC ROW */
+.mic-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.btn-mic-sm{width:38px;height:38px;border-radius:50%;border:none;background:#f0f0f0;color:#666;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s}
+.btn-mic-sm.rec{background:#ef4444;color:#fff;animation:pulse-rec 1s ease-in-out infinite}
+@keyframes pulse-rec{0%,100%{box-shadow:0 0 0 0 #ef444440}50%{box-shadow:0 0 0 6px #ef444420}}
+.mic-hint{font-size:12px;color:#aaa}
+.mic-hint.rec{color:#ef4444;font-weight:500}
 
-.btn-val{width:100%;margin-top:5px;padding:7px;border-radius:7px;border:1px solid #f9731440;background:#f9731615;color:#f97316;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s}
-.btn-val.ok{border-color:#22c55e50;background:#22c55e15;color:#22c55e}
-.btn-val.err{border-color:#ef444450;background:#ef444415;color:#ef4444}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:6px 13px;border-radius:20px;font-size:12px;border:1.5px solid #e5e5e5;background:#f8f8f8;color:#666;cursor:pointer;transition:all .15s;white-space:nowrap;font-weight:400}
+.chip:hover{border-color:#ddd;color:#333}
+.chip.sel{border-color:#f97316;background:#f9731612;color:#f97316;font-weight:600}
+.chip.sel-r{border-color:#ef4444;background:#ef444412;color:#ef4444;font-weight:600}
+.chip.sel-g{border-color:#22c55e;background:#22c55e12;color:#22c55e;font-weight:600}
+.chip.sel-p{border-color:#a855f7;background:#a855f712;color:#a855f7;font-weight:600}
+.chip.sel-b{border-color:#3b82f6;background:#3b82f612;color:#3b82f6;font-weight:600}
+.chip.sel-y{border-color:#f59e0b;background:#f59e0b12;color:#f59e0b;font-weight:600}
 
-.btn-gen{width:100%;padding:13px;border-radius:9px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:13px;font-weight:700;transition:all .3s;box-shadow:0 4px 18px #f9731635;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-gen:disabled{background:#0d1e35;color:#1e3a5f;box-shadow:none;cursor:not-allowed}
+/* DURAÇÃO */
+.dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dur-card{padding:12px 14px;border-radius:12px;border:1.5px solid #eee;background:#f8f8f8;cursor:pointer;transition:all .15s;text-align:left}
+.dur-card.sel{border-color:#f97316;background:#fff}
+.dur-icon{font-size:20px;margin-bottom:4px}
+.dur-name{font-size:14px;font-weight:600;color:#333}
+.dur-name.sel{color:#f97316}
+.dur-desc{font-size:11px;color:#aaa}
 
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;padding:40px;text-align:center}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;max-width:380px}
-.feat-card{background:#081525;border:1px solid #0f2030;border-radius:8px;padding:9px 12px;font-size:11px;color:#1a3050;display:flex;align-items:center;gap:7px}
-
-.r-head{padding:18px 22px 14px;border-bottom:1px solid #0f2030;background:#030c18}
-.r-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:1px}
-.r-sub{font-size:11px;color:#f97316;margin-bottom:3px}
-.r-vibe{font-size:10px;color:#1e3a5f;font-style:italic;margin-bottom:7px}
-.r-tags{display:flex;gap:4px;flex-wrap:wrap}
-.r-tag{padding:2px 8px;border-radius:20px;font-size:10px}
-.meta-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.meta-p{background:#0d1e35;border:1px solid #1a3050;border-radius:7px;padding:6px 10px;text-align:center}
-.chords-row{margin-top:10px;padding:6px 12px;background:#0d1e35;border-radius:7px;border:1px solid #1a3050;display:inline-flex;align-items:center;gap:10px}
-
-.tabs{display:flex;border-bottom:1px solid #0f2030;background:#030c18;padding:0 22px;flex-shrink:0}
-.tab{padding:10px 14px;background:none;border:none;color:#1e3a5f;font-size:12px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s}
-.tab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
-.tab-body{padding:18px 22px}
-
-.sec-block{border:1px solid #1a3050;border-radius:10px;overflow:hidden;margin-bottom:8px;background:#081525}
-.sec-head{padding:8px 13px;display:flex;align-items:center;justify-content:space-between;background:#0d1e35;flex-wrap:wrap;gap:5px}
+/* LETRA DISPLAY */
+.sec-block{border:1px solid #eee;border-radius:12px;overflow:hidden;margin-bottom:10px;background:#fff}
+.sec-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:#fafafa;border-bottom:1px solid #f0f0f0}
 .sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .sec-lbl{font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
-.sbtn{padding:3px 9px;border-radius:6px;border:1px solid #1e3a5f;background:transparent;color:#2d5070;font-size:10px;cursor:pointer;transition:all .15s}
-.sbtn.eon{border-color:#f9731660;background:#f9731618;color:#f97316;font-weight:600}
-.sbtn.ron{border-color:#ef444460;background:#ef444418;color:#ef4444;font-weight:600}
-.sbtn.son{border-color:#22c55e60;background:#22c55e18;color:#22c55e;font-weight:600}
-.sec-text{color:#6a9bbf;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
-.sec-ta{width:100%;background:#050e1a;border:1px solid #1a3050;color:#c8ddf0;padding:9px 11px;border-radius:7px;font-size:13px;line-height:1.8;resize:vertical;min-height:90px}
-.ia-panel{padding:0 13px 12px;border-top:1px solid #0f2030;display:none}
-.ia-ta{width:100%;background:#050e1a;border:1px solid #1a3050;color:#c8ddf0;padding:8px 10px;border-radius:7px;font-size:11px;line-height:1.6;resize:none;height:60px}
-.ext-panel{padding:0 13px 14px;border-top:1px solid #0f2030;display:none}
-.vtabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
-.vtab{padding:8px 10px;border-radius:7px;cursor:pointer;text-align:left;border:1px solid #1a3050;background:#060f1c;transition:all .15s}
-.vtab.active{border-color:#22c55e;background:#22c55e18}
-.mic-area{background:#060f1c;border:1px solid #1a3050;border-radius:9px;padding:13px;margin-bottom:9px}
-.btn-mic{width:50px;height:50px;border-radius:50%;border:none;background:#22c55e;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 0 0 4px #22c55e30}
-.btn-mic.rec{background:#ef4444;box-shadow:0 0 0 4px #ef444430}
-.wave-wrap{display:flex;align-items:center;gap:3px;height:36px}
-.wb{width:4px;border-radius:2px;background:#1a3050;min-height:4px;transition:height .08s}
-.wb.active{background:#22c55e}
-.trecho-preview{background:#060f1c;border:1px solid #22c55e33;border-radius:7px;padding:8px 11px;margin-bottom:9px;font-size:11px;color:#2d5070}
-.btn-ext{width:100%;padding:9px;border-radius:8px;border:none;background:linear-gradient(135deg,#22c55e,#14b8a6);color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
-.btn-ext:disabled{background:#1a3050;color:#2d5070;cursor:not-allowed}
-.btn-rw{margin-top:7px;padding:7px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:11px;cursor:pointer;font-weight:700}
-.btn-rw:disabled{background:#1a3050;color:#2d5070;cursor:not-allowed}
+.sec-actions{display:flex;gap:5px}
+.sec-btn{padding:4px 10px;border-radius:6px;border:1px solid #e5e5e5;background:#f8f8f8;color:#888;font-size:10px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.sec-btn:hover{border-color:#ccc;color:#555}
+.sec-btn.eon{border-color:#f9731450;background:#f9731610;color:#f97316}
+.sec-btn.ron{border-color:#ef444450;background:#ef444410;color:#ef4444}
+.sec-btn.son{border-color:#22c55e50;background:#22c55e10;color:#22c55e}
+.sec-body{padding:12px 14px}
+.sec-text{color:#444;font-size:14px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif}
+.sec-ta{width:100%;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:10px 12px;border-radius:8px;font-size:14px;line-height:1.8;resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
+.ia-panel{padding:0 14px 14px;border-top:1px solid #f0f0f0;display:none}
+.ia-label{font-size:11px;color:#aaa;margin-bottom:7px;padding-top:12px}
+.ia-ta{width:100%;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:9px 12px;border-radius:9px;font-size:13px;line-height:1.6;resize:none;height:65px;font-family:'Inter',sans-serif}
+.ext-panel{padding:0 14px 14px;border-top:1px solid #f0f0f0;display:none}
+.ext-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}
+.ext-tab{padding:10px;border-radius:10px;border:1.5px solid #eee;background:#f8f8f8;cursor:pointer;text-align:center;transition:all .15s}
+.ext-tab.active{border-color:#22c55e;background:#22c55e08}
+.ext-tab-icon{font-size:18px;margin-bottom:3px}
+.ext-tab-lbl{font-size:12px;font-weight:600;color:#555}
+.ext-tab.active .ext-tab-lbl{color:#22c55e}
+.ext-tab-desc{font-size:10px;color:#aaa}
+.btn-ext-main{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px}
+.btn-ext-main:disabled{background:#e5e5e5;color:#aaa;cursor:not-allowed}
 
-.ex-box{background:#081525;border:1px solid #1a3050;border-radius:9px;overflow:hidden;margin-bottom:11px}
-.ex-head{padding:8px 13px;background:#0d1e35;display:flex;justify-content:space-between;align-items:center}
-.ex-pre{color:#4a7099;font-size:12px;line-height:1.9;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:12px 14px}
-.btn-copy{padding:3px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer}
+/* MIC AREA */
+.mic-area{background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:10px;text-align:center}
+.btn-mic-big{width:54px;height:54px;border-radius:50%;border:none;background:#22c55e;color:#fff;font-size:22px;cursor:pointer;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.btn-mic-big.rec{background:#ef4444;animation:pulse-rec 1s ease-in-out infinite}
+.wave-bars{display:none;justify-content:center;align-items:center;gap:3px;height:30px;margin:8px 0}
+.wb{width:3px;border-radius:2px;background:#22c55e;min-height:3px;transition:height .08s}
+.mic-status{font-size:12px;color:#aaa;text-align:center}
+.mic-status.rec{color:#ef4444;font-weight:500}
 
-.info-box{background:#081525;border:1px solid #1a3050;border-radius:9px;padding:15px;margin-bottom:11px}
-.inst-pill{background:#050e1a;border:1px solid #1a3050;border-radius:6px;padding:6px 11px;font-size:12px;color:#2d5070}
+/* ESTENDER na tela inicial */
+.extend-starter{background:#fff;border-radius:16px;border:1.5px dashed #22c55e44;padding:20px;margin-bottom:14px}
+.extend-starter-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+.extend-starter-sub{font-size:12px;color:#aaa;margin-bottom:14px}
 
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.lib-card{background:#081525;border:1px solid #1a3050;border-radius:10px;padding:14px;transition:border-color .2s}
-.lib-card:hover{border-color:#2a4060}
+/* SONG HEADER */
+.song-header{background:#fff;border-radius:16px;border:1px solid #eee;padding:18px;margin-bottom:14px}
+.song-title{font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.song-sub{font-size:12px;color:#f97316;margin-bottom:4px}
+.song-vibe{font-size:11px;color:#aaa;font-style:italic;margin-bottom:10px}
+.song-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.meta-badge{background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:5px 10px;font-size:11px;color:#666}
+.chords-row{background:#f8f8f8;border-radius:9px;padding:8px 12px;display:inline-flex;align-items:center;gap:8px;font-size:12px}
 
-.toast{position:fixed;bottom:18px;right:18px;z-index:999;padding:10px 15px;border-radius:9px;font-size:12px;font-weight:600;background:#081525;animation:fadeup .3s ease;max-width:280px;display:none;box-shadow:0 8px 24px #00000090}
-.toast.show{display:block}
-.toast.ok{border:1px solid #f9731660;color:#f97316}
-.toast.err{border:1px solid #ef444460;color:#ef4444}
-.spinner{width:12px;height:12px;border-radius:50%;border:2px solid #1a3050;border-top-color:#f97316;animation:spin .7s linear infinite;display:inline-block}
+/* EXPORT */
+.export-box{background:#f8f8f8;border:1px solid #eee;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.export-head{padding:10px 14px;background:#fff;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.export-label{font-size:10px;color:#888;letter-spacing:2px;font-weight:700}
+.btn-copy-sm{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;border:none;cursor:pointer}
+.export-pre{color:#555;font-size:12px;line-height:1.8;white-space:pre-wrap;font-family:'Inter',sans-serif;padding:12px 14px}
 
-.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
-.step-card{background:#081525;border-radius:9px;padding:11px 12px}
-.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-bottom:7px}
+/* STEPS */
+.steps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.step-card{background:#f8f8f8;border-radius:10px;padding:10px 12px;text-align:center;border:1px solid #eee}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin:0 auto 6px}
+.step-t{font-size:11px;font-weight:600;color:#333;margin-bottom:2px}
+.step-d{font-size:10px;color:#aaa}
+
+/* BTN MAIN */
+.btn-main{width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px #f9731630;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:disabled{background:#e5e5e5;color:#aaa;box-shadow:none;cursor:not-allowed}
+
+/* STICKY FOOTER BTN */
+.footer-btn{position:fixed;bottom:0;left:0;right:0;padding:12px 16px 20px;background:linear-gradient(to top,#f5f5f5,#f5f5f5ee,transparent);z-index:50}
+.footer-btn .btn-main{max-width:600px;margin:0 auto}
+
+/* REDES RESULTADOS */
+.result-tabs{display:flex;gap:4px;border-bottom:2px solid #eee;margin-bottom:16px}
+.rtab{padding:10px 14px;font-size:13px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);z-index:999;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;background:#1a1a1a;color:#fff;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#1a1a1a}
+.toast.err{background:#ef4444}
+
+/* SPINNER */
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid #ffffff44;border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wavepulse{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.5)}}
+
+/* INFO BOX */
+.info-box{background:#f8f8f8;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px}
+.info-box-title{font-size:10px;color:#aaa;letter-spacing:2px;font-weight:700;margin-bottom:10px;text-transform:uppercase}
+.inst-pill{background:#fff;border:1px solid #eee;border-radius:7px;padding:6px 11px;font-size:12px;color:#555;display:inline-block;margin:2px}
+
+/* LIB */
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.lib-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px}
 </style>
 </head>
 <body>
 
-<div class="nav">
-  <div class="nav-logo">🎵</div>
-  <span style="font-weight:700;font-size:13px;color:#fff">AI Music Studio</span>
-  <span style="font-size:8px;color:#0f2030;letter-spacing:2px">BY CLAUDE</span>
-  <button class="nav-tab active" id="nt-criar" onclick="setPage('criar')">🎵 Criar</button>
-  <button class="nav-tab" id="nt-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
-    <div class="sec-dot" id="sdot" style="background:#1e3a5f"></div>
-    <span style="font-size:10px;color:#1e3a5f" id="stxt">API não validada</span>
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">🎵</div>
+    <span class="logo-name">AI Music Studio</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
+    <div class="api-dot" id="api-dot"></div>
   </div>
 </div>
 
-<div class="app">
-  <div class="sidebar">
-    <div class="sb-scroll">
+<!-- MAIN -->
+<div class="main">
 
-      <div class="fsec">
-        <label class="fl">🔑 API Key Anthropic</label>
-        <div style="position:relative">
-          <input type="password" id="api-key" class="fi" placeholder="sk-ant-api03-..." oninput="resetKey()"/>
-          <span id="key-ic" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px"></span>
+  <!-- ══ CRIAR PAGE ══ -->
+  <div id="page-criar">
+
+    <!-- TABS tipo MoneyVoz -->
+    <div style="background:#fff;border-radius:16px;border:1px solid #eee;padding:6px 10px 0;margin-bottom:14px">
+      <div class="tab-row" id="main-tabs">
+        <div class="tab-item active" onclick="switchMainTab('descrever')">
+          <span class="tab-icon">💬</span>
+          <span>Descrever</span>
+          <span style="font-size:10px;color:#aaa">Assistente IA</span>
         </div>
-        <button class="btn-val" id="btn-val" onclick="validateKey()">🔍 Validar Chave</button>
-        <div style="font-size:9px;color:#0f2030;margin-top:3px">console.anthropic.com</div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec">
-        <label class="fl">💡 Como você imagina sua música?</label>
-        <textarea id="idea" class="fta" rows="3" placeholder="Ex: Uma sertaneja sobre saudade da roça, vovó fazendo bolo, cheiro de mato molhado depois da chuva..."></textarea>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
-        <div><label class="fl">🎵 Nome (opcional)</label><input id="titulo" class="fi" placeholder="Título..."/></div>
-        <div><label class="fl">🎤 Referência</label><input id="artist" class="fi" placeholder="Marília, Wesley..."/></div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec">
-        <label class="fl">⏱ Duração da Música</label>
-        <div class="dur-grid" id="dur-grid"></div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec">
-        <label class="fl">🎸 Estilo Musical</label>
-        <div class="chips" id="genre-chips"></div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec">
-        <label class="fl">🌈 Mood / Clima</label>
-        <div class="chips" id="mood-chips"></div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec">
-        <label class="fl">🎛 Efeitos e Instrumentos</label>
-        <div class="chips" id="extras-chips"></div>
-      </div>
-      <div class="div"></div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div><label class="fl">🎙 Voz</label><div class="chips" id="voice-chips" style="flex-direction:column"></div></div>
-        <div><label class="fl">⏱ BPM</label><div class="chips" id="tempo-chips" style="flex-direction:column"></div></div>
-      </div>
-
-      <div id="struct-wrap">
-        <div class="div"></div>
-        <div class="fsec">
-          <label class="fl">🗺 Estrutura</label>
-          <div class="chips" id="struct-chips"></div>
+        <div class="tab-item" onclick="switchMainTab('letra')">
+          <span class="tab-icon">📝</span>
+          <span>Letra</span>
         </div>
-      </div>
-      <div class="div"></div>
-
-      <div class="fsec" style="margin-bottom:14px">
-        <label class="fl">🎚 Detalhes da Produção (opcional)</label>
-        <textarea id="producao" class="fta" rows="2" placeholder="Ex: Bateria marcada, guitarra suave, voz potente no refrão..."></textarea>
+        <div class="tab-item" onclick="switchMainTab('estender')">
+          <span class="tab-icon">✨</span>
+          <span>Estender</span>
+        </div>
+        <div class="tab-item" onclick="switchMainTab('cantar')">
+          <span class="tab-icon">🎙</span>
+          <span>Cantar</span>
+        </div>
       </div>
     </div>
 
-    <div class="sb-foot">
-      <button class="btn-gen" id="btn-gen" onclick="generate()">🎵 Compor com IA</button>
+    <!-- API KEY -->
+    <div class="card">
+      <div class="card-title">🔑 API Key Anthropic</div>
+      <div class="api-row">
+        <input type="password" id="api-key" class="api-input" placeholder="sk-ant-api03-..." oninput="resetApiStatus()"/>
+        <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
+      </div>
+      <div style="font-size:10px;color:#bbb;margin-top:5px">Obtenha gratuitamente em console.anthropic.com</div>
     </div>
-  </div>
 
-  <div class="content">
-    <div id="page-criar" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
-      <div class="c-scroll" id="c-scroll">
-        <div class="empty" id="empty-state">
-          <div style="font-size:72px;animation:pulse3 3s ease-in-out infinite">🎵</div>
-          <div style="font-size:20px;font-weight:600;color:#0f2030">Sua música aparece aqui</div>
-          <div style="font-size:13px;color:#0a1a2a;max-width:440px;line-height:1.8">Configure ao lado e clique em <strong style="color:#f97316">Compor com IA</strong> para criar sua música.</div>
-          <div class="feat-grid">
-            <div class="feat-card"><span style="font-size:16px">✏</span>Edite cada seção</div>
-            <div class="feat-card"><span style="font-size:16px">🔄</span>Refaça com instruções</div>
-            <div class="feat-card"><span style="font-size:16px">🎙</span>Cante seu trecho</div>
-            <div class="feat-card"><span style="font-size:16px">✨</span>IA completa e estende</div>
+    <!-- ── TAB: DESCREVER ── -->
+    <div id="tab-descrever">
+      <div class="card">
+        <div class="card-title">💡 Como você imagina sua música?</div>
+        <textarea id="idea" class="txt-area" rows="4" placeholder="Ex: Uma música romantica sobre amor de verão, com clima feliz e ritmo dançante..."></textarea>
+        <div class="mic-row">
+          <button class="btn-mic-sm" id="mic-desc-btn" onclick="toggleMicDesc()">🎙</button>
+          <span class="mic-hint" id="mic-desc-hint">Clique ou toque no microfone para falar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: LETRA (usuário já tem a letra) ── -->
+    <div id="tab-letra" style="display:none">
+      <div class="card">
+        <div class="card-title">📝 Letra da Música</div>
+        <div style="font-size:12px;color:#aaa;margin-bottom:10px">Você já tem a letra? Cole aqui e a IA cria a música.</div>
+        <textarea id="letra-propria" class="txt-area" rows="8" placeholder="[Verso 1]&#10;Escreva aqui sua letra...&#10;&#10;[Refrão]&#10;..."></textarea>
+        <div style="font-size:10px;color:#f97316;margin-top:8px">⚠ Evite nomes de artistas, bandas ou letras de músicas conhecidas.</div>
+      </div>
+    </div>
+
+    <!-- ── TAB: ESTENDER ── -->
+    <div id="tab-estender" style="display:none">
+      <div class="card">
+        <div class="card-title">✨ Estender Música</div>
+        <div style="font-size:13px;color:#444;font-weight:500;margin-bottom:4px">Você tem o começo da sua música?</div>
+        <div style="font-size:12px;color:#aaa;margin-bottom:14px">Cole o trecho que você criou e a IA gera o restante completo — verso, refrão, bridge e tudo mais!</div>
+        <label class="field-label">Seu trecho:</label>
+        <textarea id="trecho-estender" class="txt-area" rows="4" placeholder="Ex:&#10;Quando a chuva cai lá no sertão&#10;Lembrança boa vem de coração...&#10;&#10;(1 a 4 linhas é suficiente!)"></textarea>
+        <div class="mic-row" style="margin-top:10px">
+          <button class="btn-mic-sm" id="mic-ext-btn" onclick="toggleMicExt()">🎙</button>
+          <span class="mic-hint" id="mic-ext-hint">Ou cante/fale o trecho</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: CANTAR ── -->
+    <div id="tab-cantar" style="display:none">
+      <div class="card">
+        <div class="card-title">🎙 Cantar sua Ideia</div>
+        <div style="font-size:13px;color:#444;font-weight:500;margin-bottom:4px">Cante ou fale sua ideia de música</div>
+        <div style="font-size:12px;color:#aaa;margin-bottom:16px">A IA transcreve sua voz e cria a letra completa a partir do que você cantar.</div>
+        <div class="mic-area">
+          <button class="btn-mic-big" id="mic-cant-btn" onclick="toggleMicCant()">🎙</button>
+          <div class="wave-bars" id="mic-cant-wave">
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+          </div>
+          <div class="mic-status" id="mic-cant-status">Toque no microfone e cante sua ideia</div>
+        </div>
+        <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
+        <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
+      </div>
+    </div>
+
+    <!-- DETALHES DA PRODUÇÃO -->
+    <div class="card">
+      <div class="card-title">🎚 Detalhes da Produção (opcional)</div>
+      <textarea id="producao" class="txt-area" rows="3" placeholder="Ex: Quero bateria marcada, guitarra suave, voz potente no refrão, ritmo mais lento no verso..."></textarea>
+      <div style="font-size:10px;color:#aaa;margin-top:6px">Descreva instrumentos, intensidade, clima, etc.</div>
+    </div>
+
+    <!-- NOME + REFERÊNCIA -->
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label class="field-label">🎵 Nome da Música</label>
+          <input id="titulo" class="txt-input" placeholder="Amor de Verão..."/>
+          <div style="font-size:10px;color:#aaa;margin-top:4px">Você pode criar depois</div>
+        </div>
+        <div>
+          <label class="field-label">⏱ Duração</label>
+          <div class="dur-grid">
+            <div class="dur-card" id="dc-jingle" onclick="selDur('jingle')">
+              <div class="dur-icon">⚡</div>
+              <div class="dur-name" id="dn-jingle">Jingle</div>
+              <div class="dur-desc">30s–1min</div>
+            </div>
+            <div class="dur-card" id="dc-curta" onclick="selDur('curta')">
+              <div class="dur-icon">🎵</div>
+              <div class="dur-name" id="dn-curta">Curta</div>
+              <div class="dur-desc">1–2min</div>
+            </div>
+            <div class="dur-card sel" id="dc-normal" onclick="selDur('normal')">
+              <div class="dur-icon">🎶</div>
+              <div class="dur-name sel" id="dn-normal">Normal</div>
+              <div class="dur-desc">3–4min</div>
+            </div>
+            <div class="dur-card" id="dc-longa" onclick="selDur('longa')">
+              <div class="dur-icon">🎼</div>
+              <div class="dur-name" id="dn-longa">Longa</div>
+              <div class="dur-desc">5min+</div>
+            </div>
           </div>
         </div>
-        <div id="result-area" style="display:none"></div>
       </div>
     </div>
 
-    <div id="page-lib" style="display:none;padding:22px;overflow-y:auto;height:100%">
-      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px">Biblioteca</div>
-      <div style="font-size:12px;color:#1e3a5f;margin-bottom:18px">Músicas salvas automaticamente no navegador.</div>
-      <div class="lib-grid" id="lib-grid"></div>
+    <!-- ESTILO MUSICAL -->
+    <div class="card">
+      <div class="card-title">🎸 Estilo Musical</div>
+      <div class="chips" id="genre-chips"></div>
+    </div>
+
+    <!-- EXTRAS -->
+    <div class="card">
+      <div class="card-title">🎛 Extras (opcional)</div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:10px">Selecione efeitos e instrumentos para personalizar sua música</div>
+      <div class="chips" id="extras-chips"></div>
+    </div>
+
+    <!-- TIPO DE VOZ + MOOD + BPM -->
+    <div class="card">
+      <div style="margin-bottom:14px">
+        <div class="card-title">🎙 Tipo de Voz</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
+          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div class="card-title">🌈 Mood / Clima</div>
+        <div class="chips" id="mood-chips"></div>
+      </div>
+      <div>
+        <div class="card-title">⏱ Andamento</div>
+        <div class="chips" id="tempo-chips"></div>
+      </div>
+    </div>
+
+    <!-- REFERÊNCIA -->
+    <div class="card">
+      <div class="card-title">🎤 Referência Artística (opcional)</div>
+      <input id="artist" class="txt-input" placeholder="Ex: Marília Mendonça, Wesley Safadão, MC Ryan..."/>
+      <div style="font-size:10px;color:#aaa;margin-top:5px">Mencione artistas para guiar o estilo</div>
+    </div>
+
+  </div><!-- /page-criar -->
+
+  <!-- ══ RESULTADO ══ -->
+  <div id="page-result" style="display:none"></div>
+
+  <!-- ══ BIBLIOTECA ══ -->
+  <div id="page-lib" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <div style="font-size:18px;font-weight:700;color:#1a1a1a">Suas Músicas</div>
+        <div style="font-size:12px;color:#aaa">Salvas automaticamente</div>
+      </div>
+      <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
+    </div>
+    <div class="lib-grid" id="lib-grid">
+      <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
+        <div style="font-size:36px;margin-bottom:10px">🎵</div>
+        <div style="font-size:14px">Nenhuma música ainda</div>
+      </div>
     </div>
   </div>
+
+</div><!-- /main -->
+
+<!-- FOOTER BTN -->
+<div class="footer-btn" id="footer-btn">
+  <button class="btn-main" id="btn-gen" onclick="generate()">🎵 Criar Letra</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+// ══════════════════════════════════════
+// DADOS
+// ══════════════════════════════════════
 const GENRES=[
-  {id:"sertanejo",l:"Sertanejo",e:"🤠"},{id:"sertuniv",l:"Sertanejo Univ.",e:"🎸"},
-  {id:"modao",l:"Modão",e:"🎺"},{id:"viola",l:"Viola Caipira",e:"🪕"},
-  {id:"funk",l:"Funk Carioca",e:"🔥"},{id:"pagode",l:"Pagode",e:"🥁"},
-  {id:"forro",l:"Forró",e:"🪗"},{id:"piseiro",l:"Piseiro",e:"👟"},
-  {id:"bregafunk",l:"Brega Funk",e:"💥"},{id:"axe",l:"Axé",e:"🎉"},
-  {id:"samba",l:"Samba",e:"🎺"},{id:"mpb",l:"MPB",e:"🎸"},
-  {id:"bossanova",l:"Bossa Nova",e:"🎷"},{id:"pop",l:"Pop",e:"⭐"},
-  {id:"rnb",l:"R&B",e:"🎤"},{id:"hiphop",l:"Hip-Hop",e:"🎧"},
-  {id:"trap",l:"Trap",e:"💎"},{id:"rock",l:"Rock",e:"🎸"},
-  {id:"gospel",l:"Gospel",e:"🙏"},{id:"eletro",l:"Eletrônica",e:"🎛"},
-  {id:"lofi",l:"Lo-fi",e:"☕"},{id:"country",l:"Country",e:"🤠"},
-  {id:"folk",l:"Folk",e:"🌾"},{id:"reggae",l:"Reggae",e:"🌿"},
-  {id:"acustico",l:"Acústico",e:"🎸"},{id:"jazz",l:"Jazz",e:"🎷"},
-  {id:"kizomba",l:"Kizomba",e:"💃"},{id:"afrobeat",l:"Afrobeat",e:"🌍"},
-  {id:"worship",l:"Worship",e:"✝️"},{id:"tecnobrega",l:"Tecnobrega",e:"🔊"},
+  {id:"personalizado",l:"Personalizado"},{id:"viola",l:"Viola Caipira"},
+  {id:"modao",l:"Modão"},{id:"sola",l:"Sola da Bota"},
+  {id:"sertanejo",l:"Sertanejo"},{id:"sertuniv",l:"Sertanejo Universitário"},
+  {id:"funk",l:"Funk Carioca"},{id:"piseiro",l:"Piseiro"},
+  {id:"forro",l:"Forró"},{id:"frevo",l:"Frevo"},
+  {id:"baiao",l:"Baião"},{id:"brega",l:"Brega"},
+  {id:"bregafunk",l:"Brega Funk"},{id:"tecnobrega",l:"Tecnobrega"},
+  {id:"arrocha",l:"Arrocha"},{id:"pagode",l:"Pagode"},
+  {id:"samba",l:"Samba"},{id:"mpb",l:"MPB"},
+  {id:"axe",l:"Axé"},{id:"carimbo",l:"Carimbó"},
+  {id:"baile",l:"Bailão"},{id:"kizomba",l:"Kizomba"},
+  {id:"semba",l:"Semba"},{id:"kuduro",l:"Kuduro"},
+  {id:"afrobeat",l:"Afrobeat"},{id:"gospel",l:"Gospel"},
+  {id:"worship",l:"Worship"},{id:"pop",l:"Pop"},
+  {id:"rock",l:"Rock"},{id:"hiphop",l:"Hip Hop"},
+  {id:"rnb",l:"R&B"},{id:"trap",l:"Trap"},
+  {id:"reggaeton",l:"Reggaeton"},{id:"reggae",l:"Reggae"},
+  {id:"eletro",l:"Eletrônica"},{id:"lofi",l:"Lo-fi"},
+  {id:"jazz",l:"Jazz"},{id:"blues",l:"Blues"},
+  {id:"country",l:"Country"},{id:"folk",l:"Folk"},
+  {id:"indie",l:"Indie"},{id:"acustico",l:"Acústico"},
+];
+const EXTRAS=[
+  "Vinheta","Narrado","Autotune","Rápido","Lento","Emotivo","Relaxante",
+  "Synth","Agressivo","Piano","Guitarra","808","Grave Pesado",
+  "Orquestra","Coral","Sanfona","Reverb","Violão","Bateria forte",
 ];
 const MOODS=[
-  {id:"romantico",l:"Romântico",e:"❤️"},{id:"alegre",l:"Alegre",e:"😄"},
-  {id:"melancolico",l:"Melancólico",e:"😢"},{id:"saudosista",l:"Saudosista",e:"🌅"},
-  {id:"energetico",l:"Energético",e:"⚡"},{id:"sensual",l:"Sensual",e:"🔥"},
-  {id:"espiritual",l:"Espiritual",e:"✨"},{id:"festivo",l:"Festivo",e:"🎊"},
-  {id:"nostalgico",l:"Nostálgico",e:"🌙"},{id:"agitado",l:"Agitado",e:"🤘"},
+  {id:"romantico",l:"Romântico ❤️"},{id:"alegre",l:"Alegre 😄"},
+  {id:"melancolico",l:"Melancólico 😢"},{id:"saudosista",l:"Saudosista 🌅"},
+  {id:"energetico",l:"Energético ⚡"},{id:"sensual",l:"Sensual 🔥"},
+  {id:"espiritual",l:"Espiritual ✨"},{id:"festivo",l:"Festivo 🎊"},
 ];
-const EXTRAS=["Piano","Guitarra","Violão","Sanfona","Bateria forte","Baixo grave","808","Sintetizador","Orquestra","Coral","Autotune","Grave pesado","Lento","Rápido","Emotivo","Suave","Agressivo"];
-const VOICES=[{id:"fs",l:"Feminino Suave"},{id:"fp",l:"Feminino Potente"},{id:"mg",l:"Masculino Grave"},{id:"mj",l:"Masculino Jovem"},{id:"dt",l:"Dueto M+F"}];
-const TEMPOS=[{id:"0",l:"Lento · 70",bpm:70},{id:"1",l:"Moderado · 90",bpm:90},{id:"2",l:"Animado · 110",bpm:110},{id:"3",l:"Rápido · 130",bpm:130}];
-const STRUCTS=["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final","Outro"];
-const DURATIONS=[
-  {id:"jingle",l:"Jingle",desc:"30s–1min",icon:"⚡",note:"Gere APENAS 1 refrão curto e impactante com 4-6 linhas.",struct:["Refrão"]},
-  {id:"curta",l:"Curta",desc:"1–2min",icon:"🎵",note:"Estrutura enxuta, seções com 4-5 linhas.",struct:["Verso 1","Refrão","Refrão Final"]},
-  {id:"normal",l:"Normal",desc:"3–4min",icon:"🎶",note:"Padrão de rádio, seções com 5-8 linhas bem desenvolvidas.",struct:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"]},
-  {id:"longa",l:"Longa",desc:"5min+",icon:"🎼",note:"Música elaborada, seções com 6-10 linhas e repetições.",struct:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Pré-Refrão","Refrão","Bridge","Refrão Final","Outro"]},
+const TEMPOS=[
+  {id:"0",l:"Lento · 70 BPM",bpm:70},{id:"1",l:"Moderado · 90 BPM",bpm:90},
+  {id:"2",l:"Animado · 110 BPM",bpm:110},{id:"3",l:"Rápido · 130 BPM",bpm:130},
 ];
-const SEC_COLORS={"Intro":"#f97316","Verso 1":"#22c55e","Verso 2":"#22c55e","Pré-Refrão":"#eab308","Refrão":"#ef4444","Refrão Final":"#ef4444","Bridge":"#a855f7","Outro":"#64748b"};
-const SEC_TAGS={"Intro":"[Intro]","Verso 1":"[Verse]","Verso 2":"[Verse 2]","Pré-Refrão":"[Pre-Chorus]","Refrão":"[Chorus]","Refrão Final":"[Chorus]","Bridge":"[Bridge]","Outro":"[Outro]"};
-
-let selGenre="sertanejo",selMood="romantico",selVoice="fs",selTempo="1";
-let selStruct=["Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"];
-let selExtras=[],selDuration="normal";
-let currentSong=null,currentSections={},activeTab="editor",currentPage="criar";
-let history=[];try{history=JSON.parse(localStorage.getItem("ams5")||"[]");}catch{}
-let micRecognition=null,micRecording=false,waveTimer=null;
-
-window.onload=()=>{
-  buildDurCards();
-  buildSingle("genre-chips",GENRES,"co",()=>selGenre,v=>selGenre=v);
-  buildSingle("mood-chips",MOODS,"cr",()=>selMood,v=>selMood=v);
-  buildSingle("voice-chips",VOICES,"cp",()=>selVoice,v=>selVoice=v);
-  buildSingle("tempo-chips",TEMPOS,"cb",()=>selTempo,v=>selTempo=v);
-  buildMulti("struct-chips",STRUCTS,"cg",()=>selStruct,v=>selStruct=v);
-  buildMultiArr("extras-chips",EXTRAS,"cy",()=>selExtras,v=>selExtras=v);
-  updateLibN();
-  updateStructWrap();
+const STRUCTS_MAP={
+  jingle:["Refrão"],
+  curta:["Verso 1","Refrão","Refrão Final"],
+  normal:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final"],
+  longa:["Intro","Verso 1","Pré-Refrão","Refrão","Verso 2","Pré-Refrão","Refrão","Bridge","Refrão Final","Outro"],
+};
+const SEC_COLORS={
+  "Intro":"#f97316","Verso 1":"#22c55e","Verso 2":"#22c55e",
+  "Pré-Refrão":"#f59e0b","Refrão":"#ef4444","Refrão Final":"#ef4444",
+  "Bridge":"#a855f7","Outro":"#94a3b8"
+};
+const SEC_TAGS={
+  "Intro":"[Intro]","Verso 1":"[Verse]","Verso 2":"[Verse 2]",
+  "Pré-Refrão":"[Pre-Chorus]","Refrão":"[Chorus]","Refrão Final":"[Chorus]",
+  "Bridge":"[Bridge]","Outro":"[Outro]"
+};
+const DUR_NOTES={
+  jingle:"Gere APENAS 1 refrão curto e impactante com 4-6 linhas.",
+  curta:"Estrutura enxuta, seções com 4-5 linhas.",
+  normal:"Padrão de rádio, seções com 5-8 linhas bem desenvolvidas.",
+  longa:"Música elaborada, seções com 6-10 linhas e repetições.",
 };
 
-function buildDurCards(){
-  const el=document.getElementById("dur-grid");
-  DURATIONS.forEach(d=>{
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="fp";
+let selExtras=[],selDuration="normal";
+let currentSong=null,currentSections={},activeRTab="letra";
+let currentPage="criar",mainTab="descrever";
+let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
+let micDesc=null,micExt=null,micCant=null;
+let micDescOn=false,micExtOn=false,micCantOn=false;
+let waveTimer=null;
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+window.onload=()=>{
+  buildChips("genre-chips",GENRES,"sel",()=>selGenre,v=>selGenre=v);
+  buildMultiChips("extras-chips",EXTRAS,"sel-y",()=>selExtras,v=>selExtras=v);
+  buildChips("mood-chips",MOODS,"sel-r",()=>selMood,v=>selMood=v);
+  buildChips("tempo-chips",TEMPOS,"sel-b",()=>selTempo,v=>selTempo=v);
+  updateLibN();
+};
+
+function buildChips(cid,items,cls,getter,setter){
+  const el=document.getElementById(cid);if(!el)return;
+  items.forEach(item=>{
+    const id=item.id||item.l;
     const b=document.createElement("button");
-    b.className="dur-card"+(selDuration===d.id?" sel":"");
-    b.id="dc-"+d.id;
-    b.innerHTML=`<div style="font-size:14px;margin-bottom:1px">${d.icon}</div><div style="font-size:11px;font-weight:700;color:${selDuration===d.id?"#f97316":"#c8ddf0"}">${d.l}</div><div style="font-size:10px;color:${selDuration===d.id?"#f97316aa":"#2d5070"}">${d.desc}</div>`;
+    b.className="chip"+(getter()===id?" "+cls:"");
+    b.textContent=item.l;
+    b.onclick=()=>{setter(id);el.querySelectorAll(".chip").forEach(x=>x.className="chip");b.className="chip "+cls;};
+    el.appendChild(b);
+  });
+}
+function buildMultiChips(cid,items,cls,getter,setter){
+  const el=document.getElementById(cid);if(!el)return;
+  items.forEach(item=>{
+    const b=document.createElement("button");
+    b.className="chip"+(getter().includes(item)?" "+cls:"");
+    b.textContent=item;
     b.onclick=()=>{
-      selDuration=d.id;
-      document.querySelectorAll(".dur-card").forEach(x=>{
-        x.className="dur-card";
-        x.querySelector("div:nth-child(2)").style.color="#c8ddf0";
-        x.querySelector("div:nth-child(3)").style.color="#2d5070";
-      });
-      b.className="dur-card sel";
-      b.querySelector("div:nth-child(2)").style.color="#f97316";
-      b.querySelector("div:nth-child(3)").style.color="#f97316aa";
-      updateStructWrap();
+      const c=getter();
+      c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);
+      b.className="chip"+(getter().includes(item)?" "+cls:"");
     };
     el.appendChild(b);
   });
 }
 
-function updateStructWrap(){
-  document.getElementById("struct-wrap").style.display=(selDuration==="normal"||selDuration==="longa")?"block":"none";
+// ══════════════════════════════════════
+// TABS
+// ══════════════════════════════════════
+function switchMainTab(tab){
+  mainTab=tab;
+  ["descrever","letra","estender","cantar"].forEach(t=>{
+    document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
+  });
+  document.querySelectorAll(".tab-item").forEach((el,i)=>{
+    const tabs=["descrever","letra","estender","cantar"];
+    el.className="tab-item"+(tabs[i]===tab?" active":"");
+  });
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
-function buildSingle(cid,items,cls,getter,setter){
-  const el=document.getElementById(cid);
-  items.forEach(item=>{
-    const id=item.id||item.l;
-    const b=document.createElement("button");
-    b.className="chip"+(getter()===id?" "+cls:"");
-    b.innerHTML=(item.e?"<span>"+item.e+"</span> ":"")+item.l;
-    b.onclick=()=>{setter(id);el.querySelectorAll(".chip").forEach(x=>x.className="chip");b.className="chip "+cls;};
-    el.appendChild(b);
+// ══════════════════════════════════════
+// VOZ
+// ══════════════════════════════════════
+function selVoice(v){
+  selVoz=v;
+  const isFem=v==="fp"||v==="fs";
+  const masc=document.getElementById("voz-masc");
+  const fem=document.getElementById("voz-fem");
+  if(isFem){
+    fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";
+    masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";
+  }else{
+    masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
+    fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
+  }
+}
+
+// ══════════════════════════════════════
+// DURAÇÃO
+// ══════════════════════════════════════
+function selDur(d){
+  selDuration=d;
+  ["jingle","curta","normal","longa"].forEach(x=>{
+    const c=document.getElementById("dc-"+x);
+    const n=document.getElementById("dn-"+x);
+    if(c&&n){
+      c.className="dur-card"+(x===d?" sel":"");
+      n.className="dur-name"+(x===d?" sel":"");
+    }
   });
 }
-function buildMulti(cid,items,cls,getter,setter){
-  const el=document.getElementById(cid);
-  items.forEach(item=>{
-    const b=document.createElement("button");
-    b.className="chip"+(getter().includes(item)?" "+cls:"");
-    b.textContent=item;
-    b.onclick=()=>{const c=getter();c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);b.className="chip"+(getter().includes(item)?" "+cls:"");};
-    el.appendChild(b);
-  });
-}
-function buildMultiArr(cid,items,cls,getter,setter){
-  const el=document.getElementById(cid);
-  items.forEach(item=>{
-    const b=document.createElement("button");
-    b.className="chip"+(getter().includes(item)?" "+cls:"");
-    b.textContent=item;
-    b.onclick=()=>{const c=getter();c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);b.className="chip"+(getter().includes(item)?" "+cls:"");};
-    el.appendChild(b);
-  });
-}
 
-function setPage(p){
-  currentPage=p;
-  document.getElementById("page-criar").style.display=p==="criar"?"flex":"none";
-  document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
-  document.getElementById("nt-criar").className="nav-tab"+(p==="criar"?" active":"");
-  document.getElementById("nt-lib").className="nav-tab"+(p==="lib"?" active":"");
-  if(p==="lib")renderLib();
+// ══════════════════════════════════════
+// API KEY
+// ══════════════════════════════════════
+function resetApiStatus(){
+  document.getElementById("api-key").className="api-input";
+  document.getElementById("btn-api").className="btn-api";
+  document.getElementById("btn-api").textContent="Validar";
+  document.getElementById("api-dot").className="api-dot";
 }
-
-function resetKey(){
-  const btn=document.getElementById("btn-val");
-  btn.className="btn-val";btn.innerHTML="🔍 Validar Chave";btn.disabled=false;
-  document.getElementById("key-ic").textContent="";
-  document.getElementById("api-key").style.borderColor="#1a3050";
-  document.getElementById("sdot").style.background="#1e3a5f";
-  document.getElementById("stxt").textContent="API não validada";
-}
-
 async function validateKey(){
   const key=document.getElementById("api-key").value.trim();
   if(!key){showToast("Cole a API Key!","err");return;}
-  const btn=document.getElementById("btn-val");
-  btn.innerHTML='<span class="spinner"></span> Validando...';btn.disabled=true;
+  const btn=document.getElementById("btn-api");
+  btn.textContent="...";btn.disabled=true;
   try{
     const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:10,messages:[{role:"user",content:"hi"}]})});
     if(r.ok){
-      btn.className="btn-val ok";btn.innerHTML="✅ Chave Válida!";
-      document.getElementById("key-ic").textContent="✓";document.getElementById("key-ic").style.color="#22c55e";
-      document.getElementById("api-key").style.borderColor="#22c55e";
-      document.getElementById("sdot").style.background="#22c55e";document.getElementById("sdot").style.boxShadow="0 0 6px #22c55e";
-      document.getElementById("stxt").textContent="API Conectada";
+      document.getElementById("api-key").className="api-input ok";
+      btn.className="btn-api ok";btn.textContent="✓ OK";
+      document.getElementById("api-dot").className="api-dot ok";
       showToast("✅ Chave válida!","ok");
     }else throw new Error();
   }catch{
-    btn.className="btn-val err";btn.innerHTML="❌ Tentar novamente";btn.disabled=false;
-    document.getElementById("key-ic").textContent="✗";document.getElementById("key-ic").style.color="#ef4444";
-    document.getElementById("api-key").style.borderColor="#ef4444";
-    document.getElementById("sdot").style.background="#ef4444";
-    document.getElementById("stxt").textContent="Chave Inválida";
+    document.getElementById("api-key").className="api-input err";
+    btn.className="btn-api";btn.textContent="Tentar novamente";btn.disabled=false;
     showToast("❌ Chave inválida","err");
-  }
+  }finally{if(btn.textContent!=="Tentar novamente")btn.disabled=false;}
 }
 
+// ══════════════════════════════════════
+// MIC — DESCREVER
+// ══════════════════════════════════════
+function toggleMicDesc(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById("mic-desc-btn");
+  const hint=document.getElementById("mic-desc-hint");
+  if(micDescOn){
+    if(micDesc){micDesc.stop();micDesc=null;}
+    micDescOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";
+    hint.className="mic-hint";hint.textContent="Clique ou toque no microfone para falar";return;
+  }
+  if(!SR){hint.textContent="Use Chrome/Edge para gravar";return;}
+  micDesc=new SR();micDesc.lang="pt-BR";micDesc.continuous=true;micDesc.interimResults=true;
+  micDesc.onresult=e=>{
+    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("idea");ta.value+=(ta.value?" ":"")+fin.trim();}
+  };
+  micDesc.onerror=micDesc.onend=()=>{micDescOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";hint.className="mic-hint";hint.textContent="Clique ou toque no microfone para falar";};
+  micDesc.start();micDescOn=true;
+  btn.className="btn-mic-sm rec";btn.textContent="⏹";
+  hint.className="mic-hint rec";hint.textContent="Gravando... toque para parar";
+}
+
+// ══════════════════════════════════════
+// MIC — ESTENDER
+// ══════════════════════════════════════
+function toggleMicExt(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById("mic-ext-btn");
+  const hint=document.getElementById("mic-ext-hint");
+  if(micExtOn){
+    if(micExt){micExt.stop();micExt=null;}
+    micExtOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";
+    hint.className="mic-hint";hint.textContent="Ou cante/fale o trecho";return;
+  }
+  if(!SR){hint.textContent="Use Chrome/Edge";return;}
+  micExt=new SR();micExt.lang="pt-BR";micExt.continuous=true;micExt.interimResults=true;
+  micExt.onresult=e=>{
+    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("trecho-estender");ta.value+=(ta.value?"\n":"")+fin.trim();}
+  };
+  micExt.onerror=micExt.onend=()=>{micExtOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";hint.className="mic-hint";hint.textContent="Ou cante/fale o trecho";};
+  micExt.start();micExtOn=true;
+  btn.className="btn-mic-sm rec";btn.textContent="⏹";
+  hint.className="mic-hint rec";hint.textContent="Gravando... toque para parar";
+}
+
+// ══════════════════════════════════════
+// MIC — CANTAR
+// ══════════════════════════════════════
+function toggleMicCant(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById("mic-cant-btn");
+  const status=document.getElementById("mic-cant-status");
+  const wave=document.getElementById("mic-cant-wave");
+  if(micCantOn){
+    if(micCant){micCant.stop();micCant=null;}
+    micCantOn=false;clearInterval(waveTimer);
+    btn.className="btn-mic-big";btn.textContent="🎙";
+    status.className="mic-status";status.textContent="Toque no microfone e cante sua ideia";
+    wave.style.display="none";return;
+  }
+  if(!SR){status.textContent="⚠ Use Chrome/Edge para gravar";return;}
+  micCant=new SR();micCant.lang="pt-BR";micCant.continuous=true;micCant.interimResults=true;
+  micCant.onresult=e=>{
+    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("transcricao-canto");ta.value+=(ta.value?" ":"")+fin.trim();}
+  };
+  micCant.onerror=micCant.onend=()=>{
+    micCantOn=false;clearInterval(waveTimer);
+    btn.className="btn-mic-big";btn.textContent="🎙";
+    status.className="mic-status";status.textContent="✅ Gravado! Edite se precisar.";
+    wave.style.display="none";
+  };
+  micCant.start();micCantOn=true;
+  btn.className="btn-mic-big rec";btn.textContent="⏹";
+  status.className="mic-status rec";status.textContent="🔴 Gravando... cante!";
+  wave.style.display="flex";
+  waveTimer=setInterval(()=>{wave.querySelectorAll(".wb").forEach(b=>{b.style.height=(3+Math.random()*24)+"px";});},100);
+}
+
+// ══════════════════════════════════════
+// GENERATE
+// ══════════════════════════════════════
 async function generate(){
   const apiKey=document.getElementById("api-key").value.trim();
-  const idea=document.getElementById("idea").value.trim();
-  if(!apiKey){showToast("Cole sua API Key!","err");return;}
-  if(!idea){showToast("Descreva sua ideia!","err");return;}
+  if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
+
   const g=GENRES.find(x=>x.id===selGenre)||GENRES[0];
   const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
-  const v=VOICES.find(x=>x.id===selVoice)||VOICES[0];
   const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
-  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
-  const secsToUse=dur.id==="jingle"||dur.id==="curta"?dur.struct:selStruct;
+  const dur=selDuration;
+  const secsToUse=STRUCTS_MAP[dur]||STRUCTS_MAP.normal;
   const extrasStr=selExtras.join(", ");
   const titulo=document.getElementById("titulo").value.trim();
   const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
+  const vozLabel=selVoz.startsWith("f")?"Feminina":"Masculina";
+
+  let tema="",modoDesc="";
+
+  if(mainTab==="descrever"){
+    tema=document.getElementById("idea").value.trim();
+    modoDesc="Crie letra e música completa baseada nesta ideia";
+    if(!tema){showToast("Descreva sua ideia musical!","err");return;}
+  }else if(mainTab==="letra"){
+    tema=document.getElementById("letra-propria").value.trim();
+    modoDesc="O usuário já tem a letra. Use-a como base para criar o estilo musical e adaptar se necessário.";
+    if(!tema){showToast("Cole sua letra!","err");return;}
+  }else if(mainTab==="estender"){
+    tema=document.getElementById("trecho-estender").value.trim();
+    modoDesc="O usuário tem apenas o começo. MANTENHA o trecho exato e complete toda a música a partir dele.";
+    if(!tema){showToast("Cole o trecho que você criou!","err");return;}
+  }else if(mainTab==="cantar"){
+    tema=document.getElementById("transcricao-canto").value.trim();
+    modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
+    if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
+  }
+
   setLoading(true);currentSong=null;currentSections={};
-  document.getElementById("empty-state").style.display="none";
-  document.getElementById("result-area").style.display="none";
-  const prompt=`Compositor musical profissional brasileiro de elite. Crie música COMPLETA e ORIGINAL.
-- Tema: ${idea} | Gênero: ${g.l} | Mood: ${m.l} | BPM: ${t.bpm} | Voz: ${v.l}
-- Duração: ${dur.l} (${dur.desc}) | Seções: ${secsToUse.join(", ")}
+
+  const prompt=`Você é compositor musical profissional brasileiro de elite.
+MODO: ${modoDesc}
+
+ENTRADA DO USUÁRIO: ${tema}
+
+ESPECIFICAÇÕES:
+- Gênero: ${g.l} | Mood: ${m.l} | BPM: ${t.bpm} | Voz: ${vozLabel}
+- Duração: ${dur} | Seções: ${secsToUse.join(", ")}
 ${titulo?`- Título sugerido: "${titulo}"`:""}${artist?`\n- Referência: ${artist}`:""}${extrasStr?`\n- Extras: ${extrasStr}`:""}${producao?`\n- Produção: ${producao}`:""}
-INSTRUÇÃO DE DURAÇÃO: ${dur.note}
+
+INSTRUÇÃO: ${DUR_NOTES[dur]}
 Letra PROFISSIONAL: rimas ricas, imagens poéticas, emoção real.
+
 SOMENTE JSON válido:
-{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style_prompt":"Prompt técnico em inglês para o Suno (min 60 palavras)","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção detalhadas"}`;
+{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style_prompt":"Prompt técnico detalhado em inglês para o Suno (min 60 palavras)","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção"}`;
+
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
-    if(!res.ok)throw new Error(data?.error?.message||"Erro API "+res.status);
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:v.l,duration:dur.l,durationDesc:dur.desc};
+    currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
-    if(dur.id==="jingle"||dur.id==="curta")selStruct=dur.struct;
-    activeTab="editor";saveHistory();renderResult();
+    const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
+    history=[entry,...history].slice(0,30);try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+    updateLibN();activeRTab="letra";
+    renderResult(secsToUse);
     showToast("🎵 Música criada!","ok");
-    document.getElementById("c-scroll").scrollTop=0;
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
 }
 
-async function rewriteSection(secName){
+// ══════════════════════════════════════
+// REWRITE / EXTEND
+// ══════════════════════════════════════
+async function rewriteSec(sec){
   const apiKey=document.getElementById("api-key").value.trim();
   if(!apiKey||!currentSong)return;
-  const sid=safeid(secName);
-  const instrEl=document.getElementById("ia-ta-"+sid);
-  const instruction=instrEl?instrEl.value.trim():"";
-  if(!instruction){showToast("Descreva o que quer mudar!","err");return;}
+  const sid=safeid(sec);
+  const instr=document.getElementById("ia-ta-"+sid)?.value.trim();
+  if(!instr){showToast("Descreva o que quer mudar!","err");return;}
   const btn=document.getElementById("btn-rw-"+sid);
-  if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Reescrevendo...';}
-  const prompt=`Compositor profissional. Reescreva SOMENTE esta seção.
-Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}
-Seção "${secName}": ${currentSections[secName]}
-Instrução: "${instruction}"
-JSON: {"lyrics":"nova letra com \\n"}`;
+  if(btn){btn.disabled=true;btn.textContent="Reescrevendo...";}
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSections[secName]=parsed.lyrics;
-    renderResult();showToast("✨ "+secName+" reescrita!","ok");
-  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="🔄 Reescrever com IA";}}
+    currentSections[sec]=parsed.lyrics;
+    renderResult(Object.keys(currentSections));showToast("✨ Seção reescrita!","ok");
+  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="🔄 Reescrever";}}
 }
 
-async function extendSection(secName){
+async function extendSec(sec){
   const apiKey=document.getElementById("api-key").value.trim();
   if(!apiKey||!currentSong)return;
-  const sid=safeid(secName);
-  const trEl=document.getElementById("ext-trecho-"+sid);
-  const trecho=trEl?trEl.value.trim():"";
+  const sid=safeid(sec);
+  const trecho=document.getElementById("ext-trecho-"+sid)?.value.trim();
   if(!trecho){showToast("Escreva ou grave seu trecho!","err");return;}
-  const btn=document.getElementById("btn-ext-"+sid);
-  if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Gerando...';}
-  const prompt=`Compositor musical profissional brasileiro. Complete esta seção.
-Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}
-Seção: "${secName}"
-TRECHO DO USUÁRIO (mantenha EXATAMENTE no início):
-${trecho}
-Complete com mais 3-6 linhas mantendo o trecho exato, mesmo ritmo e esquema de rimas.
-JSON: {"lyrics":"trecho do usuário + continuação com \\n"}`;
+  const btn=document.getElementById("btn-ext-sec-"+sid);
+  if(btn){btn.disabled=true;btn.textContent="Gerando...";}
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.content||[]).map(b=>b.text||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSections[secName]=parsed.lyrics;
-    renderResult();showToast("✨ "+secName+" estendida!","ok");
-  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender com IA";}}
+    currentSections[sec]=parsed.lyrics;
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida!","ok");
+  }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
-function startMic(sid){
+// MIC no resultado
+let micResultOn=false,micResultRec=null;
+function toggleMicResult(sid){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  const statusEl=document.getElementById("mic-status-"+sid);
-  if(!SR){if(statusEl)statusEl.textContent="⚠ Use Chrome/Edge para gravar voz";return;}
-  micRecognition=new SR();micRecognition.lang="pt-BR";micRecognition.continuous=true;micRecognition.interimResults=true;
-  micRecognition.onresult=e=>{
-    let fin="";
-    for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
-    if(fin){const ta=document.getElementById("ext-trecho-"+sid);if(ta)ta.value+=(ta.value?" ":"")+fin.trim();}
+  const btn=document.getElementById("mic-res-btn-"+sid);
+  if(micResultOn){
+    if(micResultRec){micResultRec.stop();micResultRec=null;}
+    micResultOn=false;if(btn){btn.textContent="🎙";btn.style.background="#f0f0f0";btn.style.color="#666";}return;
+  }
+  if(!SR){showToast("Use Chrome para gravar","err");return;}
+  micResultRec=new SR();micResultRec.lang="pt-BR";micResultRec.continuous=true;micResultRec.interimResults=true;
+  micResultRec.onresult=e=>{
+    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("ext-trecho-"+sid);if(ta)ta.value+=(ta.value?"\n":"")+fin.trim();}
   };
-  micRecognition.onerror=()=>stopMic(sid);
-  micRecognition.onend=()=>{if(micRecording)stopMic(sid);};
-  micRecognition.start();micRecording=true;
-  const btn=document.getElementById("mic-btn-"+sid);
-  if(btn){btn.className="btn-mic rec";btn.textContent="⏹";}
-  if(statusEl){statusEl.textContent="🔴 Gravando... cante ou fale!";statusEl.style.color="#ef4444";}
-  const ww=document.getElementById("wave-wrap-"+sid);
-  if(ww){
-    ww.style.display="flex";
-    waveTimer=setInterval(()=>{
-      ww.querySelectorAll(".wb").forEach(b=>{b.style.height=(4+Math.random()*28)+"px";});
-    },100);
-  }
-}
-function stopMic(sid){
-  if(micRecognition){micRecognition.stop();micRecognition=null;}
-  clearInterval(waveTimer);micRecording=false;
-  const btn=document.getElementById("mic-btn-"+sid);
-  if(btn){btn.className="btn-mic";btn.textContent="🎙";}
-  const statusEl=document.getElementById("mic-status-"+sid);
-  if(statusEl){statusEl.textContent="✅ Gravação finalizada! Edite se precisar.";statusEl.style.color="#22c55e";}
-  const ww=document.getElementById("wave-wrap-"+sid);
-  if(ww){ww.style.display="none";ww.querySelectorAll(".wb").forEach(b=>{b.style.height="4px";});}
-}
-function toggleMic(sid){micRecording?stopMic(sid):startMic(sid);}
-
-function switchVtab(sid,tab){
-  const pe=document.getElementById("vp-escrever-"+sid);
-  const pg=document.getElementById("vp-gravar-"+sid);
-  const te=document.getElementById("vt-escrever-"+sid);
-  const tg=document.getElementById("vt-gravar-"+sid);
-  if(tab==="escrever"){
-    pe.style.display="block";pg.style.display="none";
-    te.className="vtab active";tg.className="vtab";
-  }else{
-    pe.style.display="none";pg.style.display="block";
-    tg.className="vtab active";te.className="vtab";
-  }
+  micResultRec.onerror=micResultRec.onend=()=>{micResultOn=false;if(btn){btn.textContent="🎙";btn.style.background="#f0f0f0";btn.style.color="#666";}};
+  micResultRec.start();micResultOn=true;
+  if(btn){btn.textContent="⏹";btn.style.background="#ef4444";btn.style.color="#fff";}
 }
 
-function toggleSecMode(sid,mode){
-  const ia=document.getElementById("ia-panel-"+sid);
-  const ext=document.getElementById("ext-panel-"+sid);
-  const rb=document.getElementById("rb-"+sid);
-  const sb=document.getElementById("sb-"+sid);
-  const curIA=(ia&&ia.style.display==="block");
-  const curEXT=(ext&&ext.style.display==="block");
-  if(ia)ia.style.display="none";if(ext)ext.style.display="none";
-  if(rb)rb.className="sbtn";if(sb)sb.className="sbtn";
-  if(mode==="refazer"&&!curIA){if(ia)ia.style.display="block";if(rb)rb.className="sbtn ron";}
-  if(mode==="estender"&&!curEXT){if(ext)ext.style.display="block";if(sb)sb.className="sbtn son";}
+// ══════════════════════════════════════
+// RENDER RESULT
+// ══════════════════════════════════════
+function renderResult(structs){
+  const s=currentSong;
+  const secsToShow=structs||Object.keys(currentSections);
+  setPage("result");
+  const ra=document.getElementById("page-result");
+  ra.innerHTML=`<div style="animation:fadeup .4s ease">
+
+    <button onclick="setPage('criar')" style="margin-bottom:14px;padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Criar nova música</button>
+
+    <div class="song-header">
+      <div class="song-title">${esc(s.title)}</div>
+      <div class="song-sub">${esc(s.subtitle||"")}</div>
+      <div class="song-vibe">"${esc(s.vibe||"")}"</div>
+      <div class="song-meta">
+        <span class="meta-badge">🎵 ${s.bpm} BPM</span>
+        <span class="meta-badge">🎸 ${esc(s.genre)}</span>
+        <span class="meta-badge">🎭 ${esc(s.mood)}</span>
+        <span class="meta-badge">🎙 ${esc(s.voice)}</span>
+        <span class="meta-badge" style="color:#f97316;border-color:#f9731430">${durIcon(s.duration)} ${esc(s.duration)}</span>
+      </div>
+      <div class="chords-row">
+        <span style="color:#aaa;font-size:10px;letter-spacing:1px">ACORDES</span>
+        <span style="font-family:monospace;font-size:14px;color:#f97316;font-weight:700">${esc(s.chords||"")}</span>
+        <span style="color:#aaa;font-size:10px;letter-spacing:1px">TOM</span>
+        <span style="font-family:monospace;font-size:14px;color:#3b82f6">${esc(s.key||"")}</span>
+      </div>
+    </div>
+
+    <div class="result-tabs">
+      <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
+      <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
+      <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
+    </div>
+
+    <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
+      <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
+        <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar com seu trecho
+      </div>
+      ${secsToShow.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
+    </div>
+
+    <div id="rtab-suno" style="display:${activeRTab==="suno"?"block":"none"}">
+      <div class="steps-row">
+        ${[{n:"1",t:"Copie o Estilo",d:"Style of Music",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Lyrics",c:"#ef4444"},{n:"3",t:"Crie no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
+        <div class="step-card" style="border-color:${st.c}22">
+          <div class="step-num" style="background:${st.c}15;color:${st.c}">${st.n}</div>
+          <div class="step-t">${st.t}</div>
+          <div class="step-d">${st.d}</div>
+        </div>`).join("")}
+      </div>
+      <div class="export-box">
+        <div class="export-head">
+          <span class="export-label" style="color:#f97316">STYLE OF MUSIC</span>
+          <button class="btn-copy-sm" style="background:#f97316;color:#fff" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
+        </div>
+        <pre class="export-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
+      </div>
+      <div class="export-box">
+        <div class="export-head">
+          <span class="export-label" style="color:#ef4444">LYRICS</span>
+          <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
+        </div>
+        <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
+      </div>
+    </div>
+
+    <div id="rtab-info" style="display:${activeRTab==="info"?"block":"none"}">
+      <div class="info-box">
+        <div class="info-box-title">🎸 Instrumentação</div>
+        <div>${(s.instruments||[]).map(i=>`<span class="inst-pill">🎵 ${esc(i)}</span>`).join("")}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">🎛 Notas de Produção</div>
+        <div style="font-size:13px;color:#555;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function buildSecBlock(sec){
+  const color=SEC_COLORS[sec]||"#f97316";
+  const sid=safeid(sec);
+  return `
+  <div class="sec-block" style="border-left:3px solid ${color}">
+    <div class="sec-head">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div class="sec-dot" style="background:${color}"></div>
+        <span class="sec-lbl" style="color:${color}">${esc(sec)}</span>
+      </div>
+      <div class="sec-actions">
+        <button class="sec-btn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
+        <button class="sec-btn" id="rb-${sid}" onclick="toggleSecPanel('${sid}','refazer')">🔄 Refazer</button>
+        <button class="sec-btn" id="sb-${sid}" onclick="toggleSecPanel('${sid}','estender')">✨ Estender</button>
+      </div>
+    </div>
+    <div id="body-${sid}" class="sec-body">
+      <pre class="sec-text">${esc(currentSections[sec]||"")}</pre>
+    </div>
+    <div class="ia-panel" id="ia-${sid}">
+      <div class="ia-label">O que quer mudar nesta seção?</div>
+      <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Mais emotivo", "Muda as rimas", "Fala de saudade"...'></textarea>
+      <button style="margin-top:8px;padding:9px 18px;border-radius:9px;border:none;background:#f97316;color:#fff;font-size:13px;font-weight:600;cursor:pointer" id="btn-rw-${sid}" onclick="rewriteSec('${sec}')">🔄 Reescrever com IA</button>
+    </div>
+    <div class="ext-panel" id="ext-${sid}">
+      <div class="ia-label" style="color:#22c55e;font-weight:600;letter-spacing:1px">✨ ESTENDER — A IA completa a partir do seu trecho</div>
+      <div class="ext-tabs">
+        <div class="ext-tab active" id="et-esc-${sid}" onclick="switchExtTab('${sid}','esc')">
+          <div class="ext-tab-icon">✏</div>
+          <div class="ext-tab-lbl">Escrever</div>
+          <div class="ext-tab-desc">Digite o trecho</div>
+        </div>
+        <div class="ext-tab" id="et-mic-${sid}" onclick="switchExtTab('${sid}','mic')">
+          <div class="ext-tab-icon">🎙</div>
+          <div class="ext-tab-lbl">Cantar / Falar</div>
+          <div class="ext-tab-desc">Use o microfone</div>
+        </div>
+      </div>
+      <div id="ep-esc-${sid}">
+        <div class="ia-label">Escreva 1-3 linhas que vieram na sua cabeça:</div>
+        <textarea class="ia-ta" id="ext-trecho-${sid}" style="border-color:#22c55e33;height:75px" placeholder='Ex: "Quando a chuva cai lá no sertão&#10;Lembrança boa vem de coração..."'></textarea>
+      </div>
+      <div id="ep-mic-${sid}" style="display:none">
+        <div class="mic-area" style="text-align:left">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <button style="width:42px;height:42px;border-radius:50%;border:none;background:#22c55e;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center" id="mic-res-btn-${sid}" onclick="toggleMicResult('${sid}')">🎙</button>
+            <span style="font-size:12px;color:#aaa">Toque e cante seu trecho</span>
+          </div>
+          <div class="ia-label">Transcrição:</div>
+          <textarea class="ia-ta" id="ext-trecho-${sid}" style="height:60px" placeholder="Aparece aqui automaticamente..."></textarea>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#aaa;margin:6px 0 8px">A IA mantém seu trecho exato e completa com o mesmo ritmo e rima.</div>
+      <button class="btn-ext-main" id="btn-ext-sec-${sid}" onclick="extendSec('${sec}')">✨ Estender com IA</button>
+    </div>
+  </div>`;
+}
+
+function switchExtTab(sid,tab){
+  document.getElementById("ep-esc-"+sid).style.display=tab==="esc"?"block":"none";
+  document.getElementById("ep-mic-"+sid).style.display=tab==="mic"?"block":"none";
+  document.getElementById("et-esc-"+sid).className="ext-tab"+(tab==="esc"?" active":"");
+  document.getElementById("et-mic-"+sid).className="ext-tab"+(tab==="mic"?" active":"");
 }
 
 function toggleEdit(sid,sec){
@@ -575,212 +970,85 @@ function toggleEdit(sid,sec){
   if(body.querySelector("textarea")){
     currentSections[sec]=body.querySelector("textarea").value;
     body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
-    btn.className="sbtn";btn.textContent="✏ Editar";
-    const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();
+    btn.className="sec-btn";btn.textContent="✏ Editar";
+    const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics(Object.keys(currentSections));
   }else{
     body.innerHTML=`<textarea class="sec-ta">${esc(currentSections[sec]||"")}</textarea>`;
     body.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
-    btn.className="sbtn eon";btn.textContent="✓ Salvar";
+    btn.className="sec-btn eon";btn.textContent="✓ Salvar";
   }
 }
 
-function renderResult(){
-  const s=currentSong;
-  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
-  document.getElementById("empty-state").style.display="none";
-  const ra=document.getElementById("result-area");
-  ra.style.display="block";
-  ra.innerHTML=`<div style="animation:fadeup .4s ease">
-    <div class="r-head">
-      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <div>
-          <div class="r-title">${esc(s.title)}</div>
-          <div class="r-sub">${esc(s.subtitle||"")}</div>
-          <div class="r-vibe">"${esc(s.vibe||"")}"</div>
-          <div class="r-tags">
-            <span class="r-tag" style="background:#f9731618;color:#f97316;border:1px solid #f9731440">${dur.icon} ${esc(s.duration||dur.l)} · ${esc(s.durationDesc||dur.desc)}</span>
-            ${(s.style_tags||[]).map(t=>`<span class="r-tag" style="background:#0d1e35;color:#2d5070;border:1px solid #1a3050">#${esc(t)}</span>`).join("")}
-          </div>
-        </div>
-        <div class="meta-row">
-          ${[["🎵",s.bpm+" BPM"],["🎸",s.genre],["🎭",s.mood],["🎙",s.voice]].map(([ic,v])=>`
-            <div class="meta-p"><div style="font-size:9px;color:#1e3a5f;margin-bottom:1px">${ic}</div><div style="font-size:11px;color:#4a7099;font-family:monospace;font-weight:600">${esc(String(v))}</div></div>
-          `).join("")}
-        </div>
-      </div>
-      <div class="chords-row">
-        <span style="font-size:9px;color:#1e3a5f;letter-spacing:2px">ACORDES</span>
-        <span style="font-family:monospace;font-size:14px;color:#f97316;font-weight:700">${esc(s.chords||"")}</span>
-        <span style="font-size:9px;color:#1e3a5f;letter-spacing:2px;margin-left:4px">TOM</span>
-        <span style="font-family:monospace;font-size:14px;color:#3b82f6">${esc(s.key||"")}</span>
-      </div>
-    </div>
-    <div class="tabs">
-      <button class="tab ${activeTab==="editor"?"active":""}" onclick="switchTab('editor')">✏ Editor</button>
-      <button class="tab ${activeTab==="suno"?"active":""}" onclick="switchTab('suno')">🚀 Exportar pro Suno</button>
-      <button class="tab ${activeTab==="info"?"active":""}" onclick="switchTab('info')">🎛 Produção</button>
-    </div>
-    <div class="tab-body" id="tc-editor" style="display:${activeTab==="editor"?"block":"none"}">
-      <div style="max-width:780px">
-        <div style="background:#081525;border:1px solid #1a3050;border-radius:8px;padding:9px 13px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">
-          ${[["✏ Editar","#f97316","Modifique o texto"],["🔄 Refazer","#ef4444","IA reescreve com suas instruções"],["✨ Estender","#22c55e","Escreva ou cante · IA completa"]].map(([btn,c,desc])=>`
-            <div style="display:flex;align-items:center;gap:5px;font-size:11px"><span style="color:${c};font-weight:600">${btn}</span><span style="color:#1e3a5f">${desc}</span></div>
-          `).join("")}
-        </div>
-        ${selStruct.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
-      </div>
-    </div>
-    <div class="tab-body" id="tc-suno" style="display:${activeTab==="suno"?"block":"none"}">
-      <div style="max-width:800px">
-        <div class="steps-row">
-          ${[{n:"1",t:"Copie o Estilo",d:"Cole em 'Style of Music'",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Cole em 'Lyrics'",c:"#ef4444"},{n:"3",t:"Gere no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
-          <div class="step-card" style="border:1px solid ${st.c}22">
-            <div class="step-num" style="background:${st.c}20;color:${st.c}">${st.n}</div>
-            <div style="font-size:12px;color:#c8ddf0;font-weight:600;margin-bottom:1px">${st.t}</div>
-            <div style="font-size:10px;color:#1e3a5f">${st.d}</div>
-          </div>`).join("")}
-        </div>
-        <div class="ex-box">
-          <div class="ex-head">
-            <span style="font-size:10px;color:#f97316;letter-spacing:2px;font-weight:700">STYLE OF MUSIC → cole no Suno</span>
-            <button class="btn-copy" style="border:1px solid #f9731440;background:#f9731618;color:#f97316" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
-          </div>
-          <pre class="ex-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
-        </div>
-        <div class="ex-box">
-          <div class="ex-head">
-            <span style="font-size:10px;color:#ef4444;letter-spacing:2px;font-weight:700">LYRICS → cole no Suno</span>
-            <button class="btn-copy" style="border:1px solid #ef444440;background:#ef444418;color:#ef4444" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar Letra</button>
-          </div>
-          <pre class="ex-pre" id="ex-lyrics">${esc(buildSunoLyrics())}</pre>
-        </div>
-      </div>
-    </div>
-    <div class="tab-body" id="tc-info" style="display:${activeTab==="info"?"block":"none"}">
-      <div style="max-width:700px">
-        <div class="info-box">
-          <div style="font-size:9px;color:#1e3a5f;letter-spacing:3px;margin-bottom:10px;font-weight:700">🎸 INSTRUMENTAÇÃO</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px">${(s.instruments||[]).map(i=>`<div class="inst-pill">🎵 ${esc(i)}</div>`).join("")}</div>
-        </div>
-        <div class="info-box">
-          <div style="font-size:9px;color:#1e3a5f;letter-spacing:3px;margin-bottom:10px;font-weight:700">🎛 NOTAS DE PRODUÇÃO</div>
-          <div style="font-size:13px;color:#4a7099;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
+function toggleSecPanel(sid,mode){
+  const ia=document.getElementById("ia-"+sid);
+  const ext=document.getElementById("ext-"+sid);
+  const rb=document.getElementById("rb-"+sid);
+  const sb=document.getElementById("sb-"+sid);
+  const iaOpen=ia&&ia.style.display==="block";
+  const extOpen=ext&&ext.style.display==="block";
+  if(ia)ia.style.display="none";if(ext)ext.style.display="none";
+  if(rb)rb.className="sec-btn";if(sb)sb.className="sec-btn";
+  if(mode==="refazer"&&!iaOpen){if(ia)ia.style.display="block";if(rb)rb.className="sec-btn ron";}
+  if(mode==="estender"&&!extOpen){if(ext)ext.style.display="block";if(sb)sb.className="sec-btn son";}
 }
 
-function buildSecBlock(sec){
-  const color=SEC_COLORS[sec]||"#f97316";
-  const sid=safeid(sec);
-  const waveBars=Array(12).fill('<div class="wb"></div>').join("");
-  return `
-  <div class="sec-block" style="border-left:3px solid ${color}">
-    <div class="sec-head">
-      <div style="display:flex;align-items:center;gap:7px">
-        <div class="sec-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
-        <span class="sec-lbl" style="color:${color}">${esc(sec)}</span>
-      </div>
-      <div style="display:flex;gap:4px">
-        <button class="sbtn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
-        <button class="sbtn" id="rb-${sid}" onclick="toggleSecMode('${sid}','refazer')">🔄 Refazer</button>
-        <button class="sbtn" id="sb-${sid}" onclick="toggleSecMode('${sid}','estender')">✨ Estender</button>
-      </div>
-    </div>
-    <div id="body-${sid}" style="padding:10px 13px">
-      <pre class="sec-text">${esc(currentSections[sec]||"")}</pre>
-    </div>
-
-    <div class="ia-panel" id="ia-panel-${sid}">
-      <div style="font-size:10px;color:#2d5070;margin-bottom:6px;padding-top:10px">O que quer mudar nesta seção?</div>
-      <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Mais emotivo", "Rimas mais fluidas", "Fala de saudade"...'></textarea>
-      <button class="btn-rw" id="btn-rw-${sid}" onclick="rewriteSection('${sec}')">🔄 Reescrever com IA</button>
-    </div>
-
-    <div class="ext-panel" id="ext-panel-${sid}">
-      <div style="padding:10px 0 10px">
-        <div style="font-size:10px;color:#22c55e;letter-spacing:2px;font-weight:700;margin-bottom:10px">✨ ESTENDER — A IA completa a partir do seu trecho</div>
-        <div class="vtabs">
-          <button class="vtab active" id="vt-escrever-${sid}" onclick="switchVtab('${sid}','escrever')">
-            <div style="font-size:12px">✏ Escrever</div>
-            <div style="font-size:10px;color:#2d5070">Digite o trecho</div>
-          </button>
-          <button class="vtab" id="vt-gravar-${sid}" onclick="switchVtab('${sid}','gravar')">
-            <div style="font-size:12px">🎙 Cantar / Falar</div>
-            <div style="font-size:10px;color:#2d5070">Use o microfone</div>
-          </button>
-        </div>
-        <div id="vp-escrever-${sid}">
-          <div style="font-size:10px;color:#2d5070;margin-bottom:6px">Cole ou escreva 1-3 linhas que vieram na sua cabeça:</div>
-          <textarea id="ext-trecho-${sid}" class="ia-ta" style="height:70px;border-color:#22c55e44" placeholder='Ex: "Quando a chuva cai lá no sertão&#10;Lembrança boa vem de coração..."'></textarea>
-        </div>
-        <div id="vp-gravar-${sid}" style="display:none">
-          <div class="mic-area">
-            <div id="mic-status-${sid}" style="font-size:11px;color:#2d5070;text-align:center;margin-bottom:10px">Clique no microfone e cante ou fale seu trecho</div>
-            <div style="display:flex;align-items:center;justify-content:center;gap:14px">
-              <button class="btn-mic" id="mic-btn-${sid}" onclick="toggleMic('${sid}')">🎙</button>
-              <div class="wave-wrap" id="wave-wrap-${sid}" style="display:none">${waveBars}</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:#1e3a5f;margin-bottom:6px">Transcrição (edite se precisar):</div>
-          <textarea id="ext-trecho-${sid}" class="ia-ta" style="height:65px" placeholder="O texto transcrito aparece aqui automaticamente..."></textarea>
-        </div>
-        <div style="font-size:10px;color:#1e3a5f;margin:7px 0">A IA mantém seu trecho exatamente e completa com o mesmo ritmo e rima.</div>
-        <button class="btn-ext" id="btn-ext-${sid}" onclick="extendSection('${sec}')">✨ Estender com IA</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function buildSunoLyrics(){
-  if(!currentSong||!currentSections)return"";
-  return selStruct.filter(s=>currentSections[s]).map(s=>(SEC_TAGS[s]||"["+s+"]")+"\n"+currentSections[s]).join("\n\n");
-}
-
-function switchTab(tab){
-  activeTab=tab;
-  if(tab==="suno"){const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics();}
-  ["editor","suno","info"].forEach(t=>{
-    const tc=document.getElementById("tc-"+t);
-    const btn=document.querySelector(`.tab[onclick="switchTab('${t}')"]`);
-    if(tc)tc.style.display=t===tab?"block":"none";
-    if(btn)btn.className="tab"+(t===tab?" active":"");
+function switchRTab(tab){
+  activeRTab=tab;
+  ["letra","suno","info"].forEach(t=>{
+    const el=document.getElementById("rtab-"+t);
+    const btn=document.querySelector(`.rtab[onclick="switchRTab('${t}')"]`);
+    if(el)el.style.display=t===tab?"block":"none";
+    if(btn)btn.className="rtab"+(t===tab?" active":"");
   });
+  if(tab==="suno"){const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics(Object.keys(currentSections));}
 }
 
-function saveHistory(){
-  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:Object.assign({},currentSections),struct:[...selStruct]};
-  history=[entry,...history].slice(0,30);
-  try{localStorage.setItem("ams5",JSON.stringify(history));}catch{}
-  updateLibN();
+function buildSunoLyrics(secsToShow){
+  if(!currentSections)return"";
+  return(secsToShow||[]).filter(s=>currentSections[s]).map(s=>(SEC_TAGS[s]||"["+s+"]")+"\n"+currentSections[s]).join("\n\n");
+}
+
+// ══════════════════════════════════════
+// PAGE / LIB
+// ══════════════════════════════════════
+function setPage(p){
+  currentPage=p;
+  document.getElementById("page-criar").style.display=p==="criar"?"block":"none";
+  document.getElementById("page-result").style.display=p==="result"?"block":"none";
+  document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
+  document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
+  if(p==="lib")renderLib();
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
   const el=document.getElementById("lib-grid");
-  if(!history.length){el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px 20px"><div style="font-size:36px;opacity:.15;margin-bottom:10px">🎵</div><div style="font-size:13px;color:#1e3a5f">Nenhuma música ainda</div></div>`;return;}
+  if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">🎵</div><div>Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">${esc(e.title)}</div>
-      <div style="font-size:11px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${esc(e.duration||"Normal")}</div>
-      <div style="font-size:10px;color:#1e3a5f;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
-      <div style="display:flex;gap:5px">
-        <button onclick="loadEntry(${e.id})" style="flex:1;padding:6px;border-radius:6px;border:1px solid #f9731440;background:#f9731618;color:#f97316;font-size:11px;font-weight:600;cursor:pointer">✏ Editar</button>
-        <button onclick="delEntry(${e.id})" style="padding:6px 10px;border-radius:6px;border:1px solid #1a3050;background:transparent;color:#1e3a5f;font-size:11px;cursor:pointer">🗑</button>
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:2px">${esc(e.title)}</div>
+      <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
+      <div style="display:flex;gap:7px">
+        <button onclick="loadEntry(${e.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✏ Editar</button>
+        <button onclick="delEntry(${e.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#999;font-size:12px;cursor:pointer">🗑</button>
       </div>
     </div>`).join("");
 }
 function loadEntry(id){
   const e=history.find(x=>x.id===id);if(!e)return;
-  currentSong=e.song;currentSections=e.sections;if(e.struct)selStruct=e.struct;
-  activeTab="editor";setPage("criar");renderResult();showToast("Carregada!","ok");
+  currentSong=e.song;currentSections=e.sections;activeRTab="letra";
+  renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
 }
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  try{localStorage.setItem("ams5",JSON.stringify(history));}catch{}
+  try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
   updateLibN();renderLib();showToast("Removida","ok");
 }
 
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function durIcon(d){return{jingle:"⚡",curta:"🎵",normal:"🎶",longa:"🎼"}[d]||"🎶";}
 function copyEl(id,msg){
   const el=document.getElementById(id);if(!el)return;
   const text=el.textContent||el.innerText;
@@ -789,12 +1057,13 @@ function copyEl(id,msg){
   });
 }
 function showToast(msg,type){
-  const el=document.getElementById("toast");el.textContent=msg;el.className="toast show "+(type||"ok");setTimeout(()=>el.className="toast",3500);
+  const el=document.getElementById("toast");el.textContent=msg;el.className="toast show "+(type||"ok");setTimeout(()=>el.className="toast",3000);
 }
 function setLoading(on){
   const btn=document.getElementById("btn-gen");
-  const dur=DURATIONS.find(d=>d.id===selDuration)||DURATIONS[2];
-  btn.disabled=on;btn.innerHTML=on?'<span class="spinner"></span> Compondo com IA...':`${dur.icon} Compor ${dur.l} com IA`;
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  btn.disabled=on;
+  btn.innerHTML=on?`<div class="spinner"></div> Criando...`:(labels[mainTab]||"🎵 Criar Letra");
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function safeid(s){return s.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");}
