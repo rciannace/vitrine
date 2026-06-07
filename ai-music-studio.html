@@ -580,10 +580,11 @@ async function validateKey(){
   const btn=document.getElementById("btn-api");
   btn.textContent="...";btn.disabled=true;
   try{
-    const r=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:10,messages:[{role:"user",content:"hi"}]})});
-    if(r.ok){
+    const r=await fetch("https://openrouter.ai/api/v1/auth/key",{
+      headers:{"Authorization":"Bearer "+key}});
+    const d=await r.json();
+    if(r.ok&&d.data){
+      localStorage.setItem("or_key",key);
       document.getElementById("api-key").className="api-input ok";
       btn.className="btn-api ok";btn.textContent="✓ OK";
       document.getElementById("api-dot").className="api-dot ok";
@@ -737,7 +738,7 @@ SOMENTE JSON válido:
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -767,7 +768,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
+      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -787,7 +788,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://ai-music-studio.html","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
+      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
