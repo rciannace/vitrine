@@ -489,6 +489,8 @@ window.onload=()=>{
   buildChips("mood-chips",MOODS,"sel-r",()=>selMood,v=>selMood=v);
   buildChips("tempo-chips",TEMPOS,"sel-b",()=>selTempo,v=>selTempo=v);
   updateLibN();
+  const savedKey=localStorage.getItem("or_key");
+  if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
 };
 
 function buildChips(cid,items,cls,getter,setter){
@@ -580,20 +582,21 @@ async function validateKey(){
   const btn=document.getElementById("btn-api");
   btn.textContent="...";btn.disabled=true;
   try{
-    const r=await fetch("https://openrouter.ai/api/v1/auth/key",{
-      headers:{"Authorization":"Bearer "+key}});
+    const r=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"meta-llama/llama-4-scout:free",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
     const d=await r.json();
-    if(r.ok&&d.data){
+    if(r.ok&&d.choices){
       localStorage.setItem("or_key",key);
       document.getElementById("api-key").className="api-input ok";
       btn.className="btn-api ok";btn.textContent="✓ OK";
       document.getElementById("api-dot").className="api-dot ok";
       showToast("✅ Chave válida!","ok");
-    }else throw new Error();
-  }catch{
+    }else throw new Error(d?.error?.message||"erro");
+  }catch(e){
     document.getElementById("api-key").className="api-input err";
     btn.className="btn-api";btn.textContent="Tentar novamente";btn.disabled=false;
-    showToast("❌ Chave inválida","err");
+    showToast("❌ "+( e.message||"Chave inválida"),"err");
   }finally{if(btn.textContent!=="Tentar novamente")btn.disabled=false;}
 }
 
