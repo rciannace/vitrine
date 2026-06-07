@@ -735,8 +735,10 @@ ${titulo?`- Título sugerido: "${titulo}"`:""}${artist?`\n- Referência: ${artis
 INSTRUÇÃO: ${DUR_NOTES[dur]}
 Letra PROFISSIONAL: rimas ricas, imagens poéticas, emoção real.
 
+REGRA CRÍTICA suno_style: máximo 120 caracteres, palavras-chave em INGLÊS separadas por vírgula. Inclua gênero, mood, voz, BPM e 2-3 instrumentos. Ex: "sertanejo, romantic, female vocals, 90 BPM, acoustic guitar, emotional"
+
 SOMENTE JSON válido:
-{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style_prompt":"Prompt técnico detalhado em inglês para o Suno (min 60 palavras)","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção"}`;
+{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção"}`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -873,13 +875,32 @@ function renderResult(structs){
           <div class="step-d">${st.d}</div>
         </div>`).join("")}
       </div>
+      <div style="background:#f0fff4;border:1px solid #22c55e30;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#555;line-height:1.7">
+        <strong style="color:#22c55e">Como usar no Suno:</strong><br>
+        1️⃣ Copie o <b>Styles</b> → cole no campo <b>Styles</b> do Suno<br>
+        2️⃣ Copie a <b>Letra</b> → cole no campo <b>Lyrics</b> do Suno<br>
+        3️⃣ Copie o <b>Título</b> → cole em <b>Song Title</b> e clique <b>Create</b>!
+      </div>
+
       <div class="export-box">
         <div class="export-head">
-          <span class="export-label" style="color:#f97316">STYLE OF MUSIC</span>
+          <div>
+            <span class="export-label" style="color:#f97316">STYLES</span>
+            <span id="style-chars" style="font-size:10px;margin-left:8px;color:#aaa"></span>
+          </div>
           <button class="btn-copy-sm" style="background:#f97316;color:#fff" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
         </div>
-        <pre class="export-pre" id="ex-style">${esc(s.suno_style_prompt||"")}</pre>
+        <pre class="export-pre" id="ex-style" style="white-space:pre-wrap;word-break:break-word">${esc((s.suno_style||s.suno_style_prompt||"").slice(0,120))}</pre>
       </div>
+
+      <div class="export-box">
+        <div class="export-head">
+          <span class="export-label" style="color:#1a1a1a">SONG TITLE</span>
+          <button class="btn-copy-sm" style="background:#1a1a1a;color:#fff" onclick="copyEl('ex-title','Título copiado! ✓')">📋 Copiar</button>
+        </div>
+        <pre class="export-pre" id="ex-title">${esc(s.title||"")}</pre>
+      </div>
+
       <div class="export-box">
         <div class="export-head">
           <span class="export-label" style="color:#ef4444">LYRICS</span>
@@ -1004,7 +1025,16 @@ function switchRTab(tab){
     if(el)el.style.display=t===tab?"block":"none";
     if(btn)btn.className="rtab"+(t===tab?" active":"");
   });
-  if(tab==="suno"){const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics(Object.keys(currentSections));}
+  if(tab==="suno"){
+    const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics(Object.keys(currentSections));
+    const styleEl=document.getElementById("ex-style");
+    const charEl=document.getElementById("style-chars");
+    if(styleEl&&charEl){
+      const len=styleEl.textContent.length;
+      charEl.textContent=len+"/120 chars";
+      charEl.style.color=len>120?"#ef4444":len>100?"#f59e0b":"#22c55e";
+    }
+  }
 }
 
 function buildSunoLyrics(secsToShow){
