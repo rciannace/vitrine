@@ -1686,11 +1686,13 @@ function renderGallery(){
   empty.style.display="none";
   grid.innerHTML=withAudio.map((e,i)=>{
     const isPlaying=spIndex===i&&spPlaying;
-    const genreIcon=genreEmoji(e.genre);
+    const photoId=getNaturePhoto(e.genre,e.mood,e.title);
+    const photoUrl=`https://images.unsplash.com/photo-${photoId}?w=300&q=70&fit=crop&crop=entropy`;
     return `<div class="gal-card${isPlaying?" playing":""}" id="gal-card-${i}" onclick="spPlay(${i})">
-      <div class="gal-thumb" style="background:${genreColor(e.genre)}">
-        <span${isPlaying?' class="disc-spin"':''}>${genreIcon}</span>
-        <div class="gal-play-icon">${isPlaying?"⏸":"▶"}</div>
+      <div class="gal-thumb" style="background:${genreColor(e.genre)};position:relative;overflow:hidden">
+        <img src="${photoUrl}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.05) 60%)"></div>
+        <div class="gal-play-icon" style="z-index:2">${isPlaying?"⏸":"▶"}</div>
       </div>
       <div class="gal-info">
         <div class="gal-title">${esc(e.title)}</div>
@@ -1707,6 +1709,39 @@ function renderGallery(){
       if(el)el.textContent=spFmt(a.duration);
     });
   });
+}
+
+function getNaturePhoto(genre, mood, title){
+  // Map genre/mood to Unsplash photo IDs
+  const g=(genre||'').toLowerCase();
+  const m=(mood||'').toLowerCase();
+  const t=(title||'').toLowerCase();
+
+  // Use title hash to vary photos within same genre
+  let hash=0;for(let i=0;i<t.length;i++)hash=(hash*31+t.charCodeAt(i))&0xffff;
+  const v=hash%4;
+
+  const photos={
+    sertanejo:['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],
+    'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],
+    funk:['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],
+    pagode:['1507003211169-0a1dd7228f2d','1516912481800-cf2cde1b2249','1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1'],
+    gospel:['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],
+    rock:['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],
+    pop:['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1'],
+    forró:['1504701954957-2010ec3bcec1','1500534314209-a25ddb2bd429','1516912481800-cf2cde1b2249','1441974231531-c6227db76b6e'],
+    mpb:['1433086966358-54859d0ed716','1448375240586-882707db888b','1472214103451-9374bd1c798e','1441974231531-c6227db76b6e'],
+    lofi:['1519681393784-d120267933ba','1518609878373-06d740f60d8b','1493514789931-586cb221d7a7','1470225620780-dba8ba36b745'],
+  };
+
+  // romantic mood → praia/pôr do sol
+  if(m.includes('românt')||m.includes('amor')){
+    const r=['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'];
+    return r[v];
+  }
+
+  const arr=photos[g]||['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
+  return arr[v];
 }
 
 function genreEmoji(g){
