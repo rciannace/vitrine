@@ -1694,10 +1694,19 @@ function renderGallery(){
       </div>
       <div class="gal-info">
         <div class="gal-title">${esc(e.title)}</div>
-        <div class="gal-sub">${esc(e.genre)} · ${e.bpm} BPM</div>
+        <div class="gal-sub" id="gal-dur-${i}">--:--</div>
       </div>
     </div>`;
   }).join("");
+  // load durations async
+  withAudio.forEach((e,i)=>{
+    const a=new Audio();
+    a.src=e.audio;
+    a.addEventListener("loadedmetadata",()=>{
+      const el=document.getElementById("gal-dur-"+i);
+      if(el)el.textContent=spFmt(a.duration);
+    });
+  });
 }
 
 function genreEmoji(g){
