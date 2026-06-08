@@ -641,7 +641,13 @@ async function ghLoad(){
     if(!r.ok)throw new Error("HTTP "+r.status);
     const d=await r.json();
     ghFileSha=d.sha;
-    const decoded=JSON.parse(atob(d.content.replace(/\n/g,"")));
+    const raw=atob(d.content.replace(/\n/g,""));
+    let decoded;
+    try{
+      decoded=JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+    }catch{
+      decoded=JSON.parse(raw);
+    }
     // merge: cloud wins, keep local if same id
     const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
@@ -657,7 +663,8 @@ async function ghSave(){
   if(!ghToken){saveLocal();return;}
   syncStatus="syncing";renderSyncUI();
   try{
-    const content=btoa(unescape(encodeURIComponent(JSON.stringify(history,null,2))));
+    const json=JSON.stringify(history,null,2);
+    const content=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
     const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
     if(ghFileSha)body.sha=ghFileSha;
     const r=await ghFetch("PUT",body);
