@@ -405,6 +405,14 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
+    <!-- Export / Import -->
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button onclick="exportLib()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #eee;background:#fff;font-size:12px;font-weight:600;color:#666;cursor:pointer">📤 Exportar músicas</button>
+      <label style="flex:1;padding:10px;border-radius:10px;border:1.5px dashed #f97316;background:#fff8f5;font-size:12px;font-weight:600;color:#f97316;cursor:pointer;text-align:center">
+        📥 Importar músicas
+        <input type="file" accept=".json" style="display:none" onchange="importLib(this)"/>
+      </label>
+    </div>
     <div class="lib-grid" id="lib-grid">
       <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
@@ -583,6 +591,45 @@ async function ghSave(){
   }
 }
 function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
+
+// ══════════════════════════════════════
+// EXPORT / IMPORT
+// ══════════════════════════════════════
+function exportLib(){
+  if(!history.length){showToast("Nenhuma música para exportar","err");return;}
+  const data=JSON.stringify(history,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="minhas-musicas-"+new Date().toISOString().slice(0,10)+".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("📤 Exportado com sucesso!","ok");
+}
+function importLib(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!Array.isArray(imported))throw new Error("Formato inválido");
+      // merge: imported wins for new ids, keep existing
+      const existMap=Object.fromEntries(history.map(x=>[x.id,x]));
+      const impMap=Object.fromEntries(imported.map(x=>[x.id,x]));
+      const merged=Object.values({...existMap,...impMap}).sort((a,b)=>b.id-a.id);
+      history=merged;
+      ghSave();
+      updateLibN();
+      renderLib();
+      showToast("📥 "+imported.length+" músicas importadas!","ok");
+    }catch(err){
+      showToast("❌ Arquivo inválido: "+err.message,"err");
+    }
+    input.value="";
+  };
+  reader.readAsText(file);
+}
 let micDescOn=false,micExtOn=false,micCantOn=false;
 let waveTimer=null;
 
