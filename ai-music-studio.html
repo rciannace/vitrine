@@ -72,6 +72,8 @@ body.dark .api-input{background:var(--bg3);border-color:var(--border);color:var(
 body.dark .song-sub{color:#e84400}
 body.dark .song-vibe{color:var(--text4)}
 body.dark .sec-lbl{color:var(--text3)}
+body.dark #page-lib{color:var(--text)}
+body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
 body.dark .sp-player{background:#0a0a14;border-top:1px solid #1e1e2e}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
@@ -490,10 +492,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   <div id="page-lib" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div>
-        <div style="font-size:18px;font-weight:700;color:#1a1a1a">Suas Músicas</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text)">Suas Músicas</div>
         <div id="sync-status" style="margin-top:4px"></div>
       </div>
-      <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
+      <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);font-size:12px;color:var(--text3);cursor:pointer">← Voltar</button>
     </div>
     <!-- Lib tabs -->
     <div class="lib-tab-row">
