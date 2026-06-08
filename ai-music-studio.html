@@ -385,12 +385,25 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
   <!-- ══ BIBLIOTECA ══ -->
   <div id="page-lib" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div>
         <div style="font-size:18px;font-weight:700;color:#1a1a1a">Suas Músicas</div>
-        <div style="font-size:12px;color:#aaa">Salvas automaticamente</div>
+        <div id="sync-status" style="margin-top:4px"></div>
       </div>
       <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
+    </div>
+    <!-- GitHub Token Panel -->
+    <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
+      <div style="display:flex;gap:8px">
+        <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:9px 12px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
+        <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
+        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
+      </div>
     </div>
     <div class="lib-grid" id="lib-grid">
       <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
@@ -483,6 +496,93 @@ let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
 let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
 let micDesc=null,micExt=null,micCant=null;
+
+// ══════════════════════════════════════
+// GITHUB SYNC
+// ══════════════════════════════════════
+const GH_OWNER="rciannace";
+const GH_REPO="vitrine";
+const GH_FILE="iamusicstudio.json";
+const GH_BRANCH="main";
+let ghToken=null;
+let ghFileSha=null;
+let syncStatus="idle"; // idle | syncing | ok | err
+
+function ghSaveToken(token){
+  ghToken=token.trim();
+  localStorage.setItem("ams_gh_token",ghToken);
+  document.getElementById("gh-token-input").value="";
+  document.getElementById("gh-token-panel").style.display="none";
+  showToast("✅ Token salvo!","ok");
+  renderSyncUI();
+  ghLoad();
+}
+function ghLoadToken(){
+  ghToken=localStorage.getItem("ams_gh_token")||null;
+}
+function toggleTokenPanel(){
+  const p=document.getElementById("gh-token-panel");
+  p.style.display=p.style.display==="none"?"block":"none";
+  if(p.style.display==="block")setTimeout(()=>document.getElementById("gh-token-input").focus(),100);
+}
+function renderSyncUI(){
+  const el=document.getElementById("sync-status");
+  if(!el)return;
+  if(!ghToken){
+    el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
+    return;
+  }
+  const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
+  const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
+  el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
+}
+async function ghFetch(method,body){
+  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  const opts={method,headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
+  if(body)opts.body=JSON.stringify(body);
+  return fetch(url,opts);
+}
+async function ghLoad(){
+  if(!ghToken)return;
+  try{
+    const r=await ghFetch("GET");
+    if(r.status===404){ghFileSha=null;return;}
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const d=await r.json();
+    ghFileSha=d.sha;
+    const decoded=JSON.parse(atob(d.content.replace(/\n/g,"")));
+    // merge: cloud wins, keep local if same id
+    const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
+    const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
+    const merged=Object.values({...localMap,...cloudMap});
+    history=merged.sort((a,b)=>b.id-a.id);
+    localStorage.setItem("ams6",JSON.stringify(history));
+    updateLibN();
+    if(currentPage==="lib")renderLib();
+    showToast("☁️ Biblioteca carregada!","ok");
+  }catch(e){console.warn("ghLoad:",e);}
+}
+async function ghSave(){
+  if(!ghToken){saveLocal();return;}
+  syncStatus="syncing";renderSyncUI();
+  try{
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(history,null,2))));
+    const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
+    if(ghFileSha)body.sha=ghFileSha;
+    const r=await ghFetch("PUT",body);
+    if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
+    const d=await r.json();
+    ghFileSha=d.content.sha;
+    saveLocal();
+    syncStatus="ok";renderSyncUI();
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
+  }catch(e){
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Sync: "+e.message,"err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+  }
+}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
 let micDescOn=false,micExtOn=false,micCantOn=false;
 let waveTimer=null;
 
@@ -490,6 +590,9 @@ let waveTimer=null;
 // INIT
 // ══════════════════════════════════════
 window.onload=()=>{
+  ghLoadToken();
+  ghLoad();
+  renderSyncUI();
   buildChips("genre-chips",GENRES,"sel",()=>selGenre,v=>selGenre=v);
   buildMultiChips("extras-chips",EXTRAS,"sel-y",()=>selExtras,v=>selExtras=v);
   buildChips("mood-chips",MOODS,"sel-r",()=>selMood,v=>selMood=v);
@@ -1066,7 +1169,7 @@ function setPage(p){
   document.getElementById("page-result").style.display=p==="result"?"block":"none";
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
-  if(p==="lib")renderLib();
+  if(p==="lib"){renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
@@ -1120,10 +1223,10 @@ function loadEntry(id){
   currentSong=e.song;currentSections=e.sections;activeRTab="letra";
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
 }
-function saveHistory(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
+function saveHistory(){ghSave();}
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+  ghSave();
   updateLibN();renderLib();showToast("Removida","ok");
 }
 
