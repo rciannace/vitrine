@@ -15,15 +15,54 @@
   --shadow:#0000001a;
 }
 body.dark{
-  --bg:#111;--bg2:#1a1a1a;--bg3:#222;
-  --border:#2a2a2a;--border2:#333;
-  --text:#f0f0f0;--text2:#ccc;--text3:#aaa;--text4:#666;--text5:#555;
-  --card-bg:#1a1a1a;--input-bg:#222;
-  --shadow:#00000060;
+  --bg:#0a0a14;--bg2:#0e0e1a;--bg3:#15151f;
+  --border:#1e1e2e;--border2:#252535;
+  --text:#ffffff;--text2:#f0f0f0;--text3:#d0d0d0;--text4:#888;--text5:#666;
+  --card-bg:#0e0e1a;--input-bg:#15151f;
+  --shadow:#00000080;
+  --accent-dark: linear-gradient(135deg,#e84400,#c40060);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;transition:background .3s,color .3s}
 html{overflow-x:hidden;width:100%;touch-action:manipulation}body{overflow-x:hidden;width:100%;max-width:100vw;position:relative}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* DARK MODE OVERRIDES */
+body.dark .card-title{color:var(--text4)}
+body.dark .field-label{color:var(--text2)}
+body.dark .chip{color:var(--text3)}
+body.dark .tab-item{color:var(--text4)}
+body.dark .lib-tab{color:var(--text4)}
+body.dark .mic-hint{color:var(--text4)}
+body.dark .field-hint{color:var(--text4)}
+body.dark .header{box-shadow:0 1px 0 var(--border)}
+body.dark .sec-btn{background:var(--bg3);border-color:var(--border);color:var(--text3)}
+body.dark .dur-card{background:var(--bg3);border-color:var(--border)}
+body.dark .dur-name{color:var(--text2)}
+body.dark .dur-desc{color:var(--text4)}
+body.dark .export-box{background:var(--bg3);border-color:var(--border)}
+body.dark .export-head{background:var(--bg2);border-color:var(--border)}
+body.dark .export-pre{color:var(--text3)}
+body.dark .extend-starter{background:var(--bg2)}
+body.dark .extend-starter-title{color:var(--text)}
+body.dark .result-tabs{border-color:var(--border)}
+body.dark .rtab{color:var(--text4)}
+body.dark .step-card{background:var(--bg3);border-color:var(--border)}
+body.dark .step-t{color:var(--text2)}
+body.dark .inst-pill{background:var(--bg3);border-color:var(--border);color:var(--text3)}
+body.dark .ia-panel{border-color:var(--border)}
+body.dark .ia-ta{background:var(--input-bg);border-color:var(--border);color:var(--text)}
+body.dark .ext-panel{border-color:var(--border)}
+body.dark .ext-tab{background:var(--bg3);border-color:var(--border)}
+body.dark .ext-tab-lbl{color:var(--text2)}
+body.dark .mic-area{background:var(--bg3)}
+body.dark .lib-grid .lib-card{box-shadow:0 1px 8px var(--shadow)}
+body.dark #suno-modal{background:var(--bg2)}
+body.dark .api-input{background:var(--bg3);border-color:var(--border);color:var(--text)}
+body.dark .song-sub{color:#e84400}
+body.dark .song-vibe{color:var(--text4)}
+body.dark .sec-lbl{color:var(--text3)}
+body.dark .gal-info .gal-sub{color:var(--text4)}
+body.dark .sp-player{background:#0a0a14;border-top:1px solid #1e1e2e}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
