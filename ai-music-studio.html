@@ -428,6 +428,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <label class="field-label">🎤 Artista / Cantor</label>
           <input id="inspirar-artista" class="txt-input" placeholder="Ex: Chitãozinho & Xororó, Lady Gaga..."/>
         </div>
+        <div style="margin-top:12px">
+          <label class="field-label">📝 Letra original <span style="font-weight:400;color:var(--text4)">(opcional mas recomendado)</span></label>
+          <textarea id="inspirar-letra" class="txt-area" rows="6" placeholder="Cole aqui a letra da música para a IA se inspirar melhor na estrutura, rimas e forma de cantar..."></textarea>
+          <div style="font-size:10px;color:var(--text4);margin-top:4px">A IA vai usar como referência de estilo — nunca vai copiar.</div>
+        </div>
       </div>
     </div>
 
@@ -1166,8 +1171,12 @@ async function generate(){
     const musRef=document.getElementById("inspirar-musica").value.trim();
     const artRef=document.getElementById("inspirar-artista").value.trim();
     if(!musRef||!artRef){showToast("Preencha o nome da música e do artista!","err");return;}
+    const letraRef=document.getElementById("inspirar-letra").value.trim();
     tema=`Música: "${musRef}" — Artista: ${artRef}`;
-    modoDesc=`O usuário quer uma música INSPIRADA em "${musRef}" de ${artRef}. Analise o estilo, clima emocional, estrutura, tema e flow dessa música. Crie uma música 100% ORIGINAL que tenha a mesma energia e vibe, mas com letra completamente nova e diferente. NUNCA copie versos ou frases da música original. A nova música deve soar como se fosse do mesmo artista mas uma composição inédita.`;
+    modoDesc=`O usuário quer uma música INSPIRADA em "${musRef}" de ${artRef}. Analise o estilo, clima emocional, estrutura, tema e flow dessa música. Crie uma música 100% ORIGINAL que tenha a mesma energia e vibe, mas com letra completamente nova e diferente. NUNCA copie versos ou frases da música original. A nova música deve soar como se fosse do mesmo artista mas uma composição inédita.${letraRef?`
+
+LETRA ORIGINAL PARA REFERÊNCIA DE ESTILO (use como inspiração de estrutura, rimas, clima e forma de cantar — NUNCA copie):
+${letraRef}`:""}`;
   }
 
   setLoading(true);currentSong=null;currentSections={};
