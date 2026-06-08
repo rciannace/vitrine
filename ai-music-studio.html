@@ -1363,7 +1363,7 @@ function setPage(p){
   document.getElementById("page-result").style.display=p==="result"?"block":"none";
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
-  if(p!=="lib"){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
+  if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
   if(p==="lib"){renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
