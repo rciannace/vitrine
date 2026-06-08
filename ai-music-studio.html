@@ -178,6 +178,43 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 /* LIB */
 .lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
 .lib-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px}
+
+/* LIB TABS */
+.lib-tab-row{display:flex;gap:0;border-bottom:2px solid #f0f0f0;margin-bottom:16px}
+.lib-tab{flex:1;text-align:center;padding:10px 4px;font-size:13px;color:#999;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;font-weight:500}
+.lib-tab.active{color:#f97316;border-bottom-color:#f97316;font-weight:700}
+
+/* GALERIA SPOTIFY */
+.gal-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;cursor:pointer;transition:all .2s;position:relative}
+.gal-card:active{transform:scale(.97)}
+.gal-card.playing{border-color:#f97316;box-shadow:0 0 0 2px #f9731630}
+.gal-thumb{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.gal-play-icon{position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px #0003;transition:all .2s}
+.gal-card.playing .gal-play-icon{background:#ef4444}
+.gal-info{padding:10px 12px 12px}
+.gal-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-no-audio{opacity:.5}
+.gal-no-audio .gal-play-icon{background:#ccc}
+
+/* PLAYER FIXO */
+.sp-player{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;padding:10px 16px 20px;z-index:200;display:none;box-shadow:0 -4px 20px #0003}
+.sp-player.active{display:block}
+.sp-player-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.sp-thumb{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sp-info{flex:1;min-width:0}
+.sp-title{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sp-btn{width:38px;height:38px;border-radius:50%;border:none;background:#333;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.sp-btn.play{background:#f97316;width:44px;height:44px;font-size:18px}
+.sp-btn:active{transform:scale(.9)}
+.sp-progress{width:100%;height:3px;background:#333;border-radius:2px;margin-top:8px;cursor:pointer;position:relative}
+.sp-bar{height:100%;background:#f97316;border-radius:2px;width:0%;transition:width .5s linear}
+.sp-times{display:flex;justify-content:space-between;margin-top:4px}
+.sp-time{font-size:10px;color:#666}
+@keyframes spin-disc{to{transform:rotate(360deg)}}
+.disc-spin{animation:spin-disc 3s linear infinite}
 </style>
 </head>
 <body>
@@ -392,6 +429,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       </div>
       <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
     </div>
+    <!-- Lib tabs -->
+    <div class="lib-tab-row">
+      <div class="lib-tab active" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 Biblioteca</div>
+      <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 Player</div>
+    </div>
+    <!-- Sub-pages -->
+    <div id="libpage-biblioteca">
     <!-- GitHub Token Panel -->
     <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
       <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
@@ -419,7 +463,46 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <div style="font-size:14px">Nenhuma música ainda</div>
       </div>
     </div>
+    </div><!-- /libpage-biblioteca -->
+
+    <!-- GALERIA / PLAYER -->
+    <div id="libpage-galeria" style="display:none;padding-bottom:120px">
+      <div id="gal-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+      <div id="gal-empty" style="display:none;text-align:center;padding:40px 20px;color:#ccc">
+        <div style="font-size:36px;margin-bottom:10px">🎵</div>
+        <div style="font-size:13px">Nenhuma música com áudio ainda</div>
+        <div style="font-size:11px;color:#ddd;margin-top:6px">Adicione áudio na Biblioteca</div>
+      </div>
+    </div>
   </div>
+
+  <!-- PLAYER FIXO SPOTIFY -->
+  <div class="sp-player" id="sp-player">
+    <div class="sp-player-inner">
+      <div class="sp-thumb" id="sp-thumb">🎵</div>
+      <div class="sp-info">
+        <div class="sp-title" id="sp-title">—</div>
+        <div class="sp-sub" id="sp-sub">—</div>
+      </div>
+      <div class="sp-controls">
+        <button class="sp-btn" onclick="spPrev()" title="Anterior">⏮</button>
+        <button class="sp-btn play" id="sp-play-btn" onclick="spToggle()">▶</button>
+        <button class="sp-btn" onclick="spNext()" title="Próxima">⏭</button>
+      </div>
+    </div>
+    <div style="max-width:600px;margin:0 auto;padding:0 2px">
+      <div class="sp-progress" id="sp-progress" onclick="spSeek(event)">
+        <div class="sp-bar" id="sp-bar"></div>
+      </div>
+      <div class="sp-times">
+        <span class="sp-time" id="sp-cur">0:00</span>
+        <span class="sp-time" id="sp-dur">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO ELEMENT -->
+  <audio id="sp-audio"></audio>
 
 </div><!-- /main -->
 
@@ -598,7 +681,7 @@ function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}c
 function exportLib(){
   if(!history.length){showToast("Nenhuma música para exportar","err");return;}
   const data=JSON.stringify(history,null,2);
-  const blob=new Blob([data],{type:"application/json"});
+  const blob=new Blob([data],{type:"application/json;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   a.href=url;
@@ -612,7 +695,9 @@ function importLib(input){
   const reader=new FileReader();
   reader.onload=function(e){
     try{
-      const imported=JSON.parse(e.target.result);
+      // fix encoding issues
+      let raw=e.target.result;
+      const imported=JSON.parse(raw);
       if(!Array.isArray(imported))throw new Error("Formato inválido");
       // merge: imported wins for new ids, keep existing
       const existMap=Object.fromEntries(history.map(x=>[x.id,x]));
@@ -628,7 +713,7 @@ function importLib(input){
     }
     input.value="";
   };
-  reader.readAsText(file);
+  reader.readAsText(file,"utf-8");
 }
 let micDescOn=false,micExtOn=false,micCantOn=false;
 let waveTimer=null;
@@ -1216,10 +1301,12 @@ function setPage(p){
   document.getElementById("page-result").style.display=p==="result"?"block":"none";
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
+  if(p!=="lib"){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
   if(p==="lib"){renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
+  if(activeLibTab==="galeria"){renderGallery();return;}
   const el=document.getElementById("lib-grid");
   if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">🎵</div><div>Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
@@ -1236,7 +1323,8 @@ function renderLib(){
         <input type="file" accept="audio/*" style="display:none" onchange="addAudio(${e.id},this)"/>
       </label>`}
       <div style="display:flex;gap:7px">
-        <button onclick="loadEntry(${e.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✏ Editar</button>
+        <button onclick="editTitle(${e.id})" style="padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#666;font-size:12px;cursor:pointer" title="Renomear">✏️</button>
+        <button onclick="loadEntry(${e.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">📝 Editar</button>
         ${e.audio ? `<button onclick="removeAudio(${e.id})" style="padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#aaa;font-size:12px;cursor:pointer" title="Remover áudio">🔇</button>` : ""}
         <button onclick="delEntry(${e.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#999;font-size:12px;cursor:pointer">🗑</button>
       </div>
@@ -1271,6 +1359,16 @@ function loadEntry(id){
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
 }
 function saveHistory(){ghSave();}
+function editTitle(id){
+  const e=history.find(x=>x.id===id);if(!e)return;
+  const novo=prompt("Nome da música:",e.title);
+  if(novo===null||novo.trim()==="")return;
+  e.title=novo.trim();
+  if(e.song)e.song.title=novo.trim();
+  saveHistory();
+  renderLib();
+  showToast("✅ Nome atualizado!","ok");
+}
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
   ghSave();
@@ -1299,6 +1397,150 @@ function setLoading(on){
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function safeid(s){return s.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");}
+
+// ══════════════════════════════════════
+// LIB TABS
+// ══════════════════════════════════════
+let activeLibTab="biblioteca";
+function switchLibTab(tab){
+  activeLibTab=tab;
+  ["biblioteca","galeria"].forEach(t=>{
+    document.getElementById("libpage-"+t).style.display=t===tab?"block":"none";
+    document.getElementById("ltab-"+t).className="lib-tab"+(t===tab?" active":"");
+  });
+  if(tab==="galeria")renderGallery();
+}
+
+// ══════════════════════════════════════
+// SPOTIFY PLAYER
+// ══════════════════════════════════════
+let spQueue=[];   // músicas com áudio
+let spIndex=-1;   // índice atual
+let spPlaying=false;
+const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
+
+function renderGallery(){
+  const withAudio=history.filter(e=>e.audio);
+  const grid=document.getElementById("gal-grid");
+  const empty=document.getElementById("gal-empty");
+  spQueue=withAudio;
+  if(!withAudio.length){
+    grid.innerHTML="";
+    empty.style.display="block";
+    return;
+  }
+  empty.style.display="none";
+  grid.innerHTML=withAudio.map((e,i)=>{
+    const isPlaying=spIndex===i&&spPlaying;
+    const genreIcon=genreEmoji(e.genre);
+    return `<div class="gal-card${isPlaying?" playing":""}" id="gal-card-${i}" onclick="spPlay(${i})">
+      <div class="gal-thumb" style="background:${genreColor(e.genre)}">
+        <span${isPlaying?' class="disc-spin"':''}>${genreIcon}</span>
+        <div class="gal-play-icon">${isPlaying?"⏸":"▶"}</div>
+      </div>
+      <div class="gal-info">
+        <div class="gal-title">${esc(e.title)}</div>
+        <div class="gal-sub">${esc(e.genre)} · ${e.bpm} BPM</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function genreEmoji(g){
+  const map={sertanejo:"🤠",funk:"🎤",pagode:"🥁",samba:"🎶",gospel:"✝️",pop:"⭐",rock:"🎸",forró:"🪗",mpb:"🎵",trap:"🔥",lofi:"🌙",jazz:"🎷",blues:"🎸",rnb:"💜",reggae:"🌿",arrocha:"❤️"};
+  return map[g]||"🎵";
+}
+function genreColor(g){
+  const map={sertanejo:"linear-gradient(135deg,#f59e0b,#d97706)",funk:"linear-gradient(135deg,#8b5cf6,#7c3aed)",pagode:"linear-gradient(135deg,#22c55e,#16a34a)",samba:"linear-gradient(135deg,#f97316,#ea580c)",gospel:"linear-gradient(135deg,#3b82f6,#2563eb)",pop:"linear-gradient(135deg,#ec4899,#db2777)",rock:"linear-gradient(135deg,#374151,#111827)",forró:"linear-gradient(135deg,#f59e0b,#f97316)",lofi:"linear-gradient(135deg,#6366f1,#4f46e5)",jazz:"linear-gradient(135deg,#d97706,#92400e)"};
+  return map[g]||"linear-gradient(135deg,#f97316,#ef4444)";
+}
+
+function spPlay(i){
+  if(!spQueue[i])return;
+  spIndex=i;
+  const e=spQueue[i];
+  const audio=document.getElementById("sp-audio");
+  audio.src=e.audio;
+  audio.play().then(()=>{
+    spPlaying=true;
+    spUpdateUI();
+    renderGallery();
+  }).catch(err=>{showToast("❌ Erro ao reproduzir","err");});
+}
+
+function spToggle(){
+  const audio=document.getElementById("sp-audio");
+  if(!audio.src||spIndex<0){
+    if(spQueue.length)spPlay(0);
+    return;
+  }
+  if(spPlaying){audio.pause();spPlaying=false;}
+  else{audio.play();spPlaying=true;}
+  spUpdateUI();
+  renderGallery();
+}
+
+function spPrev(){
+  if(spQueue.length===0)return;
+  const i=(spIndex-1+spQueue.length)%spQueue.length;
+  spPlay(i);
+}
+
+function spNext(){
+  if(spQueue.length===0)return;
+  const i=(spIndex+1)%spQueue.length;
+  spPlay(i);
+}
+
+function spSeek(e){
+  const audio=document.getElementById("sp-audio");
+  if(!audio.duration)return;
+  const rect=document.getElementById("sp-progress").getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  audio.currentTime=pct*audio.duration;
+}
+
+function spFmt(s){
+  if(!s||isNaN(s))return"0:00";
+  const m=Math.floor(s/60);
+  const sec=Math.floor(s%60);
+  return m+":"+(sec<10?"0":"")+sec;
+}
+
+function spUpdateUI(){
+  const audio=document.getElementById("sp-audio");
+  const player=document.getElementById("sp-player");
+  const btn=document.getElementById("sp-play-btn");
+  const title=document.getElementById("sp-title");
+  const sub=document.getElementById("sp-sub");
+  const thumb=document.getElementById("sp-thumb");
+  if(spIndex<0||!spQueue[spIndex]){player.classList.remove("active");return;}
+  const e=spQueue[spIndex];
+  player.classList.add("active");
+  title.textContent=e.title;
+  sub.textContent=e.genre+" · "+e.bpm+" BPM · "+e.mood;
+  thumb.textContent=genreEmoji(e.genre);
+  thumb.style.background=genreColor(e.genre);
+  btn.textContent=spPlaying?"⏸":"▶";
+  // update main padding so player doesn't cover content
+  document.querySelector(".main").style.paddingBottom=spPlaying||spIndex>=0?"160px":"100px";
+}
+
+// Audio events
+(function(){
+  const audio=document.getElementById("sp-audio");
+  if(!audio)return;
+  audio.addEventListener("timeupdate",()=>{
+    if(!audio.duration)return;
+    const pct=(audio.currentTime/audio.duration)*100;
+    document.getElementById("sp-bar").style.width=pct+"%";
+    document.getElementById("sp-cur").textContent=spFmt(audio.currentTime);
+    document.getElementById("sp-dur").textContent=spFmt(audio.duration);
+  });
+  audio.addEventListener("ended",()=>{spNext();});
+  audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
+  audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
+})();
 </script>
 </body>
 </html>
