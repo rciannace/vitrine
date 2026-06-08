@@ -429,6 +429,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       </div>
       <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
     </div>
+    <!-- Botão sempre visível -->
+    <button onclick="openSunoModal()" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed #f97316;background:#fff8f5;color:#f97316;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px">
+      ➕ Adicionar música do Suno
+    </button>
+
     <!-- Lib tabs -->
     <div class="lib-tab-row">
       <div class="lib-tab active" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 Biblioteca</div>
@@ -449,11 +454,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
-
-    <!-- Botão adicionar do Suno -->
-    <button onclick="openSunoModal()" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed #f97316;background:#fff8f5;color:#f97316;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px">
-      ➕ Adicionar música do Suno
-    </button>
 
     <div class="lib-grid" id="lib-grid">
       <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
