@@ -1040,30 +1040,54 @@ function toggleMicCant(){
   const btn=document.getElementById("mic-cant-btn");
   const status=document.getElementById("mic-cant-status");
   const wave=document.getElementById("mic-cant-wave");
+  // PARAR
   if(micCantOn){
+    micCantOn=false;
     if(micCant){micCant.stop();micCant=null;}
-    micCantOn=false;clearInterval(waveTimer);
+    clearInterval(waveTimer);
     btn.className="btn-mic-big";btn.textContent="🎙";
-    status.className="mic-status";status.textContent="Toque no microfone e cante sua ideia";
+    status.className="mic-status";status.textContent="✅ Gravado! Edite se precisar.";
     wave.style.display="none";return;
   }
   if(!SR){status.textContent="⚠ Use Chrome/Edge para gravar";return;}
-  micCant=new SR();micCant.lang="pt-BR";micCant.continuous=true;micCant.interimResults=true;
-  micCant.onresult=e=>{
-    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
-    if(fin){const ta=document.getElementById("transcricao-canto");ta.value+=(ta.value?" ":"")+fin.trim();}
-  };
-  micCant.onerror=micCant.onend=()=>{
-    micCantOn=false;clearInterval(waveTimer);
-    btn.className="btn-mic-big";btn.textContent="🎙";
-    status.className="mic-status";status.textContent="✅ Gravado! Edite se precisar.";
-    wave.style.display="none";
-  };
-  micCant.start();micCantOn=true;
+  // INICIAR
+  micCantOn=true;
   btn.className="btn-mic-big rec";btn.textContent="⏹";
-  status.className="mic-status rec";status.textContent="🔴 Gravando... cante!";
+  status.className="mic-status rec";status.textContent="🔴 Gravando... cante sua ideia!";
   wave.style.display="flex";
   waveTimer=setInterval(()=>{wave.querySelectorAll(".wb").forEach(b=>{b.style.height=(3+Math.random()*24)+"px";});},100);
+
+  function startRec(){
+    if(!micCantOn)return;
+    micCant=new SR();
+    micCant.lang="pt-BR";
+    micCant.continuous=true;
+    micCant.interimResults=true;
+    micCant.onresult=e=>{
+      const ta=document.getElementById("transcricao-canto");
+      let interim="";
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal){
+          ta.value+=(ta.value?" ":"")+e.results[i][0].transcript.trim();
+        } else {
+          interim+=e.results[i][0].transcript;
+        }
+      }
+      // mostra preview do interim
+      status.textContent="🔴 " + (interim||"Gravando... cante sua ideia!");
+    };
+    micCant.onerror=()=>{
+      if(!micCantOn)return;
+      // reinicia após erro
+      setTimeout(startRec, 300);
+    };
+    micCant.onend=()=>{
+      // se ainda está gravando, reinicia automaticamente (Chrome para sozinho)
+      if(micCantOn) setTimeout(startRec, 100);
+    };
+    try{micCant.start();}catch(e){setTimeout(startRec,200);}
+  }
+  startRec();
 }
 
 // ══════════════════════════════════════
