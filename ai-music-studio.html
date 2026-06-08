@@ -1196,23 +1196,68 @@ LETRA ORIGINAL PARA ANÁLISE (estude cada verso, o ritmo das sílabas, as rimas,
 
   setLoading(true);currentSong=null;currentSections={};
 
-  const prompt=`Você é compositor musical profissional brasileiro de elite.
-MODO: ${modoDesc}
+  // Voz → instruções específicas pro Suno e pra IA
+  const vozInstructions={
+    "m-grave":"voz masculina grave e encorpada, frases longas e pausadas, peso emocional",
+    "m-afinado":"voz masculina afinada e limpa, melodia clara, notas bem sustentadas",
+    "m-grossa":"voz masculina grossa e marcante, presença forte, vocal dominante",
+    "m-anasalado":"voz masculina anasalada estilo sertanejo raiz, twang caipira, nasalização característica",
+    "m-dupla":"dupla masculina, harmonias em terça, alternância entre as vozes nos versos",
+    "f-suave":"voz feminina suave e delicada, sussurros emocionais, frases curtas e íntimas",
+    "f-afinada":"voz feminina afinada e potente, notas longas sustentadas, timbre limpo",
+    "f-aguda":"voz feminina aguda e cristalina, notas altas no refrão, timbre brilhante",
+    "f-anasalada":"voz feminina anasalada, twang regional, estilo forró/sertanejo feminino",
+    "f-dupla":"dupla feminina, harmonias sobrepostas, coro nos refrões"
+  };
+  const vozInstr=vozInstructions[selVoz]||vozLabel;
 
-ENTRADA DO USUÁRIO: ${tema}
+  // BPM → orientação de sílabas por linha
+  const bpmSyl=t.bpm<=70?"frases longas, 8-12 sílabas por linha, andamento lento e arrastado":
+               t.bpm<=100?"frases médias, 6-10 sílabas por linha, andamento equilibrado":
+               "frases curtas e ritmadas, 5-8 sílabas por linha, andamento acelerado";
 
-ESPECIFICAÇÕES:
-- Gênero: ${g.l} | Mood: ${m.l} | BPM: ${t.bpm} | Voz: ${vozLabel}
-- Duração: ${dur} | Seções: ${secsToUse.join(", ")}
-${titulo?`- Título sugerido: "${titulo}"`:""}${artist?`\n- Referência: ${artist}`:""}${extrasStr?`\n- Extras: ${extrasStr}`:""}${producao?`\n- Produção: ${producao}`:""}
+  // Gênero → vocabulário e imagens poéticas
+  const genreVocab={
+    sertanejo:"Use vocabulário do campo: estrada, roça, boiadeiro, viola, porteira, saudade, peão. Metáforas rurais.",
+    funk:"Use linguagem urbana e direta, gírias cariocas/paulistanas, frases curtas e repetitivas, refrão grudento.",
+    pagode:"Linguagem afetiva e descontraída, referências ao Rio, boteco, amizade, amor leve.",
+    gospel:"Linguagem bíblica e espiritual, fé, graça, glória, poder divino, superação pela fé.",
+    forró:"Linguagem nordestina, referências ao sertão, sanfona, festa, amor simples e verdadeiro.",
+    mpb:"Linguagem poética e elaborada, metáforas sofisticadas, referências urbanas e filosóficas.",
+    rock:"Linguagem direta e intensa, rebeldia, emoção crua, imagens fortes.",
+    "viola caipira":"Linguagem caipira, natureza, simplicidade rural, viola, passarinho, roça, amor puro.",
+  };
+  const genreVoc=genreVocab[g.l.toLowerCase()]||"Use vocabulário adequado ao gênero musical.";
 
-INSTRUÇÃO: ${DUR_NOTES[dur]}
-Letra PROFISSIONAL: rimas ricas, imagens poéticas, emoção real.
+  const prompt=\`Você é o melhor compositor musical brasileiro, especialista em ${g.l}.
 
-REGRA CRÍTICA suno_style: máximo 120 caracteres, palavras-chave em INGLÊS separadas por vírgula. Inclua gênero, mood, voz, BPM e 2-3 instrumentos. Ex: "sertanejo, romantic, female vocals, 90 BPM, acoustic guitar, emotional"
+MODO: \${modoDesc}
 
-SOMENTE JSON válido:
-{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção"}`;
+ENTRADA DO USUÁRIO: \${tema}
+
+ESPECIFICAÇÕES TÉCNICAS:
+- Gênero: \${g.l} | Mood: \${m.l} | BPM: \${t.bpm} | Duração: \${dur}
+- Voz: \${vozLabel} — \${vozInstr}
+- Ritmo de sílabas: \${bpmSyl}
+- Seções: \${secsToUse.join(", ")}
+\${titulo?'- Título sugerido: "'+titulo+'"':""}
+\${artist?'- Referência de artista: '+artist:""}
+\${extrasStr?'- Extras/Instrumentos: '+extrasStr:""}
+\${producao?'- Notas de produção: '+producao:""}
+
+INSTRUÇÕES DE COMPOSIÇÃO:
+1. VOCABULÁRIO: \${genreVoc}
+2. RIMAS: Use esquemas variados (ABAB, AABB). EVITE rimas óbvias e batidas (coração/solidão, saudade/vontade repetidas).
+3. SÍLABAS: Mantenha consistência no número de sílabas por linha dentro de cada seção.
+4. EMOÇÃO: Cada verso deve ter uma imagem poética concreta — não genérica. Ex: não "sinto sua falta" mas "seu perfume ainda dorme no meu travesseiro".
+5. REFRÃO: Deve ser simples, grudento e fácil de memorizar. O ouvinte deve querer repetir.
+6. VOZ: Adapte o fraseado para \${vozInstr}.
+7. DURAÇÃO: \${DUR_NOTES[dur]}
+
+REGRA CRÍTICA suno_style: máximo 120 caracteres, palavras-chave em INGLÊS. Inclua: gênero, mood, tipo de voz em inglês, BPM, 2-3 instrumentos principais. Voz em inglês para o Suno: \${selVoz.includes('grave')||selVoz.includes('grossa')?'deep male vocals':selVoz.includes('anasalad')||selVoz.includes('anasalado')?'nasal vocals, twang':selVoz.includes('dupla')||selVoz.includes('dupla')?'duet vocals, harmonies':selVoz.startsWith('f')?'female vocals':'male vocals'}
+
+SOMENTE JSON válido, sem texto antes ou depois:
+{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{\${secsToUse.map(s=>'"'+s+'":"letra completa com \\n"').join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["i1","i2","i3","i4"],"production_notes":"Notas detalhadas de produção incluindo voz e instrumentos"}\`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -1248,7 +1293,12 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:2000,messages:[{role:"user",content:`Você é compositor de ${currentSong.genre}. Reescreva SOMENTE a seção abaixo mantendo o gênero e o clima.
+Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | Voz: ${currentSong.voice||""}
+Seção "${sec}" atual: ${currentSections[sec]}
+Instrução do usuário: "${instr}"
+REGRAS: Mantenha o número de sílabas por linha. Use rimas não óbvias. Imagens poéticas concretas. Vocabulário do ${currentSong.genre}.
+SOMENTE JSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -1268,7 +1318,17 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:2000,messages:[{role:"user",content:`Você é compositor de ${currentSong.genre}. Complete esta seção mantendo o estilo.
+Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood||""} | Voz: ${currentSong.voice||""}
+Seção: "${sec}"
+TRECHO DO USUÁRIO (mantenha EXATAMENTE no início, não altere nem uma palavra):
+${trecho}
+Complete com 3-6 linhas que:
+- Mantenham o mesmo número de sílabas por linha
+- Continuem o esquema de rimas já iniciado
+- Usem vocabulário do mesmo universo do ${currentSong.genre}
+- Tenham imagens poéticas concretas, não genéricas
+SOMENTE JSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
