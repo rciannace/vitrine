@@ -1135,7 +1135,8 @@ SOMENTE JSON válido:
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
-    history=[entry,...history].slice(0,30);try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+    history=[entry,...history].slice(0,30);
+    saveHistory();
     updateLibN();activeRTab="letra";
     renderResult(secsToUse);
     showToast("🎵 Música criada!","ok");
