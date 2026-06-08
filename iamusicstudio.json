@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": 1780870742386,
+    "title": "Porta Encostada",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "07/06/2026",
+    "song": {
+      "title": "Porta Encostada",
+      "subtitle": "O Apelo de uma Saudade",
+      "key": "G Major",
+      "chords": "G | D/F# | Em7 | C9",
+      "vibe": "Nostálgica, apaixonada e comercial",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Arrocha Suave",
+        "Sofrência Premium"
+      ],
+      "sections": {
+        "Intro": "(Solo de guitarra com delay suave acompanhando o dedilhado do violão)\n(Choro de gaita rala ao fundo)\n(Batida marcante entra no quarto compasso)",
+        "Verso 1": "A casa ainda guarda o seu perfume de jasmim\nO silêncio é o barulho que você deixou em mim\nOlho pra cama e vejo o lado esquerdo em solidão\nÉ um deserto dividindo o nosso colchão\nO café esfriou, a rotina perdeu a cor\nSou um rascunho mal escrito de um grande amor",
+        "Pré-Refrão": "E cada vez que o vento bate no meu portão\nMeu peito acelera, vira uma confusão\nEu corro pra ver se é você que resolveu voltar\nMas é só a saudade querendo me machucar\nÉ só a vontade louca de te reencontrar",
+        "Refrão": "Volta pra mim, que o meu mundo parou no adeus\nTroco a minha vida pra ter de novo os beijo seus\nVolta pra mim, a saudade é um espinho que não sai\nQuanto mais eu tento esquecer, mais o coração retrai\nEu tô aqui, com a porta encostada e o peito aberto\nVem transformar esse meu rastro em caminho certo",
+        "Verso 2": "Eu já tentei sair, beijar bocas pra distrair\nMas o gosto de você não deixa eu prosseguir\nNa tela do celular, sua foto ainda é o papel de parede\nMinha sede de amar só se cura na sua rede\nOnde foi que a gente se perdeu nessa estrada?\nSe eu sou o seu tudo e você não vive sem nada",
+        "Bridge": "Se for orgulho, eu quebro; se for medo, eu te protejo\nSó não me deixa morrendo de desejo\nO tempo não cura, o tempo só ensina a sofrer\nE eu aprendi que não existe eu sem você",
+        "Refrão Final": "Volta pra mim, que o meu mundo parou no adeus\nTroco a minha vida pra ter de novo os beijo seus\nVolta pra mim, a saudade é um espinho que não sai\nQuanto mais eu tento esquecer, mais o coração retrai\nEu tô aqui, com a porta encostada e o peito aberto\nVem transformar esse meu rastro em caminho certo"
+      },
+      "suno_style": "sertanejo, romantic, male vocals, 90 BPM, acoustic guitar, electric guitar, emotional, longing, brazilian country",
+      "instruments": [
+        "Violão de aço (Acoustic Guitar)",
+        "Guitarra solo (Clean Electric Guitar)",
+        "Baixo (Bass)",
+        "Bateria (Soft Drums)"
+      ],
+      "production_notes": "A voz deve ser interpretada com uma leve rouquidão emocional no refrão, remetendo ao estilo de Leo Magalhães.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "(Solo de guitarra com delay suave acompanhando o dedilhado do violão)\n(Choro de gaita rala ao fundo)\n(Batida marcante entra no quarto compasso)",
+      "Verso 1": "A casa ainda guarda o seu perfume de jasmim\nO silêncio é o barulho que você deixou em mim\nOlho pra cama e vejo o lado esquerdo em solidão\nÉ um deserto dividindo o nosso colchão\nO café esfriou, a rotina perdeu a cor\nSou um rascunho mal escrito de um grande amor",
+      "Pré-Refrão": "E cada vez que o vento bate no meu portão\nMeu peito acelera, vira uma confusão\nEu corro pra ver se é você que resolveu voltar\nMas é só a saudade querendo me machucar\nÉ só a vontade louca de te reencontrar",
+      "Refrão": "Volta pra mim, que o meu mundo parou no adeus\nTroco a minha vida pra ter de novo os beijo seus\nVolta pra mim, a saudade é um espinho que não sai\nQuanto mais eu tento esquecer, mais o coração retrai\nEu tô aqui, com a porta encostada e o peito aberto\nVem transformar esse meu rastro em caminho certo",
+      "Verso 2": "Eu já tentei sair, beijar bocas pra distrair\nMas o gosto de você não deixa eu prosseguir\nNa tela do celular, sua foto ainda é o papel de parede\nMinha sede de amar só se cura na sua rede\nOnde foi que a gente se perdeu nessa estrada?\nSe eu sou o seu tudo e você não vive sem nada",
+      "Bridge": "Se for orgulho, eu quebro; se for medo, eu te protejo\nSó não me deixa morrendo de desejo\nO tempo não cura, o tempo só ensina a sofrer\nE eu aprendi que não existe eu sem você",
+      "Refrão Final": "Volta pra mim, que o meu mundo parou no adeus\nTroco a minha vida pra ter de novo os beijo seus\nVolta pra mim, a saudade é um espinho que não sai\nQuanto mais eu tento esquecer, mais o coração retrai\nEu tô aqui, com a porta encostada e o peito aberto\nVem transformar esse meu rastro em caminho certo"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
+    "id": 1780869498547,
+    "title": "O Silêncio da Varanda",
+    "genre": "Viola Caipira",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "07/06/2026",
+    "song": {
+      "title": "O Silêncio da Varanda",
+      "subtitle": "A Paz de um Amor Rural",
+      "key": "E Mayor (Mi Maior)",
+      "chords": "E, B9, A9, C#m7, G#m",
+      "vibe": "Serena, nostálgica, bucólica e profundamente apaixonada",
+      "style_tags": [
+        "Viola Caipira",
+        "Sertanejo Romântico",
+        "Country Folk Brasileiro"
+      ],
+      "sections": {
+        "Intro": "(Solo de Viola Caipira ponteado, acompanhado por um violão de nylon suave e uma sanfona ao fundo fazendo a cama harmônica)\n(Dedilhado lento e notas cristalinas representando o amanhecer)",
+        "Verso 1": "O sol desenha o ouro no horizonte\nBebendo a água limpa lá da fonte\nO orvalho ainda dorme na folhagem\nE o vento traz o cheiro da pastagem\nAqui o tempo esquece de correr\nSó pra gente ter tempo de viver\nCada minuto é prece, é passarinho\nConstruindo no peito o nosso ninho",
+        "Pré-Refrão": "Não preciso de pressa nem de estrada\nMinha chegada é no seu coração\nA paz que eu quis mora nessa calçada\nNos olhos de quem entende a imensidão\nOnde o silêncio diz tudo o que eu sinto",
+        "Refrão": "É no balanço da rede, ouvindo a viola chorar\nQue eu agradeço a sorte por te encontrar\nA vida no campo é esse verso sem rimar\nÉ o café coado, é o brilho do seu olhar\nSe o mundo lá fora insiste em gritar\nAqui dentro é o lugar onde a alma vai descansar",
+        "Verso 2": "A sanfona suspira um xote de mansinho\nEnquanto a gente trilha esse caminho\nDe terra batida, de flor e de chão\nOnde o luxo é a simplicidade da união\nAs mãos calejadas de cuidar da terra\nSão as mesmas que em paz o seu corpo encerra",
+        "Bridge": "Deixa o rádio tocar aquela canção antiga\nQue fala de amor, de terra e fadiga\nMas se o cansaço bater no final do dia\nSeu abraço é minha maior alegria\nOnde a simplicidade vira poesia",
+        "Refrão Final": "É no balanço da rede, ouvindo a viola chorar\nQue eu agradeço a sorte por te encontrar\nA vida no campo é esse verso sem rimar\nÉ o café coado, é o brilho do seu olhar\nSe o mundo lá fora insiste em gritar\nAqui dentro é o lugar onde a alma vai descansar\n(Onde a alma vai descansar...)"
+      },
+      "suno_style": "Brazilian viola caipira, romantic country, male vocals, 90 BPM, accordion, acoustic guitar, peaceful, rural, emotional",
+      "instruments": [
+        "Viola Caipira 10 cordas",
+        "Violão de Nylon",
+        "Sanfona (Acordeon)",
+        "Baixo Acústico"
+      ],
+      "production_notes": "A produção deve focar na clareza da viola, com reverbs naturais. A voz deve ser suave, estilo Victor e Léo, com harmonias em terça no refrão.",
+      "bpm": 90,
+      "genre": "Viola Caipira",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "(Solo de Viola Caipira ponteado, acompanhado por um violão de nylon suave e uma sanfona ao fundo fazendo a cama harmônica)\n(Dedilhado lento e notas cristalinas representando o amanhecer)",
+      "Verso 1": "O sol desenha o ouro no horizonte\nBebendo a água limpa lá da fonte\nO orvalho ainda dorme na folhagem\nE o vento traz o cheiro da pastagem\nAqui o tempo esquece de correr\nSó pra gente ter tempo de viver\nCada minuto é prece, é passarinho\nConstruindo no peito o nosso ninho",
+      "Pré-Refrão": "Não preciso de pressa nem de estrada\nMinha chegada é no seu coração\nA paz que eu quis mora nessa calçada\nNos olhos de quem entende a imensidão\nOnde o silêncio diz tudo o que eu sinto",
+      "Refrão": "É no balanço da rede, ouvindo a viola chorar\nQue eu agradeço a sorte por te encontrar\nA vida no campo é esse verso sem rimar\nÉ o café coado, é o brilho do seu olhar\nSe o mundo lá fora insiste em gritar\nAqui dentro é o lugar onde a alma vai descansar",
+      "Verso 2": "A sanfona suspira um xote de mansinho\nEnquanto a gente trilha esse caminho\nDe terra batida, de flor e de chão\nOnde o luxo é a simplicidade da união\nAs mãos calejadas de cuidar da terra\nSão as mesmas que em paz o seu corpo encerra",
+      "Bridge": "Deixa o rádio tocar aquela canção antiga\nQue fala de amor, de terra e fadiga\nMas se o cansaço bater no final do dia\nSeu abraço é minha maior alegria\nOnde a simplicidade vira poesia",
+      "Refrão Final": "É no balanço da rede, ouvindo a viola chorar\nQue eu agradeço a sorte por te encontrar\nA vida no campo é esse verso sem rimar\nÉ o café coado, é o brilho do seu olhar\nSe o mundo lá fora insiste em gritar\nAqui dentro é o lugar onde a alma vai descansar\n(Onde a alma vai descansar...)"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  }
+]
