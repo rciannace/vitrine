@@ -1161,7 +1161,7 @@ SOMENTE JSON válido:
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
