@@ -1082,7 +1082,10 @@ function renderResult(structs){
   const ra=document.getElementById("page-result");
   ra.innerHTML=`<div style="animation:fadeup .4s ease">
 
-    <button onclick="setPage('criar')" style="margin-bottom:14px;padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Criar nova música</button>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button onclick="editingFromLib?setPage('lib'):setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
+      ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':''}
+    </div>
 
     <div class="song-header">
       <div class="song-title">${esc(s.title)}</div>
@@ -1297,6 +1300,7 @@ function buildSunoLyrics(secsToShow){
 // ══════════════════════════════════════
 function setPage(p){
   currentPage=p;
+  if(p==="criar"){editingFromLib=false;editingId=null;}
   document.getElementById("page-criar").style.display=p==="criar"?"block":"none";
   document.getElementById("page-result").style.display=p==="result"?"block":"none";
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
@@ -1353,10 +1357,22 @@ function removeAudio(id){
   const idx=history.findIndex(x=>x.id===id);
   if(idx>=0){delete history[idx].audio;saveHistory();renderLib();showToast("Áudio removido","ok");}
 }
+let editingFromLib=false;
+let editingId=null;
 function loadEntry(id){
   const e=history.find(x=>x.id===id);if(!e)return;
   currentSong=e.song;currentSections=e.sections;activeRTab="letra";
+  editingFromLib=true;editingId=id;
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
+}
+function saveEditedEntry(){
+  if(!editingId)return;
+  const idx=history.findIndex(x=>x.id===editingId);
+  if(idx<0)return;
+  history[idx].sections=currentSections;
+  history[idx].song=currentSong;
+  saveHistory();
+  showToast("✅ Música salva!","ok");
 }
 function saveHistory(){ghSave();}
 function editTitle(id){
