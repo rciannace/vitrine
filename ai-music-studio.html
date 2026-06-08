@@ -67,6 +67,8 @@ body.dark .ext-tab{background:var(--bg3);border-color:var(--border)}
 body.dark .ext-tab-lbl{color:var(--text2)}
 body.dark .mic-area{background:var(--bg3)}
 body.dark .lib-grid .lib-card{box-shadow:0 1px 8px var(--shadow)}
+body.dark .lib-card [style*="font-size:15px"]{color:#ffffff!important}
+body.dark .lib-card [style*="color:#1a1a1a"]{color:#ffffff!important}
 body.dark #suno-modal{background:var(--bg2)}
 body.dark .api-input{background:var(--bg3);border-color:var(--border);color:var(--text)}
 body.dark .song-sub{color:#e84400}
@@ -507,7 +509,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <!-- GitHub Token Panel -->
     <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
       <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
       <div style="display:flex;gap:8px">
         <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:9px 12px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
         <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
@@ -1450,9 +1452,9 @@ function renderLib(){
   if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">🎵</div><div>Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:2px">${esc(e.title)}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px">${esc(e.title)}</div>
       <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
       ${e.audio ? `
       <div style="margin-bottom:10px">
         <audio controls style="width:100%;height:36px;border-radius:8px;outline:none" src="${e.audio}"></audio>
