@@ -449,14 +449,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
-    <!-- Export / Import -->
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button onclick="exportLib()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #eee;background:#fff;font-size:12px;font-weight:600;color:#666;cursor:pointer">📤 Exportar músicas</button>
-      <label style="flex:1;padding:10px;border-radius:10px;border:1.5px dashed #f97316;background:#fff8f5;font-size:12px;font-weight:600;color:#f97316;cursor:pointer;text-align:center">
-        📥 Importar músicas
-        <input type="file" accept=".json" style="display:none" onchange="importLib(this)"/>
-      </label>
-    </div>
+
     <div class="lib-grid" id="lib-grid">
       <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
