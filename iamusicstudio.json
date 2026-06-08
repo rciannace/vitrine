@@ -1,5 +1,69 @@
 [
   {
+    "id": 1780961371686,
+    "title": "Passarinho Que Voou",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "08/06/2026",
+    "song": {
+      "title": "Passarinho Que Voou",
+      "subtitle": "Leo Magalhães Style",
+      "key": "G",
+      "chords": "G, D, Em, C",
+      "vibe": "A soulful sertanejo ballad about finding love again after a long absence, filled with hope and renewed passion.",
+      "style_tags": [
+        "sertanejo",
+        "romantic",
+        "male vocals",
+        "90 BPM",
+        "sanfona",
+        "acoustic guitar"
+      ],
+      "sections": {
+        "Intro": "A poeira do tempo cobriu meu olhar\nNo peito, um vazio que não dava pra explicar\nO eco da saudade, um nó na garganta\nMas hoje o destino a minha sorte levanta\nUaaaaaah ahhh\n\n",
+        "Verso 1": "A vida seguiu, sem cor, sem canção\nAs noites errantes, um velho refrão\nLembrei dos teus beijos, teu jeito mimoso\nUm amor que parecia ter se perdido no poço\nGuardei a esperança num canto discreto\nPra quando a alegria chegasse de perto\n\n",
+        "Pré-Refrão": "E agora que o sol voltou a brilhar\nTeu perfume no ar, me faz suspirar\nEssa espera, valeu a pena, meu bem\nTeus olhos me dizem que a saudade também\nVoltou pra ficar, te trouxe de volta pra mim\n\n",
+        "Refrão": "Passarinho que voou, voltou pro meu jardim\nCom a asa marcada de quem não achou o fim\nTeu abraço apertado, curando a ferida\nÉ a prova que nosso amor é a própria vida\nMeu amor voltou, e o mundo sorriu pra nós\nOuvindo de novo a mais doce das vozes\n\n",
+        "Verso 2": "Os dias cinzentos deram lugar ao verão\nTeu sorriso de novo ilumina o meu chão\nAs cartas que escrevi, sem nunca te enviar\nAgora eu leio pra você, ao te encontrar\nE a gente se perde em juras e versos\nUm amor mais maduro, imerso em consensos\n\n",
+        "Bridge": "O que era incerto, hoje faz sentido\nUm caminho traçado, um amor renascido\nNão volto a olhar pra trás, nem por um segundo\nVocê é a luz que me tira desse mundo\n\n",
+        "Refrão Final": "Passarinho que voou, voltou pro meu jardim\nCom a asa marcada de quem não achou o fim\nTeu abraço apertado, curando a ferida\nÉ a prova que nosso amor é a própria vida\nMeu amor voltou, e o mundo sorriu pra nós\nOuvindo de novo a mais doce das vozes\nE a gente vai viver pra sempre assim\nVocê e eu, meu amor, perto de mim!\n\n"
+      },
+      "suno_style": "sertanejo, romantic, male vocals, 90 BPM, sanfona, acoustic guitar, emotional, renewed love",
+      "instruments": [
+        "violao",
+        "sanfona",
+        "baixo",
+        "bateria"
+      ],
+      "production_notes": "Inicia com violão dedilhado suave, a sanfona entra nos primeiros acordes da intro. A voz entra com sentimento, cresce no pré-refrão. Refrão forte, com sanfona marcante e violão base embalando. Bridge mais introspectivo, com a voz ganhando destaque. Refrão final com mais energia, todos os instrumentos juntos.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "A poeira do tempo cobriu meu olhar\nNo peito, um vazio que não dava pra explicar\nO eco da saudade, um nó na garganta\nMas hoje o destino a minha sorte levanta\nUaaaaaah ahhh\n\n",
+      "Verso 1": "A vida seguiu, sem cor, sem canção\nAs noites errantes, um velho refrão\nLembrei dos teus beijos, teu jeito mimoso\nUm amor que parecia ter se perdido no poço\nGuardei a esperança num canto discreto\nPra quando a alegria chegasse de perto\n\n",
+      "Pré-Refrão": "E agora que o sol voltou a brilhar\nTeu perfume no ar, me faz suspirar\nEssa espera, valeu a pena, meu bem\nTeus olhos me dizem que a saudade também\nVoltou pra ficar, te trouxe de volta pra mim\n\n",
+      "Refrão": "Passarinho que voou, voltou pro meu jardim\nCom a asa marcada de quem não achou o fim\nTeu abraço apertado, curando a ferida\nÉ a prova que nosso amor é a própria vida\nMeu amor voltou, e o mundo sorriu pra nós\nOuvindo de novo a mais doce das vozes\n\n",
+      "Verso 2": "Os dias cinzentos deram lugar ao verão\nTeu sorriso de novo ilumina o meu chão\nAs cartas que escrevi, sem nunca te enviar\nAgora eu leio pra você, ao te encontrar\nE a gente se perde em juras e versos\nUm amor mais maduro, imerso em consensos\n\n",
+      "Bridge": "O que era incerto, hoje faz sentido\nUm caminho traçado, um amor renascido\nNão volto a olhar pra trás, nem por um segundo\nVocê é a luz que me tira desse mundo\n\n",
+      "Refrão Final": "Passarinho que voou, voltou pro meu jardim\nCom a asa marcada de quem não achou o fim\nTeu abraço apertado, curando a ferida\nÉ a prova que nosso amor é a própria vida\nMeu amor voltou, e o mundo sorriu pra nós\nOuvindo de novo a mais doce das vozes\nE a gente vai viver pra sempre assim\nVocê e eu, meu amor, perto de mim!\n\n"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1780956051780,
     "title": "Volta pra mim",
     "genre": "Sertanejo",
