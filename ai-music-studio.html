@@ -341,6 +341,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">🎙</span>
           <span>Cantar</span>
         </div>
+        <div class="tab-item" onclick="switchMainTab('inspirar')">
+          <span class="tab-icon">🎯</span>
+          <span>Inspirar</span>
+        </div>
       </div>
     </div>
 
@@ -400,6 +404,23 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
         <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
+      </div>
+    </div>
+
+    <!-- TAB INSPIRAR -->
+    <div id="tab-inspirar" style="display:none">
+      <div class="card">
+        <div class="card-title">🎯 Inspirar em uma Música</div>
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:4px">Qual música te inspira?</div>
+        <div style="font-size:12px;color:var(--text4);margin-bottom:16px">A IA cria uma música original no mesmo estilo e clima — mas com letra completamente nova.</div>
+        <div style="margin-bottom:12px">
+          <label class="field-label">🎵 Nome da música</label>
+          <input id="inspirar-musica" class="txt-input" placeholder="Ex: Evidências, Shallow, Shape of You..."/>
+        </div>
+        <div>
+          <label class="field-label">🎤 Artista / Cantor</label>
+          <input id="inspirar-artista" class="txt-input" placeholder="Ex: Chitãozinho & Xororó, Lady Gaga..."/>
+        </div>
       </div>
     </div>
 
@@ -901,14 +922,14 @@ function buildMultiChips(cid,items,cls,getter,setter){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar"].forEach(t=>{
+  ["descrever","letra","estender","cantar","inspirar"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar"];
+    const tabs=["descrever","letra","estender","cantar","inspirar"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspirar:"🎯 Criar Inspirado"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
@@ -1104,6 +1125,12 @@ async function generate(){
     tema=document.getElementById("transcricao-canto").value.trim();
     modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
     if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
+  }else if(mainTab==="inspirar"){
+    const musRef=document.getElementById("inspirar-musica").value.trim();
+    const artRef=document.getElementById("inspirar-artista").value.trim();
+    if(!musRef||!artRef){showToast("Preencha o nome da música e do artista!","err");return;}
+    tema=`Música: "${musRef}" — Artista: ${artRef}`;
+    modoDesc=`O usuário quer uma música INSPIRADA em "${musRef}" de ${artRef}. Analise o estilo, clima emocional, estrutura, tema e flow dessa música. Crie uma música 100% ORIGINAL que tenha a mesma energia e vibe, mas com letra completamente nova e diferente. NUNCA copie versos ou frases da música original. A nova música deve soar como se fosse do mesmo artista mas uma composição inédita.`;
   }
 
   setLoading(true);currentSong=null;currentSections={};
