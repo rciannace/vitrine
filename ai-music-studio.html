@@ -147,6 +147,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* DURAÇÃO */
 .dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.voz-chip{padding:7px 13px;border-radius:20px;font-size:12px;border:1.5px solid var(--border2);background:var(--bg3);color:var(--text3);cursor:pointer;transition:all .15s}
+.voz-chip.sel{border-color:#f97316;background:rgba(249,115,22,0.12);color:#f97316;font-weight:600}
 .dur-card{padding:12px 14px;border-radius:12px;border:1.5px solid #eee;background:#f8f8f8;cursor:pointer;transition:all .15s;text-align:left}
 .dur-card.sel{border-color:#f97316;background:#fff7f0}
 .dur-icon{font-size:20px;margin-bottom:4px}
@@ -489,9 +491,25 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div class="card">
       <div style="margin-bottom:14px">
         <div class="card-title">🎙 Tipo de Voz</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
-          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
+        <!-- Seletor Masculino/Feminino -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <button id="voz-masc-btn" onclick="selGender('masc')" style="padding:10px;font-size:13px;font-weight:600;border-radius:12px;border:1.5px solid #eee;background:var(--bg3);color:var(--text3);cursor:pointer">👨 Masculina</button>
+          <button id="voz-fem-btn" onclick="selGender('fem')" style="padding:10px;font-size:13px;font-weight:600;border-radius:12px;border:1.5px solid transparent;background:#f97316;color:#fff;cursor:pointer">👩 Feminina</button>
+        </div>
+        <!-- Sub-opções de voz -->
+        <div id="voz-sub-masc" style="display:none;flex-wrap:wrap;gap:6px">
+          <button class="voz-chip" onclick="selVoice('m-grave')">🎙 Grave</button>
+          <button class="voz-chip" onclick="selVoice('m-afinado')">🎵 Afinado</button>
+          <button class="voz-chip" onclick="selVoice('m-grossa')">💪 Voz Grossa</button>
+          <button class="voz-chip" onclick="selVoice('m-anasalado')">👃 Anasalado</button>
+          <button class="voz-chip" onclick="selVoice('m-dupla')">👥 Dupla</button>
+        </div>
+        <div id="voz-sub-fem" style="display:flex;flex-wrap:wrap;gap:6px">
+          <button class="voz-chip" onclick="selVoice('f-suave')">🌸 Suave</button>
+          <button class="voz-chip" onclick="selVoice('f-afinada')">🎵 Afinada</button>
+          <button class="voz-chip" onclick="selVoice('f-aguda')">🎶 Aguda</button>
+          <button class="voz-chip" onclick="selVoice('f-anasalada')">👃 Anasalada</button>
+          <button class="voz-chip" onclick="selVoice('f-dupla')">👥 Dupla</button>
         </div>
       </div>
       <div style="margin-bottom:14px">
@@ -728,7 +746,7 @@ const DUR_NOTES={
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="fp";
+let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="f-suave";
 let selExtras=[],selDuration="normal";
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
@@ -884,6 +902,7 @@ window.onload=()=>{
   ghLoadToken();
   ghLoad();
   renderSyncUI();
+  selGender('fem');
   // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
@@ -941,18 +960,25 @@ function switchMainTab(tab){
 // ══════════════════════════════════════
 // VOZ
 // ══════════════════════════════════════
+function selGender(g){
+  const isFem=g==="fem";
+  document.getElementById("voz-sub-masc").style.display=isFem?"none":"flex";
+  document.getElementById("voz-sub-fem").style.display=isFem?"flex":"none";
+  document.getElementById("voz-masc-btn").style.background=isFem?"var(--bg3)":"#f97316";
+  document.getElementById("voz-masc-btn").style.color=isFem?"var(--text3)":"#fff";
+  document.getElementById("voz-masc-btn").style.borderColor=isFem?"var(--border2)":"transparent";
+  document.getElementById("voz-fem-btn").style.background=isFem?"#f97316":"var(--bg3)";
+  document.getElementById("voz-fem-btn").style.color=isFem?"#fff":"var(--text3)";
+  document.getElementById("voz-fem-btn").style.borderColor=isFem?"transparent":"var(--border2)";
+  // auto-select first chip of that gender
+  const first=isFem?"f-suave":"m-grave";
+  selVoice(first);
+}
 function selVoice(v){
   selVoz=v;
-  const isFem=v==="fp"||v==="fs";
-  const masc=document.getElementById("voz-masc");
-  const fem=document.getElementById("voz-fem");
-  if(isFem){
-    fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";
-    masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";
-  }else{
-    masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
-    fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
-  }
+  document.querySelectorAll(".voz-chip").forEach(el=>{
+    el.className="voz-chip"+(el.getAttribute("onclick").includes("'"+v+"'")?" sel":"");
+  });
 }
 
 // ══════════════════════════════════════
@@ -1110,7 +1136,13 @@ async function generate(){
   const titulo=document.getElementById("titulo").value.trim();
   const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
-  const vozLabel=selVoz.startsWith("f")?"Feminina":"Masculina";
+  const vozMap={
+    "m-grave":"Masculino Grave","m-afinado":"Masculino Afinado","m-grossa":"Masculino Voz Grossa",
+    "m-anasalado":"Masculino Anasalado","m-dupla":"Dupla Masculina",
+    "f-suave":"Feminino Suave","f-afinada":"Feminino Afinada","f-aguda":"Feminino Aguda",
+    "f-anasalada":"Feminino Anasalada","f-dupla":"Dupla Feminina"
+  };
+  const vozLabel=vozMap[selVoz]||(selVoz.startsWith("f")?"Feminina":"Masculina");
 
   let tema="",modoDesc="";
 
