@@ -1534,11 +1534,9 @@ function saveSunoEntry(){
   let struct=[];
   if(letra){
     // Try to parse [Tag] sections
-    const parts=letra.split(/
-(?=\[)/);
+    const parts=letra.split(/\n(?=\[)/);
     parts.forEach(part=>{
-      const match=part.match(/^\[([^\]]+)\]
-?([\s\S]*)/);
+      const match=part.match(/^\[([^\]]+)\]\n?([\s\S]*)/);
       if(match){
         const sec=match[1].trim();
         sections[sec]=match[2].trim();
