@@ -51,63 +51,6 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781042036/pnumldvkbhiu0blet9ac.mp3"
   },
   {
-    "id": 1781039740696,
-    "title": "A Volta da Primavera",
-    "genre": "Sertanejo",
-    "mood": "Romântico ❤️",
-    "bpm": 90,
-    "duration": "normal",
-    "date": "09/06/2026",
-    "song": {
-      "title": "A Volta da Primavera",
-      "subtitle": "Noites escuras deram lugar ao nascer de um novo dia",
-      "key": "Sol Maior",
-      "chords": "G - D/F# - Em - C",
-      "vibe": "Uma balada sertaneja emocionante que celebra o reencontro e a cura de um amor perdido.",
-      "style_tags": [
-        "Sertanejo",
-        "Romântico",
-        "Emocional",
-        "Anos 90"
-      ],
-      "sections": {
-        "Introdução": "O vazio que eu sentia\nSem o teu olhar no meu\nO tempo não me trazia\nA paz que hoje acolheu.\nCom o sol a clarear.",
-        "Verso 1": "Sombras vagavam nos dias\nUm deserto sem flor\nPerdido em noites sombrias\nSem teu calor, sem teu amor.\nUm eco a me chamar.",
-        "Pré-Refrão": "Mas o céu, que hoje me escuta\nGritou de volta pra mim\nDesatou minha labuta\nEnfim, chegou o meu fim!\nDo sofrer desse pesar.",
-        "Verso 2": "Caminhos que o pranto traçava\nNo asfalto tão glacial\nCada toque que se acabava\nEra um tropeço fatal.\nA esperança a minguar.",
-        "Refrão": "Chegou você, meu cenário\nTodo o meu norte mudou\nDesfez o meu breviário\nDa dor que me aguentou\nA primavera voltou!\nMeu instante mais bendito\nCom o teu abraço eu sento\nMeu céu, meu infinito\nÉ o teu doce momento\nQue faz renascer o intento!"
-      },
-      "suno_style": "sertanejo, romantic, emotional, powerful male vocals, 90 BPM, fingerpicked acoustic guitar, violao, subtle steel guitar, warm pad, radio mix",
-      "instruments": [
-        "Violão acústico dedilhado (base harmônica e melódica)",
-        "Viola caipira (textura e contraponto melódico)",
-        "Baixo acústico (fundamento rítmico e harmônico)",
-        "Bateria (suave e envolvente, acentuando o tempo)",
-        "Pedal Steel Guitar (para cor e emoção nas passagens de transição)"
-      ],
-      "production_notes": "Iniciar com o violão acústico em arpejos suaves, construindo a intimidade. A entrada da viola caipira deve adicionar um toque nostálgico. O baixo e a bateria entram firmes, mas sem sobrecarregar, mantendo o andamento de 90 BPM. A voz principal, afinada e com expressividade, guia a narrativa. O pré-refrão permite um leve build-up com a adição de um pad sutil. O refrão explode com a voz no seu auge emotivo, suportada por todos os instrumentos, com a pedal steel guitar adicionando um lamento/celebração melódico. O solo de guitarra do verso 2 deve carregar a melancolia do passado, mas com uma resolução otimista, preparando para a explosão final do refrão. Encerramento decrescendo com o violão e a voz. Mixagem com espaço amplo, realçando a clareza vocal e a profundidade dos instrumentos acústicos.",
-      "bpm": 90,
-      "genre": "Sertanejo",
-      "mood": "Romântico ❤️",
-      "voice": "Masculina — 🎵 Voz Afinada",
-      "duration": "normal"
-    },
-    "sections": {
-      "Introdução": "O vazio que eu sentia\nSem o teu olhar no meu\nO tempo não me trazia\nA paz que hoje acolheu.\nCom o sol a clarear.",
-      "Verso 1": "Sombras vagavam nos dias\nUm deserto sem flor\nPerdido em noites sombrias\nSem teu calor, sem teu amor.\nUm eco a me chamar.",
-      "Pré-Refrão": "Mas o céu, que hoje me escuta\nGritou de volta pra mim\nDesatou minha labuta\nEnfim, chegou o meu fim!\nDo sofrer desse pesar.",
-      "Verso 2": "Caminhos que o pranto traçava\nNo asfalto tão glacial\nCada toque que se acabava\nEra um tropeço fatal.\nA esperança a minguar.",
-      "Refrão": "Chegou você, meu cenário\nTodo o meu norte mudou\nDesfez o meu breviário\nDa dor que me aguentou\nA primavera voltou!\nMeu instante mais bendito\nCom o teu abraço eu sento\nMeu céu, meu infinito\nÉ o teu doce momento\nQue faz renascer o intento!"
-    },
-    "struct": [
-      "Introdução",
-      "Verso 1",
-      "Pré-Refrão",
-      "Verso 2",
-      "Refrão"
-    ]
-  },
-  {
     "id": 1781026051290,
     "title": "Manto de Prata",
     "genre": "Sertanejo",
