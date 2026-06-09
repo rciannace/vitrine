@@ -1707,38 +1707,31 @@ function closePasteLyrics(){
   document.getElementById("paste-modal").style.display="none";
 }
 function applyPasteLyrics(){
-  const raw=document.getElementById("paste-lyrics-ta").value.trim();
-  if(!raw){showToast("Cole a letra primeiro!","err");return;}
-  // parse sections by [Tag]
-  const parts=raw.split(/\n(?=\[)/);
-  const newSecs={};
-  const newStruct=[];
-  parts.forEach(function(part){
-    const match=part.match(/^\[([^\]]+)\]\n?([\s\S]*)/);
-    if(match){
-      const sec=match[1].trim();
-      newSecs[sec]=match[2].trim();
-      newStruct.push(sec);
+  try{
+    const raw=document.getElementById("paste-lyrics-ta").value.trim();
+    if(!raw){showToast("Cole a letra primeiro!","err");return;}
+    const parts=raw.split(/
+(?=\[)/);
+    const newSecs={};
+    const newStruct=[];
+    parts.forEach(function(part){
+      const match=part.match(/^\[([^\]]+)\]
+?([\s\S]*)/);
+      if(match){
+        newSecs[match[1].trim()]=match[2].trim();
+        newStruct.push(match[1].trim());
+      }
+    });
+    if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
+    currentSections=newSecs;
+    if(editingId){
+      var idx=history.findIndex(function(x){return x.id===editingId;});
+      if(idx>=0){history[idx].sections=currentSections;saveHistory();}
     }
-  });
-  if(newStruct.length===0){
-    // no tags — put everything as a single section
-    newSecs["Letra"]=raw;
-    newStruct.push("Letra");
-  }
-  currentSections=Object.assign(currentSections,newSecs);
-  // add new sections to struct if not present
-  newStruct.forEach(function(s){
-    if(currentStruct&&currentStruct.indexOf(s)<0)currentStruct.push(s);
-  });
-  // save if editing from library
-  if(editingId){
-    var idx=history.findIndex(function(x){return x.id===editingId;});
-    if(idx>=0){history[idx].sections=currentSections;saveHistory();}
-  }
-  renderResult(Object.keys(currentSections));
-  closePasteLyrics();
-  showToast("✅ Letra aplicada!","ok");
+    closePasteLyrics();
+    renderResult(newStruct);
+    showToast("✅ Letra aplicada!","ok");
+  }catch(err){showToast("Erro: "+err.message,"err");}
 }
 
 function openLyricsModal(){
