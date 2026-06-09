@@ -280,6 +280,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .sp-btn{width:38px;height:38px;border-radius:50%;border:none;background:#333;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
 .sp-btn.play{background:#f97316;width:44px;height:44px;font-size:18px}
 .sp-btn:active{transform:scale(.9)}
+.sp-btn.active-mode{color:#f97316!important;background:#2a1a00!important}
 .sp-progress{width:100%;height:3px;background:#333;border-radius:2px;margin-top:8px;cursor:pointer;position:relative}
 .sp-bar{height:100%;background:#f97316;border-radius:2px;width:0%;transition:width .5s linear}
 .sp-times{display:flex;justify-content:space-between;margin-top:4px}
@@ -523,9 +524,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     </div>
 
     <!-- Botão adicionar do Suno -->
-    <button onclick="openSunoModal()" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed #f97316;background:#fff8f5;color:#f97316;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px">
+    <button onclick="openSunoModal()" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed #f97316;background:#fff8f5;color:#f97316;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px">
       ➕ Adicionar música do Suno
     </button>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button onclick="exportLib()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg2);font-size:12px;font-weight:600;color:var(--text3);cursor:pointer">📤 Exportar</button>
+      <label style="flex:1;padding:10px;border-radius:10px;border:1.5px dashed #f97316;background:#fff8f5;font-size:12px;font-weight:600;color:#f97316;cursor:pointer;text-align:center">📥 Importar<input type="file" accept=".json" style="display:none" onchange="importLib(this)"/></label>
+    </div>
 
     <div class="lib-grid" id="lib-grid">
       <div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1">
@@ -608,9 +613,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <div class="sp-sub" id="sp-sub">—</div>
       </div>
       <div class="sp-controls">
+        <button class="sp-btn" id="sp-shuffle-btn" onclick="spToggleShuffle()" title="Aleatório" style="font-size:14px">🔀</button>
         <button class="sp-btn" onclick="spPrev()" title="Anterior">⏮</button>
         <button class="sp-btn play" id="sp-play-btn" onclick="spToggle()">▶</button>
         <button class="sp-btn" onclick="spNext()" title="Próxima">⏭</button>
+        <button class="sp-btn" id="sp-repeat-btn" onclick="spToggleRepeat()" title="Repetir" style="font-size:14px">🔁</button>
       </div>
     </div>
     <div style="max-width:600px;margin:0 auto;padding:0 2px">
@@ -1671,6 +1678,8 @@ function switchLibTab(tab){
 // SPOTIFY PLAYER
 // ══════════════════════════════════════
 let spQueue=[];   // músicas com áudio
+let spShuffle=false;
+let spRepeat="none"; // none | all | one
 let spIndex=-1;   // índice atual
 let spPlaying=false;
 const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
@@ -1711,6 +1720,21 @@ function genreColor(g){
   return map[g]||"linear-gradient(135deg,#f97316,#ef4444)";
 }
 
+function spToggleShuffle(){
+  spShuffle=!spShuffle;
+  const btn=document.getElementById("sp-shuffle-btn");
+  if(btn)btn.className="sp-btn"+(spShuffle?" active-mode":"");
+}
+function spToggleRepeat(){
+  const modes=["none","all","one"];
+  spRepeat=modes[(modes.indexOf(spRepeat)+1)%3];
+  const btn=document.getElementById("sp-repeat-btn");
+  if(btn){
+    btn.className="sp-btn"+(spRepeat!=="none"?" active-mode":"");
+    btn.textContent=spRepeat==="one"?"🔂":"🔁";
+    btn.title=spRepeat==="one"?"Repetir uma":spRepeat==="all"?"Repetir todas":"Repetir";
+  }
+}
 function spPlay(i){
   if(!spQueue[i])return;
   spIndex=i;
@@ -1744,7 +1768,13 @@ function spPrev(){
 
 function spNext(){
   if(spQueue.length===0)return;
-  const i=(spIndex+1)%spQueue.length;
+  if(spRepeat==="one"){spPlay(spIndex);return;}
+  let i;
+  if(spShuffle){
+    do{i=Math.floor(Math.random()*spQueue.length);}while(spQueue.length>1&&i===spIndex);
+  }else{
+    i=(spIndex+1)%spQueue.length;
+  }
   spPlay(i);
 }
 
@@ -1802,7 +1832,7 @@ function spUpdateUI(){
     document.getElementById("sp-cur").textContent=spFmt(audio.currentTime);
     document.getElementById("sp-dur").textContent=spFmt(audio.duration);
   });
-  audio.addEventListener("ended",()=>{spNext();});
+  audio.addEventListener("ended",()=>{if(spRepeat==="one"){const a=document.getElementById("sp-audio");a.currentTime=0;a.play();}else{spNext();}});
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
   audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
 })();
