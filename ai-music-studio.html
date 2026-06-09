@@ -466,10 +466,20 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div class="card">
       <div style="margin-bottom:14px">
         <div class="card-title">🎙 Tipo de Voz</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
           <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
           <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
         </div>
+        <div style="font-size:11px;color:var(--text4);margin-bottom:7px;letter-spacing:1px;font-weight:600;text-transform:uppercase">Timbre da Voz</div>
+        <div class="chips" id="timbre-chips"></div>
+      </div>
+
+      <!-- ESTRUTURA DA MÚSICA -->
+      <div style="margin-bottom:14px">
+        <div class="card-title">🎼 Estrutura da Música</div>
+        <div style="font-size:11px;color:var(--text4);margin-bottom:8px">Toque para adicionar/remover partes (na ordem desejada)</div>
+        <div class="chips" id="estrutura-chips"></div>
+        <div id="estrutura-preview" style="font-size:11px;color:var(--text4);margin-top:8px;font-style:italic;min-height:16px"></div>
       </div>
       <div style="margin-bottom:14px">
         <div class="card-title">🌈 Mood / Clima</div>
@@ -708,6 +718,14 @@ const TEMPOS=[
   {id:"0",l:"Lento · 70 BPM",bpm:70},{id:"1",l:"Moderado · 90 BPM",bpm:90},
   {id:"2",l:"Animado · 110 BPM",bpm:110},{id:"3",l:"Rápido · 130 BPM",bpm:130},
 ];
+const TIMBRES=[
+  {id:"grossa",l:"🎙 Voz Grossa"},{id:"afinada",l:"🎵 Voz Afinada"},
+  {id:"rouca",l:"🌫 Voz Rouca"},{id:"suave",l:"🕊 Voz Suave"},
+  {id:"aguda",l:"🔺 Voz Aguda"},{id:"gutural",l:"🔥 Gutural"},
+];
+const ESTRUTURA_OPCOES=[
+  "Introdução","Verso 1","Pré-Refrão","Refrão","Verso 2","Bridge","Refrão Final","Parte Final","Outro",
+];
 const STRUCTS_MAP={
   jingle:["Refrão"],
   curta:["Verso 1","Refrão","Refrão Final"],
@@ -736,6 +754,8 @@ const DUR_NOTES={
 // ══════════════════════════════════════
 let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="fp";
 let selExtras=[],selDuration="normal";
+let selTimbre="";
+let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
 let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
@@ -897,6 +917,8 @@ window.onload=()=>{
   buildMultiChips("extras-chips",EXTRAS,"sel-y",()=>selExtras,v=>selExtras=v);
   buildChips("mood-chips",MOODS,"sel-r",()=>selMood,v=>selMood=v);
   buildChips("tempo-chips",TEMPOS,"sel-b",()=>selTempo,v=>selTempo=v);
+  buildTimbreChips();
+  buildEstruturaChips();
   updateLibN();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
@@ -926,6 +948,48 @@ function buildMultiChips(cid,items,cls,getter,setter){
     };
     el.appendChild(b);
   });
+}
+
+function buildTimbreChips(){
+  const el=document.getElementById("timbre-chips");if(!el)return;
+  TIMBRES.forEach(t=>{
+    const b=document.createElement("button");
+    b.className="chip"+(selTimbre===t.id?" sel-p":"");
+    b.textContent=t.l;
+    b.onclick=()=>{
+      if(selTimbre===t.id){selTimbre="";}else{selTimbre=t.id;}
+      el.querySelectorAll(".chip").forEach(x=>x.className="chip");
+      if(selTimbre)b.className="chip sel-p";
+    };
+    el.appendChild(b);
+  });
+}
+
+function buildEstruturaChips(){
+  const el=document.getElementById("estrutura-chips");if(!el)return;
+  ESTRUTURA_OPCOES.forEach(sec=>{
+    const b=document.createElement("button");
+    b.className="chip"+(selEstrutura.includes(sec)?" sel-g":"");
+    b.textContent=sec;
+    b.onclick=()=>{
+      if(selEstrutura.includes(sec)){
+        selEstrutura=selEstrutura.filter(x=>x!==sec);
+        b.className="chip";
+      }else{
+        selEstrutura=[...selEstrutura,sec];
+        b.className="chip sel-g";
+      }
+      updateEstruturaPreview();
+    };
+    el.appendChild(b);
+  });
+  updateEstruturaPreview();
+}
+
+function updateEstruturaPreview(){
+  const el=document.getElementById("estrutura-preview");if(!el)return;
+  if(selEstrutura.length===0){el.textContent="Nenhuma selecionada — usando estrutura padrão do formato escolhido";return;}
+  el.textContent="Estrutura: "+selEstrutura.join(" › ");
 }
 
 // ══════════════════════════════════════
@@ -1111,12 +1175,15 @@ async function generate(){
   const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
   const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
   const dur=selDuration;
-  const secsToUse=STRUCTS_MAP[dur]||STRUCTS_MAP.normal;
+  const secsToUse=selEstrutura.length>0?selEstrutura:(STRUCTS_MAP[dur]||STRUCTS_MAP.normal);
   const extrasStr=selExtras.join(", ");
   const titulo=document.getElementById("titulo").value.trim();
   const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
-  const vozLabel=selVoz.startsWith("f")?"Feminina":"Masculina";
+  const timbreObj=TIMBRES.find(x=>x.id===selTimbre);
+  const timbreLabel=timbreObj?timbreObj.l.replace(/^.\s/,""):"";
+  const vozBase=selVoz.startsWith("f")?"Feminina":"Masculina";
+  const vozLabel=timbreLabel?`${vozBase} — ${timbreLabel}`:vozBase;
 
   let tema="",modoDesc="";
 
