@@ -634,6 +634,25 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   <!-- AUDIO ELEMENT -->
   <audio id="sp-audio"></audio>
 
+  <!-- MODAL COLAR LETRA -->
+  <div id="paste-overlay" style="display:none;position:fixed;inset:0;background:#0008;z-index:500" onclick="closePasteLyrics()"></div>
+  <div id="paste-modal" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;padding:20px 16px 40px;z-index:501;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:var(--text)">📋 Colar letra inteira</div>
+      <button onclick="closePasteLyrics()" style="border:none;background:none;font-size:22px;color:#aaa;cursor:pointer">×</button>
+    </div>
+    <div style="font-size:12px;color:var(--text4);margin-bottom:12px">Cole a letra completa. Use <strong>[Verso 1]</strong>, <strong>[Refrão]</strong>, etc. para separar as seções. A IA vai organizar automaticamente.</div>
+    <textarea id="paste-lyrics-ta" class="txt-area" rows="12" placeholder="[Verso 1]
+Letra do verso aqui...
+
+[Refrão]
+Letra do refrão aqui...
+
+[Bridge]
+..."></textarea>
+    <button onclick="applyPasteLyrics()" style="width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:12px">✅ Aplicar letra</button>
+  </div>
+
   <!-- MODAL LETRA -->
   <div id="lyrics-overlay" style="display:none;position:fixed;inset:0;background:#0009;z-index:400" onclick="closeLyricsModal()"></div>
   <div id="lyrics-modal" style="display:none;position:fixed;inset:0;z-index:401;display:none;flex-direction:column;align-items:center;justify-content:flex-end">
@@ -1274,8 +1293,9 @@ function renderResult(structs){
     </div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
-      <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
-        <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar com seu trecho
+      <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+        <span><strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar</span>
+        <button onclick="openPasteLyrics()" style="padding:6px 12px;border-radius:20px;border:1px solid #f97316;background:none;color:#f97316;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">📋 Colar letra inteira</button>
       </div>
       ${secsToShow.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
     </div>
@@ -1675,6 +1695,51 @@ function saveSunoEntry(){
 
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function safeid(s){return s.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");}
+
+function openPasteLyrics(){
+  document.getElementById("paste-lyrics-ta").value="";
+  document.getElementById("paste-overlay").style.display="block";
+  document.getElementById("paste-modal").style.display="block";
+  setTimeout(()=>document.getElementById("paste-lyrics-ta").focus(),200);
+}
+function closePasteLyrics(){
+  document.getElementById("paste-overlay").style.display="none";
+  document.getElementById("paste-modal").style.display="none";
+}
+function applyPasteLyrics(){
+  const raw=document.getElementById("paste-lyrics-ta").value.trim();
+  if(!raw){showToast("Cole a letra primeiro!","err");return;}
+  // parse sections by [Tag]
+  const parts=raw.split(/\n(?=\[)/);
+  const newSecs={};
+  const newStruct=[];
+  parts.forEach(function(part){
+    const match=part.match(/^\[([^\]]+)\]\n?([\s\S]*)/);
+    if(match){
+      const sec=match[1].trim();
+      newSecs[sec]=match[2].trim();
+      newStruct.push(sec);
+    }
+  });
+  if(newStruct.length===0){
+    // no tags — put everything as a single section
+    newSecs["Letra"]=raw;
+    newStruct.push("Letra");
+  }
+  currentSections=Object.assign(currentSections,newSecs);
+  // add new sections to struct if not present
+  newStruct.forEach(function(s){
+    if(currentStruct&&currentStruct.indexOf(s)<0)currentStruct.push(s);
+  });
+  // save if editing from library
+  if(editingId){
+    var idx=history.findIndex(function(x){return x.id===editingId;});
+    if(idx>=0){history[idx].sections=currentSections;saveHistory();}
+  }
+  renderResult(Object.keys(currentSections));
+  closePasteLyrics();
+  showToast("✅ Letra aplicada!","ok");
+}
 
 function openLyricsModal(){
   if(spIndex<0||!spQueue[spIndex])return;
