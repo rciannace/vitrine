@@ -1139,7 +1139,8 @@ SOMENTE JSON válido:
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
-    history=[entry,...history].slice(0,30);try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+    history=[entry,...history].slice(0,30);
+    saveHistory();
     updateLibN();activeRTab="letra";
     renderResult(secsToUse);
     showToast("🎵 Música criada!","ok");
@@ -1444,7 +1445,7 @@ function setPage(p){
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
-  if(p==="lib"){renderLib();renderSyncUI();}
+  if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
