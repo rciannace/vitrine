@@ -1798,8 +1798,6 @@ function spPrev(){
 }
 
 function spNext(){
-  // rebuild queue if empty
-  if(spQueue.length===0)spQueue=history.filter(function(e){return e.audio;});
   if(spQueue.length===0)return;
   if(spRepeat==="one"){spPlay(spIndex);return;}
   let i;
