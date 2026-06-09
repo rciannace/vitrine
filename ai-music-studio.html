@@ -506,30 +506,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div class="card" id="suno-preview-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
         <div class="card-title" style="margin-bottom:0">🚀 Preview Suno Style</div>
+        <span id="suno-preview-chars" style="font-size:10px;font-weight:600"></span>
       </div>
-      <div style="font-size:11px;color:var(--text4);margin-bottom:10px">Atualiza em tempo real · Cole diretamente no Suno</div>
-
-      <!-- STYLE OF MUSIC (campo curto, máx 120) -->
-      <div style="margin-bottom:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-          <span style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#f97316;text-transform:uppercase">Style of Music</span>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span id="suno-preview-chars" style="font-size:10px;font-weight:600"></span>
-            <button onclick="copySunoPreview('suno-preview-text','✓ Style copiado!')" style="font-size:10px;padding:3px 10px;border-radius:6px;border:none;background:#f97316;color:#fff;cursor:pointer;font-weight:600">📋 Copiar</button>
-          </div>
-        </div>
-        <div id="suno-preview-text" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.8;min-height:36px;word-break:break-word;font-family:monospace;white-space:pre-wrap"></div>
-      </div>
-
-      <!-- STYLE DETALHADO (para usar em Custom Mode) -->
-      <div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-          <span style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#a855f7;text-transform:uppercase">Style Detalhado (Custom Mode)</span>
-          <button onclick="copySunoPreview('suno-preview-extended','✓ Style detalhado copiado!')" style="font-size:10px;padding:3px 10px;border-radius:6px;border:none;background:#a855f7;color:#fff;cursor:pointer;font-weight:600">📋 Copiar</button>
-        </div>
-        <div id="suno-preview-extended" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.8;min-height:60px;word-break:break-word;font-family:monospace;white-space:pre-wrap"></div>
-        <div style="font-size:10px;color:var(--text4);margin-top:5px">💡 Use no campo <b>Style of Music</b> do Suno em modo Custom — quanto mais detalhe, melhor o resultado</div>
-      </div>
+      <div style="font-size:11px;color:var(--text4);margin-bottom:8px">Atualiza em tempo real conforme você monta as opções</div>
+      <div id="suno-preview-text" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.8;min-height:36px;word-break:break-word;font-family:monospace;white-space:pre-wrap"></div>
+      <div style="font-size:10px;color:var(--text4);margin-top:6px">💡 O <b>Style Detalhado completo</b> fica na aba <b>Exportar pro Suno</b> após gerar a música</div>
     </div>
 
     <!-- REFERÊNCIA -->
@@ -1616,31 +1597,49 @@ function renderResult(structs){
 
     <div id="rtab-suno" style="display:${activeRTab==="suno"?"block":"none"}">
       <div class="steps-row">
-        ${[{n:"1",t:"Copie o Estilo",d:"Style of Music",c:"#f97316"},{n:"2",t:"Copie a Letra",d:"Lyrics",c:"#ef4444"},{n:"3",t:"Crie no Suno",d:"Clique em Create!",c:"#22c55e"}].map(st=>`
+        ${[{n:"1",t:"Custom Mode",d:"Ative no Suno",c:"#a855f7"},{n:"2",t:"Cole Styles",d:"Style Detalhado",c:"#f97316"},{n:"3",t:"Cole Letra",d:"Lyrics + Título",c:"#ef4444"},{n:"4",t:"Create!",d:"Clique em Create",c:"#22c55e"}].map(st=>`
         <div class="step-card" style="border-color:${st.c}22">
           <div class="step-num" style="background:${st.c}15;color:${st.c}">${st.n}</div>
           <div class="step-t">${st.t}</div>
           <div class="step-d">${st.d}</div>
         </div>`).join("")}
       </div>
-      <div style="background:#f0fff4;border:1px solid #22c55e30;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#555;line-height:1.7">
-        <strong style="color:#22c55e">Como usar no Suno:</strong><br>
-        1️⃣ Copie o <b>Styles</b> → cole no campo <b>Styles</b> do Suno<br>
-        2️⃣ Copie a <b>Letra</b> → cole no campo <b>Lyrics</b> do Suno<br>
-        3️⃣ Copie o <b>Título</b> → cole em <b>Song Title</b> e clique <b>Create</b>!
+
+      <div style="background:#f5f0ff;border:1px solid #a855f730;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#555;line-height:1.8">
+        <strong style="color:#a855f7">💡 Dica para melhor resultado no Suno:</strong><br>
+        No Suno, clique em <b>Custom</b> para aparecerem os campos separados.<br>
+        1️⃣ Cole o <b>Style Detalhado</b> no campo <b>Style of Music</b><br>
+        2️⃣ Cole a <b>Letra</b> no campo <b>Lyrics</b><br>
+        3️⃣ Cole o <b>Título</b> em <b>Song Title</b> e clique <b>Create</b>!<br>
+        <span style="color:#a855f7;font-size:11px">Quanto mais detalhe no Style, melhor a música gerada.</span>
       </div>
 
+      <!-- STYLE COMPACTO -->
       <div class="export-box">
         <div class="export-head">
           <div>
-            <span class="export-label" style="color:#f97316">STYLES</span>
+            <span class="export-label" style="color:#f97316">STYLE OF MUSIC</span>
             <span id="style-chars" style="font-size:10px;margin-left:8px;color:#aaa"></span>
+            <span style="font-size:9px;margin-left:6px;color:#aaa">(modo simples)</span>
           </div>
-          <button class="btn-copy-sm" style="background:#f97316;color:#fff" onclick="copyEl('ex-style','Estilo copiado! ✓')">📋 Copiar</button>
+          <button class="btn-copy-sm" style="background:#f97316;color:#fff" onclick="copyEl('ex-style','Style copiado! ✓')">📋 Copiar</button>
         </div>
         <pre class="export-pre" id="ex-style" style="white-space:pre-wrap;word-break:break-word">${esc((s.suno_style||s.suno_style_prompt||"").slice(0,120))}</pre>
       </div>
 
+      <!-- STYLE DETALHADO -->
+      <div class="export-box">
+        <div class="export-head">
+          <div>
+            <span class="export-label" style="color:#a855f7">STYLE DETALHADO</span>
+            <span style="font-size:9px;margin-left:6px;color:#a855f7;font-weight:600">⭐ Custom Mode</span>
+          </div>
+          <button class="btn-copy-sm" style="background:#a855f7;color:#fff" onclick="copyEl('ex-style-detailed','Style detalhado copiado! ✓')">📋 Copiar</button>
+        </div>
+        <pre class="export-pre" id="ex-style-detailed" style="white-space:pre-wrap;word-break:break-word;line-height:1.8">${esc(buildSunoDetailedStyle())}</pre>
+      </div>
+
+      <!-- SONG TITLE -->
       <div class="export-box">
         <div class="export-head">
           <span class="export-label" style="color:#1a1a1a">SONG TITLE</span>
@@ -1649,6 +1648,7 @@ function renderResult(structs){
         <pre class="export-pre" id="ex-title">${esc(s.title||"")}</pre>
       </div>
 
+      <!-- LYRICS -->
       <div class="export-box">
         <div class="export-head">
           <span class="export-label" style="color:#ef4444">LYRICS</span>
@@ -1788,6 +1788,45 @@ function switchRTab(tab){
 function buildSunoLyrics(secsToShow){
   if(!currentSections)return"";
   return(secsToShow||[]).filter(s=>currentSections[s]).map(s=>(SEC_TAGS[s]||"["+s+"]")+"\n"+currentSections[s]).join("\n\n");
+}
+
+function buildSunoDetailedStyle(){
+  // uses currentSong data (from AI) + user selections
+  const gd=SUNO_GENRE_DATA[selGenre]||SUNO_GENRE_DATA.personalizado;
+  const md=SUNO_MOOD_DATA[selMood]||SUNO_MOOD_DATA.romantico;
+  const td=selTimbre?SUNO_TIMBRE_DATA[selTimbre]:null;
+  const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
+  const vozBase=selVoz.startsWith("f")?"female vocals":"male vocals";
+  const vozFull=td?td.en:vozBase;
+  const vozDetail=td?", "+td.detail:"";
+  const bpm=t?t.bpm:90;
+  const tempoLabel=bpm<80?"slow ballad":bpm<100?"moderate groove":bpm<120?"mid-tempo":bpm<140?"uptempo":"fast dance";
+  const extrasEn=selExtras.map(e=>{
+    const map={"Autotune":"autotune","Piano":"grand piano","Guitarra":"electric guitar","808":"808 bass","Grave Pesado":"heavy bass, sub bass","Orquestra":"orchestral strings, full orchestra","Coral":"choir, vocal harmonies","Sanfona":"accordion","Reverb":"heavy reverb, cathedral reverb","Violão":"violao, acoustic guitar","Bateria forte":"powerful drums, heavy kick","Synth":"analog synth","Rápido":"fast tempo","Lento":"slow tempo","Emotivo":"deeply emotional","Relaxante":"relaxing, chill","Agressivo":"aggressive, intense","Vinheta":"short jingle","Narrado":"spoken word, narrated"};
+    return map[e]||e.toLowerCase();
+  });
+
+  // enrich with AI-generated data if available
+  const song=currentSong||{};
+  const aiChords=song.chords?("\nChords: "+song.chords):"";
+  const aiKey=song.key?("\nKey: "+song.key):"";
+  const aiInstruments=(song.instruments&&song.instruments.length)?song.instruments.join(", "):gd.instruments;
+  const aiVibe=song.vibe?("\nVibe: "+song.vibe):("\nVibe: "+md.vibe);
+  const aiProd=song.production_notes?song.production_notes.split("\n")[0]:gd.production;
+
+  const lines=[];
+  lines.push("Genre: "+gd.en+(gd.sub?", "+gd.sub:""));
+  lines.push("Style: "+gd.era+", "+gd.production);
+  lines.push("Mood: "+md.en);
+  lines.push("Vibe: "+md.vibe+(song.vibe&&song.vibe!==md.vibe?", "+song.vibe:""));
+  lines.push("Vocals: "+vozFull+vozDetail);
+  lines.push("Instruments: "+aiInstruments);
+  lines.push("BPM: "+bpm+", Tempo: "+tempoLabel);
+  if(aiKey)lines.push("Key: "+song.key);
+  if(aiChords)lines.push("Chords: "+song.chords);
+  if(extrasEn.length)lines.push("Extra: "+extrasEn.join(", "));
+  lines.push("Production: "+aiProd+", professional studio quality, radio-ready");
+  return lines.join("\n");
 }
 
 // ══════════════════════════════════════
