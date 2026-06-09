@@ -758,6 +758,7 @@ const EXTRAS=[
   "Vinheta","Narrado","Autotune","Rápido","Lento","Emotivo","Relaxante",
   "Synth","Agressivo","Piano","Guitarra","808","Grave Pesado",
   "Orquestra","Coral","Sanfona","Reverb","Violão","Bateria forte",
+  "Saxofone","Solo de Guitarra","2 Vozes (Dupla)",
 ];
 const MOODS=[
   {id:"romantico",l:"Romântico ❤️"},{id:"alegre",l:"Alegre 😄"},
@@ -1130,7 +1131,7 @@ function buildSunoStyles(){
   const vozFull=td?td.en:vozBase;
   const bpm=t?t.bpm:90;
   const extrasEn=selExtras.map(e=>{
-    const map={"Autotune":"autotune","Piano":"grand piano","Guitarra":"electric guitar","808":"808 bass","Grave Pesado":"heavy bass, sub bass","Orquestra":"orchestral strings, full orchestra","Coral":"choir, vocal harmonies","Sanfona":"accordion","Reverb":"heavy reverb, cathedral reverb","Violão":"violao, acoustic guitar","Bateria forte":"powerful drums, heavy kick","Synth":"analog synth","Rápido":"fast tempo","Lento":"slow tempo","Emotivo":"deeply emotional","Relaxante":"relaxing, chill","Agressivo":"aggressive, intense","Vinheta":"short jingle","Narrado":"spoken word, narrated"};
+    const map={"Autotune":"autotune","Piano":"grand piano","Guitarra":"electric guitar","808":"808 bass","Grave Pesado":"heavy bass, sub bass","Orquestra":"orchestral strings, full orchestra","Coral":"choir, vocal harmonies","Sanfona":"accordion","Reverb":"heavy reverb, cathedral reverb","Violão":"violao, acoustic guitar","Bateria forte":"powerful drums, heavy kick","Synth":"analog synth","Saxofone":"saxophone solo, sax","Solo de Guitarra":"guitar solo, shredding electric guitar","2 Vozes (Dupla)":"dual vocals, vocal duet, two voices harmony","Rápido":"fast tempo","Lento":"slow tempo","Emotivo":"deeply emotional","Relaxante":"relaxing, chill","Agressivo":"aggressive, intense","Vinheta":"short jingle","Narrado":"spoken word, narrated"};
     return map[e]||e.toLowerCase();
   });
 
