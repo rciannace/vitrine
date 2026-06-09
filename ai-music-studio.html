@@ -140,6 +140,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* DURAÇÃO */
 .dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.voz-chip{padding:6px 12px;border-radius:20px;font-size:11px;border:1.5px solid #eee;background:#f8f8f8;color:#666;cursor:pointer;transition:all .15s}
+.voz-chip.sel{border-color:#f97316;background:#fff7f0;color:#f97316;font-weight:600}
+body.dark .voz-chip{border-color:var(--border);background:var(--bg3);color:var(--text3)}
+body.dark .voz-chip.sel{border-color:#f97316;background:rgba(249,115,22,0.15);color:#f97316}
 .dur-card{padding:12px 14px;border-radius:12px;border:1.5px solid #eee;background:#f8f8f8;cursor:pointer;transition:all .15s;text-align:left}
 .dur-card.sel{border-color:#f97316;background:#fff}
 .dur-icon{font-size:20px;margin-bottom:4px}
@@ -461,10 +465,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div class="card">
       <div style="margin-bottom:14px">
         <div class="card-title">🎙 Tipo de Voz</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
-          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <button class="btn-main" id="voz-masc" onclick="selGender('m')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">👨 Masculina</button>
+          <button class="btn-main" id="voz-fem" onclick="selGender('f')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">👩 Feminina</button>
         </div>
+        <div id="voz-sub" style="display:flex;flex-wrap:wrap;gap:6px"></div>
       </div>
       <div style="margin-bottom:14px">
         <div class="card-title">🌈 Mood / Clima</div>
@@ -856,6 +861,7 @@ window.onload=()=>{
   ghLoadToken();
   ghLoad();
   renderSyncUI();
+  selGender('f');
   // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
@@ -913,18 +919,33 @@ function switchMainTab(tab){
 // ══════════════════════════════════════
 // VOZ
 // ══════════════════════════════════════
-function selVoice(v){
-  selVoz=v;
-  const isFem=v==="fp"||v==="fs";
+var vozGender="f";
+var vozChips={
+  m:[{v:"m-grave",l:"Grave"},{v:"m-afinado",l:"Afinado"},{v:"m-grossa",l:"Voz Grossa"},{v:"m-anasalado",l:"Anasalado"},{v:"m-dupla",l:"Dupla"}],
+  f:[{v:"f-suave",l:"Suave"},{v:"f-afinada",l:"Afinada"},{v:"f-aguda",l:"Aguda"},{v:"f-anasalada",l:"Anasalada"},{v:"f-dupla",l:"Dupla"}]
+};
+function selGender(g){
+  vozGender=g;
   const masc=document.getElementById("voz-masc");
   const fem=document.getElementById("voz-fem");
-  if(isFem){
+  if(g==="f"){
     fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";
     masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";
   }else{
     masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
     fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
   }
+  const sub=document.getElementById("voz-sub");
+  sub.innerHTML=vozChips[g].map(function(c){
+    return '<button class="voz-chip" onclick="selVoice(''+c.v+'')">'+c.l+'</button>';
+  }).join("");
+  selVoice(vozChips[g][0].v);
+}
+function selVoice(v){
+  selVoz=v;
+  document.querySelectorAll(".voz-chip").forEach(function(el){
+    el.className="voz-chip"+(el.getAttribute("onclick").indexOf("'"+v+"'")>=0?" sel":"");
+  });
 }
 
 // ══════════════════════════════════════
@@ -1082,7 +1103,8 @@ async function generate(){
   const titulo=document.getElementById("titulo").value.trim();
   const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
-  const vozLabel=selVoz.startsWith("f")?"Feminina":"Masculina";
+  var vozMap={"m-grave":"Masculino Grave","m-afinado":"Masculino Afinado","m-grossa":"Masculino Voz Grossa","m-anasalado":"Masculino Anasalado","m-dupla":"Dupla Masculina","f-suave":"Feminino Suave","f-afinada":"Feminino Afinada","f-aguda":"Feminino Aguda","f-anasalada":"Feminino Anasalada","f-dupla":"Dupla Feminina"};
+  const vozLabel=vozMap[selVoz]||(selVoz.startsWith("f")?"Feminina":"Masculina");
 
   let tema="",modoDesc="";
 
