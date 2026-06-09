@@ -481,6 +481,17 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <div class="chips" id="estrutura-chips"></div>
         <div id="estrutura-preview" style="font-size:11px;color:var(--text4);margin-top:8px;font-style:italic;min-height:16px"></div>
       </div>
+
+      <!-- FAVORITOS -->
+      <div style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="card-title" style="margin-bottom:0">⭐ Configurações Favoritas</div>
+          <button onclick="saveFavorite()" style="font-size:11px;padding:4px 12px;border-radius:20px;border:1.5px solid #f97316;background:none;color:#f97316;cursor:pointer;font-weight:600">+ Salvar atual</button>
+        </div>
+        <div id="favorites-list" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+        <div id="favorites-empty" style="font-size:11px;color:var(--text4);font-style:italic">Nenhum favorito salvo ainda</div>
+      </div>
+
       <div style="margin-bottom:14px">
         <div class="card-title">🌈 Mood / Clima</div>
         <div class="chips" id="mood-chips"></div>
@@ -489,6 +500,16 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <div class="card-title">⏱ Andamento</div>
         <div class="chips" id="tempo-chips"></div>
       </div>
+    </div>
+
+    <!-- PREVIEW SUNO STYLE -->
+    <div class="card" id="suno-preview-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="card-title" style="margin-bottom:0">🚀 Preview Suno Style</div>
+        <span id="suno-preview-chars" style="font-size:10px;font-weight:600"></span>
+      </div>
+      <div id="suno-preview-text" style="font-size:12px;color:var(--text3);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.7;min-height:40px;word-break:break-word;font-family:monospace"></div>
+      <div style="font-size:10px;color:var(--text4);margin-top:6px">Atualiza conforme você monta as opções · máx 120 chars</div>
     </div>
 
     <!-- REFERÊNCIA -->
@@ -919,6 +940,8 @@ window.onload=()=>{
   buildChips("tempo-chips",TEMPOS,"sel-b",()=>selTempo,v=>selTempo=v);
   buildTimbreChips();
   buildEstruturaChips();
+  renderFavorites();
+  updateSunoPreview();
   updateLibN();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
@@ -931,7 +954,7 @@ function buildChips(cid,items,cls,getter,setter){
     const b=document.createElement("button");
     b.className="chip"+(getter()===id?" "+cls:"");
     b.textContent=item.l;
-    b.onclick=()=>{setter(id);el.querySelectorAll(".chip").forEach(x=>x.className="chip");b.className="chip "+cls;};
+    b.onclick=()=>{setter(id);el.querySelectorAll(".chip").forEach(x=>x.className="chip");b.className="chip "+cls;updateSunoPreview();};
     el.appendChild(b);
   });
 }
@@ -945,6 +968,7 @@ function buildMultiChips(cid,items,cls,getter,setter){
       const c=getter();
       c.includes(item)?setter(c.filter(x=>x!==item)):setter([...c,item]);
       b.className="chip"+(getter().includes(item)?" "+cls:"");
+      updateSunoPreview();
     };
     el.appendChild(b);
   });
@@ -960,6 +984,7 @@ function buildTimbreChips(){
       if(selTimbre===t.id){selTimbre="";}else{selTimbre=t.id;}
       el.querySelectorAll(".chip").forEach(x=>x.className="chip");
       if(selTimbre)b.className="chip sel-p";
+      updateSunoPreview();
     };
     el.appendChild(b);
   });
@@ -990,6 +1015,94 @@ function updateEstruturaPreview(){
   const el=document.getElementById("estrutura-preview");if(!el)return;
   if(selEstrutura.length===0){el.textContent="Nenhuma selecionada — usando estrutura padrão do formato escolhido";return;}
   el.textContent="Estrutura: "+selEstrutura.join(" › ");
+  updateSunoPreview();
+}
+
+// ══════════════════════════════════════
+// SUNO STYLE PREVIEW EM TEMPO REAL
+// ══════════════════════════════════════
+function buildSunoPreviewStr(){
+  const g=GENRES.find(x=>x.id===selGenre);
+  const m=MOODS.find(x=>x.id===selMood);
+  const t=TEMPOS.find(x=>x.id===selTempo);
+  const timbreObj=TIMBRES.find(x=>x.id===selTimbre);
+  const vozBase=selVoz.startsWith("f")?"female vocals":"male vocals";
+  const timbreEn={grossa:"deep",afinada:"pitch-perfect",rouca:"raspy",suave:"smooth",aguda:"high-pitched",gutural:"guttural"};
+  const timbreStr=timbreObj?(timbreEn[timbreObj.id]||timbreObj.id)+" ":"";
+  const genreEn=(g?g.l:"sertanejo").toLowerCase().replace(/\s+/g,"-");
+  const moodEn=(m?m.l.replace(/\s*[^\w\s].*/,""):"romantic").toLowerCase().trim();
+  const bpmStr=t?t.bpm+" BPM":"90 BPM";
+  const parts=[genreEn,moodEn,timbreStr+vozBase,bpmStr];
+  if(selExtras.length>0)parts.push(...selExtras.slice(0,2).map(e=>e.toLowerCase()));
+  let result=parts.join(", ");
+  if(result.length>120)result=result.slice(0,117)+"...";
+  return result;
+}
+
+function updateSunoPreview(){
+  const el=document.getElementById("suno-preview-text");
+  const ch=document.getElementById("suno-preview-chars");
+  if(!el)return;
+  const str=buildSunoPreviewStr();
+  el.textContent=str;
+  if(ch){
+    ch.textContent=str.length+"/120";
+    ch.style.color=str.length>120?"#ef4444":str.length>100?"#f59e0b":"#22c55e";
+  }
+}
+
+// ══════════════════════════════════════
+// FAVORITOS
+// ══════════════════════════════════════
+let favorites=[];
+try{favorites=JSON.parse(localStorage.getItem("ams_favs")||"[]");}catch{}
+
+function saveFavorite(){
+  const timbreObj=TIMBRES.find(x=>x.id===selTimbre);
+  const name=prompt("Nome para este favorito:",(timbreObj?timbreObj.l.replace(/^.\s/,"")+" ":"")+selEstrutura.slice(0,2).join("+"));
+  if(!name||!name.trim())return;
+  const fav={id:Date.now(),name:name.trim(),timbre:selTimbre,estrutura:[...selEstrutura]};
+  favorites=[fav,...favorites].slice(0,8);
+  localStorage.setItem("ams_favs",JSON.stringify(favorites));
+  renderFavorites();
+  showToast("⭐ Favorito salvo!","ok");
+}
+
+function applyFavorite(id){
+  const fav=favorites.find(f=>f.id===id);if(!fav)return;
+  // apply timbre
+  selTimbre=fav.timbre||"";
+  const tEl=document.getElementById("timbre-chips");
+  if(tEl)tEl.querySelectorAll(".chip").forEach(b=>{
+    b.className="chip"+(b.textContent.replace(/^.\s/,"")===( TIMBRES.find(x=>x.id===selTimbre)||{} ).l?.replace(/^.\s/,"")?"chip sel-p":"chip");
+  });
+  // rebuild timbre chips to reflect
+  const tc=document.getElementById("timbre-chips");if(tc){tc.innerHTML="";buildTimbreChips();}
+  // apply estrutura
+  selEstrutura=[...(fav.estrutura||[])];
+  const ec=document.getElementById("estrutura-chips");if(ec){ec.innerHTML="";buildEstruturaChips();}
+  updateSunoPreview();
+  showToast("⭐ "+fav.name+" aplicado!","ok");
+}
+
+function deleteFavorite(id){
+  favorites=favorites.filter(f=>f.id!==id);
+  localStorage.setItem("ams_favs",JSON.stringify(favorites));
+  renderFavorites();
+  showToast("Favorito removido","ok");
+}
+
+function renderFavorites(){
+  const list=document.getElementById("favorites-list");
+  const empty=document.getElementById("favorites-empty");
+  if(!list)return;
+  if(!favorites.length){list.innerHTML="";if(empty)empty.style.display="block";return;}
+  if(empty)empty.style.display="none";
+  list.innerHTML=favorites.map(f=>`
+    <div style="display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 12px;border-radius:20px;border:1.5px solid #f9731640;background:var(--bg3);font-size:12px;cursor:pointer" onclick="applyFavorite(${f.id})">
+      <span style="color:var(--text2);font-weight:500">${esc(f.name)}</span>
+      <button onclick="event.stopPropagation();deleteFavorite(${f.id})" style="border:none;background:none;color:#aaa;font-size:13px;cursor:pointer;line-height:1;padding:0 0 0 2px">×</button>
+    </div>`).join("");
 }
 
 // ══════════════════════════════════════
@@ -1023,6 +1136,7 @@ function selVoice(v){
     masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
     fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
   }
+  updateSunoPreview();
 }
 
 // ══════════════════════════════════════
