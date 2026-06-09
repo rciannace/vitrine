@@ -47,7 +47,11 @@ body.dark .mic-hint{color:var(--text4)}
 body.dark .field-hint{color:var(--text4)}
 body.dark .header{box-shadow:0 1px 0 var(--border)}
 body.dark .sec-btn{background:var(--bg3);border-color:var(--border);color:var(--text3)}
-body.dark .dur-card{background:var(--bg3);border-color:var(--border)}
+body.dark .dur-card{background:var(--bg3);border-color:var(--border);color:var(--text2)}
+body.dark .dur-card.sel{border-color:#f97316!important;background:rgba(249,115,22,0.15)!important}
+body.dark .dur-name{color:var(--text2)}
+body.dark .dur-name.sel{color:#f97316!important}
+body.dark .dur-desc{color:var(--text4)}
 body.dark .dur-name{color:var(--text2)}
 body.dark .dur-desc{color:var(--text4)}
 body.dark .export-box{background:var(--bg3);border-color:var(--border)}
@@ -1449,7 +1453,7 @@ function renderLib(){
   if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">🎵</div><div>Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:2px">${esc(e.title)}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px">${esc(e.title)}</div>
       <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}</div>
       <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
       ${e.audio ? `
