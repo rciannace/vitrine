@@ -1,5 +1,66 @@
 [
   {
+    "id": 1781025526129,
+    "title": "Nossa Constelação",
+    "genre": "Rock",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "09/06/2026",
+    "song": {
+      "title": "Nossa Constelação",
+      "subtitle": "Para o Nosso Dia",
+      "key": "Am",
+      "chords": "Am G C F | Dm E7 Am",
+      "vibe": "Amor Eterno Sob a Luz do Luar",
+      "style_tags": [
+        "rock",
+        "romantic",
+        "brasil"
+      ],
+      "sections": {
+        "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n",
+        "Verso 1": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n",
+        "Pré-Refrão": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n",
+        "Refrão": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você!\n",
+        "Verso 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n",
+        "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n",
+        "Refrão Final": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n"
+      },
+      "suno_style": "rock, romantic, male vocals, 90 BPM, electric guitar, drums, emotional",
+      "instruments": [
+        "Guitarra Elétrica (Solo e Base)",
+        "Bateria",
+        "Baixo",
+        "Voz Masculina"
+      ],
+      "production_notes": "Guitarra base com timbre suave e melódico, harmonizando com a bateria constante e marcante. Inserir um solo de guitarra expressivo e melancólico após o bridge antes do refrão final. A bateria deve ter uma pegada forte, mas controlada, mantendo o pulso da música. Mixagem limpa e espaçada para realçar a clareza das vocais e a poesia da letra.",
+      "bpm": 90,
+      "genre": "Rock",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n",
+      "Verso 1": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n",
+      "Pré-Refrão": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n",
+      "Refrão": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você!\n",
+      "Verso 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n",
+      "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n",
+      "Refrão Final": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1780967100877,
     "title": "A Alma Cantou",
     "genre": "Rock",
