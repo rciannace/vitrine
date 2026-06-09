@@ -1773,8 +1773,17 @@ function spUpdateUI(){
   const e=spQueue[spIndex];
   player.classList.add("active");
   title.textContent=e.title;
-  sub.textContent=e.genre+" · "+e.bpm+" BPM · "+e.mood;
-  thumb.textContent=genreEmoji(e.genre);
+  sub.style.display="none";
+  // show nature photo as thumb
+  const h=Array.from(e.title||'').reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
+  const pm2={'sertanejo':['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],'funk':['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],'gospel':['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],'rock':['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],'pop':['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1']};
+  const m2=(e.mood||'').toLowerCase();
+  const rom2=m2.includes('rom')||m2.includes('amor');
+  const r4=['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'];
+  const d4=['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
+  const arr2=rom2?r4:(pm2[(e.genre||'').toLowerCase()]||d4);
+  const pid2=arr2[h%4];
+  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display=\'none\'"/>';
   thumb.style.background=genreColor(e.genre);
   btn.textContent=spPlaying?"⏸":"▶";
   // update main padding so player doesn't cover content
