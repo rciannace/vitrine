@@ -623,6 +623,18 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   <!-- AUDIO ELEMENT -->
   <audio id="sp-audio"></audio>
 
+  <!-- MODAL COLAR LETRA -->
+  <div id="paste-overlay" style="display:none;position:fixed;inset:0;background:#0008;z-index:500" onclick="closePasteLyrics()"></div>
+  <div id="paste-modal" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;padding:20px 16px 40px;z-index:501;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:var(--text)">📋 Colar letra inteira</div>
+      <button onclick="closePasteLyrics()" style="border:none;background:none;font-size:22px;color:#aaa;cursor:pointer">×</button>
+    </div>
+    <div style="font-size:12px;color:var(--text4);margin-bottom:12px">Cole a letra completa. Use <strong>[Verso 1]</strong>, <strong>[Refrão]</strong>, etc. para separar as seções automaticamente.</div>
+    <textarea id="paste-lyrics-ta" class="txt-area" rows="12" placeholder="[Verso 1]&#10;Letra do verso aqui...&#10;&#10;[Refrão]&#10;Letra do refrão aqui..."></textarea>
+    <button onclick="applyPasteLyrics()" style="width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:12px">✅ Aplicar letra</button>
+  </div>
+
 </div><!-- /main -->
 
 <!-- FOOTER BTN -->
@@ -1247,8 +1259,9 @@ function renderResult(structs){
     </div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
-      <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
-        <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar com seu trecho
+      <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+        <span><strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar</span>
+        <button onclick="openPasteLyrics()" style="padding:6px 12px;border-radius:20px;border:1px solid #f97316;background:none;color:#f97316;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">📋 Colar letra inteira</button>
       </div>
       ${secsToShow.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
     </div>
@@ -1792,6 +1805,38 @@ function spUpdateUI(){
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
   audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
 })();
+
+function openPasteLyrics(){
+  document.getElementById("paste-lyrics-ta").value="";
+  document.getElementById("paste-overlay").style.display="block";
+  document.getElementById("paste-modal").style.display="block";
+  setTimeout(function(){document.getElementById("paste-lyrics-ta").focus();},200);
+}
+function closePasteLyrics(){
+  document.getElementById("paste-overlay").style.display="none";
+  document.getElementById("paste-modal").style.display="none";
+}
+function applyPasteLyrics(){
+  var raw=document.getElementById("paste-lyrics-ta").value.trim();
+  if(!raw){showToast("Cole a letra primeiro!","err");return;}
+  var newSecs={};var newStruct=[];
+  var parts=raw.split(/
+(?=\[)/);
+  parts.forEach(function(part){
+    var m=part.match(/^\[([^\]]+)\]
+?([\s\S]*)/);
+    if(m){newSecs[m[1].trim()]=m[2].trim();newStruct.push(m[1].trim());}
+  });
+  if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
+  currentSections=newSecs;
+  if(editingId){
+    var idx=history.findIndex(function(x){return x.id===editingId;});
+    if(idx>=0){history[idx].sections=currentSections;saveHistory();}
+  }
+  closePasteLyrics();
+  renderResult(newStruct);
+  showToast("Letra aplicada!","ok");
+}
 </script>
 </body>
 </html>
