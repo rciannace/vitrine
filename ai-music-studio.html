@@ -102,9 +102,9 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* TABS — tipo MoneyVoz */
 .tab-row{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
-.tab-item{flex:1;text-align:center;padding:12px 4px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;text-transform:uppercase;font-weight:600;letter-spacing:0.5px}
+.tab-item{flex:1;text-align:center;padding:10px 2px;font-size:9px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;text-transform:uppercase;font-weight:600;letter-spacing:0;min-width:0;overflow:hidden}
 .tab-item.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
-.tab-icon{font-size:18px;color:var(--text3)}
+.tab-icon{font-size:16px;color:var(--text3)}
 .tab-badge{background:#ef4444;color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700}
 
 /* INPUTS */
@@ -329,8 +329,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <div class="tab-row" id="main-tabs">
         <div class="tab-item active" onclick="switchMainTab('descrever')">
           <span class="tab-icon">💬</span>
-          <span>Descrever</span>
-          <span style="font-size:10px;color:#aaa">Assistente IA</span>
+          <span>Ideia</span>
         </div>
         <div class="tab-item" onclick="switchMainTab('letra')">
           <span class="tab-icon">📝</span>
@@ -346,7 +345,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <div class="tab-item" onclick="switchMainTab('inspiracao')">
           <span class="tab-icon">💡</span>
-          <span>Inspiração</span>
+          <span>Inspirar</span>
         </div>
       </div>
     </div>
