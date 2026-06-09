@@ -1762,6 +1762,13 @@ function spToggle(){
 
 function spPrev(){
   if(spQueue.length===0)return;
+  const audio=document.getElementById("sp-audio");
+  // se passou mais de 3 segundos, volta ao início
+  if(audio&&audio.currentTime>3){
+    audio.currentTime=0;
+    return;
+  }
+  // senão vai para a música anterior
   const i=(spIndex-1+spQueue.length)%spQueue.length;
   spPlay(i);
 }
