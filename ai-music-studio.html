@@ -255,12 +255,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .gal-card{background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
 .gal-card:active{transform:scale(.97)}
 .gal-card.playing{border-color:#f97316;box-shadow:0 0 0 2px #f9731630}
-.gal-thumb{width:100%;aspect-ratio:0.75;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden}
-.gal-play-icon{position:absolute;bottom:6px;right:6px;width:26px;height:26px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 8px #0003;transition:all .2s;z-index:2}
+.gal-thumb{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.gal-play-icon{position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px #0003;transition:all .2s}
 .gal-card.playing .gal-play-icon{background:#ef4444}
-.gal-info{padding:5px 7px 8px}
-.gal-title{font-size:10px;font-weight:700;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gal-sub{font-size:9px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-info{padding:10px 12px 12px}
+.gal-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gal-no-audio{opacity:.5}
 .gal-no-audio .gal-play-icon{background:#ccc}
 
@@ -339,10 +339,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">🎙</span>
           <span>Cantar</span>
         </div>
-        <div class="tab-item" onclick="switchMainTab('inspirar')">
-          <span class="tab-icon">🎯</span>
-          <span>Inspirar</span>
-        </div>
       </div>
     </div>
 
@@ -402,28 +398,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
         <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
-      </div>
-    </div>
-
-    <!-- TAB INSPIRAR -->
-    <div id="tab-inspirar" style="display:none">
-      <div class="card">
-        <div class="card-title">🎯 Inspirar em uma Música</div>
-        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:4px">Qual música te inspira?</div>
-        <div style="font-size:12px;color:var(--text4);margin-bottom:16px">A IA cria uma música original no mesmo estilo, clima e forma de cantar — letra 100% nova.</div>
-        <div style="margin-bottom:12px">
-          <label class="field-label">🎵 Nome da música</label>
-          <input id="inspirar-musica" class="txt-input" placeholder="Ex: Evidências, Shallow, Shape of You..."/>
-        </div>
-        <div style="margin-bottom:12px">
-          <label class="field-label">🎤 Artista / Cantor</label>
-          <input id="inspirar-artista" class="txt-input" placeholder="Ex: Chitãozinho & Xororó, Lady Gaga..."/>
-        </div>
-        <div>
-          <label class="field-label">📝 Letra original <span style="font-weight:400;color:var(--text4)">(opcional mas recomendado)</span></label>
-          <textarea id="inspirar-letra" class="txt-area" rows="6" placeholder="Cole aqui a letra da música para a IA se inspirar melhor na estrutura, rimas e forma de cantar..."></textarea>
-          <div style="font-size:10px;color:var(--text4);margin-top:4px">A IA vai usar como referência de estilo — nunca vai copiar.</div>
-        </div>
       </div>
     </div>
 
@@ -612,7 +586,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
     <!-- GALERIA / PLAYER -->
     <div id="libpage-galeria" style="display:none;padding-bottom:120px">
-      <div id="gal-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"></div>
+      <div id="gal-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
       <div id="gal-empty" style="display:none;text-align:center;padding:40px 20px;color:#ccc">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
         <div style="font-size:13px">Nenhuma música com áudio ainda</div>
@@ -925,14 +899,14 @@ function buildMultiChips(cid,items,cls,getter,setter){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar","inspirar"].forEach(t=>{
+  ["descrever","letra","estender","cantar"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar","inspirar"];
+    const tabs=["descrever","letra","estender","cantar"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspirar:"🎯 Criar Inspirado"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
@@ -1128,31 +1102,6 @@ async function generate(){
     tema=document.getElementById("transcricao-canto").value.trim();
     modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
     if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
-  }else if(mainTab==="inspirar"){
-    const musRef=document.getElementById("inspirar-musica").value.trim();
-    const artRef=document.getElementById("inspirar-artista").value.trim();
-    const letraRef=document.getElementById("inspirar-letra").value.trim();
-    if(!musRef||!artRef){showToast("Preencha o nome da música e do artista!","err");return;}
-    tema=`Música: "${musRef}" — Artista: ${artRef}`;
-    modoDesc=`Você vai criar uma música INSPIRADA em "${musRef}" de ${artRef}.
-
-ANTES DE COMPOR, analise profundamente:
-1. ESTILO VOCAL: Como ${artRef} canta? Timbre, fraseado, respiração, pronúncia?
-2. ESTRUTURA: Quantas sílabas por linha? Esquema de rimas (ABAB, AABB)? Padrão de repetição?
-3. TEMA EMOCIONAL: Sentimento central — saudade, amor, sofrência, alegria?
-4. VOCABULÁRIO: Simples/popular ou elaborado? Regionalismos? Gírias do gênero?
-5. IMAGENS POÉTICAS: Metáforas e comparações típicas desse artista?
-
-REGRAS OBRIGATÓRIAS:
-- Mantenha o MESMO número de sílabas por linha
-- Use o MESMO esquema de rimas
-- O tema deve ser PARECIDO (sofrência gera sofrência, amor gera amor)
-- Vocabulário do MESMO UNIVERSO semântico
-- Quem ouvir deve pensar "isso parece muito com ${artRef}"
-- NUNCA copie frases ou versos — tudo 100% original${letraRef?"
-
-LETRA ORIGINAL PARA ANÁLISE (estude cada verso, o ritmo das sílabas, as rimas, o vocabulário — recrie o estilo com palavras totalmente novas):
-"+letraRef:""}`;
   }
 
   setLoading(true);currentSong=null;currentSections={};
@@ -1734,52 +1683,18 @@ function renderGallery(){
   empty.style.display="none";
   grid.innerHTML=withAudio.map((e,i)=>{
     const isPlaying=spIndex===i&&spPlaying;
-    const photoId=getNaturePhoto(e.genre,e.mood,e.title);
-    const photoUrl=`https://images.unsplash.com/photo-${photoId}?w=300&q=70&fit=crop&crop=entropy`;
+    const genreIcon=genreEmoji(e.genre);
     return `<div class="gal-card${isPlaying?" playing":""}" id="gal-card-${i}" onclick="spPlay(${i})">
       <div class="gal-thumb" style="background:${genreColor(e.genre)}">
-        <img src="${photoUrl}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.05) 60%)"></div>
+        <span${isPlaying?' class="disc-spin"':''}>${genreIcon}</span>
         <div class="gal-play-icon">${isPlaying?"⏸":"▶"}</div>
       </div>
       <div class="gal-info">
         <div class="gal-title">${esc(e.title)}</div>
-        <div class="gal-sub" id="gal-dur-${i}">--:--</div>
+        <div class="gal-sub">${esc(e.genre)} · ${e.bpm} BPM</div>
       </div>
     </div>`;
   }).join("");
-  // load durations async
-  withAudio.forEach((e,i)=>{
-    if(!e.audio)return;
-    const a=new Audio();a.src=e.audio;
-    a.addEventListener("loadedmetadata",()=>{
-      const el=document.getElementById("gal-dur-"+i);
-      if(el)el.textContent=spFmt(a.duration);
-    });
-  });
-}
-
-function getNaturePhoto(genre,mood,title){
-  const g=(genre||'').toLowerCase();
-  const m=(mood||'').toLowerCase();
-  let hash=0;const t=(title||'');for(let i=0;i<t.length;i++)hash=(hash*31+t.charCodeAt(i))&0xffff;
-  const v=hash%4;
-  if(m.includes('românt')||m.includes('amor')){
-    return ['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'][v];
-  }
-  const photos={
-    sertanejo:['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],
-    'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],
-    funk:['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],
-    gospel:['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],
-    rock:['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],
-    pop:['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1'],
-    forró:['1504701954957-2010ec3bcec1','1500534314209-a25ddb2bd429','1516912481800-cf2cde1b2249','1441974231531-c6227db76b6e'],
-    mpb:['1433086966358-54859d0ed716','1448375240586-882707db888b','1472214103451-9374bd1c798e','1441974231531-c6227db76b6e'],
-    lofi:['1519681393784-d120267933ba','1518609878373-06d740f60d8b','1493514789931-586cb221d7a7','1470225620780-dba8ba36b745'],
-  };
-  const arr=photos[g]||['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
-  return arr[v];
 }
 
 function genreEmoji(g){
