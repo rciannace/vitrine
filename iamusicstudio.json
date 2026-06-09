@@ -1,5 +1,129 @@
 [
   {
+    "id": 1780967100877,
+    "title": "A Alma Cantou",
+    "genre": "Rock",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "08/06/2026",
+    "song": {
+      "title": "A Alma Cantou",
+      "subtitle": "Meu Amor Chegou",
+      "key": "Am",
+      "chords": "Am - G - C - F (Verse), G - C - Dm - Am (Pre-Chorus), C - G - Am - F (Chorus), Dm - Am - E7 - Am (Bridge)",
+      "vibe": "A hopeful, uplifting rock ballad about finding love after a period of darkness and despair.",
+      "style_tags": [
+        "rock_ballad",
+        "romantic_rock",
+        "male_vocals"
+      ],
+      "sections": {
+        "Intro": "Solo de guitarra melódico e com sentimento, abrindo caminho para a bateria pesada e marcante.\n",
+        "Verse 1": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n",
+        "Pré-Refrão": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n",
+        "Refrão": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n",
+        "Verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava,\nUm vazio na existência, que me consumia.\n",
+        "Bridge": "E de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n",
+        "Refrão Final": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!\n"
+      },
+      "suno_style": "rock ballad, romantic, male vocals, 90 BPM, electric guitar, heavy drums, bass",
+      "instruments": [
+        "Electric Guitar",
+        "Drums",
+        "Bass Guitar",
+        "Vocals"
+      ],
+      "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas.",
+      "bpm": 90,
+      "genre": "Rock",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "Solo de guitarra melódico e com sentimento, abrindo caminho para a bateria pesada e marcante.\n",
+      "Verse 1": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n",
+      "Pré-Refrão": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n",
+      "Refrão": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n",
+      "Verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava,\nUm vazio na existência, que me consumia.\n",
+      "Bridge": "E de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n",
+      "Refrão Final": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!\n"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780968429/f7kbrrrv3l47qgbwzieb.mp3"
+  },
+  {
+    "id": 1780966809234,
+    "title": "O Sol do Teu Sorriso",
+    "genre": "Rock",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "08/06/2026",
+    "song": {
+      "title": "O Sol do Teu Sorriso",
+      "subtitle": "Uma canção de redenção e amor",
+      "key": "G Maior",
+      "chords": "G, C, D, Em",
+      "vibe": "De volta à vida",
+      "style_tags": [
+        "rock",
+        "romantic love",
+        "male vocals",
+        "90 BPM"
+      ],
+      "sections": {
+        "Intro": "Solo de guitarra com melodia marcante, quebrando o silêncio com sofisticação, preparando o palco para a emoção.\n",
+        "Verse 1": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n",
+        "Pré-Refrão": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n",
+        "Refrão": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n",
+        "Verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.\n",
+        "Bridge": "E de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n",
+        "Refrão Final": "A alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!\n"
+      },
+      "suno_style": "rock, romantic, male vocals, 90 BPM, electric guitar, strong drums, emotional, redemption",
+      "instruments": [
+        "Guitarra Elétrica",
+        "Bateria",
+        "Baixo",
+        "Violão Acústico (no intro)"
+      ],
+      "production_notes": "O solo de guitarra na introdução deve ser melódico e expressivo, com um timbre um pouco overdrive. A bateria deve ter uma batida forte e marcante, especialmente nos refrões, com bumbos e caixas bem presentes. O baixo segue a harmonia com pegada. A voz masculina deve carregar a emoção e a melancolia inicial, evoluindo para a alegria e a euforia. O refrão deve ter um crescendo na intensidade. O BRIDGE deve ter uma quebra de intensidade, com a voz em destaque, antes do refrão final épico.",
+      "bpm": 90,
+      "genre": "Rock",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "Solo de guitarra com melodia marcante, quebrando o silêncio com sofisticação, preparando o palco para a emoção.\n",
+      "Verse 1": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n",
+      "Pré-Refrão": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n",
+      "Refrão": "A alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n",
+      "Verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.\n",
+      "Bridge": "E de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n",
+      "Refrão Final": "A alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!\n"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1780966074065,
     "title": "Meu amor criou raiz",
     "genre": "Sertanejo",
