@@ -344,6 +344,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">🎙</span>
           <span>Cantar</span>
         </div>
+        <div class="tab-item" onclick="switchMainTab('inspiracao')">
+          <span class="tab-icon">💡</span>
+          <span>Inspiração</span>
+        </div>
       </div>
     </div>
 
@@ -403,6 +407,32 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
         <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── TAB: INSPIRAÇÃO ── -->
+    <div id="tab-inspiracao" style="display:none">
+      <div class="card">
+        <div class="card-title">💡 Música de Referência</div>
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:4px">Cole a letra da música que você quer usar como inspiração</div>
+        <div style="font-size:12px;color:var(--text4);margin-bottom:12px;line-height:1.6">A IA vai preservar o <strong>tema, a emoção e a estrutura de rimas</strong> — mas criará uma letra 100% nova, com palavras e história completamente diferentes.</div>
+        <textarea id="letra-inspiracao" class="txt-area" rows="9" placeholder="Cole aqui a letra da música de referência...&#10;&#10;Ex:&#10;[Verso 1]&#10;Você me trocou por outra&#10;Jogou nosso amor no lixo...&#10;&#10;[Refrão]&#10;Agora chora sozinha..."></textarea>
+        <div style="margin-top:10px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+          <div style="font-size:11px;color:#f97316;font-weight:700;margin-bottom:6px">🎯 O que a IA vai preservar:</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.8">
+            ✅ Tema e assunto (traição, saudade, amor, festa...)<br>
+            ✅ Intensidade emocional de cada seção<br>
+            ✅ Esquema de rimas e ritmo dos versos<br>
+            ✅ Estrutura (onde explode o refrão, onde vem a virada)
+          </div>
+          <div style="font-size:11px;color:#22c55e;font-weight:700;margin-top:8px;margin-bottom:4px">🔄 O que a IA vai criar do zero:</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.8">
+            ✨ Todas as palavras e frases<br>
+            ✨ As metáforas e imagens poéticas<br>
+            ✨ Os personagens e situações<br>
+            ✨ Resultado: música original, sem plágio
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1206,14 +1236,14 @@ function renderFavorites(){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar"].forEach(t=>{
+  ["descrever","letra","estender","cantar","inspiracao"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar"];
+    const tabs=["descrever","letra","estender","cantar","inspiracao"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspiracao:"💡 Criar com Inspiração"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
@@ -1413,6 +1443,14 @@ async function generate(){
     tema=document.getElementById("transcricao-canto").value.trim();
     modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
     if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
+  }else if(mainTab==="inspiracao"){
+    tema=document.getElementById("letra-inspiracao").value.trim();
+    modoDesc=`MODO INSPIRAÇÃO — REESCRITA TEMÁTICA PROFISSIONAL.
+O usuário colou uma letra de referência. Sua missão é criar uma letra COMPLETAMENTE NOVA que:
+1. PRESERVA: o tema central (traição, saudade, amor, festa, etc.), a emoção e intensidade de cada seção, o esquema de rimas (ABAB, AABB, etc.), o peso emocional (onde a música explode, onde acalma, onde há virada).
+2. CRIA DO ZERO: todas as palavras, frases, metáforas, imagens poéticas, personagens e situações.
+REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode aparecer na letra gerada. O resultado deve ser 100% original e sem risco de plágio, mas quem ouvir deve sentir a mesma emoção da referência.`;
+    if(!tema){showToast("Cole a letra de referência!","err");return;}
   }
 
   setLoading(true);currentSong=null;currentSections={};
@@ -1941,7 +1979,7 @@ function showToast(msg,type){
 }
 function setLoading(on){
   const btn=document.getElementById("btn-gen");
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspiracao:"💡 Criar com Inspiração"};
   btn.disabled=on;
   btn.innerHTML=on?`<div class="spinner"></div> Criando...`:(labels[mainTab]||"🎵 Criar Letra");
 }
