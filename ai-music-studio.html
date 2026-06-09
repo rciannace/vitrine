@@ -607,7 +607,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   <!-- PLAYER FIXO SPOTIFY -->
   <div class="sp-player" id="sp-player">
     <div class="sp-player-inner">
-      <div class="sp-thumb" id="sp-thumb">🎵</div>
+      <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" style="cursor:pointer" title="Ver letra">🎵</div>
       <div class="sp-info">
         <div class="sp-title" id="sp-title">—</div>
         <div class="sp-sub" id="sp-sub">—</div>
@@ -643,6 +643,17 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div style="font-size:12px;color:var(--text4);margin-bottom:12px">Cole a letra completa. Use <strong>[Verso 1]</strong>, <strong>[Refrão]</strong> etc. para separar as seções automaticamente.</div>
     <textarea id="paste-lyrics-ta" class="txt-area" rows="12" placeholder="[Verso 1]&#10;Letra...&#10;&#10;[Refrão]&#10;Refrão..."></textarea>
     <button onclick="applyPasteLyrics()" style="width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:12px">✅ Aplicar letra</button>
+  </div>
+  <div id="lyrics-overlay" style="display:none;position:fixed;inset:0;background:#0009;z-index:400" onclick="closeLyricsModal()"></div>
+  <div id="lyrics-modal" style="display:none;position:fixed;inset:0;z-index:401;flex-direction:column;align-items:center;justify-content:flex-end">
+    <div style="width:100%;max-width:600px;max-height:85vh;background:#0a0a14;border-radius:20px 20px 0 0;overflow:hidden;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #1e1e2e;flex-shrink:0">
+        <button onclick="closeLyricsModal()" style="border:none;background:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1">←</button>
+        <div id="lyrics-modal-title" style="font-size:14px;font-weight:700;color:#fff;text-align:center;flex:1;padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+        <div style="width:30px"></div>
+      </div>
+      <div id="lyrics-content" style="overflow-y:auto;padding:20px;flex:1;color:#ccc;font-size:14px;line-height:1.9;white-space:pre-wrap"></div>
+    </div>
   </div>
 </div><!-- /main -->
 
@@ -1882,6 +1893,23 @@ function applyPasteLyrics(){
   closePasteLyrics();
   renderResult(newStruct);
   showToast("Letra aplicada!","ok");
+}
+function openLyricsModal(){
+  if(spIndex<0||!spQueue[spIndex])return;
+  var e=spQueue[spIndex];
+  document.getElementById("lyrics-modal-title").textContent=e.title||"—";
+  var secs=e.sections||{};
+  var struct=e.struct||Object.keys(secs);
+  var text="";
+  struct.forEach(function(s){if(secs[s])text+="[ "+s.toUpperCase()+" ]\n"+secs[s]+"\n\n";});
+  if(!text)text="Letra não disponível.";
+  document.getElementById("lyrics-content").textContent=text;
+  document.getElementById("lyrics-overlay").style.display="block";
+  document.getElementById("lyrics-modal").style.display="flex";
+}
+function closeLyricsModal(){
+  document.getElementById("lyrics-overlay").style.display="none";
+  document.getElementById("lyrics-modal").style.display="none";
 }
 </script>
 </body>
