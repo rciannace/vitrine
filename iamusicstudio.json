@@ -1,5 +1,69 @@
 [
   {
+    "id": 1781026051290,
+    "title": "Sinfonia do Nosso Amor",
+    "genre": "Sertanejo",
+    "mood": "Sensual 🔥",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "09/06/2026",
+    "song": {
+      "title": "Sinfonia do Nosso Amor",
+      "subtitle": "Dia dos Namorados",
+      "key": "G Maior",
+      "chords": "G / C / D / Em",
+      "vibe": "Sensual e Apaixonada",
+      "style_tags": [
+        "sertanejo",
+        "romantic",
+        "male vocals",
+        "90 BPM",
+        "acoustic guitar",
+        "emotional"
+      ],
+      "sections": {
+        "Intro": "Um sussurro do vento, teu nome a chamar\nNo compasso do peito, meu corpo a vibrar\nA noite se entrega, em cores e paixão\nE o nosso amor cresce, em profunda união.\n\n(Violão dedilhado suave, entrada da sanfona em tom menor)",
+        "Verso 1": "A Lua nos presenteia, com seu manto de prata\nCada estrela nos olha, é a chama que arrebata\nTeu perfume no ar, me faz viajar\nEm nossos sonhos, um eterno lugar.\nNesse dia especial, só quero você\nPara reacender o brilho, do nosso querer.",
+        "Pré-Refrão": "Os segundos se arrastam, um doce tormento\nAnsioso por sentir, teu doce alento\nO amor é um convite, um eterno desejo\nE em teus braços encontro, o meu refúgio.",
+        "Refrão": "É o Dia dos Namorados, meu doce bem querer\nCom a sanfona chorando, a gente vai viver\nUm beijo roubado, um abraço apertado\nNosso amor é arte, um sentimento sagrado.\nNessa melodia sertaneja, nosso beijo é magia\nUm fogo que consome, em doce ousadia.",
+        "Verso 2": "Lembro do primeiro olhar, desse nó na garganta\nDa tua voz me chamando, a minha alma levanta\nPromessas no escuro, um futuro traçado\nHoje é a celebração, de um amor abençoado.\nCada gesto teu, é verso de um poema\nEm cada carícia, o mais puro dilema.",
+        "Bridge": "E a sanfona suspira, um lamento de amor\nEnquanto a guitarra desliza, num ardente fervor\nO ritmo nos embala, em um transe profundo\nÉ o som da paixão, que ecoa no mundo.\nEssa noite é nossa, sem tempo, sem fim.",
+        "Refrão Final": "É o Dia dos Namorados, meu doce bem querer\nCom a sanfona chorando, a gente vai viver\nUm beijo roubado, um abraço apertado\nNosso amor é arte, um sentimento sagrado.\nNessa melodia sertaneja, nosso beijo é magia\nUm fogo que consome, em doce ousadia.\n(Fade out com solo de guitarra e sanfona interagindo)"
+      },
+      "suno_style": "sertanejo, romantic, male vocals, 90 BPM, acoustic guitar, sanfona, sensual, emotional, love, valentine's day",
+      "instruments": [
+        "Violão Acústico",
+        "Sanfona",
+        "Guitarra Elétrica (Solo)",
+        "Bateria"
+      ],
+      "production_notes": "A bateria entra marcada no refrão, com um groove sensual. O solo de guitarra no final deve ser melódico e expressivo, diálogo com a sanfona. A sanfona deve ter momentos de melancolia e de exaltação. O vocal deve transmitir intimidade e paixão.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Sensual 🔥",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "Um sussurro do vento, teu nome a chamar\nNo compasso do peito, meu corpo a vibrar\nA noite se entrega, em cores e paixão\nE o nosso amor cresce, em profunda união.\n\n(Violão dedilhado suave, entrada da sanfona em tom menor)",
+      "Verso 1": "A Lua nos presenteia, com seu manto de prata\nCada estrela nos olha, é a chama que arrebata\nTeu perfume no ar, me faz viajar\nEm nossos sonhos, um eterno lugar.\nNesse dia especial, só quero você\nPara reacender o brilho, do nosso querer.",
+      "Pré-Refrão": "Os segundos se arrastam, um doce tormento\nAnsioso por sentir, teu doce alento\nO amor é um convite, um eterno desejo\nE em teus braços encontro, o meu refúgio.",
+      "Refrão": "É o Dia dos Namorados, meu doce bem querer\nCom a sanfona chorando, a gente vai viver\nUm beijo roubado, um abraço apertado\nNosso amor é arte, um sentimento sagrado.\nNessa melodia sertaneja, nosso beijo é magia\nUm fogo que consome, em doce ousadia.",
+      "Verso 2": "Lembro do primeiro olhar, desse nó na garganta\nDa tua voz me chamando, a minha alma levanta\nPromessas no escuro, um futuro traçado\nHoje é a celebração, de um amor abençoado.\nCada gesto teu, é verso de um poema\nEm cada carícia, o mais puro dilema.",
+      "Bridge": "E a sanfona suspira, um lamento de amor\nEnquanto a guitarra desliza, num ardente fervor\nO ritmo nos embala, em um transe profundo\nÉ o som da paixão, que ecoa no mundo.\nEssa noite é nossa, sem tempo, sem fim.",
+      "Refrão Final": "É o Dia dos Namorados, meu doce bem querer\nCom a sanfona chorando, a gente vai viver\nUm beijo roubado, um abraço apertado\nNosso amor é arte, um sentimento sagrado.\nNessa melodia sertaneja, nosso beijo é magia\nUm fogo que consome, em doce ousadia.\n(Fade out com solo de guitarra e sanfona interagindo)"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1780967100877,
     "title": "A Alma Cantou",
     "genre": "Rock",
