@@ -48,11 +48,6 @@ body.dark .field-hint{color:var(--text4)}
 body.dark .header{box-shadow:0 1px 0 var(--border)}
 body.dark .sec-btn{background:var(--bg3);border-color:var(--border);color:var(--text3)}
 body.dark .dur-card{background:var(--bg3);border-color:var(--border)}
-body.dark .dur-card.sel{border-color:#f97316!important;background:rgba(249,115,22,0.15)!important}
-body.dark .dur-name{color:var(--text2)}
-body.dark .dur-name.sel{color:#f97316}
-body.dark .dur-desc{color:var(--text4)}
-body.dark .dur-icon{color:var(--text3)}
 body.dark .dur-name{color:var(--text2)}
 body.dark .dur-desc{color:var(--text4)}
 body.dark .export-box{background:var(--bg3);border-color:var(--border)}
@@ -72,8 +67,6 @@ body.dark .ext-tab{background:var(--bg3);border-color:var(--border)}
 body.dark .ext-tab-lbl{color:var(--text2)}
 body.dark .mic-area{background:var(--bg3)}
 body.dark .lib-grid .lib-card{box-shadow:0 1px 8px var(--shadow)}
-body.dark .lib-card [style*="font-size:15px"]{color:#ffffff!important}
-body.dark .lib-card [style*="color:#1a1a1a"]{color:#ffffff!important}
 body.dark #suno-modal{background:var(--bg2)}
 body.dark .api-input{background:var(--bg3);border-color:var(--border);color:var(--text)}
 body.dark .song-sub{color:#e84400}
@@ -147,10 +140,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* DURAÇÃO */
 .dur-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.voz-chip{padding:7px 13px;border-radius:20px;font-size:12px;border:1.5px solid var(--border2);background:var(--bg3);color:var(--text3);cursor:pointer;transition:all .15s}
-.voz-chip.sel{border-color:#f97316;background:rgba(249,115,22,0.12);color:#f97316;font-weight:600}
 .dur-card{padding:12px 14px;border-radius:12px;border:1.5px solid #eee;background:#f8f8f8;cursor:pointer;transition:all .15s;text-align:left}
-.dur-card.sel{border-color:#f97316;background:#fff7f0}
+.dur-card.sel{border-color:#f97316;background:#fff}
 .dur-icon{font-size:20px;margin-bottom:4px}
 .dur-name{font-size:14px;font-weight:600;color:#333}
 .dur-name.sel{color:#f97316}
@@ -264,12 +255,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .gal-card{background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
 .gal-card:active{transform:scale(.97)}
 .gal-card.playing{border-color:#f97316;box-shadow:0 0 0 2px #f9731630}
-.gal-thumb{width:100%;aspect-ratio:0.75;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
-.gal-play-icon{position:absolute;bottom:6px;right:6px;width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 8px #0003;transition:all .2s}
+.gal-thumb{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.gal-play-icon{position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px #0003;transition:all .2s}
 .gal-card.playing .gal-play-icon{background:#ef4444}
-.gal-info{padding:5px 7px 8px}
-.gal-title{font-size:10px;font-weight:700;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gal-sub{font-size:9px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-info{padding:10px 12px 12px}
+.gal-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-sub{font-size:11px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gal-no-audio{opacity:.5}
 .gal-no-audio .gal-play-icon{background:#ccc}
 
@@ -348,10 +339,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">🎙</span>
           <span>Cantar</span>
         </div>
-        <div class="tab-item" onclick="switchMainTab('inspirar')">
-          <span class="tab-icon">🎯</span>
-          <span>Inspirar</span>
-        </div>
       </div>
     </div>
 
@@ -411,28 +398,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
         <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
-      </div>
-    </div>
-
-    <!-- TAB INSPIRAR -->
-    <div id="tab-inspirar" style="display:none">
-      <div class="card">
-        <div class="card-title">🎯 Inspirar em uma Música</div>
-        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:4px">Qual música te inspira?</div>
-        <div style="font-size:12px;color:var(--text4);margin-bottom:16px">A IA cria uma música original no mesmo estilo e clima — mas com letra completamente nova.</div>
-        <div style="margin-bottom:12px">
-          <label class="field-label">🎵 Nome da música</label>
-          <input id="inspirar-musica" class="txt-input" placeholder="Ex: Evidências, Shallow, Shape of You..."/>
-        </div>
-        <div>
-          <label class="field-label">🎤 Artista / Cantor</label>
-          <input id="inspirar-artista" class="txt-input" placeholder="Ex: Chitãozinho & Xororó, Lady Gaga..."/>
-        </div>
-        <div style="margin-top:12px">
-          <label class="field-label">📝 Letra original <span style="font-weight:400;color:var(--text4)">(opcional mas recomendado)</span></label>
-          <textarea id="inspirar-letra" class="txt-area" rows="6" placeholder="Cole aqui a letra da música para a IA se inspirar melhor na estrutura, rimas e forma de cantar..."></textarea>
-          <div style="font-size:10px;color:var(--text4);margin-top:4px">A IA vai usar como referência de estilo — nunca vai copiar.</div>
-        </div>
       </div>
     </div>
 
@@ -496,25 +461,9 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div class="card">
       <div style="margin-bottom:14px">
         <div class="card-title">🎙 Tipo de Voz</div>
-        <!-- Seletor Masculino/Feminino -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <button id="voz-masc-btn" onclick="selGender('masc')" style="padding:10px;font-size:13px;font-weight:600;border-radius:12px;border:1.5px solid #eee;background:var(--bg3);color:var(--text3);cursor:pointer">👨 Masculina</button>
-          <button id="voz-fem-btn" onclick="selGender('fem')" style="padding:10px;font-size:13px;font-weight:600;border-radius:12px;border:1.5px solid transparent;background:#f97316;color:#fff;cursor:pointer">👩 Feminina</button>
-        </div>
-        <!-- Sub-opções de voz -->
-        <div id="voz-sub-masc" style="display:none;flex-wrap:wrap;gap:6px">
-          <button class="voz-chip" onclick="selVoice('m-grave')">🎙 Grave</button>
-          <button class="voz-chip" onclick="selVoice('m-afinado')">🎵 Afinado</button>
-          <button class="voz-chip" onclick="selVoice('m-grossa')">💪 Voz Grossa</button>
-          <button class="voz-chip" onclick="selVoice('m-anasalado')">👃 Anasalado</button>
-          <button class="voz-chip" onclick="selVoice('m-dupla')">👥 Dupla</button>
-        </div>
-        <div id="voz-sub-fem" style="display:flex;flex-wrap:wrap;gap:6px">
-          <button class="voz-chip" onclick="selVoice('f-suave')">🌸 Suave</button>
-          <button class="voz-chip" onclick="selVoice('f-afinada')">🎵 Afinada</button>
-          <button class="voz-chip" onclick="selVoice('f-aguda')">🎶 Aguda</button>
-          <button class="voz-chip" onclick="selVoice('f-anasalada')">👃 Anasalada</button>
-          <button class="voz-chip" onclick="selVoice('f-dupla')">👥 Dupla</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
+          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
         </div>
       </div>
       <div style="margin-bottom:14px">
@@ -558,7 +507,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <!-- GitHub Token Panel -->
     <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
       <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
       <div style="display:flex;gap:8px">
         <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:9px 12px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
         <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
@@ -637,7 +586,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
     <!-- GALERIA / PLAYER -->
     <div id="libpage-galeria" style="display:none;padding-bottom:120px">
-      <div id="gal-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"></div>
+      <div id="gal-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
       <div id="gal-empty" style="display:none;text-align:center;padding:40px 20px;color:#ccc">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
         <div style="font-size:13px">Nenhuma música com áudio ainda</div>
@@ -751,7 +700,7 @@ const DUR_NOTES={
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="f-suave";
+let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="fp";
 let selExtras=[],selDuration="normal";
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
@@ -907,7 +856,6 @@ window.onload=()=>{
   ghLoadToken();
   ghLoad();
   renderSyncUI();
-  selGender('fem');
   // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
@@ -951,39 +899,32 @@ function buildMultiChips(cid,items,cls,getter,setter){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar","inspirar"].forEach(t=>{
+  ["descrever","letra","estender","cantar"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar","inspirar"];
+    const tabs=["descrever","letra","estender","cantar"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspirar:"🎯 Criar Inspirado"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
 // ══════════════════════════════════════
 // VOZ
 // ══════════════════════════════════════
-function selGender(g){
-  const isFem=g==="fem";
-  document.getElementById("voz-sub-masc").style.display=isFem?"none":"flex";
-  document.getElementById("voz-sub-fem").style.display=isFem?"flex":"none";
-  document.getElementById("voz-masc-btn").style.background=isFem?"var(--bg3)":"#f97316";
-  document.getElementById("voz-masc-btn").style.color=isFem?"var(--text3)":"#fff";
-  document.getElementById("voz-masc-btn").style.borderColor=isFem?"var(--border2)":"transparent";
-  document.getElementById("voz-fem-btn").style.background=isFem?"#f97316":"var(--bg3)";
-  document.getElementById("voz-fem-btn").style.color=isFem?"#fff":"var(--text3)";
-  document.getElementById("voz-fem-btn").style.borderColor=isFem?"transparent":"var(--border2)";
-  // auto-select first chip of that gender
-  const first=isFem?"f-suave":"m-grave";
-  selVoice(first);
-}
 function selVoice(v){
   selVoz=v;
-  document.querySelectorAll(".voz-chip").forEach(el=>{
-    el.className="voz-chip"+(el.getAttribute("onclick").includes("'"+v+"'")?" sel":"");
-  });
+  const isFem=v==="fp"||v==="fs";
+  const masc=document.getElementById("voz-masc");
+  const fem=document.getElementById("voz-fem");
+  if(isFem){
+    fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";
+    masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";
+  }else{
+    masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
+    fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
+  }
 }
 
 // ══════════════════════════════════════
@@ -1141,13 +1082,7 @@ async function generate(){
   const titulo=document.getElementById("titulo").value.trim();
   const artist=document.getElementById("artist").value.trim();
   const producao=document.getElementById("producao").value.trim();
-  const vozMap={
-    "m-grave":"Masculino Grave","m-afinado":"Masculino Afinado","m-grossa":"Masculino Voz Grossa",
-    "m-anasalado":"Masculino Anasalado","m-dupla":"Dupla Masculina",
-    "f-suave":"Feminino Suave","f-afinada":"Feminino Afinada","f-aguda":"Feminino Aguda",
-    "f-anasalada":"Feminino Anasalada","f-dupla":"Dupla Feminina"
-  };
-  const vozLabel=vozMap[selVoz]||(selVoz.startsWith("f")?"Feminina":"Masculina");
+  const vozLabel=selVoz.startsWith("f")?"Feminina":"Masculina";
 
   let tema="",modoDesc="";
 
@@ -1167,102 +1102,32 @@ async function generate(){
     tema=document.getElementById("transcricao-canto").value.trim();
     modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
     if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
-  }else if(mainTab==="inspirar"){
-    const musRef=document.getElementById("inspirar-musica").value.trim();
-    const artRef=document.getElementById("inspirar-artista").value.trim();
-    if(!musRef||!artRef){showToast("Preencha o nome da música e do artista!","err");return;}
-    const letraRef=document.getElementById("inspirar-letra").value.trim();
-    tema=`Música: "${musRef}" — Artista: ${artRef}`;
-    modoDesc=`Você vai criar uma música INSPIRADA em "${musRef}" de ${artRef}.
-
-ANTES DE COMPOR, analise profundamente:
-1. ESTILO VOCAL: Como ${artRef} canta? Timbre, fraseado, respiração, pronúncia?
-2. ESTRUTURA: Quantas sílabas por linha? Esquema de rimas (ABAB, AABB)? Padrão de repetição?
-3. TEMA EMOCIONAL: Sentimento central — saudade, amor, sofrência, alegria, espiritualidade?
-4. VOCABULÁRIO: Simples/popular ou elaborado? Regionalismos? Gírias do gênero?
-5. IMAGENS POÉTICAS: Metáforas e comparações típicas desse artista e estilo?
-
-REGRAS OBRIGATÓRIAS:
-- Mantenha o MESMO número de sílabas por linha da música original
-- Use o MESMO esquema de rimas
-- O tema deve ser PARECIDO (sofrência gera sofrência, amor gera amor)
-- Vocabulário do MESMO UNIVERSO semântico
-- Quem ouvir deve pensar "isso parece muito com ${artRef}"
-- NUNCA copie frases ou versos — tudo 100% original${letraRef?"
-
-LETRA ORIGINAL PARA ANÁLISE (estude cada verso, o ritmo das sílabas, as rimas, o vocabulário — recrie o estilo com palavras totalmente novas):
-"+letraRef:""}`;
   }
 
   setLoading(true);currentSong=null;currentSections={};
 
-  // Voz → instruções específicas pro Suno e pra IA
-  const vozInstructions={
-    "m-grave":"voz masculina grave e encorpada, frases longas e pausadas, peso emocional",
-    "m-afinado":"voz masculina afinada e limpa, melodia clara, notas bem sustentadas",
-    "m-grossa":"voz masculina grossa e marcante, presença forte, vocal dominante",
-    "m-anasalado":"voz masculina anasalada estilo sertanejo raiz, twang caipira, nasalização característica",
-    "m-dupla":"dupla masculina, harmonias em terça, alternância entre as vozes nos versos",
-    "f-suave":"voz feminina suave e delicada, sussurros emocionais, frases curtas e íntimas",
-    "f-afinada":"voz feminina afinada e potente, notas longas sustentadas, timbre limpo",
-    "f-aguda":"voz feminina aguda e cristalina, notas altas no refrão, timbre brilhante",
-    "f-anasalada":"voz feminina anasalada, twang regional, estilo forró/sertanejo feminino",
-    "f-dupla":"dupla feminina, harmonias sobrepostas, coro nos refrões"
-  };
-  const vozInstr=vozInstructions[selVoz]||vozLabel;
+  const prompt=`Você é compositor musical profissional brasileiro de elite.
+MODO: ${modoDesc}
 
-  // BPM → orientação de sílabas por linha
-  const bpmSyl=t.bpm<=70?"frases longas, 8-12 sílabas por linha, andamento lento e arrastado":
-               t.bpm<=100?"frases médias, 6-10 sílabas por linha, andamento equilibrado":
-               "frases curtas e ritmadas, 5-8 sílabas por linha, andamento acelerado";
+ENTRADA DO USUÁRIO: ${tema}
 
-  // Gênero → vocabulário e imagens poéticas
-  const genreVocab={
-    sertanejo:"Use vocabulário do campo: estrada, roça, boiadeiro, viola, porteira, saudade, peão. Metáforas rurais.",
-    funk:"Use linguagem urbana e direta, gírias cariocas/paulistanas, frases curtas e repetitivas, refrão grudento.",
-    pagode:"Linguagem afetiva e descontraída, referências ao Rio, boteco, amizade, amor leve.",
-    gospel:"Linguagem bíblica e espiritual, fé, graça, glória, poder divino, superação pela fé.",
-    forró:"Linguagem nordestina, referências ao sertão, sanfona, festa, amor simples e verdadeiro.",
-    mpb:"Linguagem poética e elaborada, metáforas sofisticadas, referências urbanas e filosóficas.",
-    rock:"Linguagem direta e intensa, rebeldia, emoção crua, imagens fortes.",
-    "viola caipira":"Linguagem caipira, natureza, simplicidade rural, viola, passarinho, roça, amor puro.",
-  };
-  const genreVoc=genreVocab[g.l.toLowerCase()]||"Use vocabulário adequado ao gênero musical.";
+ESPECIFICAÇÕES:
+- Gênero: ${g.l} | Mood: ${m.l} | BPM: ${t.bpm} | Voz: ${vozLabel}
+- Duração: ${dur} | Seções: ${secsToUse.join(", ")}
+${titulo?`- Título sugerido: "${titulo}"`:""}${artist?`\n- Referência: ${artist}`:""}${extrasStr?`\n- Extras: ${extrasStr}`:""}${producao?`\n- Produção: ${producao}`:""}
 
-  const prompt=\`Você é o melhor compositor musical brasileiro, especialista em ${g.l}.
+INSTRUÇÃO: ${DUR_NOTES[dur]}
+Letra PROFISSIONAL: rimas ricas, imagens poéticas, emoção real.
 
-MODO: \${modoDesc}
+REGRA CRÍTICA suno_style: máximo 120 caracteres, palavras-chave em INGLÊS separadas por vírgula. Inclua gênero, mood, voz, BPM e 2-3 instrumentos. Ex: "sertanejo, romantic, female vocals, 90 BPM, acoustic guitar, emotional"
 
-ENTRADA DO USUÁRIO: \${tema}
-
-ESPECIFICAÇÕES TÉCNICAS:
-- Gênero: \${g.l} | Mood: \${m.l} | BPM: \${t.bpm} | Duração: \${dur}
-- Voz: \${vozLabel} — \${vozInstr}
-- Ritmo de sílabas: \${bpmSyl}
-- Seções: \${secsToUse.join(", ")}
-\${titulo?'- Título sugerido: "'+titulo+'"':""}
-\${artist?'- Referência de artista: '+artist:""}
-\${extrasStr?'- Extras/Instrumentos: '+extrasStr:""}
-\${producao?'- Notas de produção: '+producao:""}
-
-INSTRUÇÕES DE COMPOSIÇÃO:
-1. VOCABULÁRIO: \${genreVoc}
-2. RIMAS: Use esquemas variados (ABAB, AABB). EVITE rimas óbvias e batidas (coração/solidão, saudade/vontade repetidas).
-3. SÍLABAS: Mantenha consistência no número de sílabas por linha dentro de cada seção.
-4. EMOÇÃO: Cada verso deve ter uma imagem poética concreta — não genérica. Ex: não "sinto sua falta" mas "seu perfume ainda dorme no meu travesseiro".
-5. REFRÃO: Deve ser simples, grudento e fácil de memorizar. O ouvinte deve querer repetir.
-6. VOZ: Adapte o fraseado para \${vozInstr}.
-7. DURAÇÃO: \${DUR_NOTES[dur]}
-
-REGRA CRÍTICA suno_style: máximo 120 caracteres, palavras-chave em INGLÊS. Inclua: gênero, mood, tipo de voz em inglês, BPM, 2-3 instrumentos principais. Voz em inglês para o Suno: \${selVoz.includes('grave')||selVoz.includes('grossa')?'deep male vocals':selVoz.includes('anasalad')||selVoz.includes('anasalado')?'nasal vocals, twang':selVoz.includes('dupla')||selVoz.includes('dupla')?'duet vocals, harmonies':selVoz.startsWith('f')?'female vocals':'male vocals'}
-
-SOMENTE JSON válido, sem texto antes ou depois:
-{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{\${secsToUse.map(s=>'"'+s+'":"letra completa com \\n"').join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["i1","i2","i3","i4"],"production_notes":"Notas detalhadas de produção incluindo voz e instrumentos"}\`;
+SOMENTE JSON válido:
+{"title":"T","subtitle":"S","key":"K","chords":"C","vibe":"V","style_tags":["t1","t2","t3"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa com \\n"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["i1","i2","i3","i4"],"production_notes":"Notas de produção"}`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -1270,8 +1135,7 @@ SOMENTE JSON válido, sem texto antes ou depois:
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
-    history=[entry,...history].slice(0,30);
-    saveHistory();
+    history=[entry,...history].slice(0,30);try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
     updateLibN();activeRTab="letra";
     renderResult(secsToUse);
     showToast("🎵 Música criada!","ok");
@@ -1293,12 +1157,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:2000,messages:[{role:"user",content:`Você é compositor de ${currentSong.genre}. Reescreva SOMENTE a seção abaixo mantendo o gênero e o clima.
-Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | Voz: ${currentSong.voice||""}
-Seção "${sec}" atual: ${currentSections[sec]}
-Instrução do usuário: "${instr}"
-REGRAS: Mantenha o número de sílabas por linha. Use rimas não óbvias. Imagens poéticas concretas. Vocabulário do ${currentSong.genre}.
-SOMENTE JSON: {"lyrics":"nova letra com \\n"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Reescreva SOMENTE esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\nSeção "${sec}": ${currentSections[sec]}\nInstrução: "${instr}"\nJSON: {"lyrics":"nova letra com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -1318,17 +1177,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:2000,messages:[{role:"user",content:`Você é compositor de ${currentSong.genre}. Complete esta seção mantendo o estilo.
-Música: "${currentSong.title}" | Gênero: ${currentSong.genre} | Mood: ${currentSong.mood||""} | Voz: ${currentSong.voice||""}
-Seção: "${sec}"
-TRECHO DO USUÁRIO (mantenha EXATAMENTE no início, não altere nem uma palavra):
-${trecho}
-Complete com 3-6 linhas que:
-- Mantenham o mesmo número de sílabas por linha
-- Continuem o esquema de rimas já iniciado
-- Usem vocabulário do mesmo universo do ${currentSong.genre}
-- Tenham imagens poéticas concretas, não genéricas
-SOMENTE JSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Compositor profissional. Complete esta seção.\nMúsica: "${currentSong.title}" | Gênero: ${currentSong.genre}\nSeção: "${sec}"\nTRECHO DO USUÁRIO (mantenha EXATO no início):\n${trecho}\nComplete com 3-6 linhas mantendo ritmo e rima.\nJSON: {"lyrics":"trecho exato + continuação com \\n"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -1600,9 +1449,9 @@ function renderLib(){
   if(!history.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">🎵</div><div>Nenhuma música ainda</div></div>`;return;}
   el.innerHTML=history.map(e=>`
     <div class="lib-card">
-      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px">${esc(e.title)}</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:2px">${esc(e.title)}</div>
       <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
       ${e.audio ? `
       <div style="margin-bottom:10px">
         <audio controls style="width:100%;height:36px;border-radius:8px;outline:none" src="${e.audio}"></audio>
@@ -1834,62 +1683,18 @@ function renderGallery(){
   empty.style.display="none";
   grid.innerHTML=withAudio.map((e,i)=>{
     const isPlaying=spIndex===i&&spPlaying;
-    const photoId=getNaturePhoto(e.genre,e.mood,e.title);
-    const photoUrl=`https://images.unsplash.com/photo-${photoId}?w=300&q=70&fit=crop&crop=entropy`;
+    const genreIcon=genreEmoji(e.genre);
     return `<div class="gal-card${isPlaying?" playing":""}" id="gal-card-${i}" onclick="spPlay(${i})">
-      <div class="gal-thumb" style="background:${genreColor(e.genre)};position:relative;overflow:hidden">
-        <img src="${photoUrl}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.05) 60%)"></div>
-        <div class="gal-play-icon" style="z-index:2">${isPlaying?"⏸":"▶"}</div>
+      <div class="gal-thumb" style="background:${genreColor(e.genre)}">
+        <span${isPlaying?' class="disc-spin"':''}>${genreIcon}</span>
+        <div class="gal-play-icon">${isPlaying?"⏸":"▶"}</div>
       </div>
       <div class="gal-info">
         <div class="gal-title">${esc(e.title)}</div>
-        <div class="gal-sub" id="gal-dur-${i}">--:--</div>
+        <div class="gal-sub">${esc(e.genre)} · ${e.bpm} BPM</div>
       </div>
     </div>`;
   }).join("");
-  // load durations async
-  withAudio.forEach((e,i)=>{
-    const a=new Audio();
-    a.src=e.audio;
-    a.addEventListener("loadedmetadata",()=>{
-      const el=document.getElementById("gal-dur-"+i);
-      if(el)el.textContent=spFmt(a.duration);
-    });
-  });
-}
-
-function getNaturePhoto(genre, mood, title){
-  // Map genre/mood to Unsplash photo IDs
-  const g=(genre||'').toLowerCase();
-  const m=(mood||'').toLowerCase();
-  const t=(title||'').toLowerCase();
-
-  // Use title hash to vary photos within same genre
-  let hash=0;for(let i=0;i<t.length;i++)hash=(hash*31+t.charCodeAt(i))&0xffff;
-  const v=hash%4;
-
-  const photos={
-    sertanejo:['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],
-    'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],
-    funk:['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],
-    pagode:['1507003211169-0a1dd7228f2d','1516912481800-cf2cde1b2249','1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1'],
-    gospel:['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],
-    rock:['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],
-    pop:['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1'],
-    forró:['1504701954957-2010ec3bcec1','1500534314209-a25ddb2bd429','1516912481800-cf2cde1b2249','1441974231531-c6227db76b6e'],
-    mpb:['1433086966358-54859d0ed716','1448375240586-882707db888b','1472214103451-9374bd1c798e','1441974231531-c6227db76b6e'],
-    lofi:['1519681393784-d120267933ba','1518609878373-06d740f60d8b','1493514789931-586cb221d7a7','1470225620780-dba8ba36b745'],
-  };
-
-  // romantic mood → praia/pôr do sol
-  if(m.includes('românt')||m.includes('amor')){
-    const r=['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'];
-    return r[v];
-  }
-
-  const arr=photos[g]||['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
-  return arr[v];
 }
 
 function genreEmoji(g){
