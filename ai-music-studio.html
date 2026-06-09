@@ -1888,11 +1888,26 @@ function applyPasteLyrics(){
   });
   if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
   currentSections=newSecs;
-  var saveId=editingId;
+  // try editingId first, then by title
+  var saveId=editingId||null;
   if(!saveId&&currentSong&&currentSong.title){
     var f=history.find(function(x){return x.title===currentSong.title;});
     if(f)saveId=f.id;
   }
+  if(saveId){
+    var idx=history.findIndex(function(x){return x.id===saveId;});
+    if(idx>=0){
+      history[idx].sections=currentSections;
+      if(currentSong)history[idx].song=Object.assign(history[idx].song||{},{sections:currentSections});
+      saveHistory();
+      showToast("Letra salva na nuvem!","ok");
+    }
+  } else {
+    showToast("Letra aplicada (abra pela Biblioteca para salvar)","ok");
+  }
+  closePasteLyrics();
+  renderResult(newStruct);
+}
   if(saveId){
     var idx=history.findIndex(function(x){return x.id===saveId;});
     if(idx>=0){history[idx].sections=currentSections;saveHistory();}
