@@ -1870,7 +1870,6 @@ function openPasteLyrics(){
   document.getElementById("paste-overlay").style.display="block";
   document.getElementById("paste-modal").style.display="block";
   setTimeout(function(){document.getElementById("paste-lyrics-ta").focus();},200);
-}
 function closePasteLyrics(){
   document.getElementById("paste-overlay").style.display="none";
   document.getElementById("paste-modal").style.display="none";
@@ -1886,9 +1885,16 @@ function applyPasteLyrics(){
   });
   if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
   currentSections=newSecs;
-  if(editingId){
-    var idx=history.findIndex(function(x){return x.id===editingId;});
+  // save to current song in history
+  var saveId=editingId;
+  if(!saveId){
+    // find by title if not editing from lib
+    if(currentSong&&currentSong.title){var f=history.find(function(x){return x.title===currentSong.title;});if(f)saveId=f.id;}
+  }
+  if(saveId){
+    var idx=history.findIndex(function(x){return x.id===saveId;});
     if(idx>=0){history[idx].sections=currentSections;saveHistory();}
+  }
   }
   closePasteLyrics();
   renderResult(newStruct);
