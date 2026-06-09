@@ -1908,14 +1908,6 @@ function applyPasteLyrics(){
   closePasteLyrics();
   renderResult(newStruct);
 }
-  if(saveId){
-    var idx=history.findIndex(function(x){return x.id===saveId;});
-    if(idx>=0){history[idx].sections=currentSections;saveHistory();}
-  }
-  closePasteLyrics();
-  renderResult(newStruct);
-  showToast("Letra aplicada!","ok");
-}
 function openLyricsModal(){
   if(spIndex<0||!spQueue[spIndex])return;
   var e=spQueue[spIndex];
