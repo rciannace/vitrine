@@ -339,10 +339,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">✨</span>
           <span>Estender</span>
         </div>
-        <div class="tab-item" onclick="switchMainTab('cantar')">
-          <span class="tab-icon">🎙</span>
-          <span>Cantar</span>
-        </div>
         <div class="tab-item" onclick="switchMainTab('inspiracao')">
           <span class="tab-icon">💡</span>
           <span>Inspirar</span>
@@ -386,26 +382,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <button class="btn-mic-sm" id="mic-ext-btn" onclick="toggleMicExt()">🎙</button>
           <span class="mic-hint" id="mic-ext-hint">Ou cante/fale o trecho</span>
         </div>
-      </div>
-    </div>
-
-    <!-- ── TAB: CANTAR ── -->
-    <div id="tab-cantar" style="display:none">
-      <div class="card">
-        <div class="card-title">🎙 Cantar sua Ideia</div>
-        <div style="font-size:13px;color:#444;font-weight:500;margin-bottom:4px">Cante ou fale sua ideia de música</div>
-        <div style="font-size:12px;color:#aaa;margin-bottom:16px">A IA transcreve sua voz e cria a letra completa a partir do que você cantar.</div>
-        <div class="mic-area">
-          <button class="btn-mic-big" id="mic-cant-btn" onclick="toggleMicCant()">🎙</button>
-          <div class="wave-bars" id="mic-cant-wave">
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-          </div>
-          <div class="mic-status" id="mic-cant-status">Toque no microfone e cante sua ideia</div>
-        </div>
-        <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
-        <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
       </div>
     </div>
 
@@ -811,7 +787,7 @@ let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
 let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
-let micDesc=null,micExt=null,micCant=null;
+let micDesc=null,micExt=null;
 
 // ══════════════════════════════════════
 // GITHUB SYNC
@@ -952,7 +928,7 @@ function importLib(input){
   };
   reader.readAsText(file,"utf-8");
 }
-let micDescOn=false,micExtOn=false,micCantOn=false;
+let micDescOn=false,micExtOn=false;
 let waveTimer=null;
 
 // ══════════════════════════════════════
@@ -1236,14 +1212,14 @@ function renderFavorites(){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar","inspiracao"].forEach(t=>{
+  ["descrever","letra","estender","inspiracao"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar","inspiracao"];
+    const tabs=["descrever","letra","estender","inspiracao"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspiracao:"💡 Criar com Inspiração"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",inspiracao:"💡 Criar com Inspiração"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
@@ -1371,40 +1347,6 @@ function toggleMicExt(){
 }
 
 // ══════════════════════════════════════
-// MIC — CANTAR
-// ══════════════════════════════════════
-function toggleMicCant(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  const btn=document.getElementById("mic-cant-btn");
-  const status=document.getElementById("mic-cant-status");
-  const wave=document.getElementById("mic-cant-wave");
-  if(micCantOn){
-    if(micCant){micCant.stop();micCant=null;}
-    micCantOn=false;clearInterval(waveTimer);
-    btn.className="btn-mic-big";btn.textContent="🎙";
-    status.className="mic-status";status.textContent="Toque no microfone e cante sua ideia";
-    wave.style.display="none";return;
-  }
-  if(!SR){status.textContent="⚠ Use Chrome/Edge para gravar";return;}
-  micCant=new SR();micCant.lang="pt-BR";micCant.continuous=true;micCant.interimResults=true;
-  micCant.onresult=e=>{
-    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
-    if(fin){const ta=document.getElementById("transcricao-canto");ta.value+=(ta.value?" ":"")+fin.trim();}
-  };
-  micCant.onerror=micCant.onend=()=>{
-    micCantOn=false;clearInterval(waveTimer);
-    btn.className="btn-mic-big";btn.textContent="🎙";
-    status.className="mic-status";status.textContent="✅ Gravado! Edite se precisar.";
-    wave.style.display="none";
-  };
-  micCant.start();micCantOn=true;
-  btn.className="btn-mic-big rec";btn.textContent="⏹";
-  status.className="mic-status rec";status.textContent="🔴 Gravando... cante!";
-  wave.style.display="flex";
-  waveTimer=setInterval(()=>{wave.querySelectorAll(".wb").forEach(b=>{b.style.height=(3+Math.random()*24)+"px";});},100);
-}
-
-// ══════════════════════════════════════
 // GENERATE
 // ══════════════════════════════════════
 async function generate(){
@@ -1439,10 +1381,6 @@ async function generate(){
     tema=document.getElementById("trecho-estender").value.trim();
     modoDesc="O usuário tem apenas o começo. MANTENHA o trecho exato e complete toda a música a partir dele.";
     if(!tema){showToast("Cole o trecho que você criou!","err");return;}
-  }else if(mainTab==="cantar"){
-    tema=document.getElementById("transcricao-canto").value.trim();
-    modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
-    if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
   }else if(mainTab==="inspiracao"){
     tema=document.getElementById("letra-inspiracao").value.trim();
     modoDesc=`MODO INSPIRAÇÃO — REESCRITA TEMÁTICA PROFISSIONAL.
@@ -1979,7 +1917,7 @@ function showToast(msg,type){
 }
 function setLoading(on){
   const btn=document.getElementById("btn-gen");
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspiracao:"💡 Criar com Inspiração"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",inspiracao:"💡 Criar com Inspiração"};
   btn.disabled=on;
   btn.innerHTML=on?`<div class="spinner"></div> Criando...`:(labels[mainTab]||"🎵 Criar Letra");
 }
