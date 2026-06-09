@@ -1,71 +1,65 @@
 [
   {
-    "id": 1781039740696,
-    "title": "A Volta da Primavera",
-    "genre": "Sertanejo",
-    "mood": "Romântico ❤️",
+    "id": 1781042011782,
+    "title": "Temporal de Faiscas",
+    "genre": "Rock",
+    "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "09/06/2026",
     "song": {
-      "title": "A Volta da Primavera",
-      "subtitle": "Noites escuras deram lugar ao nascer de um novo dia",
-      "key": "Sol Maior",
-      "chords": "G - D/F# - Em - C",
-      "vibe": "Uma balada sertaneja emocionante que celebra o reencontro e a cura de um amor perdido.",
-      "style_tags": [
-        "Sertanejo",
-        "Romântico",
-        "Emocional",
-        "Anos 90"
-      ],
+      "title": "Temporal de Faiscas",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
       "sections": {
-        "Introdução": "O vazio que eu sentia\nSem o teu olhar no meu\nO tempo não me trazia\nA paz que hoje acolheu.\nCom o sol a clarear.",
-        "Verso 1": "Sombras vagavam nos dias\nUm deserto sem flor\nPerdido em noites sombrias\nSem teu calor, sem teu amor.\nUm eco a me chamar.",
-        "Pré-Refrão": "Mas o céu, que hoje me escuta\nGritou de volta pra mim\nDesatou minha labuta\nEnfim, chegou o meu fim!\nDo sofrer desse pesar.",
-        "Verso 2": "Caminhos que o pranto traçava\nNo asfalto tão glacial\nCada toque que se acabava\nEra um tropeço fatal.\nA esperança a minguar.",
-        "Refrão": "Chegou você, meu cenário\nTodo o meu norte mudou\nDesfez o meu breviário\nDa dor que me aguentou\nA primavera voltou!\nMeu instante mais bendito\nCom o teu abraço eu sento\nMeu céu, meu infinito\nÉ o teu doce momento\nQue faz renascer o intento!"
+        "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.",
+        "Verse": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.",
+        "Pre-Chorus": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.",
+        "Chorus": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!",
+        "Verse 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.",
+        "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer."
       },
-      "suno_style": "sertanejo, romantic, emotional, powerful male vocals, 90 BPM, fingerpicked acoustic guitar, violao, subtle steel guitar, warm pad, radio mix",
-      "instruments": [
-        "Violão acústico dedilhado (base harmônica e melódica)",
-        "Viola caipira (textura e contraponto melódico)",
-        "Baixo acústico (fundamento rítmico e harmônico)",
-        "Bateria (suave e envolvente, acentuando o tempo)",
-        "Pedal Steel Guitar (para cor e emoção nas passagens de transição)"
-      ],
-      "production_notes": "Iniciar com o violão acústico em arpejos suaves, construindo a intimidade. A entrada da viola caipira deve adicionar um toque nostálgico. O baixo e a bateria entram firmes, mas sem sobrecarregar, mantendo o andamento de 90 BPM. A voz principal, afinada e com expressividade, guia a narrativa. O pré-refrão permite um leve build-up com a adição de um pad sutil. O refrão explode com a voz no seu auge emotivo, suportada por todos os instrumentos, com a pedal steel guitar adicionando um lamento/celebração melódico. O solo de guitarra do verso 2 deve carregar a melancolia do passado, mas com uma resolução otimista, preparando para a explosão final do refrão. Encerramento decrescendo com o violão e a voz. Mixagem com espaço amplo, realçando a clareza vocal e a profundidade dos instrumentos acústicos.",
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
       "bpm": 90,
-      "genre": "Sertanejo",
-      "mood": "Romântico ❤️",
-      "voice": "Masculina — 🎵 Voz Afinada",
+      "genre": "Rock",
+      "mood": "Romantico",
+      "voice": "",
       "duration": "normal"
     },
     "sections": {
-      "Introdução": "O vazio que eu sentia\nSem o teu olhar no meu\nO tempo não me trazia\nA paz que hoje acolheu.\nCom o sol a clarear.",
-      "Verso 1": "Sombras vagavam nos dias\nUm deserto sem flor\nPerdido em noites sombrias\nSem teu calor, sem teu amor.\nUm eco a me chamar.",
-      "Pré-Refrão": "Mas o céu, que hoje me escuta\nGritou de volta pra mim\nDesatou minha labuta\nEnfim, chegou o meu fim!\nDo sofrer desse pesar.",
-      "Verso 2": "Caminhos que o pranto traçava\nNo asfalto tão glacial\nCada toque que se acabava\nEra um tropeço fatal.\nA esperança a minguar.",
-      "Refrão": "Chegou você, meu cenário\nTodo o meu norte mudou\nDesfez o meu breviário\nDa dor que me aguentou\nA primavera voltou!\nMeu instante mais bendito\nCom o teu abraço eu sento\nMeu céu, meu infinito\nÉ o teu doce momento\nQue faz renascer o intento!"
+      "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.",
+      "Verse": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.",
+      "Pre-Chorus": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.",
+      "Chorus": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!",
+      "Verse 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.",
+      "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer."
     },
     "struct": [
-      "Introdução",
-      "Verso 1",
-      "Pré-Refrão",
-      "Verso 2",
-      "Refrão"
-    ]
+      "Intro",
+      "Verse",
+      "Pre-Chorus",
+      "Chorus",
+      "Verse 2",
+      "Bridge",
+      "Chorus"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781042036/pnumldvkbhiu0blet9ac.mp3"
   },
   {
     "id": 1781026051290,
-    "title": "Sinfonia do Nosso Amor",
+    "title": "Manto de Prata",
     "genre": "Sertanejo",
     "mood": "Sensual 🔥",
     "bpm": 90,
     "duration": "normal",
     "date": "09/06/2026",
     "song": {
-      "title": "Sinfonia do Nosso Amor",
+      "title": "Manto de Prata",
       "subtitle": "Dia dos Namorados",
       "key": "G Maior",
       "chords": "G / C / D / Em",
@@ -118,7 +112,8 @@
       "Verso 2",
       "Bridge",
       "Refrão Final"
-    ]
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3"
   },
   {
     "id": 1780967100877,
