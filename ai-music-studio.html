@@ -1683,20 +1683,15 @@ function renderGallery(){
   empty.style.display="none";
   grid.innerHTML=withAudio.map((e,i)=>{
     const isPlaying=spIndex===i&&spPlaying;
-    const hash=Array.from(e.title||'').reduce((h,c)=>(h*31+c.charCodeAt(0))&0xffff,0);
-    const photos={
-      sertanejo:['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],
-      'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],
-      funk:['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],
-      gospel:['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],
-      rock:['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],
-      pop:['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1'],
-    };
-    const mood=(e.mood||'').toLowerCase();
-    const romantic=mood.includes('rom')||mood.includes('amor');
-    const romPhotos=['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'];
-    const arr=romantic?romPhotos:(photos[(e.genre||'').toLowerCase()]||['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b']);
-    const pid=arr[hash%4];
+    const h=Array.from(e.title||'').reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
+    const g=(e.genre||'').toLowerCase();
+    const m=(e.mood||'').toLowerCase();
+    const rom=m.includes('rom')||m.includes('amor');
+    const pmap={'sertanejo':['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],'funk':['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],'gospel':['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],'rock':['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],'pop':['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1']};
+    const rom4=['1507525428034-b723cf961d3e','1519046904884-53103b34b206','1490730141103-6cac27aaab94','1500076656116-558758c991c1'];
+    const def4=['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
+    const arr=rom?rom4:(pmap[g]||def4);
+    const pid=arr[h%4];
     const purl='https://images.unsplash.com/photo-'+pid+'?w=300&q=70&fit=crop&crop=entropy';
     return '<div class="gal-card'+(isPlaying?' playing':'')+'" id="gal-card-'+i+'" onclick="spPlay('+i+')">'
       +'<div class="gal-thumb" style="background:'+genreColor(e.genre)+'">'
@@ -1709,11 +1704,8 @@ function renderGallery(){
       +'<div class="gal-sub" id="gal-dur-'+i+'">--:--</div>'
       +'</div></div>';
   }).join("");
-  withAudio.forEach(function(e,i){
-    if(!e.audio)return;
-    var a=new Audio();a.src=e.audio;
-    a.addEventListener('loadedmetadata',function(){var el=document.getElementById('gal-dur-'+i);if(el)el.textContent=spFmt(a.duration);});
-  });
+  withAudio.forEach(function(e,i){if(!e.audio)return;var a=new Audio();a.src=e.audio;a.addEventListener('loadedmetadata',function(){var el=document.getElementById('gal-dur-'+i);if(el)el.textContent=spFmt(a.duration);});});
+}
 }
 
 function genreEmoji(g){
