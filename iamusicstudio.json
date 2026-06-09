@@ -1,5 +1,55 @@
 [
   {
+    "id": 1781042011782,
+    "title": "Temporal de Faiscas",
+    "genre": "Rock",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "09/06/2026",
+    "song": {
+      "title": "Temporal de Faiscas",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.",
+        "Verse": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.",
+        "Pre-Chorus": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.",
+        "Chorus": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!",
+        "Verse 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.",
+        "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Rock",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "O céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.",
+      "Verse": "Lembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.",
+      "Pre-Chorus": "E o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.",
+      "Chorus": "Nossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!",
+      "Verse 2": "Os anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.",
+      "Bridge": "E se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer."
+    },
+    "struct": [
+      "Intro",
+      "Verse",
+      "Pre-Chorus",
+      "Chorus",
+      "Verse 2",
+      "Bridge",
+      "Chorus"
+    ]
+  },
+  {
     "id": 1781039740696,
     "title": "A Volta da Primavera",
     "genre": "Sertanejo",
