@@ -504,12 +504,32 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
     <!-- PREVIEW SUNO STYLE -->
     <div class="card" id="suno-preview-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
         <div class="card-title" style="margin-bottom:0">🚀 Preview Suno Style</div>
-        <span id="suno-preview-chars" style="font-size:10px;font-weight:600"></span>
       </div>
-      <div id="suno-preview-text" style="font-size:12px;color:var(--text3);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.7;min-height:40px;word-break:break-word;font-family:monospace"></div>
-      <div style="font-size:10px;color:var(--text4);margin-top:6px">Atualiza conforme você monta as opções · máx 120 chars</div>
+      <div style="font-size:11px;color:var(--text4);margin-bottom:10px">Atualiza em tempo real · Cole diretamente no Suno</div>
+
+      <!-- STYLE OF MUSIC (campo curto, máx 120) -->
+      <div style="margin-bottom:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#f97316;text-transform:uppercase">Style of Music</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span id="suno-preview-chars" style="font-size:10px;font-weight:600"></span>
+            <button onclick="copySunoPreview('suno-preview-text','✓ Style copiado!')" style="font-size:10px;padding:3px 10px;border-radius:6px;border:none;background:#f97316;color:#fff;cursor:pointer;font-weight:600">📋 Copiar</button>
+          </div>
+        </div>
+        <div id="suno-preview-text" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.8;min-height:36px;word-break:break-word;font-family:monospace;white-space:pre-wrap"></div>
+      </div>
+
+      <!-- STYLE DETALHADO (para usar em Custom Mode) -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#a855f7;text-transform:uppercase">Style Detalhado (Custom Mode)</span>
+          <button onclick="copySunoPreview('suno-preview-extended','✓ Style detalhado copiado!')" style="font-size:10px;padding:3px 10px;border-radius:6px;border:none;background:#a855f7;color:#fff;cursor:pointer;font-weight:600">📋 Copiar</button>
+        </div>
+        <div id="suno-preview-extended" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;line-height:1.8;min-height:60px;word-break:break-word;font-family:monospace;white-space:pre-wrap"></div>
+        <div style="font-size:10px;color:var(--text4);margin-top:5px">💡 Use no campo <b>Style of Music</b> do Suno em modo Custom — quanto mais detalhe, melhor o resultado</div>
+      </div>
     </div>
 
     <!-- REFERÊNCIA -->
@@ -1021,34 +1041,129 @@ function updateEstruturaPreview(){
 // ══════════════════════════════════════
 // SUNO STYLE PREVIEW EM TEMPO REAL
 // ══════════════════════════════════════
-function buildSunoPreviewStr(){
-  const g=GENRES.find(x=>x.id===selGenre);
-  const m=MOODS.find(x=>x.id===selMood);
-  const t=TEMPOS.find(x=>x.id===selTempo);
-  const timbreObj=TIMBRES.find(x=>x.id===selTimbre);
+// ══════════════════════════════════════
+// SUNO STYLE — BANCO DE DADOS RICO
+// ══════════════════════════════════════
+const SUNO_GENRE_DATA={
+  sertanejo:{en:"sertanejo",instruments:"acoustic guitar, violao, pedal steel guitar, bass, drums",production:"lush strings, warm reverb, radio-ready mix",era:"modern sertanejo",sub:"sertanejo romantico"},
+  sertuniv:{en:"sertanejo universitario",instruments:"electric guitar, violao, bass, drums, synth",production:"bright mix, energetic, festival sound",era:"contemporary",sub:"pagodao sertanejo"},
+  viola:{en:"viola caipira, country sertanejo",instruments:"viola caipira, acoustic guitar, accordion, bass",production:"organic, rustic, natural reverb",era:"traditional brazilian country",sub:"musica caipira"},
+  modao:{en:"modao sertanejo, old country",instruments:"viola caipira, acoustic guitar, bass",production:"raw, authentic, minimal production",era:"classic 1970s",sub:"musica raiz"},
+  sola:{en:"sola da bota, forrozao",instruments:"accordion, triangle, zabumba, bass",production:"danceable, energetic",era:"contemporary",sub:"forro universitario"},
+  funk:{en:"funk carioca, baile funk",instruments:"808 bass, electronic drums, synth, samples",production:"heavy bass, loud mix, club sound",era:"contemporary",sub:"proibidao funk"},
+  piseiro:{en:"piseiro, forro piseiro",instruments:"accordion, electric guitar, bass, electronic drums",production:"danceable, high energy, festival",era:"contemporary 2020s",sub:"forro eletronico"},
+  forro:{en:"forro, northeastern brazilian",instruments:"accordion, triangle, zabumba",production:"traditional, lively, warm",era:"classic",sub:"forro pe de serra"},
+  frevo:{en:"frevo, pernambuco carnival",instruments:"brass section, trombone, trumpet, drums",production:"fast, festive, energetic brass",era:"traditional",sub:"frevo de rua"},
+  baiao:{en:"baiao, northeastern folk",instruments:"accordion, viola, zabumba, triangle",production:"organic, rhythmic, traditional",era:"classic 1950s",sub:"xote nordestino"},
+  brega:{en:"brega, romantic brega",instruments:"electric guitar, synth, bass, drums",production:"melodramatic, warm, emotional",era:"1980s style",sub:"brega romantico"},
+  bregafunk:{en:"brega funk, pernambuco funk",instruments:"808, electronic drums, synth bass, samples",production:"heavy bass, aggressive, club",era:"contemporary 2020s",sub:"brega eletronico"},
+  tecnobrega:{en:"tecnobrega, para brega",instruments:"electronic drums, synth, bass, samples",production:"electronic, danceable, vibrant",era:"contemporary",sub:"brega eletronico"},
+  arrocha:{en:"arrocha, romantic arrocha",instruments:"electric guitar, keyboard, bass, drums",production:"slow, emotional, melodramatic",era:"contemporary",sub:"sofrencia baiana"},
+  pagode:{en:"pagode, samba pagode",instruments:"cavaquinho, pandeiro, repique, banjo, bass",production:"warm, rhythmic, soulful",era:"contemporary",sub:"pagode romantico"},
+  samba:{en:"samba, brazilian samba",instruments:"surdo, tamborim, cavaquinho, pandeiro, brass",production:"festive, energetic, percussive",era:"classic",sub:"samba enredo"},
+  mpb:{en:"MPB, musica popular brasileira",instruments:"acoustic guitar, piano, bass, strings",production:"sophisticated, poetic, warm",era:"1970s style",sub:"bossa nova influenced"},
+  axe:{en:"axe music, bahian carnival",instruments:"electric guitar, bass, brass, atabaque",production:"festive, high energy, tropical",era:"contemporary",sub:"samba reggae"},
+  gospel:{en:"gospel, christian worship",instruments:"piano, electric guitar, bass, drums, choir",production:"powerful, uplifting, full sound",era:"contemporary",sub:"gospel praise"},
+  worship:{en:"worship, contemporary christian",instruments:"acoustic guitar, piano, pads, bass, drums",production:"atmospheric, reverb-heavy, emotional",era:"modern worship",sub:"hillsong style"},
+  pop:{en:"pop",instruments:"synth, electric guitar, bass, drums, vocal layers",production:"polished, bright, radio-ready",era:"contemporary",sub:"electropop"},
+  rock:{en:"rock",instruments:"electric guitar, bass, drums, power chords",production:"energetic, distortion, punchy",era:"classic rock",sub:"hard rock"},
+  hiphop:{en:"hip hop, rap",instruments:"808 bass, sampler, hi-hats, snare",production:"trap influenced, heavy bass",era:"contemporary",sub:"trap rap"},
+  rnb:{en:"R&B, soul",instruments:"electric piano, bass, drums, synth pads",production:"smooth, groovy, warm",era:"neo-soul",sub:"contemporary R&B"},
+  trap:{en:"trap, dark trap",instruments:"808 bass, hi-hats, snare, synth",production:"heavy, dark, minimal",era:"contemporary",sub:"melodic trap"},
+  reggaeton:{en:"reggaeton, latin urban",instruments:"dembow beat, bass, synth, percussion",production:"danceable, urban, energetic",era:"contemporary",sub:"perreo"},
+  reggae:{en:"reggae, jamaican reggae",instruments:"electric guitar skank, bass, drums, organ",production:"warm, laid-back, roots",era:"classic reggae",sub:"roots reggae"},
+  eletro:{en:"electronic, dance music",instruments:"synthesizer, drum machine, bass synth, pads",production:"club sound, four-on-floor, atmospheric",era:"contemporary",sub:"house music"},
+  lofi:{en:"lo-fi hip hop, chillhop",instruments:"dusty piano, vinyl crackle, mellow drums, bass",production:"warm, nostalgic, low-fi texture",era:"contemporary",sub:"study beats"},
+  jazz:{en:"jazz",instruments:"upright bass, piano, saxophone, trumpet, brushed drums",production:"live, intimate, swinging",era:"classic jazz",sub:"bebop"},
+  blues:{en:"blues",instruments:"electric guitar, harmonica, bass, drums",production:"raw, emotional, vintage",era:"classic blues",sub:"chicago blues"},
+  country:{en:"country",instruments:"acoustic guitar, steel guitar, fiddle, bass, drums",production:"warm, authentic, Nashville sound",era:"contemporary country",sub:"country pop"},
+  folk:{en:"folk",instruments:"acoustic guitar, banjo, mandolin, upright bass",production:"organic, intimate, natural",era:"contemporary folk",sub:"americana"},
+  indie:{en:"indie rock, alternative",instruments:"electric guitar, bass, drums, synth",production:"lo-fi to polished, creative",era:"contemporary",sub:"indie pop"},
+  acustico:{en:"acoustic, unplugged",instruments:"acoustic guitar, soft percussion, bass, piano",production:"intimate, natural, warm",era:"timeless",sub:"acoustic soul"},
+  afrobeat:{en:"afrobeat, afro-fusion",instruments:"talking drum, konga, electric guitar, bass, horns",production:"polyrhythmic, vibrant, danceable",era:"contemporary afrobeat",sub:"afro pop"},
+  kizomba:{en:"kizomba, angolan",instruments:"electronic drums, bass, synth pads, electric piano",production:"sensual, slow, smooth",era:"contemporary",sub:"semba influenced"},
+  semba:{en:"semba, angolan traditional",instruments:"acoustic guitar, bass, percussion",production:"traditional, warm, rhythmic",era:"classic",sub:"angolan folk"},
+  kuduro:{en:"kuduro, angolan dance",instruments:"electronic drums, bass synth, samples",production:"fast, aggressive, electronic",era:"contemporary",sub:"afro electronic"},
+  carimbo:{en:"carimbo, para folk",instruments:"carimbó drum, maracas, flute, guitar",production:"traditional, festive, tropical",era:"classic",sub:"amazonian folk"},
+  baile:{en:"bailao, forro bailao",instruments:"accordion, keyboard, bass, drums",production:"danceable, festive, energetic",era:"contemporary",sub:"forro eletronico"},
+  personalizado:{en:"custom style",instruments:"various instruments",production:"custom production",era:"contemporary",sub:"mixed genres"},
+};
+
+const SUNO_MOOD_DATA={
+  romantico:{en:"romantic, emotional, heartfelt",vibe:"intimate atmosphere, tender feeling, love song"},
+  alegre:{en:"happy, upbeat, joyful",vibe:"bright energy, feel-good, celebratory"},
+  melancolico:{en:"melancholic, sad, bittersweet",vibe:"emotional depth, nostalgic longing, heartbreak"},
+  saudosista:{en:"nostalgic, saudade, longing",vibe:"wistful, memories, emotional journey"},
+  energetico:{en:"energetic, powerful, intense",vibe:"high energy, driving rhythm, adrenaline"},
+  sensual:{en:"sensual, seductive, passionate",vibe:"sultry atmosphere, slow groove, desire"},
+  espiritual:{en:"spiritual, uplifting, devotional",vibe:"transcendent, hopeful, divine inspiration"},
+  festivo:{en:"festive, party, celebratory",vibe:"danceable, fun, crowd energy"},
+};
+
+const SUNO_TIMBRE_DATA={
+  grossa:{en:"deep baritone vocals, powerful low voice",detail:"chest voice, resonant, commanding"},
+  afinada:{en:"pitch-perfect vocals, pristine intonation",detail:"studio-polished, clear, precise"},
+  rouca:{en:"raspy vocals, husky voice, gritty texture",detail:"rough edges, emotional grain, raw"},
+  suave:{en:"smooth silky vocals, soft delivery",detail:"breathy, gentle, intimate tone"},
+  aguda:{en:"high-pitched vocals, bright tone",detail:"soprano range, piercing, soaring"},
+  gutural:{en:"guttural vocals, aggressive tone",detail:"growl, intense, powerful delivery"},
+};
+
+function buildSunoStyles(){
+  const g=GENRES.find(x=>x.id===selGenre)||GENRES[0];
+  const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
+  const t=TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
+  const gd=SUNO_GENRE_DATA[selGenre]||SUNO_GENRE_DATA.personalizado;
+  const md=SUNO_MOOD_DATA[selMood]||SUNO_MOOD_DATA.romantico;
+  const td=selTimbre?SUNO_TIMBRE_DATA[selTimbre]:null;
   const vozBase=selVoz.startsWith("f")?"female vocals":"male vocals";
-  const timbreEn={grossa:"deep",afinada:"pitch-perfect",rouca:"raspy",suave:"smooth",aguda:"high-pitched",gutural:"guttural"};
-  const timbreStr=timbreObj?(timbreEn[timbreObj.id]||timbreObj.id)+" ":"";
-  const genreEn=(g?g.l:"sertanejo").toLowerCase().replace(/\s+/g,"-");
-  const moodEn=(m?m.l.replace(/\s*[^\w\s].*/,""):"romantic").toLowerCase().trim();
-  const bpmStr=t?t.bpm+" BPM":"90 BPM";
-  const parts=[genreEn,moodEn,timbreStr+vozBase,bpmStr];
-  if(selExtras.length>0)parts.push(...selExtras.slice(0,2).map(e=>e.toLowerCase()));
-  let result=parts.join(", ");
-  if(result.length>120)result=result.slice(0,117)+"...";
-  return result;
+  const vozFull=td?td.en:vozBase;
+  const bpm=t?t.bpm:90;
+  const extrasEn=selExtras.map(e=>{
+    const map={"Autotune":"autotune","Piano":"grand piano","Guitarra":"electric guitar","808":"808 bass","Grave Pesado":"heavy bass, sub bass","Orquestra":"orchestral strings, full orchestra","Coral":"choir, vocal harmonies","Sanfona":"accordion","Reverb":"heavy reverb, cathedral reverb","Violão":"violao, acoustic guitar","Bateria forte":"powerful drums, heavy kick","Synth":"analog synth","Rápido":"fast tempo","Lento":"slow tempo","Emotivo":"deeply emotional","Relaxante":"relaxing, chill","Agressivo":"aggressive, intense","Vinheta":"short jingle","Narrado":"spoken word, narrated"};
+    return map[e]||e.toLowerCase();
+  });
+
+  // ── SHORT (máx 120 chars para o campo Style of Music) ──
+  const shortParts=[gd.en,md.en.split(",")[0].trim(),vozFull,bpm+" BPM"];
+  if(selExtras.length)shortParts.push(extrasEn[0]);
+  let short=shortParts.join(", ");
+  if(short.length>120)short=short.slice(0,117)+"...";
+
+  // ── EXTENDED (Custom Mode — rico e detalhado) ──
+  const lines=[];
+  lines.push("Genre: "+gd.en+(gd.sub?", "+gd.sub:""));
+  lines.push("Style: "+gd.era+", "+gd.production);
+  lines.push("Mood: "+md.en);
+  lines.push("Vibe: "+md.vibe);
+  lines.push("Vocals: "+vozFull+(td?", "+td.detail:""));
+  lines.push("Instruments: "+gd.instruments);
+  lines.push("BPM: "+bpm+", Tempo: "+(bpm<80?"slow ballad":bpm<100?"moderate groove":bpm<120?"mid-tempo":bpm<140?"uptempo":"fast dance"));
+  if(extrasEn.length)lines.push("Extra: "+extrasEn.join(", "));
+  lines.push("Production: "+gd.production+", professional studio quality, radio-ready");
+
+  return {short, extended:lines.join("\n")};
 }
 
 function updateSunoPreview(){
   const el=document.getElementById("suno-preview-text");
+  const elExt=document.getElementById("suno-preview-extended");
   const ch=document.getElementById("suno-preview-chars");
   if(!el)return;
-  const str=buildSunoPreviewStr();
-  el.textContent=str;
+  const {short,extended}=buildSunoStyles();
+  el.textContent=short;
+  if(elExt)elExt.textContent=extended;
   if(ch){
-    ch.textContent=str.length+"/120";
-    ch.style.color=str.length>120?"#ef4444":str.length>100?"#f59e0b":"#22c55e";
+    ch.textContent=short.length+"/120";
+    ch.style.color=short.length>120?"#ef4444":short.length>100?"#f59e0b":"#22c55e";
   }
+}
+
+function copySunoPreview(id,msg){
+  const el=document.getElementById(id);if(!el)return;
+  navigator.clipboard.writeText(el.textContent||"").then(()=>showToast(msg,"ok")).catch(()=>{
+    const ta=document.createElement("textarea");ta.value=el.textContent;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);showToast(msg,"ok");
+  });
 }
 
 // ══════════════════════════════════════
@@ -1359,7 +1474,8 @@ SUNO STYLE PROMPT (CRÍTICO):
 • Máximo EXATO de 120 caracteres — conte com cuidado.
 • Apenas palavras-chave em INGLÊS separadas por vírgula.
 • Ordem ideal: gênero › sub-gênero › mood › tipo de voz › BPM › 2-3 instrumentos-chave › 1-2 adjetivos de produção.
-• Ex de alta qualidade: "sertanejo universitario, romantic, emotional, female vocals, 90 BPM, acoustic guitar, violao, lush strings, radio-ready"
+• Ex de alta qualidade: "sertanejo universitario, romantic, emotional, raspy female vocals, 90 BPM, acoustic guitar, violao, lush strings, radio-ready"
+• Seja ESPECÍFICO: não escreva apenas "guitar" — escreva "fingerpicked acoustic guitar" ou "overdriven electric guitar". Não escreva "vocals" — escreva "powerful female belting vocals" ou "smooth baritone". Isso faz enorme diferença no Suno.
 
 ═══════════════════════════════════════
 FORMATO DE SAÍDA — SOMENTE JSON VÁLIDO
