@@ -1,5 +1,66 @@
 [
   {
+    "id": 1780966074065,
+    "title": "Meu amor criou raiz",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "08/06/2026",
+    "song": {
+      "title": "Meu amor criou raiz",
+      "subtitle": "Daniele",
+      "key": "G",
+      "chords": "G - D - Em - C",
+      "vibe": "Profundo e duradouro, a celebração de um amor que evoluiu e se fortaleceu com os anos.",
+      "style_tags": [
+        "sertanejo romântico",
+        "amor eterno",
+        "relacionamento sólido"
+      ],
+      "sections": {
+        "Intro": " (Guitarra com um riff marcante e melódico, bateria entra com pegada firme e caixa acentuada) \n \n",
+        "Verso 1": "Já são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n",
+        "Pré-Refrão": "Nosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n",
+        "Refrão": "Daniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n",
+        "Verso 2": "Você me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n",
+        "Bridge": "(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n",
+        "Refrão Final": "Daniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️"
+      },
+      "suno_style": "sertanejo, romantic, male vocals, 90 BPM, strong drums, emotional guitar, love story",
+      "instruments": [
+        "Guitarra (marcante, solo)",
+        "Bateria (forte, caixa)",
+        "Violão Acústico",
+        "Baixo"
+      ],
+      "production_notes": "Produção com foco na clareza da voz masculina, bateria com pegada sertaneja marcante e solo de guitarra emotivo e melódico. Ênfase na construção da emoção do refrão. Padrão de rádio que valorize a letra e a performance.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": " (Guitarra com um riff marcante e melódico, bateria entra com pegada firme e caixa acentuada) \n \n",
+      "Verso 1": "Já são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n",
+      "Pré-Refrão": "Nosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n",
+      "Refrão": "Daniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n",
+      "Verso 2": "Você me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n",
+      "Bridge": "(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n",
+      "Refrão Final": "Daniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️"
+    },
+    "struct": [
+      "Intro",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1780961814487,
     "title": "A Alma Cantou",
     "genre": "Sertanejo",
