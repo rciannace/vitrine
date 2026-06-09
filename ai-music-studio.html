@@ -339,6 +339,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
           <span class="tab-icon">🎙</span>
           <span>Cantar</span>
         </div>
+        <div class="tab-item" onclick="switchMainTab('inspirar')">
+          <span class="tab-icon">🎯</span>
+          <span>Inspirar</span>
+        </div>
       </div>
     </div>
 
@@ -398,6 +402,28 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         </div>
         <label class="field-label" style="margin-bottom:6px">Transcrição (edite se precisar):</label>
         <textarea id="transcricao-canto" class="txt-area" rows="3" placeholder="Sua voz aparece aqui automaticamente..."></textarea>
+      </div>
+    </div>
+
+    <!-- TAB INSPIRAR -->
+    <div id="tab-inspirar" style="display:none">
+      <div class="card">
+        <div class="card-title">🎯 Inspirar em uma Música</div>
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:4px">Qual música te inspira?</div>
+        <div style="font-size:12px;color:var(--text4);margin-bottom:16px">A IA cria uma música original no mesmo estilo, clima e forma de cantar — letra 100% nova.</div>
+        <div style="margin-bottom:12px">
+          <label class="field-label">🎵 Nome da música</label>
+          <input id="inspirar-musica" class="txt-input" placeholder="Ex: Evidências, Shallow, Shape of You..."/>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="field-label">🎤 Artista / Cantor</label>
+          <input id="inspirar-artista" class="txt-input" placeholder="Ex: Chitãozinho & Xororó, Lady Gaga..."/>
+        </div>
+        <div>
+          <label class="field-label">📝 Letra original <span style="font-weight:400;color:var(--text4)">(opcional mas recomendado)</span></label>
+          <textarea id="inspirar-letra" class="txt-area" rows="6" placeholder="Cole aqui a letra da música para a IA se inspirar melhor na estrutura, rimas e forma de cantar..."></textarea>
+          <div style="font-size:10px;color:var(--text4);margin-top:4px">A IA vai usar como referência de estilo — nunca vai copiar.</div>
+        </div>
       </div>
     </div>
 
@@ -899,14 +925,14 @@ function buildMultiChips(cid,items,cls,getter,setter){
 // ══════════════════════════════════════
 function switchMainTab(tab){
   mainTab=tab;
-  ["descrever","letra","estender","cantar"].forEach(t=>{
+  ["descrever","letra","estender","cantar","inspirar"].forEach(t=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
-    const tabs=["descrever","letra","estender","cantar"];
+    const tabs=["descrever","letra","estender","cantar","inspirar"];
     el.className="tab-item"+(tabs[i]===tab?" active":"");
   });
-  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz"};
+  const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",cantar:"🎵 Criar da Voz",inspirar:"🎯 Criar Inspirado"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
 }
 
@@ -1102,6 +1128,31 @@ async function generate(){
     tema=document.getElementById("transcricao-canto").value.trim();
     modoDesc="O usuário cantou/falou esta ideia. Crie a letra completa baseada no que foi transcrito.";
     if(!tema){showToast("Grave sua voz ou escreva na transcrição!","err");return;}
+  }else if(mainTab==="inspirar"){
+    const musRef=document.getElementById("inspirar-musica").value.trim();
+    const artRef=document.getElementById("inspirar-artista").value.trim();
+    const letraRef=document.getElementById("inspirar-letra").value.trim();
+    if(!musRef||!artRef){showToast("Preencha o nome da música e do artista!","err");return;}
+    tema=`Música: "${musRef}" — Artista: ${artRef}`;
+    modoDesc=`Você vai criar uma música INSPIRADA em "${musRef}" de ${artRef}.
+
+ANTES DE COMPOR, analise profundamente:
+1. ESTILO VOCAL: Como ${artRef} canta? Timbre, fraseado, respiração, pronúncia?
+2. ESTRUTURA: Quantas sílabas por linha? Esquema de rimas (ABAB, AABB)? Padrão de repetição?
+3. TEMA EMOCIONAL: Sentimento central — saudade, amor, sofrência, alegria?
+4. VOCABULÁRIO: Simples/popular ou elaborado? Regionalismos? Gírias do gênero?
+5. IMAGENS POÉTICAS: Metáforas e comparações típicas desse artista?
+
+REGRAS OBRIGATÓRIAS:
+- Mantenha o MESMO número de sílabas por linha
+- Use o MESMO esquema de rimas
+- O tema deve ser PARECIDO (sofrência gera sofrência, amor gera amor)
+- Vocabulário do MESMO UNIVERSO semântico
+- Quem ouvir deve pensar "isso parece muito com ${artRef}"
+- NUNCA copie frases ou versos — tudo 100% original${letraRef?"
+
+LETRA ORIGINAL PARA ANÁLISE (estude cada verso, o ritmo das sílabas, as rimas, o vocabulário — recrie o estilo com palavras totalmente novas):
+"+letraRef:""}`;
   }
 
   setLoading(true);currentSong=null;currentSections={};
