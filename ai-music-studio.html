@@ -352,8 +352,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 }
 .sp-btn.play:hover{background:#f0f0f0;transform:scale(1.06)}
 .sp-btn:active{transform:scale(.9)}
-.sp-btn.active-mode{color:#f97316!important;position:relative}
-.sp-btn.active-mode::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316}
+.sp-btn.active-mode{color:#f97316!important;background:#f9731625!important;position:relative;box-shadow:0 0 0 1.5px #f9731660!important}
+.sp-btn.active-mode::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316;box-shadow:0 0 4px #f97316}
 
 /* barra de progresso */
 .sp-progress-row{display:flex;align-items:center;gap:8px;width:100%}
@@ -396,6 +396,14 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <span class="logo-name">IA Music Studio</span>
   </div>
   <div class="header-actions">
+    <div id="token-badge" onclick="toggleApiPanel()" style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #eee;background:#f8f8f8;color:#aaa;flex-shrink:0;transition:all .2s">
+      <span id="token-badge-icon">🔑</span>
+      <span id="token-badge-text">Sem token</span>
+    </div>
+    <button id="btn-sync" onclick="manualSync()" title="Sincronizar com nuvem" style="display:none;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;flex-shrink:0;transition:all .2s">
+      <span id="sync-icon">☁️</span>
+      <span id="sync-text">Sincronizar</span>
+    </button>
     <button class="btn-lib" onclick="setPage('lib')">
       <span>📚</span>
       <span>Biblioteca</span>
@@ -903,7 +911,15 @@ let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
-let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
+let history=[];
+try{
+  const d=JSON.parse(localStorage.getItem("ams6")||"[]");
+  if(Array.isArray(d)&&d.length>0){history=d;}
+  else{
+    const b=JSON.parse(localStorage.getItem("ams6_backup")||"[]");
+    if(Array.isArray(b)&&b.length>0){history=b;}
+  }
+}catch{}
 let micDesc=null,micExt=null;
 
 // ══════════════════════════════════════
@@ -927,7 +943,7 @@ function ghSaveToken(token){
   localStorage.setItem("ams_gh_token",ghToken);
   document.getElementById("gh-token-input").value="";
   document.getElementById("gh-token-panel").style.display="none";
-  showToast("✅ Token salvo!","ok");
+  showToast("✅ Token GitHub salvo! Clique em Sincronizar para carregar sua biblioteca.","ok");
   renderSyncUI();
   ghLoad();
 }
@@ -940,15 +956,91 @@ function toggleTokenPanel(){
   if(p.style.display==="block")setTimeout(()=>document.getElementById("gh-token-input").focus(),100);
 }
 function renderSyncUI(){
+  // update old sync-status in library page if exists
   const el=document.getElementById("sync-status");
-  if(!el)return;
-  if(!ghToken){
-    el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
-    return;
+  if(el){
+    if(!ghToken){
+      el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
+    } else {
+      const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
+      const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
+      el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
+    }
   }
-  const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
-  const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
-  el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
+  // always update header badge
+  renderTokenBadge();
+}
+
+function renderTokenBadge(){
+  const badge=document.getElementById("token-badge");
+  const icon=document.getElementById("token-badge-icon");
+  const text=document.getElementById("token-badge-text");
+  const syncBtn=document.getElementById("btn-sync");
+  const syncIcon=document.getElementById("sync-icon");
+  const syncText=document.getElementById("sync-text");
+  if(!badge)return;
+  if(!ghToken){
+    badge.style.borderColor="#f9731660";
+    badge.style.background="#fff8f5";
+    badge.style.color="#f97316";
+    if(icon)icon.textContent="⚠️";
+    if(text)text.textContent="Sem token";
+    if(syncBtn)syncBtn.style.display="none";
+  } else {
+    badge.style.borderColor="#22c55e60";
+    badge.style.background="#f0fdf4";
+    badge.style.color="#16a34a";
+    if(icon)icon.textContent="🔑";
+    if(text)text.textContent="Token salvo ✅";
+    if(syncBtn)syncBtn.style.display="flex";
+    // update sync button state
+    if(syncStatus==="syncing"){
+      if(syncIcon)syncIcon.textContent="⏳";
+      if(syncText)syncText.textContent="Sincronizando...";
+      syncBtn.style.opacity="0.7";
+    } else if(syncStatus==="ok"){
+      if(syncIcon)syncIcon.textContent="✅";
+      if(syncText)syncText.textContent="Sincronizado!";
+      syncBtn.style.borderColor="#22c55e";
+      syncBtn.style.background="#f0fdf4";
+      syncBtn.style.color="#16a34a";
+      setTimeout(()=>{
+        if(syncIcon)syncIcon.textContent="☁️";
+        if(syncText)syncText.textContent="Sincronizar";
+        syncBtn.style.borderColor="#3b82f6";
+        syncBtn.style.background="#eff6ff";
+        syncBtn.style.color="#3b82f6";
+        syncBtn.style.opacity="1";
+      },3000);
+    } else if(syncStatus==="err"){
+      if(syncIcon)syncIcon.textContent="❌";
+      if(syncText)syncText.textContent="Erro!";
+      syncBtn.style.borderColor="#ef4444";
+      syncBtn.style.background="#fef2f2";
+      syncBtn.style.color="#ef4444";
+      syncBtn.style.opacity="1";
+      setTimeout(()=>{
+        if(syncIcon)syncIcon.textContent="☁️";
+        if(syncText)syncText.textContent="Sincronizar";
+        syncBtn.style.borderColor="#3b82f6";
+        syncBtn.style.background="#eff6ff";
+        syncBtn.style.color="#3b82f6";
+      },4000);
+    } else {
+      syncBtn.style.opacity="1";
+    }
+  }
+}
+
+async function manualSync(){
+  if(!ghToken){showToast("Configure o token GitHub em ⚙️ primeiro","err");return;}
+  const syncBtn=document.getElementById("btn-sync");
+  if(syncBtn)syncBtn.style.opacity="0.6";
+  // first pull from cloud, then push local
+  showToast("⏳ Sincronizando...","ok");
+  await ghLoad();
+  await ghSave();
+  showToast("✅ Sincronizado com sucesso!","ok");
 }
 async function ghFetch(method,body){
   const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
@@ -1003,7 +1095,7 @@ async function ghSave(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1067,6 +1159,7 @@ window.onload=()=>{
   renderFavorites();
   updateSunoPreview();
   updateLibN();
+  renderTokenBadge();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
 };
@@ -2269,11 +2362,22 @@ function saveSunoEntry(){
   if(sunoAudioUrl)entry.audio=sunoAudioUrl;
 
   history.unshift(entry);
-  saveHistory();
+
+  // save to localStorage (double key for redundancy)
+  try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+  try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+
+  // save to GitHub if token available
+  if(ghToken){
+    ghSave();
+    showToast("✅ Música adicionada e sincronizada!","ok");
+  } else {
+    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
+  }
+
   updateLibN();
   renderLib();
   closeSunoModal();
-  showToast("✅ Música adicionada!","ok");
 }
 
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
