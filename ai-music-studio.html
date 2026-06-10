@@ -84,11 +84,11 @@ textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-app
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* HEADER */
-.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:8px}
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:9px}
 .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .logo-name{font-weight:700;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:1px}
-.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.header-actions{display:flex;align-items:center;gap:8px}
 .btn-lib{
   padding:7px 14px 7px 10px;
   border-radius:22px;
@@ -410,17 +410,38 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 </div>
 
 <!-- API PANEL DROPDOWN -->
-<div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:300px;box-shadow:0 8px 32px #0000001a">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 OPENROUTER API KEY</span>
+<div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:310px;box-shadow:0 8px 32px #0000001a">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <span style="font-size:13px;font-weight:700;color:#333">⚙️ Configurações</span>
     <button onclick="toggleApiPanel()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#aaa;line-height:1">×</button>
   </div>
-  <div id="gh-token-status-panel" style="margin-bottom:12px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600"></div>
-  <div class="api-row">
-    <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
-    <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
+
+  <!-- OPENROUTER KEY -->
+  <div style="margin-bottom:14px">
+    <div style="font-size:11px;font-weight:700;color:#f97316;letter-spacing:1px;margin-bottom:6px">🤖 OPENROUTER API KEY</div>
+    <div class="api-row">
+      <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
+      <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
+    </div>
+    <div style="font-size:10px;color:#bbb;margin-top:4px">Grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
   </div>
-  <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
+
+  <div style="border-top:1px solid #f0f0f0;margin-bottom:14px"></div>
+
+  <!-- GITHUB TOKEN -->
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:8px">☁️ GITHUB TOKEN (SYNC)</div>
+    <div id="gh-token-status-panel" style="margin-bottom:10px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600"></div>
+    <div style="display:flex;gap:8px;margin-bottom:6px">
+      <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:8px 10px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
+      <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:8px 14px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button onclick="manualSync()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">☁️ Sincronizar agora</button>
+      <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
+    </div>
+    <div style="font-size:10px;color:#bbb;margin-top:6px">Token em <a href="https://github.com/settings/tokens" target="_blank" style="color:#333">github.com/settings/tokens</a></div>
+  </div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
 
@@ -653,15 +674,10 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <!-- Sub-pages -->
     <div id="libpage-biblioteca">
     <!-- GitHub Token Panel -->
-    <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
-      <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
-      <div style="display:flex;gap:8px">
-        <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:9px 12px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
-        <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
-      </div>
+
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-        <button onclick="localStorage.removeItem('ams_gh_token');localStorage.removeItem('ams_gist_id');ghToken=null;gistId=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
+        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
+        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
 
@@ -920,10 +936,12 @@ let micDesc=null,micExt=null;
 // ══════════════════════════════════════
 // GITHUB SYNC
 // ══════════════════════════════════════
-// GitHub Gist — muito mais rápido que repo API
-// O gistId é salvo automaticamente no localStorage após o primeiro sync
-let gistId=localStorage.getItem("ams_gist_id")||null;
+const GH_OWNER="rciannace";
+const GH_REPO="vitrine";
+const GH_FILE="iamusicstudio.json";
+const GH_BRANCH="main";
 let ghToken=null;
+let ghFileSha=null;
 let syncStatus="idle"; // idle | syncing | ok | err
 
 function toggleTheme(){
@@ -936,12 +954,12 @@ function ghSaveToken(token){
   localStorage.setItem("ams_gh_token",ghToken);
   document.getElementById("gh-token-input").value="";
   document.getElementById("gh-token-panel").style.display="none";
-  showToast("✅ Token salvo! Clique em ☁️ para sincronizar com a nuvem.","ok");
+  showToast("✅ Token GitHub salvo! Clique em Sincronizar para carregar sua biblioteca.","ok");
   renderSyncUI();
+  ghLoad();
 }
 function ghLoadToken(){
   ghToken=localStorage.getItem("ams_gh_token")||null;
-  gistId=localStorage.getItem("ams_gist_id")||null;
 }
 function toggleTokenPanel(){
   const p=document.getElementById("gh-token-panel");
@@ -1013,9 +1031,9 @@ async function manualSync(){
   syncStatus="syncing";renderSyncUI();
   const timer=setTimeout(()=>{
     syncStatus="err";renderSyncUI();
-    showToast("❌ Timeout — verifique sua conexão","err");
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
-  },15000);
+    showToast("❌ Timeout — verifique conexão","err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
+  },12000);
   try{
     saveLocal();
     await ghSave();
@@ -1027,53 +1045,60 @@ async function manualSync(){
     clearTimeout(timer);
     syncStatus="err";renderSyncUI();
     showToast("❌ Erro: "+e.message,"err");
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
   }
 }
-async function ghFetch(method,url,body){
+async function ghFetch(method,body){
+  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
   const opts={method,headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
   if(body)opts.body=JSON.stringify(body);
   return fetch(url,opts);
 }
 async function ghLoad(){
-  if(!ghToken||!gistId)return;
+  if(!ghToken)return;
   try{
-    const r=await ghFetch("GET","https://api.github.com/gists/"+gistId);
+    const r=await ghFetch("GET");
+    if(r.status===404){ghFileSha=null;return;}
     if(!r.ok)throw new Error("HTTP "+r.status);
     const d=await r.json();
-    const raw=d.files&&d.files["library.json"]?d.files["library.json"].content:null;
-    if(!raw)return;
-    const decoded=JSON.parse(raw);
-    // merge: cloud wins for same id
+    ghFileSha=d.sha;
+    const raw=atob(d.content.replace(/\n/g,""));
+    let decoded;
+    try{
+      decoded=JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+    }catch{
+      decoded=JSON.parse(raw);
+    }
+    // merge: cloud wins, keep local if same id
     const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
     const merged=Object.values({...localMap,...cloudMap});
     history=merged.sort((a,b)=>b.id-a.id);
-    saveLocal();
+    localStorage.setItem("ams6",JSON.stringify(history));
     updateLibN();
     if(currentPage==="lib")renderLib();
+    showToast("☁️ Biblioteca carregada!","ok");
   }catch(e){console.warn("ghLoad:",e);}
 }
 async function ghSave(){
   if(!ghToken){saveLocal();return;}
+  syncStatus="syncing";renderSyncUI();
   try{
     const json=JSON.stringify(history,null,2);
-    const body={description:"AI Music Studio Library",public:false,files:{"library.json":{content:json}}};
-    let r,d;
-    if(gistId){
-      // update existing gist
-      r=await ghFetch("PATCH","https://api.github.com/gists/"+gistId,body);
-    } else {
-      // create new gist
-      r=await ghFetch("POST","https://api.github.com/gists",body);
-    }
+    const content=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
+    const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
+    if(ghFileSha)body.sha=ghFileSha;
+    const r=await ghFetch("PUT",body);
     if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
-    d=await r.json();
-    gistId=d.id;
-    localStorage.setItem("ams_gist_id",gistId);
+    const d=await r.json();
+    ghFileSha=d.content.sha;
     saveLocal();
+    syncStatus="ok";renderSyncUI();
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
   }catch(e){
-    throw e;
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Sync: "+e.message,"err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
 function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
@@ -1698,12 +1723,13 @@ async function extendSec(sec){
       history[histIdx].sections=currentSong.sections;
       saveLocal();
     }else{
+      // not in library yet — add it
       var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
       history.unshift(entry);
       updateLibN();
       saveLocal();
     }
-    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida! Clique em ☁️ para sincronizar.","ok");
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida e salva!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
@@ -2346,8 +2372,13 @@ function saveSunoEntry(){
   try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
   try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
 
-  // always save locally; user syncs manually
-  showToast("✅ Música adicionada! Clique em ☁️ para sincronizar.","ok");
+  // save to GitHub if token available
+  if(ghToken){
+    saveLocal();
+    showToast("✅ Música adicionada e sincronizada!","ok");
+  } else {
+    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
+  }
 
   updateLibN();
   renderLib();
