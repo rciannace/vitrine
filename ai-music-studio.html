@@ -396,18 +396,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <span class="logo-name">IA Music Studio</span>
   </div>
   <div class="header-actions">
-    <div id="token-badge" onclick="toggleApiPanel()" style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #eee;background:#f8f8f8;color:#aaa;flex-shrink:0;transition:all .2s">
-      <span id="token-badge-icon">🔑</span>
-      <span id="token-badge-text">Sem token</span>
-    </div>
-    <button id="btn-sync" onclick="manualSync()" title="Sincronizar com nuvem" style="display:none;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;flex-shrink:0;transition:all .2s">
-      <span id="sync-icon">☁️</span>
-      <span id="sync-text">Sincronizar</span>
-    </button>
     <button class="btn-lib" onclick="setPage('lib')">
       <span>📚</span>
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
+    </button>
+    <button id="btn-sync" onclick="manualSync()" title="Sincronizar com nuvem" style="display:none;align-items:center;gap:4px;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;flex-shrink:0;transition:all .2s;justify-content:center">
+      <span id="sync-icon">☁️</span>
     </button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
@@ -420,6 +415,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 OPENROUTER API KEY</span>
     <button onclick="toggleApiPanel()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#aaa;line-height:1">×</button>
   </div>
+  <div id="gh-token-status-panel" style="margin-bottom:12px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600"></div>
   <div class="api-row">
     <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
     <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
@@ -972,62 +968,44 @@ function renderSyncUI(){
 }
 
 function renderTokenBadge(){
-  const badge=document.getElementById("token-badge");
-  const icon=document.getElementById("token-badge-icon");
-  const text=document.getElementById("token-badge-text");
+  const apiDot=document.getElementById("api-dot");
   const syncBtn=document.getElementById("btn-sync");
   const syncIcon=document.getElementById("sync-icon");
-  const syncText=document.getElementById("sync-text");
-  if(!badge)return;
+  const btnCfg=document.getElementById("btn-cfg");
+
+  const statusPanel=document.getElementById("gh-token-status-panel");
   if(!ghToken){
-    badge.style.borderColor="#f9731660";
-    badge.style.background="#fff8f5";
-    badge.style.color="#f97316";
-    if(icon)icon.textContent="⚠️";
-    if(text)text.textContent="Sem token";
+    // red dot on gear = no token
+    if(apiDot){apiDot.style.background="#ef4444";apiDot.style.boxShadow="0 0 0 2px #ef444433";}
+    if(btnCfg)btnCfg.title="⚠️ Sem token GitHub — clique para configurar";
     if(syncBtn)syncBtn.style.display="none";
+    if(statusPanel){statusPanel.textContent="⚠️ Token GitHub não configurado";statusPanel.style.background="#fff8f5";statusPanel.style.color="#f97316";statusPanel.style.border="1px solid #f9731630";}
   } else {
-    badge.style.borderColor="#22c55e60";
-    badge.style.background="#f0fdf4";
-    badge.style.color="#16a34a";
-    if(icon)icon.textContent="🔑";
-    if(text)text.textContent="Token salvo ✅";
+    // green dot on gear = token OK
+    if(apiDot){apiDot.style.background="#22c55e";apiDot.style.boxShadow="0 0 0 2px #22c55e33";}
+    if(btnCfg)btnCfg.title="🔑 Token salvo ✅ — clique para gerenciar";
     if(syncBtn)syncBtn.style.display="flex";
-    // update sync button state
+    if(statusPanel){statusPanel.textContent="🔑 Token GitHub salvo ✅";statusPanel.style.background="#f0fdf4";statusPanel.style.color="#16a34a";statusPanel.style.border="1px solid #22c55e30";}
+    // sync button icon state
     if(syncStatus==="syncing"){
       if(syncIcon)syncIcon.textContent="⏳";
-      if(syncText)syncText.textContent="Sincronizando...";
-      syncBtn.style.opacity="0.7";
+      if(syncBtn){syncBtn.style.opacity="0.7";syncBtn.title="Sincronizando...";}
     } else if(syncStatus==="ok"){
       if(syncIcon)syncIcon.textContent="✅";
-      if(syncText)syncText.textContent="Sincronizado!";
-      syncBtn.style.borderColor="#22c55e";
-      syncBtn.style.background="#f0fdf4";
-      syncBtn.style.color="#16a34a";
+      if(syncBtn){syncBtn.style.borderColor="#22c55e";syncBtn.style.background="#f0fdf4";syncBtn.style.color="#16a34a";syncBtn.title="Sincronizado!";}
       setTimeout(()=>{
         if(syncIcon)syncIcon.textContent="☁️";
-        if(syncText)syncText.textContent="Sincronizar";
-        syncBtn.style.borderColor="#3b82f6";
-        syncBtn.style.background="#eff6ff";
-        syncBtn.style.color="#3b82f6";
-        syncBtn.style.opacity="1";
+        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
       },3000);
     } else if(syncStatus==="err"){
       if(syncIcon)syncIcon.textContent="❌";
-      if(syncText)syncText.textContent="Erro!";
-      syncBtn.style.borderColor="#ef4444";
-      syncBtn.style.background="#fef2f2";
-      syncBtn.style.color="#ef4444";
-      syncBtn.style.opacity="1";
+      if(syncBtn){syncBtn.style.borderColor="#ef4444";syncBtn.style.background="#fef2f2";syncBtn.style.color="#ef4444";syncBtn.style.opacity="1";syncBtn.title="Erro ao sincronizar";}
       setTimeout(()=>{
         if(syncIcon)syncIcon.textContent="☁️";
-        if(syncText)syncText.textContent="Sincronizar";
-        syncBtn.style.borderColor="#3b82f6";
-        syncBtn.style.background="#eff6ff";
-        syncBtn.style.color="#3b82f6";
+        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.title="Sincronizar com nuvem";}
       },4000);
     } else {
-      syncBtn.style.opacity="1";
+      if(syncBtn){syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
     }
   }
 }
