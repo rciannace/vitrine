@@ -89,7 +89,26 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .logo-name{font-weight:700;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:1px}
 .header-actions{display:flex;align-items:center;gap:8px}
-.btn-lib{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);font-size:12px;color:var(--text3);cursor:pointer}
+.btn-lib{
+  padding:7px 14px 7px 10px;
+  border-radius:22px;
+  border:1.5px solid #f9731633;
+  background:linear-gradient(135deg,#1a1a1a,#2a1200);
+  font-size:12px;font-weight:600;
+  color:#f97316;
+  cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;
+  box-shadow:0 2px 10px #f9731618;
+}
+.btn-lib:hover{background:linear-gradient(135deg,#2a1200,#3a1800);border-color:#f9731666;box-shadow:0 3px 14px #f9731630;transform:translateY(-1px)}
+.btn-lib:active{transform:translateY(0)}
+.btn-lib .lib-count{
+  background:#f97316;color:#fff;
+  font-size:10px;font-weight:700;
+  padding:1px 7px;border-radius:10px;
+  min-width:18px;text-align:center;
+}
 .api-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;flex-shrink:0}
 .api-dot.ok{background:#22c55e;box-shadow:0 0 0 3px #22c55e22}
 
@@ -222,6 +241,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* STICKY FOOTER BTN */
 .footer-btn{position:fixed;bottom:0;left:0;right:0;padding:12px 16px 20px;background:linear-gradient(to top,var(--bg),color-mix(in srgb,var(--bg) 93%,transparent),transparent);z-index:50}
+.footer-btn.has-player{bottom:90px}
+@media(max-width:700px){.footer-btn.has-player{bottom:80px}}
 .footer-btn .btn-main{max-width:600px;margin:0 auto}
 
 /* REDES RESULTADOS */
@@ -276,48 +297,55 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   padding:0;
   z-index:200;display:none;
   box-shadow:0 -2px 20px #000a;
+  height:90px;
 }
+@media(max-width:700px){.sp-player{height:auto}}
 .sp-player.active{display:block}
 
 /* layout de 3 colunas igual Spotify */
 .sp-player-inner{
   width:100%;
-  max-width:100%;
+  max-width:1400px;
+  margin:0 auto;
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);
+  grid-template-columns:300px 1fr 300px;
   align-items:center;
   padding:10px 24px 8px;
   gap:12px;
   box-sizing:border-box;
 }
+@media(max-width:700px){
+  .sp-player-inner{grid-template-columns:1fr auto 40px;padding:10px 12px 8px;gap:6px}
+  .sp-right{display:none}
+}
 
 /* coluna esq: capa + info */
 .sp-left{display:flex;align-items:center;gap:12px;min-width:0}
 .sp-thumb{
-  width:52px;height:52px;border-radius:6px;
+  width:56px;height:56px;border-radius:6px;
   background:linear-gradient(135deg,#f97316,#ef4444);
   display:flex;align-items:center;justify-content:center;
-  font-size:26px;flex-shrink:0;cursor:pointer;
+  font-size:28px;flex-shrink:0;cursor:pointer;
   transition:transform .15s;box-shadow:0 2px 12px #0006;
 }
 .sp-thumb:hover{transform:scale(1.04)}
 .sp-info{min-width:0}
-.sp-title{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sp-sub{font-size:11px;color:#b3b3b3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.sp-title{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-sub{font-size:12px;color:#b3b3b3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
 
 /* coluna central: controles + barra */
 .sp-center{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;flex:1;width:100%}
 .sp-controls{display:flex;align-items:center;gap:16px}
 .sp-btn{
-  width:32px;height:32px;border-radius:50%;border:none;
-  background:none;color:#b3b3b3;font-size:15px;
+  width:34px;height:34px;border-radius:50%;border:none;
+  background:none;color:#b3b3b3;font-size:17px;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:all .15s;flex-shrink:0;padding:0;
 }
 .sp-btn:hover{color:#fff;transform:scale(1.08)}
 .sp-btn.play{
   background:#fff;color:#000;
-  width:38px;height:38px;font-size:16px;
+  width:42px;height:42px;font-size:18px;
   box-shadow:0 2px 8px #0004;
 }
 .sp-btn.play:hover{background:#f0f0f0;transform:scale(1.06)}
@@ -337,7 +365,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .sp-track{
   position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
   height:4px;background:#4d4d4d;border-radius:2px;pointer-events:none;
-  transition:height .1s;
+  transition:height .15s;
 }
 .sp-progress:hover .sp-track{height:6px}
 .sp-bar{
@@ -347,6 +375,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
   transition:width .5s linear;pointer-events:none;z-index:2;
 }
 .sp-progress:hover .sp-bar{height:6px;background:#f97316}
+.sp-time{font-size:11px;color:#b3b3b3;flex-shrink:0;min-width:32px}
+.sp-time:last-child{text-align:right}
 
 /* coluna dir: vazia por ora, reservada p/ volume futuro */
 .sp-right{display:flex;justify-content:flex-end;align-items:center}
@@ -364,7 +394,11 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <span class="logo-name">IA Music Studio</span>
   </div>
   <div class="header-actions">
-    <button class="btn-lib" onclick="setPage('lib')">📚 Biblioteca (<span id="lib-n">0</span>)</button>
+    <button class="btn-lib" onclick="setPage('lib')">
+      <span>📚</span>
+      <span>Biblioteca</span>
+      <span class="lib-count" id="lib-n">0</span>
+    </button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
@@ -2263,7 +2297,12 @@ function spUpdateUI(){
   const title=document.getElementById("sp-title");
   const sub=document.getElementById("sp-sub");
   const thumb=document.getElementById("sp-thumb");
-  if(spIndex<0||!spQueue[spIndex]){player.classList.remove("active");return;}
+  if(spIndex<0||!spQueue[spIndex]){
+    player.classList.remove("active");
+    document.getElementById("footer-btn").classList.remove("has-player");
+    return;
+  }
+  document.getElementById("footer-btn").classList.add("has-player");
   const e=spQueue[spIndex];
   player.classList.add("active");
   title.textContent=e.title;
