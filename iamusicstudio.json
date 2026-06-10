@@ -250,19 +250,16 @@
       "duration": "normal"
     },
     "sections": {
-      "Pre-Chorus": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.",
-      "Chorus": "A alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!",
-      "Verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.",
-      "Bridge": "ceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n\n[Pre-Chorus]\nPensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n\n[Chorus]\nA alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n\n[Verse 2]\nOs bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.\n\n[Bridge]\nE de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n\n[Chorus]\nA alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!\n\n"
+      "bridge": "E de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.",
+      "pre-chorus": "Pensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.",
+      "chorus": "A alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!",
+      "verse 2": "Os bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia."
     },
     "struct": [
-      "Intro",
-      "Verso 1",
-      "Pré-Refrão",
-      "Refrão",
-      "Verso 2",
-      "Bridge",
-      "Refrão Final"
+      "bridge",
+      "pre-chorus",
+      "chorus",
+      "verse 2"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780969231/viqvmivy7js7piku1x55.mp3"
   },
