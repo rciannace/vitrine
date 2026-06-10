@@ -1011,18 +1011,22 @@ async function manualSync(){
   if(!ghToken){showToast("Configure o token GitHub em ⚙️ primeiro","err");return;}
   if(syncStatus==="syncing")return;
   syncStatus="syncing";renderSyncUI();
-  try{
-    // 1. save local first
-    saveLocal();
-    // 2. push to cloud
-    await ghSave();
-    // 3. pull from cloud (merges any changes from other devices)
-    await ghLoad();
-    syncStatus="ok";renderSyncUI();
-    showToast("✅ Sincronizado! Biblioteca atualizada.","ok");
-  }catch(e){
+  const timer=setTimeout(()=>{
     syncStatus="err";renderSyncUI();
-    showToast("❌ Erro ao sincronizar: "+e.message,"err");
+    showToast("❌ Timeout — verifique sua conexão","err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+  },15000);
+  try{
+    saveLocal();
+    await ghSave();
+    await ghLoad();
+    clearTimeout(timer);
+    syncStatus="ok";renderSyncUI();
+    showToast("✅ Sincronizado!","ok");
+  }catch(e){
+    clearTimeout(timer);
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Erro: "+e.message,"err");
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
@@ -1103,7 +1107,7 @@ function importLib(input){
       const impMap=Object.fromEntries(imported.map(x=>[x.id,x]));
       const merged=Object.values({...existMap,...impMap}).sort((a,b)=>b.id-a.id);
       history=merged;
-      ghSave();
+      saveLocal();
       updateLibN();
       renderLib();
       showToast("📥 "+imported.length+" músicas importadas!","ok");
@@ -2219,7 +2223,7 @@ function editTitle(id){
 }
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  ghSave();
+  saveLocal();
   updateLibN();renderLib();showToast("Removida","ok");
 }
 
@@ -2718,7 +2722,7 @@ function saveLyricsEdit(){
     }
 
     // persiste
-    ghSave();
+    saveLocal();
 
     // atualiza tela de resultado se a música estiver aberta
     if(currentSong&&currentSong.title===entry.title){
