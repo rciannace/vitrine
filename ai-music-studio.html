@@ -84,11 +84,11 @@ textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-app
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* HEADER */
-.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:8px}
 .logo{display:flex;align-items:center;gap:9px}
 .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .logo-name{font-weight:700;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:1px}
-.header-actions{display:flex;align-items:center;gap:8px}
+.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .btn-lib{
   padding:7px 14px 7px 10px;
   border-radius:22px;
@@ -939,9 +939,8 @@ function ghSaveToken(token){
   localStorage.setItem("ams_gh_token",ghToken);
   document.getElementById("gh-token-input").value="";
   document.getElementById("gh-token-panel").style.display="none";
-  showToast("✅ Token GitHub salvo! Clique em Sincronizar para carregar sua biblioteca.","ok");
+  showToast("✅ Token salvo! Clique em ☁️ para sincronizar com a nuvem.","ok");
   renderSyncUI();
-  ghLoad();
 }
 function ghLoadToken(){
   ghToken=localStorage.getItem("ams_gh_token")||null;
@@ -1012,13 +1011,22 @@ function renderTokenBadge(){
 
 async function manualSync(){
   if(!ghToken){showToast("Configure o token GitHub em ⚙️ primeiro","err");return;}
-  const syncBtn=document.getElementById("btn-sync");
-  if(syncBtn)syncBtn.style.opacity="0.6";
-  // first pull from cloud, then push local
-  showToast("⏳ Sincronizando...","ok");
-  await ghLoad();
-  await ghSave();
-  showToast("✅ Sincronizado com sucesso!","ok");
+  if(syncStatus==="syncing")return;
+  syncStatus="syncing";renderSyncUI();
+  try{
+    // 1. save local first
+    saveLocal();
+    // 2. push to cloud
+    await ghSave();
+    // 3. pull from cloud (merges any changes from other devices)
+    await ghLoad();
+    syncStatus="ok";renderSyncUI();
+    showToast("✅ Sincronizado! Biblioteca atualizada.","ok");
+  }catch(e){
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Erro ao sincronizar: "+e.message,"err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+  }
 }
 async function ghFetch(method,body){
   const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
@@ -1054,23 +1062,18 @@ async function ghLoad(){
 }
 async function ghSave(){
   if(!ghToken){saveLocal();return;}
-  syncStatus="syncing";renderSyncUI();
   try{
     const json=JSON.stringify(history,null,2);
-    const content=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
-    const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
+    const encoded=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
+    const body={message:"AI Music Studio update",content:encoded,branch:GH_BRANCH};
     if(ghFileSha)body.sha=ghFileSha;
     const r=await ghFetch("PUT",body);
     if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
     const d=await r.json();
     ghFileSha=d.content.sha;
     saveLocal();
-    syncStatus="ok";renderSyncUI();
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
   }catch(e){
-    syncStatus="err";renderSyncUI();
-    showToast("❌ Sync: "+e.message,"err");
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+    throw e; // let manualSync handle the error
   }
 }
 function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
@@ -1123,7 +1126,6 @@ let waveTimer=null;
 // ══════════════════════════════════════
 window.onload=()=>{
   ghLoadToken();
-  ghLoad();
   renderSyncUI();
   // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
@@ -1694,15 +1696,14 @@ async function extendSec(sec){
     var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
     if(histIdx>=0){
       history[histIdx].sections=currentSong.sections;
-      ghSave();
+      saveLocal();
     }else{
-      // not in library yet — add it
       var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
       history.unshift(entry);
       updateLibN();
-      ghSave();
+      saveLocal();
     }
-    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida e salva!","ok");
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida! Clique em ☁️ para sincronizar.","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
@@ -2141,7 +2142,7 @@ function setPage(p){
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
-  if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
+  if(p==="lib"){renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
@@ -2209,7 +2210,7 @@ function saveEditedEntry(){
   saveHistory();
   showToast("✅ Música salva!","ok");
 }
-function saveHistory(){ghSave();}
+function saveHistory(){saveLocal();}
 function editTitle(id){
   const e=history.find(x=>x.id===id);if(!e)return;
   const novo=prompt("Nome da música:",e.title);
@@ -2345,13 +2346,8 @@ function saveSunoEntry(){
   try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
   try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
 
-  // save to GitHub if token available
-  if(ghToken){
-    ghSave();
-    showToast("✅ Música adicionada e sincronizada!","ok");
-  } else {
-    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
-  }
+  // always save locally; user syncs manually
+  showToast("✅ Música adicionada! Clique em ☁️ para sincronizar.","ok");
 
   updateLibN();
   renderLib();
