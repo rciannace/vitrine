@@ -690,9 +690,13 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #1e1e2e;flex-shrink:0">
         <button onclick="closeLyricsModal()" style="border:none;background:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1">←</button>
         <div id="lyrics-modal-title" style="font-size:14px;font-weight:700;color:#fff;text-align:center;flex:1;padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
-        <div style="width:30px"></div>
+        <div style="display:flex;gap:8px">
+          <button id="btn-edit-lyrics" onclick="toggleLyricsEdit()" title="Editar letra" style="border:none;background:#1e1e2e;color:#f97316;font-size:16px;cursor:pointer;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center">✏️</button>
+          <button id="btn-save-lyrics" onclick="saveLyricsEdit()" title="Salvar edição" style="display:none;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;padding:0 12px;height:34px">💾 Salvar</button>
+        </div>
       </div>
       <div id="lyrics-content" style="overflow-y:auto;padding:20px;flex:1;color:#ccc;font-size:14px;line-height:1.9;white-space:pre-wrap"></div>
+      <textarea id="lyrics-editor" style="display:none;flex:1;padding:20px;background:#0a0a14;color:#ccc;font-size:14px;line-height:1.9;border:none;outline:none;resize:none;font-family:inherit"></textarea>
     </div>
   </div>
 </div><!-- /main -->
@@ -2260,6 +2264,10 @@ function applyPasteLyrics(){
   closePasteLyrics();
   renderResult(newStruct);
 }
+function renderResultSections(){
+  if(currentSections)renderResult(Object.keys(currentSections));
+}
+
 function openLyricsModal(){
   if(spIndex<0||!spQueue[spIndex])return;
   var e=spQueue[spIndex];
@@ -2270,12 +2278,75 @@ function openLyricsModal(){
   struct.forEach(function(s){if(secs[s])text+="[ "+s.toUpperCase()+" ]\n"+secs[s]+"\n\n";});
   if(!text)text="Letra não disponível.";
   document.getElementById("lyrics-content").textContent=text;
+  document.getElementById("lyrics-content").style.display="block";
+  document.getElementById("lyrics-editor").style.display="none";
+  document.getElementById("btn-edit-lyrics").style.background="#1e1e2e";
+  document.getElementById("btn-save-lyrics").style.display="none";
   document.getElementById("lyrics-overlay").style.display="block";
   document.getElementById("lyrics-modal").style.display="flex";
 }
 function closeLyricsModal(){
   document.getElementById("lyrics-overlay").style.display="none";
   document.getElementById("lyrics-modal").style.display="none";
+}
+function toggleLyricsEdit(){
+  var content=document.getElementById("lyrics-content");
+  var editor=document.getElementById("lyrics-editor");
+  var editBtn=document.getElementById("btn-edit-lyrics");
+  var saveBtn=document.getElementById("btn-save-lyrics");
+  var isEditing=editor.style.display!=="none";
+  if(isEditing){
+    // cancel — restore original
+    content.style.display="block";
+    editor.style.display="none";
+    editBtn.style.background="#1e1e2e";
+    saveBtn.style.display="none";
+  }else{
+    // enter edit mode
+    editor.value=content.textContent;
+    content.style.display="none";
+    editor.style.display="block";
+    editBtn.style.background="#f9731630";
+    saveBtn.style.display="flex";
+    editor.focus();
+  }
+}
+function saveLyricsEdit(){
+  var editor=document.getElementById("lyrics-editor");
+  var content=document.getElementById("lyrics-content");
+  var newText=editor.value;
+  // save back to the queue entry
+  if(spIndex>=0&&spQueue[spIndex]){
+    // rebuild sections from edited text
+    var entry=spQueue[spIndex];
+    var lines=newText.split("\n");
+    var sections={};
+    var struct=[];
+    var curKey=null;var curLines=[];
+    lines.forEach(function(l){
+      var m=l.match(/^\[\s*(.+?)\s*\]$/);
+      if(m){
+        if(curKey){sections[curKey]=curLines.join("\n").trim();curLines=[];}
+        curKey=m[1].toLowerCase();
+        struct.push(curKey);
+      }else if(curKey){curLines.push(l);}
+    });
+    if(curKey)sections[curKey]=curLines.join("\n").trim();
+    if(Object.keys(sections).length>0){entry.sections=sections;entry.struct=struct;}
+    // also update currentSong if it's the same
+    if(currentSong&&currentSong.title===entry.title){
+      currentSong.sections=entry.sections;
+      // refresh result view sections
+      renderResultSections();
+    }
+  }
+  // update display
+  content.textContent=newText;
+  content.style.display="block";
+  editor.style.display="none";
+  document.getElementById("btn-edit-lyrics").style.background="#1e1e2e";
+  document.getElementById("btn-save-lyrics").style.display="none";
+  showToast("✅ Letra salva!","ok");
 }
 </script>
 </body>
