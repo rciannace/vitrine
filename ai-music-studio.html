@@ -246,8 +246,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .footer-btn .btn-main{max-width:600px;margin:0 auto}
 
 /* REDES RESULTADOS */
-.result-tabs{display:flex;gap:4px;border-bottom:2px solid #eee;margin-bottom:16px}
-.rtab{padding:10px 14px;font-size:13px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px}
+.rtab{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
@@ -1617,7 +1617,21 @@ async function extendSec(sec){
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     currentSections[sec]=parsed.lyrics;
-    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida!","ok");
+    // update currentSong sections
+    if(currentSong)currentSong.sections=Object.assign({},currentSong.sections||{},currentSections);
+    // save to library
+    var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
+    if(histIdx>=0){
+      history[histIdx].sections=currentSong.sections;
+      ghSave();
+    }else{
+      // not in library yet — add it
+      var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
+      history.unshift(entry);
+      updateLibN();
+      ghSave();
+    }
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida e salva!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
@@ -1679,7 +1693,6 @@ function renderResult(structs){
       <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
       <div class="rtab rtab-refazer" onclick="refazerMusica()">🔄 Refazer</div>
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
-      <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
       <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
 
@@ -1754,17 +1767,6 @@ function renderResult(structs){
           <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
         </div>
         <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
-      </div>
-    </div>
-
-    <div id="rtab-info" style="display:${activeRTab==="info"?"block":"none"}">
-      <div class="info-box">
-        <div class="info-box-title">🎸 Instrumentação</div>
-        <div>${(s.instruments||[]).map(i=>`<span class="inst-pill">🎵 ${esc(i)}</span>`).join("")}</div>
-      </div>
-      <div class="info-box">
-        <div class="info-box-title">🎛 Notas de Produção</div>
-        <div style="font-size:13px;color:#555;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
       </div>
     </div>
 
@@ -1993,7 +1995,7 @@ function refazerMusica(){
 
 function switchRTab(tab){
   activeRTab=tab;
-  ["letra","suno","info"].forEach(t=>{
+  ["letra","suno","estilo"].forEach(t=>{
     const el=document.getElementById("rtab-"+t);
     const btn=document.querySelector(`.rtab[onclick="switchRTab('${t}')"]`);
     if(el)el.style.display=t===tab?"block":"none";
