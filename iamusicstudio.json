@@ -1,5 +1,97 @@
 [
   {
+    "id": 1781049470701,
+    "title": "Coração Não Desiste",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "09/06/2026",
+    "song": {
+      "title": "Coração Não Desiste",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
+    },
+    "struct": [
+      "Verso 1"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781049502/bx4jmubpi96zhkghpmki.mp3"
+  },
+  {
+    "id": 1781049108336,
+    "title": "A Melodia do Retorno",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "09/06/2026",
+    "song": {
+      "title": "A Melodia do Retorno",
+      "subtitle": "A gravidade do meu amor te trouxe de volta pra mim",
+      "key": "Ré maior",
+      "chords": "D - G - Bm - A",
+      "vibe": "Um abraço apertado em forma de música, a alegria palpável de um amor reencontrado que retoma o seu curso natural.",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Clássico",
+        "Ano 2000",
+        "Brasilidade"
+      ],
+      "sections": {
+        "Introdução": "Meu mundo parado, um poço de saudade\nO tempo se arrasta, sem sua claridade\nO eco da sua voz, só lembrança fria\nAté que o destino, rompeu a agonia.\n\n(Solo de violão melódico e choroso, como um lamento que encontra esperança)",
+        "Verso 1": "O silêncio gritava, me roubando o sossego\nCada canto da casa era um triste apego\nUm peso no peito, sem ter mais seu abraço\nMas a fé renasceu, num lindo compasso.\n\nHoje o Sol apareceu, com força sem igual\nSua volta é o motivo, do meu sentimental",
+        "Refrão": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!",
+        "Verso 2": "O sorriso no rosto, que eu já não sentia\nÉ o reflexo de tudo, que você irradia\nCada toque seu, um arrepio me invade\nÉ a prova que a gente, tem pura afinidade.\n\nAs manhãs mais bonitas, o café temperado\nÉ o gosto de ter você, de novo aqui guardado",
+        "Refrão Final": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!\n\n(O refrão volta com mais intensidade, com backing vocals sutis e bateria ainda mais presente e marcada)"
+      },
+      "suno_style": "sertanejo, romantic, emotional, deep male vocals, 90 BPM, fingerpicked acoustic guitar, strong drums, melancholic intro, hopeful chorus",
+      "instruments": [
+        "Violão acústico (base harmônica e solo principal)",
+        "Bateria (marcando forte o tempo, com viradas expressivas)",
+        "Baixo (fundamento rítmico e harmônico)",
+        "Teclado/Piano (textura e cor, pad sutil nos refrões)",
+        "Backing Vocals (em harmonias suaves nos refrões, para dar corpo)"
+      ],
+      "production_notes": "A mixagem deve priorizar a clareza vocal e a saturação quente do violão. O solo de violão na introdução deve ter um timbre limpo, mas com um leve 'chorinho' (vibrato controlado e expressivo), evocando a melancolia que precede a alegria. A bateria deve ter um ataque firme, com ênfase no bumbo e na caixa, criando uma marcação que impulsiona a música. Nos refrões, a bateria pode ganhar um pouco mais de 'peso' com a adição de pratos e um groove mais envolvente. O baixo deve ser presente, mas sem ofuscar a voz ou o violão. O teclado pode adicionar pads sintéticos leves e quentes para dar volume e emoção aos refrões, sem soar artificial. A dinâmica é crucial: a introdução e os versos devem soar mais introspectivos e contidos, enquanto os refrões devem explodir em alegria e sentimento. O espaço estéreo deve ser bem distribuído, com o violão e a voz no centro, e a bateria e outros elementos espalhados para criar profundidade. Efeitos como um leve reverb na voz para dar um toque de 'salão' e um delay sutil nos metais (se houver, em uma versão mais elaborada) podem funcionar. A inspiração Bruno e Marrone sugere uma produção limpa, com foco na emoção crua e na melodia forte.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🎙 Voz Grossa",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "Meu mundo parado, um poço de saudade\nO tempo se arrasta, sem sua claridade\nO eco da sua voz, só lembrança fria\nAté que o destino, rompeu a agonia.\n\n(Solo de violão melódico e choroso, como um lamento que encontra esperança)",
+      "Verso 1": "O silêncio gritava, me roubando o sossego\nCada canto da casa era um triste apego\nUm peso no peito, sem ter mais seu abraço\nMas a fé renasceu, num lindo compasso.\n\nHoje o Sol apareceu, com força sem igual\nSua volta é o motivo, do meu sentimental",
+      "Refrão": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!",
+      "Verso 2": "O sorriso no rosto, que eu já não sentia\nÉ o reflexo de tudo, que você irradia\nCada toque seu, um arrepio me invade\nÉ a prova que a gente, tem pura afinidade.\n\nAs manhãs mais bonitas, o café temperado\nÉ o gosto de ter você, de novo aqui guardado",
+      "Refrão Final": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!\n\n(O refrão volta com mais intensidade, com backing vocals sutis e bateria ainda mais presente e marcada)"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1781042011782,
     "title": "Temporal de Faiscas",
     "genre": "Rock",
