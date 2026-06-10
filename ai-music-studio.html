@@ -948,15 +948,172 @@ let micDesc=null,micExt=null;
 // ══════════════════════════════════════
 // GITHUB SYNC
 // ══════════════════════════════════════
+const GH_OWNER="rciannace";
+const GH_REPO="vitrine";
+const GH_FILE="iamusicstudio.json";
+const GH_BRANCH="main";
+let ghToken=null;
+let ghFileSha=null;
+let syncStatus="idle"; // idle | syncing | ok | err
 
 function toggleTheme(){
   const isDark=document.body.classList.toggle("dark");
   document.getElementById("theme-btn").textContent=isDark?"☀️":"🌙";
   localStorage.setItem("ams_theme",isDark?"dark":"light");
 }
+function ghSaveToken(token){
+  ghToken=token.trim();
+  localStorage.setItem("ams_gh_token",ghToken);
+  document.getElementById("gh-token-input").value="";
+  document.getElementById("gh-token-panel").style.display="none";
+  showToast("✅ Token GitHub salvo! Clique em Sincronizar para carregar sua biblioteca.","ok");
+  renderSyncUI();
+  ghLoad();
+}
+function ghLoadToken(){
+  ghToken=localStorage.getItem("ams_gh_token")||null;
+}
+function toggleTokenPanel(){
+  const p=document.getElementById("gh-token-panel");
+  p.style.display=p.style.display==="none"?"block":"none";
+  if(p.style.display==="block")setTimeout(()=>document.getElementById("gh-token-input").focus(),100);
+}
+function renderSyncUI(){
+  // update old sync-status in library page if exists
+  const el=document.getElementById("sync-status");
+  if(el){
+    if(!ghToken){
+      el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
+    } else {
+      const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
+      const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
+      el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
+    }
+  }
+  // always update header badge
+  renderTokenBadge();
+}
 
+function renderTokenBadge(){
+  const apiDot=document.getElementById("api-dot");
+  const syncBtn=document.getElementById("btn-sync");
+  const syncIcon=document.getElementById("sync-icon");
+  const btnCfg=document.getElementById("btn-cfg");
 
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}if(window._fbReady)fbPersistBg();}
+  const statusPanel=document.getElementById("gh-token-status-panel");
+  if(!ghToken){
+    // red dot on gear = no token
+    if(apiDot){apiDot.style.background="#ef4444";apiDot.style.boxShadow="0 0 0 2px #ef444433";}
+    if(btnCfg)btnCfg.title="⚠️ Sem token GitHub — clique para configurar";
+    if(syncBtn)syncBtn.style.display="none";
+    if(statusPanel){statusPanel.textContent="⚠️ Token GitHub não configurado";statusPanel.style.background="#fff8f5";statusPanel.style.color="#f97316";statusPanel.style.border="1px solid #f9731630";}
+  } else {
+    // green dot on gear = token OK
+    if(apiDot){apiDot.style.background="#22c55e";apiDot.style.boxShadow="0 0 0 2px #22c55e33";}
+    if(btnCfg)btnCfg.title="🔑 Token salvo ✅ — clique para gerenciar";
+    if(syncBtn)syncBtn.style.display="flex";
+    if(statusPanel){statusPanel.textContent="🔑 Token GitHub salvo ✅";statusPanel.style.background="#f0fdf4";statusPanel.style.color="#16a34a";statusPanel.style.border="1px solid #22c55e30";}
+    // sync button icon state
+    if(syncStatus==="syncing"){
+      if(syncIcon)syncIcon.textContent="⏳";
+      if(syncBtn){syncBtn.style.opacity="0.7";syncBtn.title="Sincronizando...";}
+    } else if(syncStatus==="ok"){
+      if(syncIcon)syncIcon.textContent="✅";
+      if(syncBtn){syncBtn.style.borderColor="#22c55e";syncBtn.style.background="#f0fdf4";syncBtn.style.color="#16a34a";syncBtn.title="Sincronizado!";}
+      setTimeout(()=>{
+        if(syncIcon)syncIcon.textContent="☁️";
+        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
+      },3000);
+    } else if(syncStatus==="err"){
+      if(syncIcon)syncIcon.textContent="❌";
+      if(syncBtn){syncBtn.style.borderColor="#ef4444";syncBtn.style.background="#fef2f2";syncBtn.style.color="#ef4444";syncBtn.style.opacity="1";syncBtn.title="Erro ao sincronizar";}
+      setTimeout(()=>{
+        if(syncIcon)syncIcon.textContent="☁️";
+        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.title="Sincronizar com nuvem";}
+      },4000);
+    } else {
+      if(syncBtn){syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
+    }
+  }
+}
+
+async function manualSync(){
+  if(!ghToken){showToast("Configure o token GitHub em ⚙️ primeiro","err");return;}
+  if(syncStatus==="syncing")return;
+  syncStatus="syncing";renderSyncUI();
+  const timer=setTimeout(()=>{
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Timeout — verifique conexão","err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
+  },12000);
+  try{
+    saveLocal();
+    await ghSave();
+    await ghLoad();
+    clearTimeout(timer);
+    syncStatus="ok";renderSyncUI();
+    showToast("✅ Sincronizado!","ok");
+  }catch(e){
+    clearTimeout(timer);
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Erro: "+e.message,"err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
+  }
+}
+async function ghFetch(method,body){
+  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  const opts={method,headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
+  if(body)opts.body=JSON.stringify(body);
+  return fetch(url,opts);
+}
+async function ghLoad(){
+  if(!ghToken)return;
+  try{
+    const r=await ghFetch("GET");
+    if(r.status===404){ghFileSha=null;return;}
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const d=await r.json();
+    ghFileSha=d.sha;
+    const raw=atob(d.content.replace(/\n/g,""));
+    let decoded;
+    try{
+      decoded=JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+    }catch{
+      decoded=JSON.parse(raw);
+    }
+    // merge: cloud wins, keep local if same id
+    const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
+    const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
+    const merged=Object.values({...localMap,...cloudMap});
+    history=merged.sort((a,b)=>b.id-a.id);
+    localStorage.setItem("ams6",JSON.stringify(history));
+    updateLibN();
+    if(currentPage==="lib")renderLib();
+    showToast("☁️ Biblioteca carregada!","ok");
+  }catch(e){console.warn("ghLoad:",e);}
+}
+async function ghSave(){
+  if(!ghToken){saveLocal();return;}
+  syncStatus="syncing";renderSyncUI();
+  try{
+    const json=JSON.stringify(history,null,2);
+    const content=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
+    const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
+    if(ghFileSha)body.sha=ghFileSha;
+    const r=await ghFetch("PUT",body);
+    if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
+    const d=await r.json();
+    ghFileSha=d.content.sha;
+    saveLocal();
+    syncStatus="ok";renderSyncUI();
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
+  }catch(e){
+    syncStatus="err";renderSyncUI();
+    showToast("❌ Sync: "+e.message,"err");
+    setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
+  }
+}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}fbPersistBg();}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1040,6 +1197,8 @@ async function fbLoad(){
 }
 
 window.onload=()=>{
+  ghLoadToken();
+  renderSyncUI();
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
   buildChips("genre-chips",GENRES,"sel",()=>selGenre,v=>selGenre=v);
@@ -1051,6 +1210,7 @@ window.onload=()=>{
   renderFavorites();
   updateSunoPreview();
   updateLibN();
+  renderTokenBadge();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
   // Load from Firebase in background
@@ -2070,7 +2230,7 @@ function setPage(p){
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
-  if(p==="lib"){renderLib();}
+  if(p==="lib"){renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
@@ -2275,9 +2435,11 @@ function saveSunoEntry(){
   try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
 
   // save to GitHub if token available
+  if(ghToken){
     saveLocal();
     showToast("✅ Música adicionada e sincronizada!","ok");
   } else {
+    showToast("✅ Música adicionada!","ok");
   }
 
   updateLibN();
