@@ -247,6 +247,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* REDES RESULTADOS */
 .result-tabs{display:flex;gap:4px;border-bottom:2px solid #eee;margin-bottom:16px}
+.rtab-refazer{color:#22c55e!important;border-color:transparent!important;background:#22c55e12!important}
+.rtab-refazer:hover{background:#22c55e22!important;color:#16a34a!important}
 .rtab{padding:10px 14px;font-size:13px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
 
@@ -1674,6 +1676,7 @@ function renderResult(structs){
 
     <div class="result-tabs">
       <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
+      <div class="rtab rtab-refazer" onclick="refazerMusica()" title="Refazer com as mesmas configurações">🔄 Refazer</div>
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
       <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
     </div>
@@ -1857,6 +1860,15 @@ function toggleSecPanel(sid,mode){
   if(rb)rb.className="sec-btn";if(sb)sb.className="sec-btn";
   if(mode==="refazer"&&!iaOpen){if(ia)ia.style.display="block";if(rb)rb.className="sec-btn ron";}
   if(mode==="estender"&&!extOpen){if(ext)ext.style.display="block";if(sb)sb.className="sec-btn son";}
+}
+
+function refazerMusica(){
+  if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
+  if(!confirm("Refazer a música com as mesmas configurações?
+
+Uma nova letra será gerada — a atual será substituída.")){return;}
+  // simply call generate() again — all selectors are still set from the last generation
+  generate();
 }
 
 function switchRTab(tab){
