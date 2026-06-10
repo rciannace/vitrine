@@ -2274,8 +2274,13 @@ function openLyricsModal(){
   document.getElementById("lyrics-modal-title").textContent=e.title||"—";
   var secs=e.sections||{};
   var struct=e.struct||Object.keys(secs);
+  // if user edited the text, show the edited version directly
   var text="";
-  struct.forEach(function(s){if(secs[s])text+="[ "+s.toUpperCase()+" ]\n"+secs[s]+"\n\n";});
+  if(e._editedText){
+    text=e._editedText;
+  } else {
+    struct.forEach(function(s){if(secs[s])text+="[ "+s.toUpperCase()+" ]\n"+secs[s]+"\n\n";});
+  }
   if(!text)text="Letra não disponível.";
   document.getElementById("lyrics-content").textContent=text;
   document.getElementById("lyrics-content").style.display="block";
@@ -2319,47 +2324,72 @@ function saveLyricsEdit(){
   if(spIndex>=0&&spQueue[spIndex]){
     var entry=spQueue[spIndex];
 
-    // rebuild sections from edited text
-    var lines=newText.split("\n");
+    // Salva o texto editado completo em uma chave especial "_edited"
+    // e mantém as seções originais intactas para não perder nada
+    entry._editedText=newText;
+
+    // Rebuild sections preservando TODO o conteúdo — sem risco de perda
     var sections={};
     var struct=[];
+    var lines=newText.split("\n");
     var curKey=null;
     var curLines=[];
     lines.forEach(function(l){
-      var m=l.match(/^\[\s*(.+?)\s*\]$/);
+      var m=l.match(/^\[\s*(.+?)\s*\]\s*$/);
       if(m){
-        if(curKey){sections[curKey]=curLines.join("\n").trim();curLines=[];}
-        curKey=m[1].toLowerCase();
+        if(curKey!==null){
+          sections[curKey]=curLines.join("\n");
+          // trim apenas as linhas em branco do início e fim, nunca do meio
+          sections[curKey]=sections[curKey].replace(/^\n+/,"").replace(/\n+$/,"");
+        }
+        curKey=m[1].toLowerCase().trim();
         if(!struct.includes(curKey))struct.push(curKey);
-      }else if(curKey){
+        curLines=[];
+      } else {
+        if(curKey===null){
+          // texto antes de qualquer tag — cria seção "intro"
+          curKey="intro";
+          struct.push(curKey);
+        }
         curLines.push(l);
       }
     });
-    if(curKey)sections[curKey]=curLines.join("\n").trim();
+    // flush last section
+    if(curKey!==null){
+      sections[curKey]=curLines.join("\n").replace(/^\n+/,"").replace(/\n+$/,"");
+    }
 
+    // só atualiza se conseguiu parsear pelo menos 1 seção
     if(Object.keys(sections).length>0){
       entry.sections=sections;
       entry.struct=struct;
+    } else {
+      // fallback: salva tudo numa seção "letra" para não perder nada
+      entry.sections={letra:newText};
+      entry.struct=["letra"];
     }
 
-    // update history entry (find by id or title)
-    var idx=history.findIndex(function(h){return h.id===entry.id||(h.title===entry.title);});
+    // atualiza history pela id (mais confiável que título)
+    var idx=history.findIndex(function(h){return h.id===entry.id;});
+    if(idx<0)idx=history.findIndex(function(h){return h.title===entry.title;});
     if(idx>=0){
       history[idx].sections=entry.sections;
       history[idx].struct=entry.struct;
+      history[idx]._editedText=newText;
     }
 
-    // persist to localStorage and cloud
+    // persiste
     ghSave();
 
-    // update currentSong if it matches
-    if(currentSong&&(currentSong.title===entry.title)){
+    // atualiza tela de resultado se a música estiver aberta
+    if(currentSong&&currentSong.title===entry.title){
       currentSong.sections=entry.sections;
+      Object.assign(currentSections, entry.sections);
       renderResultSections();
     }
   }
 
-  // update display
+  // atualiza display
   contentEl.textContent=newText;
   contentEl.style.display="block";
   editor.style.display="none";
