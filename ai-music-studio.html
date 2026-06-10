@@ -1180,22 +1180,21 @@ async function fbLoad(){
   if(!window._fbReady||!window._fbDb)return false;
   try{
     const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
-    if(snap.exists()){
-      const data=snap.data();
-      const cloud=data.history||[];
-      if(cloud.length>0){
-        // merge cloud + local, newer wins
-        const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
-        const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-        history=Object.values({...localMap,...cloudMap}).sort((a,b)=>b.id-a.id);
-        saveLocal();
-        updateLibN();
-        if(currentPage==="lib")renderLib();
-        return true;
-      }
-    }
-  }catch(e){console.warn("fbLoad error:",e);}
-  return false;
+    const cloud=snap.exists()?(snap.data().history||[]):[];
+    // sempre mescla cloud + local
+    const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
+    const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
+    const merged=Object.values({...cloudMap,...localMap}).sort((a,b)=>b.id-a.id);
+    const changed=merged.length!==history.length||merged.some((e,i)=>e.id!==history[i]?.id);
+    history=merged;
+    localStorage.setItem("ams6",JSON.stringify(history));
+    localStorage.setItem("ams6_backup",JSON.stringify(history));
+    updateLibN();
+    if(currentPage==="lib")renderLib();
+    // se local tinha mais dados, manda para nuvem também
+    if(localMap.length>cloud.length||changed)fbPersistBg();
+    return merged.length>0;
+  }catch(e){console.warn("fbLoad error:",e);return false;}
 }
 
 window.onload=()=>{
@@ -1221,9 +1220,16 @@ window.onload=()=>{
     window.addEventListener("firebase-ready",resolve,{once:true});
     setTimeout(resolve,5000);
   });
-  waitFb.then(()=>fbLoad().then(loaded=>{
-    if(loaded)showToast("☁️ Biblioteca sincronizada!","ok");
-  }));
+  waitFb.then(async()=>{
+    const loaded=await fbLoad();
+    if(loaded){
+      showToast("☁️ Biblioteca sincronizada!","ok");
+    } else if(history.length>0){
+      // nuvem vazia mas temos dados locais — envia tudo para o Firebase
+      await fbPersist();
+      showToast("☁️ "+history.length+" músicas enviadas para a nuvem!","ok");
+    }
+  });
 };
 
 function buildChips(cid,items,cls,getter,setter){
