@@ -386,6 +386,28 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
 </style>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
+      authDomain: "ia-foto-studio-346ed.firebaseapp.com",
+      projectId: "ia-foto-studio-346ed",
+      storageBucket: "ia-foto-studio-346ed.firebasestorage.app",
+      messagingSenderId: "16163406496",
+      appId: "1:16163406496:web:ab936afab6f681a007ffc5"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    window._fbDb     = db;
+    window._fbDoc    = doc;
+    window._fbGetDoc = getDoc;
+    window._fbSetDoc = setDoc;
+    window._fbReady  = true;
+    window.dispatchEvent(new Event("firebase-ready"));
+    if (typeof initApp === "function") initApp();
+  </script>
 </head>
 <body>
 
@@ -401,9 +423,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
-    <button id="btn-sync" onclick="manualSync()" title="Sincronizar com nuvem" style="display:none;align-items:center;gap:4px;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;flex-shrink:0;transition:all .2s;justify-content:center">
-      <span id="sync-icon">☁️</span>
-    </button>
+    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" title="Buscar atualizações" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
@@ -428,19 +448,12 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
   <div style="border-top:1px solid #f0f0f0;margin-bottom:14px"></div>
 
-  <!-- GITHUB TOKEN -->
+  <!-- SYNC FIREBASE -->
   <div>
-    <div style="font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:8px">☁️ GITHUB TOKEN (SYNC)</div>
-    <div id="gh-token-status-panel" style="margin-bottom:10px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600"></div>
-    <div style="display:flex;gap:8px;margin-bottom:6px">
-      <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:8px 10px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
-      <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:8px 14px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button onclick="manualSync()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">☁️ Sincronizar agora</button>
-      <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
-    </div>
-    <div style="font-size:10px;color:#bbb;margin-top:6px">Token em <a href="https://github.com/settings/tokens" target="_blank" style="color:#333">github.com/settings/tokens</a></div>
+    <div style="font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:6px">☁️ SINCRONIZAÇÃO AUTOMÁTICA</div>
+    <div id="fb-status" style="padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600;margin-bottom:10px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e30">✅ Firebase ativo — sync automático</div>
+    <div style="font-size:11px;color:#666;margin-bottom:8px;line-height:1.5">Salva automaticamente em todos os dispositivos. Para forçar uma atualização agora:</div>
+    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" style="width:100%;padding:9px;border-radius:10px;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">🔄 Buscar atualizações agora</button>
   </div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
@@ -1101,7 +1114,7 @@ async function ghSave(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}fbPersistBg();}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1149,10 +1162,45 @@ let waveTimer=null;
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
+// ── FIREBASE PERSIST ──
+async function fbPersist(){
+  if(!window._fbReady||!window._fbDb)return;
+  try{
+    await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{
+      history:history,
+      updatedAt:Date.now()
+    });
+  }catch(e){console.warn("fbPersist error:",e);}
+}
+function fbPersistBg(){
+  fbPersist().catch(e=>console.warn("fbPersistBg:",e));
+}
+
+async function fbLoad(){
+  if(!window._fbReady||!window._fbDb)return false;
+  try{
+    const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
+    if(snap.exists()){
+      const data=snap.data();
+      const cloud=data.history||[];
+      if(cloud.length>0){
+        // merge cloud + local, newer wins
+        const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
+        const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
+        history=Object.values({...localMap,...cloudMap}).sort((a,b)=>b.id-a.id);
+        saveLocal();
+        updateLibN();
+        if(currentPage==="lib")renderLib();
+        return true;
+      }
+    }
+  }catch(e){console.warn("fbLoad error:",e);}
+  return false;
+}
+
 window.onload=()=>{
   ghLoadToken();
   renderSyncUI();
-  // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
   buildChips("genre-chips",GENRES,"sel",()=>selGenre,v=>selGenre=v);
@@ -1167,6 +1215,15 @@ window.onload=()=>{
   renderTokenBadge();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
+  // Load from Firebase in background
+  const waitFb=new Promise(resolve=>{
+    if(window._fbReady){resolve();return;}
+    window.addEventListener("firebase-ready",resolve,{once:true});
+    setTimeout(resolve,5000);
+  });
+  waitFb.then(()=>fbLoad().then(loaded=>{
+    if(loaded)showToast("☁️ Biblioteca sincronizada!","ok");
+  }));
 };
 
 function buildChips(cid,items,cls,getter,setter){
