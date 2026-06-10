@@ -661,8 +661,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
       </div>
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
-        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
+        <button onclick="localStorage.removeItem('ams_gh_token');localStorage.removeItem('ams_gist_id');ghToken=null;gistId=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
 
@@ -921,12 +920,10 @@ let micDesc=null,micExt=null;
 // ══════════════════════════════════════
 // GITHUB SYNC
 // ══════════════════════════════════════
-const GH_OWNER="rciannace";
-const GH_REPO="vitrine";
-const GH_FILE="iamusicstudio.json";
-const GH_BRANCH="main";
+// GitHub Gist — muito mais rápido que repo API
+// O gistId é salvo automaticamente no localStorage após o primeiro sync
+let gistId=localStorage.getItem("ams_gist_id")||null;
 let ghToken=null;
-let ghFileSha=null;
 let syncStatus="idle"; // idle | syncing | ok | err
 
 function toggleTheme(){
@@ -944,6 +941,7 @@ function ghSaveToken(token){
 }
 function ghLoadToken(){
   ghToken=localStorage.getItem("ams_gh_token")||null;
+  gistId=localStorage.getItem("ams_gist_id")||null;
 }
 function toggleTokenPanel(){
   const p=document.getElementById("gh-token-panel");
@@ -1028,52 +1026,50 @@ async function manualSync(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-async function ghFetch(method,body){
-  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+async function ghFetch(method,url,body){
   const opts={method,headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
   if(body)opts.body=JSON.stringify(body);
   return fetch(url,opts);
 }
 async function ghLoad(){
-  if(!ghToken)return;
+  if(!ghToken||!gistId)return;
   try{
-    const r=await ghFetch("GET");
-    if(r.status===404){ghFileSha=null;return;}
+    const r=await ghFetch("GET","https://api.github.com/gists/"+gistId);
     if(!r.ok)throw new Error("HTTP "+r.status);
     const d=await r.json();
-    ghFileSha=d.sha;
-    const raw=atob(d.content.replace(/\n/g,""));
-    let decoded;
-    try{
-      decoded=JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
-    }catch{
-      decoded=JSON.parse(raw);
-    }
-    // merge: cloud wins, keep local if same id
+    const raw=d.files&&d.files["library.json"]?d.files["library.json"].content:null;
+    if(!raw)return;
+    const decoded=JSON.parse(raw);
+    // merge: cloud wins for same id
     const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
     const merged=Object.values({...localMap,...cloudMap});
     history=merged.sort((a,b)=>b.id-a.id);
-    localStorage.setItem("ams6",JSON.stringify(history));
+    saveLocal();
     updateLibN();
     if(currentPage==="lib")renderLib();
-    showToast("☁️ Biblioteca carregada!","ok");
   }catch(e){console.warn("ghLoad:",e);}
 }
 async function ghSave(){
   if(!ghToken){saveLocal();return;}
   try{
     const json=JSON.stringify(history,null,2);
-    const encoded=btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,(_,p1)=>String.fromCharCode(parseInt(p1,16))));
-    const body={message:"AI Music Studio update",content:encoded,branch:GH_BRANCH};
-    if(ghFileSha)body.sha=ghFileSha;
-    const r=await ghFetch("PUT",body);
+    const body={description:"AI Music Studio Library",public:false,files:{"library.json":{content:json}}};
+    let r,d;
+    if(gistId){
+      // update existing gist
+      r=await ghFetch("PATCH","https://api.github.com/gists/"+gistId,body);
+    } else {
+      // create new gist
+      r=await ghFetch("POST","https://api.github.com/gists",body);
+    }
     if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
-    const d=await r.json();
-    ghFileSha=d.content.sha;
+    d=await r.json();
+    gistId=d.id;
+    localStorage.setItem("ams_gist_id",gistId);
     saveLocal();
   }catch(e){
-    throw e; // let manualSync handle the error
+    throw e;
   }
 }
 function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
