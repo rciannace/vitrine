@@ -2264,7 +2264,12 @@ function spNext(){
   if(spShuffle){
     do{i=Math.floor(Math.random()*spQueue.length);}while(spQueue.length>1&&i===spIndex);
   }else{
-    i=(spIndex+1)%spQueue.length;
+    i=spIndex+1;
+    // se chegou no fim
+    if(i>=spQueue.length){
+      if(spRepeat==="all"){i=0;} // volta pro início
+      else{return;} // para
+    }
   }
   spPlay(i);
 }
@@ -2334,7 +2339,18 @@ function spUpdateUI(){
     document.getElementById("sp-cur").textContent=spFmt(audio.currentTime);
     document.getElementById("sp-dur").textContent=spFmt(audio.duration);
   });
-  audio.addEventListener("ended",()=>{if(spRepeat==="one"){const a=document.getElementById("sp-audio");a.currentTime=0;a.play();}else{spNext();}});
+  audio.addEventListener("ended",()=>{
+    if(spRepeat==="one"){
+      const a=document.getElementById("sp-audio");a.currentTime=0;a.play();
+    }else if(spRepeat==="all"){
+      // always advance, wrapping around
+      const i=(spIndex+1)%spQueue.length;
+      spPlay(i);
+    }else{
+      // no repeat — only advance if not last track
+      if(spIndex<spQueue.length-1){spNext();}
+    }
+  });
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
   audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
 })();
