@@ -1571,6 +1571,7 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     history=[entry,...history].slice(0,30);
     saveHistory();
     updateLibN();activeRTab="letra";
+  ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
     renderResult(secsToUse);
     showToast("🎵 Música criada!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");}
@@ -1679,6 +1680,7 @@ function renderResult(structs){
       <div class="rtab rtab-refazer" onclick="refazerMusica()">🔄 Refazer</div>
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
       <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
+      <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
@@ -1766,7 +1768,128 @@ function renderResult(structs){
       </div>
     </div>
 
+    <div id="rtab-estilo" style="display:${activeRTab==="estilo"?"block":"none"}">
+      <div style="background:#f0f4ff;border:1px solid #6366f130;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#555;line-height:1.6">
+        <strong style="color:#6366f1">🎨 Ajuste o estilo</strong> sem mudar a letra — copie o novo Style e cole no Suno para refazer só a música.
+      </div>
+      <div id="ajuste-estilo-content"></div>
+    </div>
+
   </div>`;
+  setTimeout(function(){renderAjusteEstilo();},50);
+}
+
+// ══════════════════════════════════════
+// AJUSTAR ESTILO
+// ══════════════════════════════════════
+let ajGenre=null,ajMood=null,ajTempo=null,ajVoz=null,ajTimbre=null,ajExtras=[];
+
+function renderAjusteEstilo(){
+  const el=document.getElementById("ajuste-estilo-content");
+  if(!el)return;
+
+  // init from current selections
+  if(ajGenre===null)ajGenre=selGenre;
+  if(ajMood===null)ajMood=selMood;
+  if(ajTempo===null)ajTempo=selTempo;
+  if(ajVoz===null)ajVoz=selVoz;
+  if(ajTimbre===null)ajTimbre=selTimbre;
+  if(!ajExtras.length)ajExtras=[...selExtras];
+
+  let html="";
+
+  // GÊNERO
+  html+=`<div style="margin-bottom:14px">
+    <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Gênero</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${GENRES.map(g=>`<button onclick="ajGenre='${g.id}';renderAjusteEstilo()" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${ajGenre===g.id?'#6366f1':'var(--border)'};background:${ajGenre===g.id?'#6366f115':'none'};color:${ajGenre===g.id?'#6366f1':'var(--text3)'};font-size:12px;cursor:pointer;font-weight:${ajGenre===g.id?'700':'400'}">${g.l}</button>`).join("")}
+    </div></div>`;
+
+  // MOOD
+  html+=`<div style="margin-bottom:14px">
+    <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Mood / Clima</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${MOODS.map(m=>`<button onclick="ajMood='${m.id}';renderAjusteEstilo()" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${ajMood===m.id?'#6366f1':'var(--border)'};background:${ajMood===m.id?'#6366f115':'none'};color:${ajMood===m.id?'#6366f1':'var(--text3)'};font-size:12px;cursor:pointer;font-weight:${ajMood===m.id?'700':'400'}">${m.l}</button>`).join("")}
+    </div></div>`;
+
+  // VOZ
+  html+=`<div style="margin-bottom:14px">
+    <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Tipo de Voz</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <button onclick="ajVoz='mg';renderAjusteEstilo()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid ${ajVoz==='mg'?'#6366f1':'var(--border)'};background:${ajVoz==='mg'?'#6366f115':'none'};color:${ajVoz==='mg'?'#6366f1':'var(--text3)'};cursor:pointer;font-weight:${ajVoz==='mg'?'700':'400'}">Masculina</button>
+      <button onclick="ajVoz='fp';renderAjusteEstilo()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid ${ajVoz==='fp'?'#6366f1':'var(--border)'};background:${ajVoz==='fp'?'#6366f115':'none'};color:${ajVoz==='fp'?'#6366f1':'var(--text3)'};cursor:pointer;font-weight:${ajVoz==='fp'?'700':'400'}">Feminina</button>
+    </div>
+    <div style="font-size:11px;color:var(--text4);margin-bottom:6px;font-weight:600">Timbre</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${TIMBRES.map(t=>`<button onclick="ajTimbre=ajTimbre==='${t.id}'?'':'${t.id}';renderAjusteEstilo()" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${ajTimbre===t.id?'#6366f1':'var(--border)'};background:${ajTimbre===t.id?'#6366f115':'none'};color:${ajTimbre===t.id?'#6366f1':'var(--text3)'};font-size:12px;cursor:pointer;font-weight:${ajTimbre===t.id?'700':'400'}">${t.l}</button>`).join("")}
+    </div></div>`;
+
+  // BPM
+  html+=`<div style="margin-bottom:14px">
+    <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Andamento / BPM</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${TEMPOS.map(t=>`<button onclick="ajTempo='${t.id}';renderAjusteEstilo()" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${ajTempo===t.id?'#6366f1':'var(--border)'};background:${ajTempo===t.id?'#6366f115':'none'};color:${ajTempo===t.id?'#6366f1':'var(--text3)'};font-size:12px;cursor:pointer;font-weight:${ajTempo===t.id?'700':'400'}">${t.l}</button>`).join("")}
+    </div></div>`;
+
+  // EXTRAS
+  html+=`<div style="margin-bottom:16px">
+    <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Extras</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${EXTRAS.map(e=>`<button onclick="ajExtras.includes('${e}')?ajExtras=ajExtras.filter(x=>x!=='${e}'):ajExtras.push('${e}');renderAjusteEstilo()" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${ajExtras.includes(e)?'#6366f1':'var(--border)'};background:${ajExtras.includes(e)?'#6366f115':'none'};color:${ajExtras.includes(e)?'#6366f1':'var(--text3)'};font-size:12px;cursor:pointer;font-weight:${ajExtras.includes(e)?'700':'400'}">${e}</button>`).join("")}
+    </div></div>`;
+
+  // RESULTADO
+  const style=buildAjusteStyle();
+  html+=`<div style="border-top:1px solid var(--border);padding-top:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-size:11px;color:#6366f1;font-weight:700;letter-spacing:1px;text-transform:uppercase">Novo Style para o Suno</div>
+      <div style="display:flex;gap:6px">
+        <span style="font-size:10px;color:${style.length>1000?'#ef4444':style.length>900?'#f59e0b':'#22c55e'};font-weight:700">${style.length}/1000</span>
+        <button onclick="copyAjusteStyle()" style="font-size:11px;padding:4px 12px;border-radius:6px;border:none;background:#6366f1;color:#fff;cursor:pointer;font-weight:600">📋 Copiar</button>
+      </div>
+    </div>
+    <div id="ajuste-style-preview" style="font-size:11px;color:var(--text2);background:var(--input-bg);border:1.5px solid #6366f130;border-radius:10px;padding:10px 12px;line-height:1.8;white-space:pre-wrap;font-family:monospace">${esc(style)}</div>
+  </div>`;
+
+  el.innerHTML=html;
+}
+
+function buildAjusteStyle(){
+  const gd=SUNO_GENRE_DATA[ajGenre]||SUNO_GENRE_DATA.personalizado;
+  const md=SUNO_MOOD_DATA[ajMood]||SUNO_MOOD_DATA.romantico;
+  const td=ajTimbre?SUNO_TIMBRE_DATA[ajTimbre]:null;
+  const t=TEMPOS.find(x=>x.id===ajTempo)||TEMPOS[1];
+  const vozBase=ajVoz&&ajVoz.startsWith("f")?"female vocals":"male vocals";
+  const vozFull=td?td.en:vozBase;
+  const vozDetail=td?", "+td.detail:"";
+  const bpm=t?t.bpm:90;
+  const tempoLabel=bpm<80?"slow ballad":bpm<100?"moderate groove":bpm<120?"mid-tempo":bpm<140?"uptempo":"fast dance";
+  const extrasEn=ajExtras.map(e=>{
+    const map={"Autotune":"autotune","Piano":"grand piano","Guitarra":"electric guitar","808":"808 bass","Grave Pesado":"heavy bass, sub bass","Orquestra":"orchestral strings","Coral":"choir, harmonies","Sanfona":"accordion","Reverb":"heavy reverb","Violão":"acoustic guitar","Bateria forte":"powerful drums","Synth":"analog synth","Rápido":"fast tempo","Lento":"slow tempo","Emotivo":"deeply emotional","Relaxante":"relaxing","Agressivo":"aggressive","Vinheta":"jingle","Narrado":"spoken word","Saxofone":"saxophone","Solo de Guitarra":"guitar solo","2 Vozes (Dupla)":"dual vocals, duet"};
+    return map[e]||e.toLowerCase();
+  });
+  const lines=[];
+  lines.push("Genre: "+gd.en+(gd.sub?", "+gd.sub:""));
+  lines.push("Style: "+gd.era+", "+gd.production);
+  lines.push("Mood: "+md.en);
+  lines.push("Vibe: "+md.vibe);
+  lines.push("Vocals: "+vozFull+vozDetail);
+  lines.push("Instruments: "+gd.instruments);
+  lines.push("BPM: "+bpm+", Tempo: "+tempoLabel);
+  if(extrasEn.length)lines.push("Extra: "+extrasEn.join(", "));
+  lines.push("Production: "+gd.production+", professional studio quality, radio-ready");
+  let result=lines.join("\n");
+  while(result.length>1000&&lines.length>1){lines.pop();result=lines.join("\n");}
+  if(result.length>1000)result=result.slice(0,997)+"...";
+  return result;
+}
+
+function copyAjusteStyle(){
+  const el=document.getElementById("ajuste-style-preview");
+  if(!el)return;
+  navigator.clipboard.writeText(el.textContent||"").then(()=>showToast("✓ Novo Style copiado!","ok")).catch(()=>{
+    const ta=document.createElement("textarea");ta.value=el.textContent;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);showToast("✓ Novo Style copiado!","ok");
+  });
 }
 
 function buildSecBlock(sec){
