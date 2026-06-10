@@ -1180,19 +1180,18 @@ async function fbLoad(){
   try{
     const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
     const cloud=snap.exists()?(snap.data().history||[]):[];
-    // sempre mescla cloud + local
+    if(cloud.length===0)return false;
+    // cloud vence — traz tudo da nuvem e mescla com local
     const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-    const merged=Object.values({...cloudMap,...localMap}).sort((a,b)=>b.id-a.id);
-    const changed=merged.length!==history.length||merged.some((e,i)=>e.id!==history[i]?.id);
+    // local+cloud mas cloud sobrescreve local para mesmo id
+    const merged=Object.values({...localMap,...cloudMap}).sort((a,b)=>b.id-a.id);
     history=merged;
     localStorage.setItem("ams6",JSON.stringify(history));
     localStorage.setItem("ams6_backup",JSON.stringify(history));
     updateLibN();
     if(currentPage==="lib")renderLib();
-    // se local tinha mais dados, manda para nuvem também
-    if(localMap.length>cloud.length||changed)fbPersistBg();
-    return merged.length>0;
+    return true;
   }catch(e){console.warn("fbLoad error:",e);return false;}
 }
 
