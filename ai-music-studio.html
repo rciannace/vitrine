@@ -1415,12 +1415,19 @@ function selVoice(v){
   const isFem=v==="fp"||v==="fs";
   const masc=document.getElementById("voz-masc");
   const fem=document.getElementById("voz-fem");
+  const isDark=document.body.classList.contains("dark");
+  const selBg=isDark?"#00c2d1":"#f97316";
+  const selColor=isDark?"#0b132b":"#fff";
+  const selBorder=isDark?"#00c2d1":"transparent";
+  const unselBg=isDark?"#162040":"#f8f8f8";
+  const unselColor=isDark?"#7aaac8":"#555";
+  const unselBorder=isDark?"#1b3a5c":"#eee";
   if(isFem){
-    fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";
-    masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";
+    fem.style.background=selBg;fem.style.color=selColor;fem.style.borderColor=selBorder;fem.style.fontWeight="700";
+    masc.style.background=unselBg;masc.style.color=unselColor;masc.style.borderColor=unselBorder;masc.style.fontWeight="400";
   }else{
-    masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";
-    fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";
+    masc.style.background=selBg;masc.style.color=selColor;masc.style.borderColor=selBorder;masc.style.fontWeight="700";
+    fem.style.background=unselBg;fem.style.color=unselColor;fem.style.borderColor=unselBorder;fem.style.fontWeight="400";
   }
   updateSunoPreview();
 }
