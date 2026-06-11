@@ -246,8 +246,9 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .footer-btn .btn-main{max-width:600px;margin:0 auto}
 
 /* REDES RESULTADOS */
-.result-tabs{display:flex;gap:4px;border-bottom:2px solid #eee;margin-bottom:16px}
-.rtab{padding:10px 14px;font-size:13px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.result-tabs::-webkit-scrollbar{display:none}
+.rtab{padding:10px 10px;font-size:12px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
@@ -386,14 +387,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
 </style>
-  <script type="module">
-    import{initializeApp}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-    import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
-    const app=initializeApp({apiKey:"AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",authDomain:"ia-foto-studio-346ed.firebaseapp.com",projectId:"ia-foto-studio-346ed",storageBucket:"ia-foto-studio-346ed.firebasestorage.app",messagingSenderId:"16163406496",appId:"1:16163406496:web:ab936afab6f681a007ffc5"});
-    const db=getFirestore(app);
-    window._fbDb=db;window._fbDoc=doc;window._fbGetDoc=getDoc;window._fbSetDoc=setDoc;window._fbReady=true;
-    window.dispatchEvent(new Event("firebase-ready"));
-  </script>
 </head>
 <body>
 
@@ -409,7 +402,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
-    <button onclick="fbLoad().then(ok=>{updateLibN();if(currentPage==='lib')renderLib();showToast(ok?'☁️ Atualizado!':'☁️ Já atualizado','ok');})" title="Sincronizar" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
@@ -666,7 +658,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
         <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
       </div>
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-
+        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
+        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
 
@@ -1011,7 +1004,7 @@ async function ghSave(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}if(window._fbReady)fbPersistBg();}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1059,29 +1052,6 @@ let waveTimer=null;
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
-async function fbPersist(){
-  if(!window._fbReady||!window._fbDb)return;
-  try{await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{history:history,updatedAt:Date.now()});}
-  catch(e){console.warn("fbPersist:",e);}
-}
-function fbPersistBg(){fbPersist().catch(e=>console.warn(e));}
-
-async function fbLoad(){
-  if(!window._fbReady||!window._fbDb)return false;
-  try{
-    const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
-    const cloud=snap.exists()?(snap.data().history||[]):[];
-    if(!cloud.length)return false;
-    const cm=Object.fromEntries(cloud.map(e=>[e.id,e]));
-    const lm=Object.fromEntries(history.map(e=>[e.id,e]));
-    history=Object.values({...lm,...cm}).sort((a,b)=>b.id-a.id);
-    try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
-    updateLibN();
-    if(currentPage==="lib")renderLib();
-    return true;
-  }catch(e){console.warn("fbLoad:",e);return false;}
-}
-
 window.onload=()=>{
   ghLoadToken();
   ghLoad();
@@ -1100,11 +1070,6 @@ window.onload=()=>{
   updateLibN();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
-  const _fw=new Promise(r=>{if(window._fbReady){r();}else{window.addEventListener("firebase-ready",r,{once:true});setTimeout(r,5000);}});
-  _fw.then(()=>fbLoad().then(ok=>{
-    if(ok){updateLibN();if(currentPage==="lib")renderLib();}
-    else if(history.length>0){fbPersistBg();}
-  }));
 };
 
 function buildChips(cid,items,cls,getter,setter){
@@ -1653,7 +1618,21 @@ async function extendSec(sec){
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     currentSections[sec]=parsed.lyrics;
-    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida!","ok");
+    // update currentSong sections
+    if(currentSong)currentSong.sections=Object.assign({},currentSong.sections||{},currentSections);
+    // save to library
+    var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
+    if(histIdx>=0){
+      history[histIdx].sections=currentSong.sections;
+      ghSave();
+    }else{
+      // not in library yet — add it
+      var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
+      history.unshift(entry);
+      updateLibN();
+      ghSave();
+    }
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida e salva!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
