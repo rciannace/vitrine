@@ -1,5 +1,233 @@
 [
   {
+    "id": 1781215475790,
+    "title": "Aurora de Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Aurora de Saudade",
+      "subtitle": "O amor que mora no amanhã e no ontem",
+      "key": "Sol Maior (G Major)",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço musical carregado de nostalgia e a certeza inabalável do amor verdadeiro, tingido pela melodia envolvente e a voz rouca de um sertanejo autêntico.",
+      "style_tags": [
+        "sertanejo romântico",
+        "amor verdadeiro",
+        "saudade",
+        "violão e voz"
+      ],
+      "sections": {
+        "Introdução": "O violão dedilhado, como a brisa\nQue acaricia a alma em despedida.\nA voz rouca chega, num sopro de brasa,\nAnunciando a chama que ainda está acesa.\n\nE o peito bate em compasso lento,\nSaudade é veneno, mas só tem um alento.\nÉ saber que em você, meu amor é eterno.",
+        "Verso 1": "A lua de ontem, no céu ainda brilha,\nLembrando o teu riso, a nossa partilha.\nCada estrela é um beijo que guardei aqui,\nNa memória que pulsa, nunca te perdi.\n\nAs estradas que trilhamos, o cheiro da terra,\nÉ um nó na garganta, que o tempo encerra.\nMas o feitiço do teu corpo, que me desenterra,\nMe faz ver a aurora, em cada nova era.",
+        "Refrão": "E eu te quero real, como o sol que eu sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.",
+        "Verso 2": "A voz embargada, num verso sincero,\nNa casa vazia, meu peito te quero.\nO eco dos teus passos, meu eterno fevereiro,\nSinto teu perfume, em qualquer nevoeiro.\n\nOs dias sem teu abraço, são longos demais,\nA gente se perde em noites a sós, banais.\nMas a força que me move, vem dos teus sinais,\nO amor é um rio, que me leva aos teus cais.",
+        "Refrão Final": "E eu te quero real, como o sol que eu tanto sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.\n\nEu te trago pra perto, meu eterno afago!"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, steel guitar, strong drums, intimate production",
+      "instruments": [
+        "Violão de aço (dedilhado e base harmônica) – Nuances do sertanejo clássico, com levadas que sustentam a melodia e a emoção.",
+        "Guitarra 7 cordas (contra-melodia) – Trazendo requintes melódicos e a sonoridade característica, tecendo frases que dialogam com a voz.",
+        "Steel Guitar (textura e solos) – Adiciona uma doçura melancólica, pontuando emoções e entregando um solo expressivo.",
+        "Bateria (marco rítmico forte) – Pulso firme e marcante, com ênfase no bumbo e caixa para dar peso ao refrão, mas com sutilezas nos versos.",
+        "Baixo acústico (fundamento) – Linhas melódicas e sólidas que ancoram a harmonia e dão profundidade à música."
+      ],
+      "production_notes": "A produção deve ser calorosa e envolvente, com a voz rouca do cantor em primeiro plano, transmitindo a vulnerabilidade e a força do amor. O violão de aço deve ter um timbre natural e expressivo, com clareza nas notas. A steel guitar entra sutilmente nos versos, ganhando mais destaque em momentos de clímax emocional e no solo. A bateria deve ter um impacto forte, mas não excessivo, com bom controle dinâmico para não ofuscar a voz. O uso de 'space' (reverb pequeno e controlado) na voz para dar profundidade, e um leve delay em alguns elementos melódicos para criar um ambiente etéreo. A mixagem deve priorizar a voz e o violão, com os outros instrumentos servindo como texturas de apoio. A guitarra 7 cordas deve ter um timbre limpo e presente, com o posicionamento no pão estéreo bem definido para criar um diálogo com a voz principal. O master deve ter um 'punch' que faça a música brilhar no rádio, mas sem compressão excessiva que oxide a sonoridade natural dos instrumentos.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O violão dedilhado, como a brisa\nQue acaricia a alma em despedida.\nA voz rouca chega, num sopro de brasa,\nAnunciando a chama que ainda está acesa.\n\nE o peito bate em compasso lento,\nSaudade é veneno, mas só tem um alento.\nÉ saber que em você, meu amor é eterno.",
+      "Verso 1": "A lua de ontem, no céu ainda brilha,\nLembrando o teu riso, a nossa partilha.\nCada estrela é um beijo que guardei aqui,\nNa memória que pulsa, nunca te perdi.\n\nAs estradas que trilhamos, o cheiro da terra,\nÉ um nó na garganta, que o tempo encerra.\nMas o feitiço do teu corpo, que me desenterra,\nMe faz ver a aurora, em cada nova era.",
+      "Refrão": "E eu te quero real, como o sol que eu sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.",
+      "Verso 2": "A voz embargada, num verso sincero,\nNa casa vazia, meu peito te quero.\nO eco dos teus passos, meu eterno fevereiro,\nSinto teu perfume, em qualquer nevoeiro.\n\nOs dias sem teu abraço, são longos demais,\nA gente se perde em noites a sós, banais.\nMas a força que me move, vem dos teus sinais,\nO amor é um rio, que me leva aos teus cais.",
+      "Refrão Final": "E eu te quero real, como o sol que eu tanto sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.\n\nEu te trago pra perto, meu eterno afago!"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
+    "id": 1781215438416,
+    "title": "Elo de Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Elo de Saudade",
+      "subtitle": "Onde tua voz atravessa o tempo e a distância",
+      "key": "Sol Maior",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço sonoro, onde a paixão se encontra com a melancolia agridoce da espera.",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Amor Verdadeiro",
+        "Saudade",
+        "Brasilidades"
+      ],
+      "sections": {
+        "Introdução": "O eco distante de um violão, qual lembrança primeira,\nUm sopro rouco no ar, chamando tua bandeira.\nO coração dispara, ante a pura realidade,\nQue viver sem teu abraço, traz tanta saudade.\n\n(Violão dedilhado introduz a melodia base, levemente desafinado para um toque mais 'real')",
+        "Verso 1": "A poeira da estrada levanta em tom de saudade,\nCada curva que eu faço, me traz tua claridade.\nO sol no poente pinta, um quadro que eu conheço,\nO teu sorriso que guardo, me dando o recomeço.\nLembro do teu olhar, que afoga qualquer temor,\nÉ chama que não apaga, nas brasa desse amor.\n",
+        "Refrão": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.",
+        "Verso 2": "Os dias passam lentos, como a água que escorre,\nE a tua voz ressoa, em cada som que ocorre.\nO vento traz um cheiro, que evoca teu perfume,\nNum palco de estrelas, meu palco, meu costume.\nEu que já vi de tudo, nas andanças da vida,\nJamais senti essa sede, nenhuma outra ferida.\n",
+        "Refrão Final": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.\n(Repete a última frase com mais intensidade e em uníssono vocal)"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, lead electric guitar solo, strong drums, layered harmonies",
+      "instruments": [
+        "Violão aço (base e dedilhados expressivos)",
+        "Voz principal (masculina, rouca, com emoção)",
+        "Segunda voz (masculina, harmonizando em uníssono e terças/quintass)",
+        "Guitarra elétrica (solo melódico e marcante, base com drive suave)",
+        "Bateria (marcante, com ênfase nos graves, suingue sertanejo)"
+      ],
+      "production_notes": "O violão aço inicia com um dedilhado que soa levemente desafinado (intencionalmente para criar um ar de intimidade e crueza), estabelecendo a melodia principal com um timbre quente e presente. A voz masculina rouca entra com sutileza, como se fosse um pensamento compartilhado. A bateria entra no primeiro refrão com uma marcação firme, mas não opressora, utilizando o bumbo e caixa com peso, mas sem excessos. A segunda voz entra nos refrões, em uníssono inicialmente, para dar peso à mensagem, e depois em harmonias que realçam a doçura e melancolia da canção. O solo de guitarra deve ser emulando a expressividade de um violino ou sanfona, com melodia clara e sentimento, bem colocado no espaço estéreo. A guitarra base deve ter um timbre limpo com um leve overdrive sutil nas partes mais intensas. Usar um leve reverb de plate nas vozes para dar profundidade e um delay suave na guitarra solo para criar um rastro sonoro. A mixagem deve ter um bom espaço entre os elementos, com a voz principal sempre em evidência, mas sem perder a dinâmica das outras partes. Controlar os picos de volume para manter a intensidade emocional do refrão sem distorção. O final deve decrescer gradualmente, com o violão retornando ao dedilhado inicial, e a voz rouca sussurrando a última frase, terminando em um fade out suave.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O eco distante de um violão, qual lembrança primeira,\nUm sopro rouco no ar, chamando tua bandeira.\nO coração dispara, ante a pura realidade,\nQue viver sem teu abraço, traz tanta saudade.\n\n(Violão dedilhado introduz a melodia base, levemente desafinado para um toque mais 'real')",
+      "Verso 1": "A poeira da estrada levanta em tom de saudade,\nCada curva que eu faço, me traz tua claridade.\nO sol no poente pinta, um quadro que eu conheço,\nO teu sorriso que guardo, me dando o recomeço.\nLembro do teu olhar, que afoga qualquer temor,\nÉ chama que não apaga, nas brasa desse amor.\n",
+      "Refrão": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.",
+      "Verso 2": "Os dias passam lentos, como a água que escorre,\nE a tua voz ressoa, em cada som que ocorre.\nO vento traz um cheiro, que evoca teu perfume,\nNum palco de estrelas, meu palco, meu costume.\nEu que já vi de tudo, nas andanças da vida,\nJamais senti essa sede, nenhuma outra ferida.\n",
+      "Refrão Final": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.\n(Repete a última frase com mais intensidade e em uníssono vocal)"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
+    "id": 1781215425820,
+    "title": "Caminho da Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Caminho da Saudade",
+      "subtitle": "Onde o amor encontra o eco do tempo",
+      "key": "Mi maior",
+      "chords": "G - D - Em - C",
+      "vibe": "Um abraço musical que reverbera no peito, tingido pela doçura da saudade e a força de um amor que transcende a distância.",
+      "style_tags": [
+        "sertanejo romântico",
+        "amor verdadeiro",
+        "saudade",
+        "voz rouca"
+      ],
+      "sections": {
+        "Introdução": "O sol se põe, a viola geme\nUm eco de paixão que me consome\nNas curvas do tempo, o amor se esconde\nE a saudade em meu peito responde.\n\n(Violão dedilhado suave, com a entrada discreta da bateria marcando o pulso)",
+        "Verso 1": "Na noite que avança, em cada estrela;\nProcuro o teu rosto, em cada cancela.\nLembranças suspensas, num véu de luar,\nO cheiro do teu corpo, a me embriagar.\n\nUm beijo guardado, sabor de jasmim,\nNa pele marcado, o teu toque, enfim.\nSaudade que vem, em ondas sem fim.\nUm mar de lembranças me afoga assim.",
+        "Refrão": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A bateria entra com mais força, a guitarra suave cria contraponto com a melodia vocal. A segunda voz entra harmonizando.)",
+        "Verso 2": "O vento que sopra, em meu travesseiro,\nTraz o teu sussurro, desfaz o meu desespero.\nEm cada canção, em cada canção,\nEu te escuto baixinho, em meu coração.\n\nO tempo não apaga, a chama que ardeu,\nSeu rastro me guia, onde você se perdeu.\nE a cada manhã, que o sol renasceu,\nA certeza que o meu amor é só seu.",
+        "Refrão Final": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A intensidade aumenta gradualmente. A segunda voz se torna mais presente. O solo de guitarra entra, emotivo e melódico, culminando em um final grandioso com a dupla vocal harmonizando poderosamente.)"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, slide guitar, powerful drums, vocal harmonies",
+      "instruments": [
+        "Violão dedilhado (base harmônica e melódica suave)",
+        "Guitarra slide (criando contraponto melódico e emotivo)",
+        "Bateria (com pegada forte e marcante, acentuando o refrão)",
+        "Segunda voz (harmonizando e enriquecendo a melodia vocal principal)",
+        "Baixo (sustentação rítmica e harmônica, com poucas linhas melódicas)"
+      ],
+      "production_notes": "A introdução deve ser delicada, com o violão dedilhado criando uma atmosfera íntima. A voz rouca do cantor principal entra em primeiro plano, com pouca saturação, para realçar sua textura única. A bateria começa timidamente, aumentando a pegada com a entrada do primeiro refrão. A segunda voz entra harmonizando sutilmente no primeiro refrão e se torna mais proeminente nos refrões subsequentes, criando um efeito 'dueto' característico do sertanejo. O solo de guitarra deve ser melódico e emotivo, evitando distorções pesadas, com um timbre quente e expressivo. A mixagem deve ter um wide stereo, com o violão e a guitarra slide ocupando espaços diferentes para clareza. A bateria deve ter um punch presente, especialmente no bumbo e na caixa, mas sem ofuscar as vozes. O final do último refrão deve soar grandioso, com todas as vozes e instrumentos em sua plenitude, com um leve reverb para dar profundidade. Dinâmica do verso para o refrão deve ser clara. Tons altos e baixos na melodia vocal para explorar a extensão e a emotividade da voz rouca.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O sol se põe, a viola geme\nUm eco de paixão que me consome\nNas curvas do tempo, o amor se esconde\nE a saudade em meu peito responde.\n\n(Violão dedilhado suave, com a entrada discreta da bateria marcando o pulso)",
+      "Verso 1": "Na noite que avança, em cada estrela;\nProcuro o teu rosto, em cada cancela.\nLembranças suspensas, num véu de luar,\nO cheiro do teu corpo, a me embriagar.\n\nUm beijo guardado, sabor de jasmim,\nNa pele marcado, o teu toque, enfim.\nSaudade que vem, em ondas sem fim.\nUm mar de lembranças me afoga assim.",
+      "Refrão": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A bateria entra com mais força, a guitarra suave cria contraponto com a melodia vocal. A segunda voz entra harmonizando.)",
+      "Verso 2": "O vento que sopra, em meu travesseiro,\nTraz o teu sussurro, desfaz o meu desespero.\nEm cada canção, em cada canção,\nEu te escuto baixinho, em meu coração.\n\nO tempo não apaga, a chama que ardeu,\nSeu rastro me guia, onde você se perdeu.\nE a cada manhã, que o sol renasceu,\nA certeza que o meu amor é só seu.",
+      "Refrão Final": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A intensidade aumenta gradualmente. A segunda voz se torna mais presente. O solo de guitarra entra, emotivo e melódico, culminando em um final grandioso com a dupla vocal harmonizando poderosamente.)"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
+    "id": 1781214228264,
+    "title": "Amor Que a Distância Não Apaga",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Amor Que a Distância Não Apaga",
+      "subtitle": "Um Sertanejo de Saudade e Fé no Reencontro",
+      "key": "G Maior",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço musical que aquece o coração, misturando a melancolia da saudade com a força serena do amor verdadeiro. A sanfona evoca lembranças, o violão embala a espera e as vozes em harmonia tecem a esperança.",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Sofrência com Esperança",
+        "Voz Masculina Dupla",
+        "Emotivo"
+      ],
+      "sections": {
+        "Introdução": "A sanfona chora um lamento suave,\nE o violão dedilha a calma,\nDo tempo que passa, imutável,\nMas não apaga a tua alma.\nNosso amor, um farol,\nNa noite escura da saudade,\nGuia meu coração, meu sol,\nEm busca da felicidade.",
+        "Verso 1": "O sol que nasceu hoje lá longe,\nNão tem o mesmo tom do teu olhar.\nAs nuvens passeiam, mas não te trazem,\nE a cama vazia me faz suspirar.\nLembro do teu cheiro na brisa,\nO eco da risada no peito.\nEssa distância é uma ironia,\nUm teste pesado, indiscreto.",
+        "Refrão": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.",
+        "Verso 2": "Recebi tua carta, o papel amarelado,\nCom a tua letra que faz meu peito vibrar.\nCada palavra, um beijo guardado,\nQue me faz continuar a te esperar.\nAs madrugadas longas e frias,\nSão preenchidas com teu querer.\nEm cada estrela que o céu irradia,\nVejo um motivo pra crer.",
+        "Refrão Final": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.\nAmor que a distância não apaga...\nA minha eterna lanterna... É você!"
+      },
+      "suno_style": "sertanejo romance, emotional, male duo vocals, 90 BPM, accordion, acoustic guitar, heartfelt, hopeful",
+      "instruments": [
+        "Sanfona (melodia principal, textura emotiva, contraponto com violão)",
+        "Violão (base harmônica com dedilhado suave nos versos, batida marcante no refrão)",
+        "Baixo acústico (sustentação rítmica e harmônica, marcando os tempos fortes de forma sutil)",
+        "Bateria (leve e precisa, com viradas discretas e bumbo marcante no refrão)",
+        "Vozes (dupla masculina em harmonia no refrão, solo emotivo nos versos, com timbre grave e expressivo)"
+      ],
+      "production_notes": "A ideia é criar uma atmosfera intimista e acolhedora, com a sanfona e o violão sendo os protagonistas na introdução e nos versos, evocando a saudade de forma poética. No refrão, a bateria e o baixo entram para dar mais corpo e força à música, impulsionando a emoção com a entrada da segunda voz em harmonia, criando um 'abraço' sonoro. A dinâmica deve ser crescente, com os versos mais calmos e o refrão explodindo com sentimento. Uso sutil de reverb nas vozes para dar profundidade e um leve 'delay' na sanfona em momentos chave para acentuar a melancolia. O espaço estéreo deve ser amplo para os instrumentos de base, mantendo as vozes focadas no centro, mas com um leve afastamento para as harmonias. A mixagem final deve ser limpa e equilibrada, permitindo que cada instrumento seja ouvido com clareza, mas sem sacrificar a emoção do conjunto. Referência sonora: a pureza melódica e a entrega vocal de Victor & Leo, com a assinatura de uma produção moderna e radiofônica.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🎙 Voz Grossa",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "A sanfona chora um lamento suave,\nE o violão dedilha a calma,\nDo tempo que passa, imutável,\nMas não apaga a tua alma.\nNosso amor, um farol,\nNa noite escura da saudade,\nGuia meu coração, meu sol,\nEm busca da felicidade.",
+      "Verso 1": "O sol que nasceu hoje lá longe,\nNão tem o mesmo tom do teu olhar.\nAs nuvens passeiam, mas não te trazem,\nE a cama vazia me faz suspirar.\nLembro do teu cheiro na brisa,\nO eco da risada no peito.\nEssa distância é uma ironia,\nUm teste pesado, indiscreto.",
+      "Refrão": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.",
+      "Verso 2": "Recebi tua carta, o papel amarelado,\nCom a tua letra que faz meu peito vibrar.\nCada palavra, um beijo guardado,\nQue me faz continuar a te esperar.\nAs madrugadas longas e frias,\nSão preenchidas com teu querer.\nEm cada estrela que o céu irradia,\nVejo um motivo pra crer.",
+      "Refrão Final": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.\nAmor que a distância não apaga...\nA minha eterna lanterna... É você!"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
     "genre": "Rock",
     "mood": "Romantico",
     "struct": [
