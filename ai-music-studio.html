@@ -386,6 +386,14 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
 </style>
+  <script type="module">
+    import{initializeApp}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+    const app=initializeApp({apiKey:"AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",authDomain:"ia-foto-studio-346ed.firebaseapp.com",projectId:"ia-foto-studio-346ed",storageBucket:"ia-foto-studio-346ed.firebasestorage.app",messagingSenderId:"16163406496",appId:"1:16163406496:web:ab936afab6f681a007ffc5"});
+    const db=getFirestore(app);
+    window._fbDb=db;window._fbDoc=doc;window._fbGetDoc=getDoc;window._fbSetDoc=setDoc;window._fbReady=true;
+    window.dispatchEvent(new Event("firebase-ready"));
+  </script>
 </head>
 <body>
 
@@ -401,6 +409,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
+    <button onclick="fbLoad().then(ok=>{updateLibN();if(currentPage==='lib')renderLib();showToast(ok?'☁️ Atualizado!':'☁️ Já atualizado','ok');})" title="Sincronizar" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
@@ -1058,6 +1067,26 @@ let waveTimer=null;
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
+async function fbPersist(){
+  if(!window._fbReady||!window._fbDb)return;
+  try{await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{history:history,updatedAt:Date.now()});}
+  catch(e){console.warn("fbPersist:",e);}
+}
+function fbPersistBg(){fbPersist().catch(e=>console.warn(e));}
+async function fbLoad(){
+  if(!window._fbReady||!window._fbDb)return false;
+  try{
+    const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
+    const cloud=snap.exists()?(snap.data().history||[]):[];
+    if(!cloud.length)return false;
+    const cm=Object.fromEntries(cloud.map(e=>[e.id,e]));
+    const lm=Object.fromEntries(history.map(e=>[e.id,e]));
+    history=Object.values({...lm,...cm}).sort((a,b)=>b.id-a.id);
+    try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+    updateLibN();if(currentPage==="lib")renderLib();
+    return true;
+  }catch(e){console.warn("fbLoad:",e);return false;}
+}
 window.onload=()=>{
   ghLoadToken();
   ghLoad();
@@ -1076,6 +1105,8 @@ window.onload=()=>{
   updateLibN();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
+  const _fw=new Promise(r=>{if(window._fbReady){r();}else{window.addEventListener("firebase-ready",r,{once:true});setTimeout(r,5000);}});
+  _fw.then(()=>fbLoad().then(ok=>{if(ok){updateLibN();if(currentPage==="lib")renderLib();}else if(history.length>0){fbPersistBg();}}));
 };
 
 function buildChips(cid,items,cls,getter,setter){
