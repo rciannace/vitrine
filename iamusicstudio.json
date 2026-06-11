@@ -1,5 +1,62 @@
 [
   {
+    "id": 1781215438416,
+    "title": "Elo de Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Elo de Saudade",
+      "subtitle": "Onde tua voz atravessa o tempo e a distância",
+      "key": "Sol Maior",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço sonoro, onde a paixão se encontra com a melancolia agridoce da espera.",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Amor Verdadeiro",
+        "Saudade",
+        "Brasilidades"
+      ],
+      "sections": {
+        "Introdução": "O eco distante de um violão, qual lembrança primeira,\nUm sopro rouco no ar, chamando tua bandeira.\nO coração dispara, ante a pura realidade,\nQue viver sem teu abraço, traz tanta saudade.\n\n(Violão dedilhado introduz a melodia base, levemente desafinado para um toque mais 'real')",
+        "Verso 1": "A poeira da estrada levanta em tom de saudade,\nCada curva que eu faço, me traz tua claridade.\nO sol no poente pinta, um quadro que eu conheço,\nO teu sorriso que guardo, me dando o recomeço.\nLembro do teu olhar, que afoga qualquer temor,\nÉ chama que não apaga, nas brasa desse amor.\n",
+        "Refrão": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.",
+        "Verso 2": "Os dias passam lentos, como a água que escorre,\nE a tua voz ressoa, em cada som que ocorre.\nO vento traz um cheiro, que evoca teu perfume,\nNum palco de estrelas, meu palco, meu costume.\nEu que já vi de tudo, nas andanças da vida,\nJamais senti essa sede, nenhuma outra ferida.\n",
+        "Refrão Final": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.\n(Repete a última frase com mais intensidade e em uníssono vocal)"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, lead electric guitar solo, strong drums, layered harmonies",
+      "instruments": [
+        "Violão aço (base e dedilhados expressivos)",
+        "Voz principal (masculina, rouca, com emoção)",
+        "Segunda voz (masculina, harmonizando em uníssono e terças/quintass)",
+        "Guitarra elétrica (solo melódico e marcante, base com drive suave)",
+        "Bateria (marcante, com ênfase nos graves, suingue sertanejo)"
+      ],
+      "production_notes": "O violão aço inicia com um dedilhado que soa levemente desafinado (intencionalmente para criar um ar de intimidade e crueza), estabelecendo a melodia principal com um timbre quente e presente. A voz masculina rouca entra com sutileza, como se fosse um pensamento compartilhado. A bateria entra no primeiro refrão com uma marcação firme, mas não opressora, utilizando o bumbo e caixa com peso, mas sem excessos. A segunda voz entra nos refrões, em uníssono inicialmente, para dar peso à mensagem, e depois em harmonias que realçam a doçura e melancolia da canção. O solo de guitarra deve ser emulando a expressividade de um violino ou sanfona, com melodia clara e sentimento, bem colocado no espaço estéreo. A guitarra base deve ter um timbre limpo com um leve overdrive sutil nas partes mais intensas. Usar um leve reverb de plate nas vozes para dar profundidade e um delay suave na guitarra solo para criar um rastro sonoro. A mixagem deve ter um bom espaço entre os elementos, com a voz principal sempre em evidência, mas sem perder a dinâmica das outras partes. Controlar os picos de volume para manter a intensidade emocional do refrão sem distorção. O final deve decrescer gradualmente, com o violão retornando ao dedilhado inicial, e a voz rouca sussurrando a última frase, terminando em um fade out suave.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O eco distante de um violão, qual lembrança primeira,\nUm sopro rouco no ar, chamando tua bandeira.\nO coração dispara, ante a pura realidade,\nQue viver sem teu abraço, traz tanta saudade.\n\n(Violão dedilhado introduz a melodia base, levemente desafinado para um toque mais 'real')",
+      "Verso 1": "A poeira da estrada levanta em tom de saudade,\nCada curva que eu faço, me traz tua claridade.\nO sol no poente pinta, um quadro que eu conheço,\nO teu sorriso que guardo, me dando o recomeço.\nLembro do teu olhar, que afoga qualquer temor,\nÉ chama que não apaga, nas brasa desse amor.\n",
+      "Refrão": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.",
+      "Verso 2": "Os dias passam lentos, como a água que escorre,\nE a tua voz ressoa, em cada som que ocorre.\nO vento traz um cheiro, que evoca teu perfume,\nNum palco de estrelas, meu palco, meu costume.\nEu que já vi de tudo, nas andanças da vida,\nJamais senti essa sede, nenhuma outra ferida.\n",
+      "Refrão Final": "E essa saudade, meu bem, não tem fim, não tem mais hora,\nPois é o fio que nos liga, a chama que me devora.\nTeu amor é o meu norte, a estrela a me guiar,\nNesse céu de lembranças, eu te aprendi a amar.\nÉ um elo que resiste, à distância e ao tempo,\nUm amor verdadeiro, meu sublime tormento.\n(Repete a última frase com mais intensidade e em uníssono vocal)"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1781215425820,
     "title": "Caminho da Saudade",
     "genre": "Sertanejo",
