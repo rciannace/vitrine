@@ -246,8 +246,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .footer-btn .btn-main{max-width:600px;margin:0 auto}
 
 /* REDES RESULTADOS */
-.result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px}
-.rtab{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+.result-tabs{display:flex;gap:4px;border-bottom:2px solid #eee;margin-bottom:16px}
+.rtab{padding:10px 14px;font-size:13px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
@@ -352,8 +352,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 }
 .sp-btn.play:hover{background:#f0f0f0;transform:scale(1.06)}
 .sp-btn:active{transform:scale(.9)}
-.sp-btn.active-mode{color:#f97316!important;background:#f9731625!important;position:relative;box-shadow:0 0 0 1.5px #f9731660!important}
-.sp-btn.active-mode::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316;box-shadow:0 0 4px #f97316}
+.sp-btn.active-mode{color:#f97316!important;position:relative}
+.sp-btn.active-mode::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316}
 
 /* barra de progresso */
 .sp-progress-row{display:flex;align-items:center;gap:8px;width:100%}
@@ -386,28 +386,6 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
 </style>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
-      authDomain: "ia-foto-studio-346ed.firebaseapp.com",
-      projectId: "ia-foto-studio-346ed",
-      storageBucket: "ia-foto-studio-346ed.firebasestorage.app",
-      messagingSenderId: "16163406496",
-      appId: "1:16163406496:web:ab936afab6f681a007ffc5"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-    window._fbDb     = db;
-    window._fbDoc    = doc;
-    window._fbGetDoc = getDoc;
-    window._fbSetDoc = setDoc;
-    window._fbReady  = true;
-    window.dispatchEvent(new Event("firebase-ready"));
-    if (typeof initApp === "function") initApp();
-  </script>
   <script type="module">
     import{initializeApp}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
     import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
@@ -431,39 +409,23 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
-    <button onclick="fbLoad().then(ok=>{updateLibN();if(currentPage==='lib')renderLib();showToast(ok?'☁️ Atualizado!':'☁️ Já atualizado','ok');})" title="Buscar atualizações da nuvem" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
-    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" title="Buscar atualizações" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
+    <button onclick="fbLoad().then(ok=>{updateLibN();if(currentPage==='lib')renderLib();showToast(ok?'☁️ Atualizado!':'☁️ Já atualizado','ok');})" title="Sincronizar" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
 </div>
 
 <!-- API PANEL DROPDOWN -->
-<div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:310px;box-shadow:0 8px 32px #0000001a">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-    <span style="font-size:13px;font-weight:700;color:#333">⚙️ Configurações</span>
+<div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:300px;box-shadow:0 8px 32px #0000001a">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 OPENROUTER API KEY</span>
     <button onclick="toggleApiPanel()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#aaa;line-height:1">×</button>
   </div>
-
-  <!-- OPENROUTER KEY -->
-  <div style="margin-bottom:14px">
-    <div style="font-size:11px;font-weight:700;color:#f97316;letter-spacing:1px;margin-bottom:6px">🤖 OPENROUTER API KEY</div>
-    <div class="api-row">
-      <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
-      <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
-    </div>
-    <div style="font-size:10px;color:#bbb;margin-top:4px">Grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
+  <div class="api-row">
+    <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
+    <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
   </div>
-
-  <div style="border-top:1px solid #f0f0f0;margin-bottom:14px"></div>
-
-  <!-- SYNC FIREBASE -->
-  <div>
-    <div style="font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:6px">☁️ SINCRONIZAÇÃO AUTOMÁTICA</div>
-    <div id="fb-status" style="padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600;margin-bottom:10px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e30">✅ Firebase ativo — sync automático</div>
-    <div style="font-size:11px;color:#666;margin-bottom:8px;line-height:1.5">Salva automaticamente em todos os dispositivos. Para forçar uma atualização agora:</div>
-    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" style="width:100%;padding:9px;border-radius:10px;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">🔄 Buscar atualizações agora</button>
-  </div>
+  <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
 
@@ -696,10 +658,15 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <!-- Sub-pages -->
     <div id="libpage-biblioteca">
     <!-- GitHub Token Panel -->
-
+    <div id="gh-token-panel" style="display:none;background:#fff;border:1.5px dashed #f97316;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px">🔑 Token GitHub (Personal Access Token)</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">Acesse <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#f97316">github.com/settings/tokens</a> → New classic token → marque <b>repo</b> → copie e cole aqui.</div>
+      <div style="display:flex;gap:8px">
+        <input id="gh-token-input" type="password" placeholder="ghp_..." style="flex:1;background:#f8f8f8;border:1.5px solid #eee;border-radius:10px;padding:9px 12px;font-size:12px;font-family:monospace;outline:none" onkeydown="if(event.key==='Enter')ghSaveToken(document.getElementById('gh-token-input').value)"/>
+        <button onclick="ghSaveToken(document.getElementById('gh-token-input').value)" style="padding:9px 16px;border-radius:10px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Salvar</button>
+      </div>
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
-        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
+
       </div>
     </div>
 
@@ -944,15 +911,7 @@ let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
-let history=[];
-try{
-  const d=JSON.parse(localStorage.getItem("ams6")||"[]");
-  if(Array.isArray(d)&&d.length>0){history=d;}
-  else{
-    const b=JSON.parse(localStorage.getItem("ams6_backup")||"[]");
-    if(Array.isArray(b)&&b.length>0){history=b;}
-  }
-}catch{}
+let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
 let micDesc=null,micExt=null;
 
 // ══════════════════════════════════════
@@ -976,7 +935,7 @@ function ghSaveToken(token){
   localStorage.setItem("ams_gh_token",ghToken);
   document.getElementById("gh-token-input").value="";
   document.getElementById("gh-token-panel").style.display="none";
-  showToast("✅ Token GitHub salvo! Clique em Sincronizar para carregar sua biblioteca.","ok");
+  showToast("✅ Token salvo!","ok");
   renderSyncUI();
   ghLoad();
 }
@@ -989,86 +948,15 @@ function toggleTokenPanel(){
   if(p.style.display==="block")setTimeout(()=>document.getElementById("gh-token-input").focus(),100);
 }
 function renderSyncUI(){
-  // update old sync-status in library page if exists
   const el=document.getElementById("sync-status");
-  if(el){
-    if(!ghToken){
-      el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
-    } else {
-      const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
-      const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
-      el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
-    }
-  }
-  // always update header badge
-  renderTokenBadge();
-}
-
-function renderTokenBadge(){
-  const apiDot=document.getElementById("api-dot");
-  const syncBtn=document.getElementById("btn-sync");
-  const syncIcon=document.getElementById("sync-icon");
-  const btnCfg=document.getElementById("btn-cfg");
-
-  const statusPanel=document.getElementById("gh-token-status-panel");
+  if(!el)return;
   if(!ghToken){
-    // red dot on gear = no token
-    if(apiDot){apiDot.style.background="#ef4444";apiDot.style.boxShadow="0 0 0 2px #ef444433";}
-    if(btnCfg)btnCfg.title="⚠️ Sem token GitHub — clique para configurar";
-    if(syncBtn)syncBtn.style.display="none";
-    if(statusPanel){statusPanel.textContent="⚠️ Token GitHub não configurado";statusPanel.style.background="#fff8f5";statusPanel.style.color="#f97316";statusPanel.style.border="1px solid #f9731630";}
-  } else {
-    // green dot on gear = token OK
-    if(apiDot){apiDot.style.background="#22c55e";apiDot.style.boxShadow="0 0 0 2px #22c55e33";}
-    if(btnCfg)btnCfg.title="🔑 Token salvo ✅ — clique para gerenciar";
-    if(syncBtn)syncBtn.style.display="flex";
-    if(statusPanel){statusPanel.textContent="🔑 Token GitHub salvo ✅";statusPanel.style.background="#f0fdf4";statusPanel.style.color="#16a34a";statusPanel.style.border="1px solid #22c55e30";}
-    // sync button icon state
-    if(syncStatus==="syncing"){
-      if(syncIcon)syncIcon.textContent="⏳";
-      if(syncBtn){syncBtn.style.opacity="0.7";syncBtn.title="Sincronizando...";}
-    } else if(syncStatus==="ok"){
-      if(syncIcon)syncIcon.textContent="✅";
-      if(syncBtn){syncBtn.style.borderColor="#22c55e";syncBtn.style.background="#f0fdf4";syncBtn.style.color="#16a34a";syncBtn.title="Sincronizado!";}
-      setTimeout(()=>{
-        if(syncIcon)syncIcon.textContent="☁️";
-        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
-      },3000);
-    } else if(syncStatus==="err"){
-      if(syncIcon)syncIcon.textContent="❌";
-      if(syncBtn){syncBtn.style.borderColor="#ef4444";syncBtn.style.background="#fef2f2";syncBtn.style.color="#ef4444";syncBtn.style.opacity="1";syncBtn.title="Erro ao sincronizar";}
-      setTimeout(()=>{
-        if(syncIcon)syncIcon.textContent="☁️";
-        if(syncBtn){syncBtn.style.borderColor="#3b82f6";syncBtn.style.background="#eff6ff";syncBtn.style.color="#3b82f6";syncBtn.title="Sincronizar com nuvem";}
-      },4000);
-    } else {
-      if(syncBtn){syncBtn.style.opacity="1";syncBtn.title="Sincronizar com nuvem";}
-    }
+    el.innerHTML=`<button onclick="toggleTokenPanel()" style="font-size:11px;color:#f97316;background:none;border:1px dashed #f97316;border-radius:20px;padding:4px 12px;cursor:pointer">🔑 Conectar GitHub</button>`;
+    return;
   }
-}
-
-async function manualSync(){
-  if(!ghToken){showToast("Configure o token GitHub em ⚙️ primeiro","err");return;}
-  if(syncStatus==="syncing")return;
-  syncStatus="syncing";renderSyncUI();
-  const timer=setTimeout(()=>{
-    syncStatus="err";renderSyncUI();
-    showToast("❌ Timeout — verifique conexão","err");
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
-  },12000);
-  try{
-    saveLocal();
-    await ghSave();
-    await ghLoad();
-    clearTimeout(timer);
-    syncStatus="ok";renderSyncUI();
-    showToast("✅ Sincronizado!","ok");
-  }catch(e){
-    clearTimeout(timer);
-    syncStatus="err";renderSyncUI();
-    showToast("❌ Erro: "+e.message,"err");
-    setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
-  }
+  const icons={idle:"☁️",syncing:"⏳",ok:"✅",err:"❌"};
+  const msgs={idle:"Nuvem ativa",syncing:"Sincronizando...",ok:"Salvo!",err:"Erro sync"};
+  el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
 }
 async function ghFetch(method,body){
   const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
@@ -1123,7 +1011,7 @@ async function ghSave(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}fbPersistBg();}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}if(window._fbReady)fbPersistBg();}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1154,7 +1042,7 @@ function importLib(input){
       const impMap=Object.fromEntries(imported.map(x=>[x.id,x]));
       const merged=Object.values({...existMap,...impMap}).sort((a,b)=>b.id-a.id);
       history=merged;
-      saveLocal();
+      ghSave();
       updateLibN();
       renderLib();
       showToast("📥 "+imported.length+" músicas importadas!","ok");
@@ -1171,41 +1059,6 @@ let waveTimer=null;
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
-// ── FIREBASE PERSIST ──
-async function fbPersist(){
-  if(!window._fbReady||!window._fbDb)return;
-  try{
-    await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{
-      history:history,
-      updatedAt:Date.now()
-    });
-  }catch(e){console.warn("fbPersist error:",e);}
-}
-function fbPersistBg(){
-  fbPersist().catch(e=>console.warn("fbPersistBg:",e));
-}
-
-async function fbLoad(){
-  if(!window._fbReady||!window._fbDb)return false;
-  try{
-    const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
-    const cloud=snap.exists()?(snap.data().history||[]):[];
-    // sempre mescla cloud + local
-    const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
-    const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-    const merged=Object.values({...cloudMap,...localMap}).sort((a,b)=>b.id-a.id);
-    const changed=merged.length!==history.length||merged.some((e,i)=>e.id!==history[i]?.id);
-    history=merged;
-    localStorage.setItem("ams6",JSON.stringify(history));
-    localStorage.setItem("ams6_backup",JSON.stringify(history));
-    updateLibN();
-    if(currentPage==="lib")renderLib();
-    // se local tinha mais dados, manda para nuvem também
-    if(localMap.length>cloud.length||changed)fbPersistBg();
-    return merged.length>0;
-  }catch(e){console.warn("fbLoad error:",e);return false;}
-}
-
 async function fbPersist(){
   if(!window._fbReady||!window._fbDb)return;
   try{await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{history:history,updatedAt:Date.now()});}
@@ -1231,7 +1084,9 @@ async function fbLoad(){
 
 window.onload=()=>{
   ghLoadToken();
+  ghLoad();
   renderSyncUI();
+  // Load saved theme
   const saved=localStorage.getItem("ams_theme")||"light";
   if(saved==="dark"){document.body.classList.add("dark");document.getElementById("theme-btn").textContent="☀️";}
   buildChips("genre-chips",GENRES,"sel",()=>selGenre,v=>selGenre=v);
@@ -1243,25 +1098,13 @@ window.onload=()=>{
   renderFavorites();
   updateSunoPreview();
   updateLibN();
-  renderTokenBadge();
   const savedKey=localStorage.getItem("or_key");
   if(savedKey){const inp=document.getElementById("api-key");inp.value=savedKey;inp.className="api-input ok";document.getElementById("btn-api").className="btn-api ok";document.getElementById("btn-api").textContent="✓ OK";document.getElementById("api-dot").className="api-dot ok";}
-  // Load from Firebase in background
-  const waitFb=new Promise(resolve=>{
-    if(window._fbReady){resolve();return;}
-    window.addEventListener("firebase-ready",resolve,{once:true});
-    setTimeout(resolve,5000);
-  });
-  waitFb.then(async()=>{
-    const loaded=await fbLoad();
-    if(loaded){
-      showToast("☁️ Biblioteca sincronizada!","ok");
-    } else if(history.length>0){
-      // nuvem vazia mas temos dados locais — envia tudo para o Firebase
-      await fbPersist();
-      showToast("☁️ "+history.length+" músicas enviadas para a nuvem!","ok");
-    }
-  });
+  const _fw=new Promise(r=>{if(window._fbReady){r();}else{window.addEventListener("firebase-ready",r,{once:true});setTimeout(r,5000);}});
+  _fw.then(()=>fbLoad().then(ok=>{
+    if(ok){updateLibN();if(currentPage==="lib")renderLib();}
+    else if(history.length>0){fbPersistBg();}
+  }));
 };
 
 function buildChips(cid,items,cls,getter,setter){
@@ -1810,21 +1653,7 @@ async function extendSec(sec){
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     currentSections[sec]=parsed.lyrics;
-    // update currentSong sections
-    if(currentSong)currentSong.sections=Object.assign({},currentSong.sections||{},currentSections);
-    // save to library
-    var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
-    if(histIdx>=0){
-      history[histIdx].sections=currentSong.sections;
-      saveLocal();
-    }else{
-      // not in library yet — add it
-      var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
-      history.unshift(entry);
-      updateLibN();
-      saveLocal();
-    }
-    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida e salva!","ok");
+    renderResult(Object.keys(currentSections));showToast("✨ Seção estendida!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="✨ Estender";}}
 }
 
@@ -1886,6 +1715,7 @@ function renderResult(structs){
       <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
       <div class="rtab rtab-refazer" onclick="refazerMusica()">🔄 Refazer</div>
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
+      <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
       <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
 
@@ -1960,6 +1790,17 @@ function renderResult(structs){
           <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
         </div>
         <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
+      </div>
+    </div>
+
+    <div id="rtab-info" style="display:${activeRTab==="info"?"block":"none"}">
+      <div class="info-box">
+        <div class="info-box-title">🎸 Instrumentação</div>
+        <div>${(s.instruments||[]).map(i=>`<span class="inst-pill">🎵 ${esc(i)}</span>`).join("")}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">🎛 Notas de Produção</div>
+        <div style="font-size:13px;color:#555;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
       </div>
     </div>
 
@@ -2188,7 +2029,7 @@ function refazerMusica(){
 
 function switchRTab(tab){
   activeRTab=tab;
-  ["letra","suno","estilo"].forEach(t=>{
+  ["letra","suno","info"].forEach(t=>{
     const el=document.getElementById("rtab-"+t);
     const btn=document.querySelector(`.rtab[onclick="switchRTab('${t}')"]`);
     if(el)el.style.display=t===tab?"block":"none";
@@ -2263,7 +2104,7 @@ function setPage(p){
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
-  if(p==="lib"){renderLib();renderSyncUI();}
+  if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 function renderLib(){
@@ -2331,7 +2172,7 @@ function saveEditedEntry(){
   saveHistory();
   showToast("✅ Música salva!","ok");
 }
-function saveHistory(){saveLocal();}
+function saveHistory(){ghSave();}
 function editTitle(id){
   const e=history.find(x=>x.id===id);if(!e)return;
   const novo=prompt("Nome da música:",e.title);
@@ -2344,7 +2185,7 @@ function editTitle(id){
 }
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
-  saveLocal();
+  ghSave();
   updateLibN();renderLib();showToast("Removida","ok");
 }
 
@@ -2462,22 +2303,11 @@ function saveSunoEntry(){
   if(sunoAudioUrl)entry.audio=sunoAudioUrl;
 
   history.unshift(entry);
-
-  // save to localStorage (double key for redundancy)
-  try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
-  try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
-
-  // save to GitHub if token available
-  if(ghToken){
-    saveLocal();
-    showToast("✅ Música adicionada e sincronizada!","ok");
-  } else {
-    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
-  }
-
+  saveHistory();
   updateLibN();
   renderLib();
   closeSunoModal();
+  showToast("✅ Música adicionada!","ok");
 }
 
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -2848,7 +2678,7 @@ function saveLyricsEdit(){
     }
 
     // persiste
-    saveLocal();
+    ghSave();
 
     // atualiza tela de resultado se a música estiver aberta
     if(currentSong&&currentSong.title===entry.title){
