@@ -246,9 +246,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 .footer-btn .btn-main{max-width:600px;margin:0 auto}
 
 /* REDES RESULTADOS */
-.result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.result-tabs::-webkit-scrollbar{display:none}
-.rtab{padding:10px 10px;font-size:12px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px}
+.rtab{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
@@ -353,8 +352,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 }
 .sp-btn.play:hover{background:#f0f0f0;transform:scale(1.06)}
 .sp-btn:active{transform:scale(.9)}
-.sp-btn.active-mode{color:#f97316!important;position:relative}
-.sp-btn.active-mode::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316}
+.sp-btn.active-mode{color:#f97316!important;background:#f9731625!important;position:relative;box-shadow:0 0 0 1.5px #f9731660!important}
+.sp-btn.active-mode::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#f97316;box-shadow:0 0 4px #f97316}
 
 /* barra de progresso */
 .sp-progress-row{display:flex;align-items:center;gap:8px;width:100%}
@@ -904,7 +903,15 @@ let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let currentPage="criar",mainTab="descrever";
-let history=[];try{history=JSON.parse(localStorage.getItem("ams6")||"[]");}catch{}
+let history=[];
+try{
+  const d=JSON.parse(localStorage.getItem("ams6")||"[]");
+  if(Array.isArray(d)&&d.length>0){history=d;}
+  else{
+    const b=JSON.parse(localStorage.getItem("ams6_backup")||"[]");
+    if(Array.isArray(b)&&b.length>0){history=b;}
+  }
+}catch{}
 let micDesc=null,micExt=null;
 
 // ══════════════════════════════════════
@@ -1004,7 +1011,7 @@ async function ghSave(){
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
-function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}}
+function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}}
 
 // ══════════════════════════════════════
 // EXPORT / IMPORT
@@ -1694,7 +1701,6 @@ function renderResult(structs){
       <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
       <div class="rtab rtab-refazer" onclick="refazerMusica()">🔄 Refazer</div>
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
-      <div class="rtab ${activeRTab==="info"?"active":""}" onclick="switchRTab('info')">🎛 Produção</div>
       <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
 
@@ -1769,17 +1775,6 @@ function renderResult(structs){
           <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
         </div>
         <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
-      </div>
-    </div>
-
-    <div id="rtab-info" style="display:${activeRTab==="info"?"block":"none"}">
-      <div class="info-box">
-        <div class="info-box-title">🎸 Instrumentação</div>
-        <div>${(s.instruments||[]).map(i=>`<span class="inst-pill">🎵 ${esc(i)}</span>`).join("")}</div>
-      </div>
-      <div class="info-box">
-        <div class="info-box-title">🎛 Notas de Produção</div>
-        <div style="font-size:13px;color:#555;line-height:1.9;white-space:pre-wrap">${esc(s.production_notes||"")}</div>
       </div>
     </div>
 
@@ -2008,7 +2003,7 @@ function refazerMusica(){
 
 function switchRTab(tab){
   activeRTab=tab;
-  ["letra","suno","info"].forEach(t=>{
+  ["letra","suno","estilo"].forEach(t=>{
     const el=document.getElementById("rtab-"+t);
     const btn=document.querySelector(`.rtab[onclick="switchRTab('${t}')"]`);
     if(el)el.style.display=t===tab?"block":"none";
@@ -2282,11 +2277,22 @@ function saveSunoEntry(){
   if(sunoAudioUrl)entry.audio=sunoAudioUrl;
 
   history.unshift(entry);
-  saveHistory();
+
+  // save to localStorage (double key for redundancy)
+  try{localStorage.setItem("ams6",JSON.stringify(history));}catch{}
+  try{localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+
+  // save to GitHub if token available
+  if(ghToken){
+    ghSave();
+    showToast("✅ Música adicionada e sincronizada!","ok");
+  } else {
+    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
+  }
+
   updateLibN();
   renderLib();
   closeSunoModal();
-  showToast("✅ Música adicionada!","ok");
 }
 
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
