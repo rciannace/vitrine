@@ -971,9 +971,8 @@ let selExtras=[],selDuration="normal";
 let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
-let versionsHistory=[]; // armazena versões anteriores {song, sections, struct}
-let drafts=[]; // rascunhos guardados
-try{drafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");}catch{}
+let versionsHistory=[];
+let activeVersionIdx=null;
 let currentPage="criar",mainTab="descrever";
 let history=[];
 try{
@@ -984,7 +983,19 @@ try{
     if(Array.isArray(b)&&b.length>0){history=b;}
   }
 }catch{}
-let micDesc=null,micExt=null;
+// Sync: ensure isDraft items from history are in drafts storage
+try{
+  const storedDrafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");
+  const draftIds=new Set(storedDrafts.map(d=>d.id));
+  const histDrafts=history.filter(h=>h.isDraft&&!draftIds.has(h.id));
+  if(histDrafts.length){
+    const merged=[...histDrafts,...storedDrafts];
+    localStorage.setItem("ams_drafts",JSON.stringify(merged));
+  }
+}catch{}
+// Load drafts AFTER sync
+let drafts=[];
+try{drafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");}catch{}
 
 // ══════════════════════════════════════
 // GITHUB SYNC
@@ -2502,22 +2513,19 @@ function addAudio(id,input){
 }
 function moveToRascunho(id){
   const idx=history.findIndex(h=>h.id===id);
-  if(idx<0)return;
-  const entry=history[idx];
-  // Save to drafts storage
-  const draft={
-    ...entry,
-    id:entry.id, // keep same id
-    isDraft:true,
-    date:entry.date||new Date().toLocaleDateString("pt-BR")
-  };
-  // Remove from drafts if already there (avoid duplicate)
-  drafts=drafts.filter(d=>d.id!==entry.id);
+  if(idx<0){showToast("Música não encontrada","err");return;}
+  // Mark as draft in history
+  history[idx]={...history[idx],isDraft:true};
+  // Save to drafts separately too
+  const draft=JSON.parse(JSON.stringify(history[idx]));
+  drafts=drafts.filter(d=>d.id!==id);
   drafts.unshift(draft);
-  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  // Mark as draft in history too (so Firebase sync doesn't bring it back to Todas)
-  history[idx]={...entry,isDraft:true};
-  saveLocal();
+  // Save both
+  try{
+    localStorage.setItem("ams6",JSON.stringify(history));
+    localStorage.setItem("ams6_backup",JSON.stringify(history));
+    localStorage.setItem("ams_drafts",JSON.stringify(drafts));
+  }catch(e){console.error("saveToRascunho error",e);}
   updateLibN();
   renderLib();
   showToast("📝 Música movida para Rascunhos!","ok");
