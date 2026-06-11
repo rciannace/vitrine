@@ -1,5 +1,62 @@
 [
   {
+    "id": 1781215475790,
+    "title": "Aurora de Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Aurora de Saudade",
+      "subtitle": "O amor que mora no amanhã e no ontem",
+      "key": "Sol Maior (G Major)",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço musical carregado de nostalgia e a certeza inabalável do amor verdadeiro, tingido pela melodia envolvente e a voz rouca de um sertanejo autêntico.",
+      "style_tags": [
+        "sertanejo romântico",
+        "amor verdadeiro",
+        "saudade",
+        "violão e voz"
+      ],
+      "sections": {
+        "Introdução": "O violão dedilhado, como a brisa\nQue acaricia a alma em despedida.\nA voz rouca chega, num sopro de brasa,\nAnunciando a chama que ainda está acesa.\n\nE o peito bate em compasso lento,\nSaudade é veneno, mas só tem um alento.\nÉ saber que em você, meu amor é eterno.",
+        "Verso 1": "A lua de ontem, no céu ainda brilha,\nLembrando o teu riso, a nossa partilha.\nCada estrela é um beijo que guardei aqui,\nNa memória que pulsa, nunca te perdi.\n\nAs estradas que trilhamos, o cheiro da terra,\nÉ um nó na garganta, que o tempo encerra.\nMas o feitiço do teu corpo, que me desenterra,\nMe faz ver a aurora, em cada nova era.",
+        "Refrão": "E eu te quero real, como o sol que eu sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.",
+        "Verso 2": "A voz embargada, num verso sincero,\nNa casa vazia, meu peito te quero.\nO eco dos teus passos, meu eterno fevereiro,\nSinto teu perfume, em qualquer nevoeiro.\n\nOs dias sem teu abraço, são longos demais,\nA gente se perde em noites a sós, banais.\nMas a força que me move, vem dos teus sinais,\nO amor é um rio, que me leva aos teus cais.",
+        "Refrão Final": "E eu te quero real, como o sol que eu tanto sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.\n\nEu te trago pra perto, meu eterno afago!"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, steel guitar, strong drums, intimate production",
+      "instruments": [
+        "Violão de aço (dedilhado e base harmônica) – Nuances do sertanejo clássico, com levadas que sustentam a melodia e a emoção.",
+        "Guitarra 7 cordas (contra-melodia) – Trazendo requintes melódicos e a sonoridade característica, tecendo frases que dialogam com a voz.",
+        "Steel Guitar (textura e solos) – Adiciona uma doçura melancólica, pontuando emoções e entregando um solo expressivo.",
+        "Bateria (marco rítmico forte) – Pulso firme e marcante, com ênfase no bumbo e caixa para dar peso ao refrão, mas com sutilezas nos versos.",
+        "Baixo acústico (fundamento) – Linhas melódicas e sólidas que ancoram a harmonia e dão profundidade à música."
+      ],
+      "production_notes": "A produção deve ser calorosa e envolvente, com a voz rouca do cantor em primeiro plano, transmitindo a vulnerabilidade e a força do amor. O violão de aço deve ter um timbre natural e expressivo, com clareza nas notas. A steel guitar entra sutilmente nos versos, ganhando mais destaque em momentos de clímax emocional e no solo. A bateria deve ter um impacto forte, mas não excessivo, com bom controle dinâmico para não ofuscar a voz. O uso de 'space' (reverb pequeno e controlado) na voz para dar profundidade, e um leve delay em alguns elementos melódicos para criar um ambiente etéreo. A mixagem deve priorizar a voz e o violão, com os outros instrumentos servindo como texturas de apoio. A guitarra 7 cordas deve ter um timbre limpo e presente, com o posicionamento no pão estéreo bem definido para criar um diálogo com a voz principal. O master deve ter um 'punch' que faça a música brilhar no rádio, mas sem compressão excessiva que oxide a sonoridade natural dos instrumentos.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O violão dedilhado, como a brisa\nQue acaricia a alma em despedida.\nA voz rouca chega, num sopro de brasa,\nAnunciando a chama que ainda está acesa.\n\nE o peito bate em compasso lento,\nSaudade é veneno, mas só tem um alento.\nÉ saber que em você, meu amor é eterno.",
+      "Verso 1": "A lua de ontem, no céu ainda brilha,\nLembrando o teu riso, a nossa partilha.\nCada estrela é um beijo que guardei aqui,\nNa memória que pulsa, nunca te perdi.\n\nAs estradas que trilhamos, o cheiro da terra,\nÉ um nó na garganta, que o tempo encerra.\nMas o feitiço do teu corpo, que me desenterra,\nMe faz ver a aurora, em cada nova era.",
+      "Refrão": "E eu te quero real, como o sol que eu sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.",
+      "Verso 2": "A voz embargada, num verso sincero,\nNa casa vazia, meu peito te quero.\nO eco dos teus passos, meu eterno fevereiro,\nSinto teu perfume, em qualquer nevoeiro.\n\nOs dias sem teu abraço, são longos demais,\nA gente se perde em noites a sós, banais.\nMas a força que me move, vem dos teus sinais,\nO amor é um rio, que me leva aos teus cais.",
+      "Refrão Final": "E eu te quero real, como o sol que eu tanto sinto,\nUm amor que transborda, sem labirinto.\nMais que paixão que arde, mais que mero instinto,\nÉ a certeza que acalma, o meu destino.\n\nSaudade que dói, é o preço que eu pago,\nPelo amor que é meu, e que não me alago.\nVocê é a canção, o meu eterno afago,\nAurora de um amor, que me faz eu mesmo, eu te trago.\n\nEu te trago pra perto, meu eterno afago!"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
     "id": 1781215438416,
     "title": "Elo de Saudade",
     "genre": "Sertanejo",
