@@ -289,15 +289,14 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px}
 .rtab{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
-/* Versões */
 .versions-bar{margin-top:18px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px}
 .versions-bar-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.version-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.version-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--bg3);color:var(--text3);transition:all .2s}
+.version-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.version-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--bg3);color:var(--text3);transition:all .2s}
 .version-chip.active{background:#1b6ca8;color:#fff;border-color:#1b6ca8}
-.version-detail{background:var(--bg3);border-radius:12px;padding:12px;border:1px solid var(--border)}
+.version-detail{background:var(--bg3);border-radius:12px;padding:12px;border:1px solid var(--border);margin-top:8px}
 .version-detail-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
-.version-detail-lyrics{font-size:12px;color:var(--text3);line-height:1.7;white-space:pre-wrap;max-height:180px;overflow-y:auto;margin-bottom:10px}
+.version-detail-lyrics{font-size:12px;color:var(--text3);line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:10px}
 .version-detail-btns{display:flex;gap:8px}
 .draft-badge{display:inline-block;padding:2px 8px;background:#6366f1;color:#fff;border-radius:10px;font-size:10px;font-weight:700;margin-left:6px}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
@@ -973,6 +972,8 @@ let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let versionsHistory=[];
 let activeVersionIdx=null;
+let isRefazing=false;
+let drafts=[];
 let currentPage="criar",mainTab="descrever";
 let history=[];
 try{
@@ -983,19 +984,9 @@ try{
     if(Array.isArray(b)&&b.length>0){history=b;}
   }
 }catch{}
-// Sync: ensure isDraft items from history are in drafts storage
-try{
-  const storedDrafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");
-  const draftIds=new Set(storedDrafts.map(d=>d.id));
-  const histDrafts=history.filter(h=>h.isDraft&&!draftIds.has(h.id));
-  if(histDrafts.length){
-    const merged=[...histDrafts,...storedDrafts];
-    localStorage.setItem("ams_drafts",JSON.stringify(merged));
-  }
-}catch{}
-// Load drafts AFTER sync
-let drafts=[];
+// Load drafts
 try{drafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");}catch{}
+let micDesc=null,micExt=null;
 
 // ══════════════════════════════════════
 // GITHUB SYNC
@@ -1605,7 +1596,7 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
     if(!tema){showToast("Cole a letra de referência!","err");return;}
   }
 
-  setLoading(true);currentSong=null;currentSections={};versionsHistory=[];activeVersionIdx=null;
+  setLoading(true);currentSong=null;currentSections={};if(!isRefazing){versionsHistory=[];activeVersionIdx=null;}
 
   const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial, com profundo conhecimento em teoria musical, prosódia, construção de letras poéticas e técnicas de produção profissional. Trabalhou com os maiores artistas do país e compreende os segredos que fazem uma música se tornar um hit atemporal.
 
@@ -1666,7 +1657,6 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
     if(!isRefazing){
-      // Normal generation: save to library
       history=[entry,...history].slice(0,30);
       saveHistory();
       updateLibN();
@@ -1675,8 +1665,6 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     activeRTab="letra";
     ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
     renderResult(secsToUse);
-    // renderVersionsBar AFTER renderResult so the DOM element exists
-    versionsHistory=versionsHistory.slice(0,5);
     setTimeout(function(){renderVersionsBar();},100);
     showToast("🎵 Música gerada!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");}
@@ -1772,8 +1760,7 @@ function renderResult(structs){
 
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
       <button onclick="editingFromLib?setPage('lib'):setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);font-size:12px;color:var(--text3);cursor:pointer">← Voltar</button>
-      ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':''}
-      ${!editingFromLib?'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Guardar Rascunho</button>':''}
+      ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Guardar Rascunho</button>'}
     </div>
 
     <div class="song-header">
@@ -1801,9 +1788,6 @@ function renderResult(structs){
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
       <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
-
-    <!-- Versions bar -->
-    <div id="versions-bar" style="display:none" class="versions-bar"></div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
       <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
@@ -1886,7 +1870,7 @@ function renderResult(structs){
       <div id="ajuste-estilo-content"></div>
     </div>
 
-    <!-- BARRA DE VERSÕES — aparece após Refazer -->
+    <!-- Barra de versões anteriores -->
     <div id="versions-bar" style="display:none" class="versions-bar"></div>
 
   </div>`;
@@ -2099,153 +2083,17 @@ function toggleSecPanel(sid,mode){
   if(mode==="estender"&&!extOpen){if(ext)ext.style.display="block";if(sb)sb.className="sec-btn son";}
 }
 
-let isRefazing=false; // flag to prevent auto-save to library
 function refazerMusica(){
   if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
-  // Save current version before redoing
-  if(versionsHistory.length>=5)versionsHistory.shift(); // max 5
+  if(versionsHistory.length>=5)versionsHistory.shift();
   versionsHistory.push({
     song:JSON.parse(JSON.stringify(currentSong)),
     sections:JSON.parse(JSON.stringify(currentSections)),
     struct:Object.keys(currentSections)
   });
-  showToast("🔄 Versão salva! Gerando nova...","ok");
   isRefazing=true;
+  showToast("🔄 Versão salva! Gerando nova...","ok");
   setTimeout(function(){generate();},300);
-}
-
-function saveDraft(versionIdx){
-  const v=versionsHistory[versionIdx];
-  if(!v)return;
-  const draft={
-    id:Date.now(),
-    title:v.song.title,
-    genre:v.song.genre,
-    mood:v.song.mood,
-    bpm:v.song.bpm,
-    duration:v.song.duration,
-    voice:v.song.voice,
-    date:new Date().toLocaleDateString("pt-BR"),
-    song:v.song,
-    sections:v.sections,
-    struct:v.struct,
-    isDraft:true
-  };
-  drafts.unshift(draft);
-  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  showToast("📝 Rascunho salvo!","ok");
-  renderVersionsBar();
-}
-
-function useVersion(versionIdx){
-  const v=versionsHistory[versionIdx];
-  if(!v)return;
-  currentSong=JSON.parse(JSON.stringify(v.song));
-  currentSections=JSON.parse(JSON.stringify(v.sections));
-  versionsHistory.splice(versionIdx,1);
-  renderResult(Object.keys(currentSections));
-  showToast("✅ Versão restaurada!","ok");
-}
-
-function useCurrentSong(){
-  if(!currentSong)return;
-  // Check if already in library
-  const existing=history.find(h=>h.id===currentSong.id||h.title===currentSong.title);
-  if(existing){showToast("✅ Música já está na Biblioteca!","ok");setPage("lib");return;}
-  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:Object.keys(currentSections)};
-  history=[entry,...history].slice(0,30);
-  saveHistory();
-  updateLibN();
-  showToast("✅ Música salva na Biblioteca!","ok");
-  setPage("lib");
-}
-
-function saveCurrentAsDraft(){
-  if(!currentSong)return;
-  const draft={
-    id:Date.now(),
-    title:currentSong.title,
-    genre:currentSong.genre,
-    mood:currentSong.mood,
-    bpm:currentSong.bpm,
-    duration:currentSong.duration||"",
-    voice:currentSong.voice||"",
-    date:new Date().toLocaleDateString("pt-BR"),
-    song:JSON.parse(JSON.stringify(currentSong)),
-    sections:JSON.parse(JSON.stringify(currentSections)),
-    struct:Object.keys(currentSections),
-    isDraft:true
-  };
-  drafts.unshift(draft);
-  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  showToast("📝 Guardado como Rascunho!","ok");
-}
-
-function promoteDraft(draftId){
-  const idx=drafts.findIndex(d=>d.id===draftId);
-  // Also check history
-  const histIdx=history.findIndex(h=>h.id===draftId);
-  if(idx<0&&histIdx<0)return;
-  const d=idx>=0?drafts[idx]:history[histIdx];
-  // Remove isDraft flag and ensure in history
-  if(histIdx>=0){
-    history[histIdx]={...history[histIdx],isDraft:false};
-  } else {
-    const entry={...d,isDraft:false,id:d.id};
-    history.unshift(entry);
-  }
-  // Remove from drafts array
-  if(idx>=0)drafts.splice(idx,1);
-  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  saveLocal();
-  updateLibN();
-  showToast("✅ Música movida para a Biblioteca!","ok");
-  setPage("lib");
-}
-
-function deleteDraft(draftId){
-  drafts=drafts.filter(d=>d.id!==draftId);
-  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  renderLib();
-  showToast("Rascunho apagado","ok");
-}
-
-let activeVersionIdx=null;
-function renderVersionsBar(){
-  const bar=document.getElementById("versions-bar");
-  if(!bar)return;
-  if(!versionsHistory.length){bar.style.display="none";return;}
-  bar.style.display="block";
-
-  const chips=versionsHistory.map((v,i)=>`
-    <button onclick="showVersion(${i})" class="version-chip${activeVersionIdx===i?" active":""}">
-      V${i+1} · ${esc((v.song.title||"Sem título").slice(0,18))}
-    </button>`).join("");
-
-  let detail="";
-  if(activeVersionIdx!==null && versionsHistory[activeVersionIdx]){
-    const v=versionsHistory[activeVersionIdx];
-    const lyricsPreview=Object.values(v.sections||{}).join("\n\n").slice(0,400);
-    detail=`
-    <div class="version-detail" style="margin-top:10px">
-      <div class="version-detail-title">${esc(v.song.title)} · ${esc(v.song.genre)} · ${v.song.bpm} BPM · ${esc(v.song.mood)}</div>
-      <div class="version-detail-lyrics">${esc(lyricsPreview)}${lyricsPreview.length>=400?"...":""}</div>
-      <div class="version-detail-btns">
-        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar esta na Biblioteca</button>
-        <button onclick="saveDraft(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
-      </div>
-    </div>`;
-  }
-
-  bar.innerHTML=`
-    <div class="versions-bar-title">📚 Versões anteriores — clique para ver (${versionsHistory.length}/5)</div>
-    <div class="version-chips">${chips}</div>
-    ${detail}`;
-}
-
-function showVersion(idx){
-  activeVersionIdx=activeVersionIdx===idx?null:idx;
-  renderVersionsBar();
 }
 
 function switchRTab(tab){
@@ -2406,46 +2254,165 @@ function toggleFav(id){
   saveLocal();renderLib();
 }
 
+
+// ══════════════════════════════════════
+// VERSÕES & RASCUNHOS
+// ══════════════════════════════════════
+function renderVersionsBar(){
+  const bar=document.getElementById("versions-bar");
+  if(!bar)return;
+  if(!versionsHistory.length){bar.style.display="none";return;}
+  bar.style.display="block";
+  const chips=versionsHistory.map((v,i)=>`
+    <button onclick="showVersion(${i})" class="version-chip${activeVersionIdx===i?" active":""}">
+      V${i+1} · ${esc((v.song.title||"Sem título").slice(0,18))}
+    </button>`).join("");
+  let detail="";
+  if(activeVersionIdx!==null&&versionsHistory[activeVersionIdx]){
+    const v=versionsHistory[activeVersionIdx];
+    const lyricsPreview=Object.values(v.sections||{}).join("\n\n").slice(0,400);
+    detail=`<div class="version-detail">
+      <div class="version-detail-title">${esc(v.song.title)} · ${esc(v.song.genre)} · ${v.song.bpm} BPM</div>
+      <div class="version-detail-lyrics">${esc(lyricsPreview)}${lyricsPreview.length>=400?"...":""}</div>
+      <div class="version-detail-btns">
+        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar na Biblioteca</button>
+        <button onclick="saveDraftFromVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
+      </div>
+    </div>`;
+  }
+  bar.innerHTML=`<div class="versions-bar-title">📚 Versões anteriores — clique para ver (${versionsHistory.length}/5)</div>
+    <div class="version-chips">${chips}</div>${detail}`;
+}
+
+function showVersion(idx){
+  activeVersionIdx=activeVersionIdx===idx?null:idx;
+  renderVersionsBar();
+}
+
+function useVersion(idx){
+  const v=versionsHistory[idx];
+  if(!v)return;
+  currentSong=JSON.parse(JSON.stringify(v.song));
+  currentSections=JSON.parse(JSON.stringify(v.sections));
+  versionsHistory.splice(idx,1);
+  activeVersionIdx=null;
+  // Save to library
+  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration||"",date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:v.struct};
+  history=[entry,...history].slice(0,30);
+  saveHistory();updateLibN();
+  renderResult(v.struct||Object.keys(currentSections));
+  showToast("✅ Versão restaurada na Biblioteca!","ok");
+}
+
+function saveDraftFromVersion(idx){
+  const v=versionsHistory[idx];
+  if(!v)return;
+  const draft={id:Date.now(),title:v.song.title,genre:v.song.genre,mood:v.song.mood,bpm:v.song.bpm,duration:v.song.duration||"",date:new Date().toLocaleDateString("pt-BR"),song:JSON.parse(JSON.stringify(v.song)),sections:JSON.parse(JSON.stringify(v.sections)),struct:v.struct,isDraft:true};
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  versionsHistory.splice(idx,1);
+  activeVersionIdx=null;
+  showToast("📝 Versão guardada nos Rascunhos!","ok");
+  renderVersionsBar();
+}
+
+function useCurrentSong(){
+  if(!currentSong)return;
+  const existing=history.find(h=>h.title===currentSong.title&&!h.isDraft);
+  if(existing){showToast("✅ Música já está na Biblioteca!","ok");setPage("lib");return;}
+  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration||"",date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:Object.keys(currentSections)};
+  history=[entry,...history].slice(0,30);
+  saveHistory();updateLibN();
+  showToast("✅ Música salva na Biblioteca!","ok");
+  setPage("lib");
+}
+
+function saveCurrentAsDraft(){
+  if(!currentSong)return;
+  const draft={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration||"",date:new Date().toLocaleDateString("pt-BR"),song:JSON.parse(JSON.stringify(currentSong)),sections:JSON.parse(JSON.stringify(currentSections)),struct:Object.keys(currentSections),isDraft:true};
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  showToast("📝 Guardado nos Rascunhos!","ok");
+}
+
+function moveToRascunho(id){
+  const idx=history.findIndex(h=>h.id===id);
+  if(idx<0)return;
+  const entry=history[idx];
+  const draft={...entry,isDraft:true};
+  drafts=drafts.filter(d=>d.id!==id);
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  history[idx]={...entry,isDraft:true};
+  try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+  updateLibN();renderLib();
+  showToast("📝 Música movida para Rascunhos!","ok");
+}
+
+function promoteDraft(draftId){
+  const didx=drafts.findIndex(d=>d.id===draftId);
+  const hidx=history.findIndex(h=>h.id===draftId);
+  if(didx<0&&hidx<0)return;
+  if(hidx>=0){
+    history[hidx]={...history[hidx],isDraft:false};
+    try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+  } else {
+    const d=drafts[didx];
+    history=[{...d,isDraft:false},...history].slice(0,30);
+  }
+  if(didx>=0)drafts.splice(didx,1);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  saveLocal();updateLibN();
+  showToast("✅ Música movida para a Biblioteca!","ok");
+  setPage("lib");
+}
+
+function deleteDraft(draftId){
+  drafts=drafts.filter(d=>d.id!==draftId);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  // Also remove from history if isDraft
+  history=history.filter(h=>h.id!==draftId);
+  saveLocal();
+  renderLib();showToast("Rascunho apagado","ok");
+}
+
+function loadDraftForEdit(draftId){
+  const d=drafts.find(x=>x.id===draftId)||history.find(x=>x.id===draftId&&x.isDraft);
+  if(!d)return;
+  currentSong=JSON.parse(JSON.stringify(d.song));
+  currentSections=JSON.parse(JSON.stringify(d.sections||{}));
+  versionsHistory=[];activeVersionIdx=null;
+  renderResult(d.struct||Object.keys(currentSections));
+  showToast("📝 Rascunho carregado para edição","ok");
+}
+
 function renderDrafts(el,q){
   if(!el)return;
-  // Merge: drafts from localStorage + items in history marked as isDraft
+  // Combine: localStorage drafts + history items with isDraft:true
   const histDrafts=history.filter(e=>e.isDraft);
-  // Combine, avoid duplicates by id
   const allDrafts=[...drafts];
-  histDrafts.forEach(h=>{
-    if(!allDrafts.find(d=>d.id===h.id))allDrafts.push(h);
-  });
+  histDrafts.forEach(h=>{if(!allDrafts.find(d=>d.id===h.id))allDrafts.push(h);});
   let filtered=allDrafts;
   if(q)filtered=filtered.filter(d=>(d.title||"").toLowerCase().includes(q)||(d.genre||"").toLowerCase().includes(q)||(d.mood||"").toLowerCase().includes(q));
   if(!filtered.length){
-    el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#aaa;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">📝</div><div style="font-size:14px">${q?"Nenhum rascunho encontrado":"Nenhum rascunho ainda"}</div><div style="font-size:12px;margin-top:8px;color:#999">Ao refazer músicas, guarde as versões anteriores como rascunhos</div></div>`;
+    el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#aaa;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">📝</div><div style="font-size:14px">Nenhum rascunho ainda</div><div style="font-size:12px;margin-top:8px;color:#999">Ao refazer músicas, guarde as versões como rascunhos</div></div>`;
     return;
   }
   el.innerHTML=filtered.map(d=>`
     <div class="lib-card" style="border-left:3px solid #6366f1">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
         <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.title)}</div>
         <span class="draft-badge">📝 Rascunho</span>
       </div>
-      <div style="font-size:12px;color:#6366f1;margin-bottom:2px">${esc(d.genre)} · ${d.bpm} BPM</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(d.mood)} · ${d.date}</div>
+      <div style="font-size:12px;color:#6366f1;margin-bottom:2px">${esc(d.genre||"")} · ${d.bpm||""} BPM</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(d.mood||"")} · ${d.date||""}</div>
       <div style="font-size:12px;color:var(--text3);line-height:1.6;max-height:80px;overflow:hidden;margin-bottom:10px;white-space:pre-wrap">${esc(Object.values(d.sections||{}).join("\n").slice(0,150))}...</div>
       <div style="display:flex;gap:7px">
         <button onclick="promoteDraft(${d.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button>
-        <button onclick="loadDraftForEdit(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer">✏️</button>
-        <button onclick="deleteDraft(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #fca5a5;background:#fef2f2;color:#999;font-size:12px;cursor:pointer">🗑</button>
+        <button onclick="loadDraftForEdit(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer" title="Editar">✏️</button>
+        <button onclick="deleteDraft(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #fca5a5;background:#fef2f2;color:#999;font-size:12px;cursor:pointer" title="Apagar">🗑</button>
       </div>
     </div>`).join("");
-}
-
-function loadDraftForEdit(draftId){
-  const d=drafts.find(x=>x.id===draftId);
-  if(!d)return;
-  currentSong=JSON.parse(JSON.stringify(d.song));
-  currentSections=JSON.parse(JSON.stringify(d.sections||{}));
-  versionsHistory=[];
-  renderResult(d.struct||Object.keys(currentSections));
-  showToast("📝 Rascunho carregado para edição","ok");
 }
 
 function renderLib(){
@@ -2453,10 +2420,9 @@ function renderLib(){
   const el=document.getElementById("lib-grid");
   if(!el)return;
   const q=(document.getElementById("lib-search")?.value||"").toLowerCase().trim();
-  // Rascunhos mode — show drafts instead of history
-  if(libFilter==="drafts"){
-    renderDrafts(el,q);return;
-  }
+  // Rascunhos mode
+  if(libFilter==="drafts"){renderDrafts(el,q);return;}
+  // Normal: exclude isDraft
   let filtered=history.filter(e=>!e.isDraft).filter(e=>{
     if(libFilter==="fav")return e.fav;
     if(libFilter==="audio")return e.audio;
@@ -2511,26 +2477,6 @@ function addAudio(id,input){
     })
     .catch(e=>{showToast("❌ Erro: "+e.message,"err");renderLib();});
 }
-function moveToRascunho(id){
-  const idx=history.findIndex(h=>h.id===id);
-  if(idx<0){showToast("Música não encontrada","err");return;}
-  // Mark as draft in history
-  history[idx]={...history[idx],isDraft:true};
-  // Save to drafts separately too
-  const draft=JSON.parse(JSON.stringify(history[idx]));
-  drafts=drafts.filter(d=>d.id!==id);
-  drafts.unshift(draft);
-  // Save both
-  try{
-    localStorage.setItem("ams6",JSON.stringify(history));
-    localStorage.setItem("ams6_backup",JSON.stringify(history));
-    localStorage.setItem("ams_drafts",JSON.stringify(drafts));
-  }catch(e){console.error("saveToRascunho error",e);}
-  updateLibN();
-  renderLib();
-  showToast("📝 Música movida para Rascunhos!","ok");
-}
-
 function removeAudio(id){
   const idx=history.findIndex(x=>x.id===id);
   if(idx>=0){delete history[idx].audio;saveHistory();renderLib();showToast("Áudio removido","ok");}
