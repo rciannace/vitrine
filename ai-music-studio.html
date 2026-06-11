@@ -408,6 +408,14 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     window.dispatchEvent(new Event("firebase-ready"));
     if (typeof initApp === "function") initApp();
   </script>
+  <script type="module">
+    import{initializeApp}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+    const app=initializeApp({apiKey:"AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",authDomain:"ia-foto-studio-346ed.firebaseapp.com",projectId:"ia-foto-studio-346ed",storageBucket:"ia-foto-studio-346ed.firebasestorage.app",messagingSenderId:"16163406496",appId:"1:16163406496:web:ab936afab6f681a007ffc5"});
+    const db=getFirestore(app);
+    window._fbDb=db;window._fbDoc=doc;window._fbGetDoc=getDoc;window._fbSetDoc=setDoc;window._fbReady=true;
+    window.dispatchEvent(new Event("firebase-ready"));
+  </script>
 </head>
 <body>
 
@@ -423,7 +431,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
       <span>Biblioteca</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
-    <button onclick="fbLoad().then(()=>{showToast('☁️ Atualizado!','ok');})" title="Buscar atualizações" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
+    <button onclick="fbLoad().then(ok=>{updateLibN();if(currentPage==='lib')renderLib();showToast(ok?'☁️ Atualizado!':'☁️ Já atualizado','ok');})" title="Buscar atualizações da nuvem" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
+    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" title="Buscar atualizações" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #22c55e;background:#f0fdf4;color:#16a34a;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">☁️</button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
@@ -453,7 +462,7 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <div style="font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:6px">☁️ SINCRONIZAÇÃO AUTOMÁTICA</div>
     <div id="fb-status" style="padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600;margin-bottom:10px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e30">✅ Firebase ativo — sync automático</div>
     <div style="font-size:11px;color:#666;margin-bottom:8px;line-height:1.5">Salva automaticamente em todos os dispositivos. Para forçar uma atualização agora:</div>
-    <button onclick="fbLoad().then(()=>{showToast('☁️ Atualizado!','ok');})" style="width:100%;padding:9px;border-radius:10px;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">🔄 Buscar atualizações agora</button>
+    <button onclick="fbLoad().then(()=>{updateLibN();if(currentPage==='lib')renderLib();showToast('☁️ Atualizado!','ok');})" style="width:100%;padding:9px;border-radius:10px;border:1.5px solid #3b82f6;background:#eff6ff;color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">🔄 Buscar atualizações agora</button>
   </div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
@@ -689,7 +698,8 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
     <!-- GitHub Token Panel -->
 
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-
+        <button onclick="ghLoad()" style="font-size:11px;color:#3b82f6;background:none;border:1px solid #3b82f6;border-radius:20px;padding:4px 12px;cursor:pointer">🔄 Recarregar da nuvem</button>
+        <button onclick="localStorage.removeItem('ams_gh_token');ghToken=null;renderSyncUI();document.getElementById('gh-token-panel').style.display='none';showToast('Token removido','ok')" style="font-size:11px;color:#aaa;background:none;border:1px solid #eee;border-radius:20px;padding:4px 12px;cursor:pointer">Remover token</button>
       </div>
     </div>
 
@@ -1180,21 +1190,43 @@ async function fbLoad(){
   try{
     const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
     const cloud=snap.exists()?(snap.data().history||[]):[];
-    if(cloud.length===0)return false;
+    // sempre mescla cloud + local
     const cloudMap=Object.fromEntries(cloud.map(e=>[e.id,e]));
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-    // cloud vence — traz tudo da nuvem e mescla com local
-    const merged=Object.values({...localMap,...cloudMap}).sort((a,b)=>b.id-a.id);
+    const merged=Object.values({...cloudMap,...localMap}).sort((a,b)=>b.id-a.id);
+    const changed=merged.length!==history.length||merged.some((e,i)=>e.id!==history[i]?.id);
     history=merged;
     localStorage.setItem("ams6",JSON.stringify(history));
     localStorage.setItem("ams6_backup",JSON.stringify(history));
     updateLibN();
-    // refresh ambas as abas
-    if(currentPage==="lib"){
-      renderLib();
-    }
-    return true;
+    if(currentPage==="lib")renderLib();
+    // se local tinha mais dados, manda para nuvem também
+    if(localMap.length>cloud.length||changed)fbPersistBg();
+    return merged.length>0;
   }catch(e){console.warn("fbLoad error:",e);return false;}
+}
+
+async function fbPersist(){
+  if(!window._fbReady||!window._fbDb)return;
+  try{await window._fbSetDoc(window._fbDoc(window._fbDb,"music-studio","library"),{history:history,updatedAt:Date.now()});}
+  catch(e){console.warn("fbPersist:",e);}
+}
+function fbPersistBg(){fbPersist().catch(e=>console.warn(e));}
+
+async function fbLoad(){
+  if(!window._fbReady||!window._fbDb)return false;
+  try{
+    const snap=await window._fbGetDoc(window._fbDoc(window._fbDb,"music-studio","library"));
+    const cloud=snap.exists()?(snap.data().history||[]):[];
+    if(!cloud.length)return false;
+    const cm=Object.fromEntries(cloud.map(e=>[e.id,e]));
+    const lm=Object.fromEntries(history.map(e=>[e.id,e]));
+    history=Object.values({...lm,...cm}).sort((a,b)=>b.id-a.id);
+    try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+    updateLibN();
+    if(currentPage==="lib")renderLib();
+    return true;
+  }catch(e){console.warn("fbLoad:",e);return false;}
 }
 
 window.onload=()=>{
@@ -2440,7 +2472,7 @@ function saveSunoEntry(){
     saveLocal();
     showToast("✅ Música adicionada e sincronizada!","ok");
   } else {
-    showToast("✅ Música adicionada!","ok");
+    showToast("✅ Salvo! Configure o token GitHub em ⚙️ para não perder ao atualizar a página.","ok");
   }
 
   updateLibN();
@@ -2472,7 +2504,7 @@ let spShuffle=false;
 let spRepeat="none"; // none | all | one
 let spIndex=-1;   // índice atual
 let spPlaying=false;
-let spAudio=null;
+const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
 
 function renderGallery(){
   const withAudio=history.filter(e=>e.audio);
@@ -2636,8 +2668,7 @@ function spUpdateUI(){
 
 // Audio events
 (function(){
-  spAudio=document.getElementById("sp-audio");
-  const audio=spAudio;
+  const audio=document.getElementById("sp-audio");
   if(!audio)return;
   audio.addEventListener("timeupdate",()=>{
     if(!audio.duration)return;
