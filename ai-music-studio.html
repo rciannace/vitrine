@@ -2172,14 +2172,21 @@ function saveCurrentAsDraft(){
 
 function promoteDraft(draftId){
   const idx=drafts.findIndex(d=>d.id===draftId);
-  if(idx<0)return;
-  const d=drafts[idx];
-  // Add to main library
-  const entry={...d,isDraft:false,id:Date.now()};
-  history.unshift(entry);
-  drafts.splice(idx,1);
-  saveLocal();
+  // Also check history
+  const histIdx=history.findIndex(h=>h.id===draftId);
+  if(idx<0&&histIdx<0)return;
+  const d=idx>=0?drafts[idx]:history[histIdx];
+  // Remove isDraft flag and ensure in history
+  if(histIdx>=0){
+    history[histIdx]={...history[histIdx],isDraft:false};
+  } else {
+    const entry={...d,isDraft:false,id:d.id};
+    history.unshift(entry);
+  }
+  // Remove from drafts array
+  if(idx>=0)drafts.splice(idx,1);
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  saveLocal();
   updateLibN();
   showToast("✅ Música movida para a Biblioteca!","ok");
   setPage("lib");
@@ -2390,7 +2397,14 @@ function toggleFav(id){
 
 function renderDrafts(el,q){
   if(!el)return;
-  let filtered=drafts;
+  // Merge: drafts from localStorage + items in history marked as isDraft
+  const histDrafts=history.filter(e=>e.isDraft);
+  // Combine, avoid duplicates by id
+  const allDrafts=[...drafts];
+  histDrafts.forEach(h=>{
+    if(!allDrafts.find(d=>d.id===h.id))allDrafts.push(h);
+  });
+  let filtered=allDrafts;
   if(q)filtered=filtered.filter(d=>(d.title||"").toLowerCase().includes(q)||(d.genre||"").toLowerCase().includes(q)||(d.mood||"").toLowerCase().includes(q));
   if(!filtered.length){
     el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#aaa;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">📝</div><div style="font-size:14px">${q?"Nenhum rascunho encontrado":"Nenhum rascunho ainda"}</div><div style="font-size:12px;margin-top:8px;color:#999">Ao refazer músicas, guarde as versões anteriores como rascunhos</div></div>`;
@@ -2490,15 +2504,19 @@ function moveToRascunho(id){
   const idx=history.findIndex(h=>h.id===id);
   if(idx<0)return;
   const entry=history[idx];
+  // Save to drafts storage
   const draft={
     ...entry,
-    id:Date.now(),
+    id:entry.id, // keep same id
     isDraft:true,
     date:entry.date||new Date().toLocaleDateString("pt-BR")
   };
+  // Remove from drafts if already there (avoid duplicate)
+  drafts=drafts.filter(d=>d.id!==entry.id);
   drafts.unshift(draft);
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
-  history.splice(idx,1);
+  // Mark as draft in history too (so Firebase sync doesn't bring it back to Todas)
+  history[idx]={...entry,isDraft:true};
   saveLocal();
   updateLibN();
   renderLib();
