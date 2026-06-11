@@ -84,7 +84,7 @@ body.dark .chip{background:#162040;color:#7aaac8;border-color:#1b3a5c;font-weigh
 body.dark .chip:hover{background:#1c3461;color:#a0c4dd}
 body.dark .chip.sel,body.dark .chip.sel-r,body.dark .chip.sel-b,body.dark .chip.sel-g,body.dark .chip.sel-p,body.dark .chip.sel-y{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important;box-shadow:0 0 10px rgba(0,194,209,0.4)!important}
 /* ── VOZ BUTTONS DARK ── */
-body.dark #voz-masc,body.dark #voz-fem{background:#162040!important;color:#7aaac8!important;border:1.5px solid #1b3a5c!important;box-shadow:none!important}
+body.dark #voz-masc,body.dark #voz-fem{background:#162040!important;color:#7aaac8!important;border:1.5px solid #1b3a5c!important;box-shadow:none!important;font-weight:400!important}
 body.dark #voz-fem[style*="f97316"],body.dark #voz-masc[style*="f97316"]{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important;box-shadow:0 0 10px rgba(0,194,209,0.4)!important}
 /* ── DURAÇÃO DARK ── */
 body.dark .dur-card{background:#162040!important;border-color:#1b3a5c!important}
@@ -621,8 +621,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#1b6ca8,
       <div style="margin-bottom:14px">
         <div class="card-title">🎙 Tipo de Voz</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;background:#f8f8f8;color:#555;box-shadow:none;border:1.5px solid #eee">Masculina</button>
-          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;background:#f97316;color:#fff;box-shadow:none;border:1.5px solid transparent">Feminina</button>
+          <button class="btn-main" id="voz-masc" onclick="selVoice('mg')" style="padding:12px;font-size:13px;box-shadow:none">Masculina</button>
+          <button class="btn-main" id="voz-fem" onclick="selVoice('fp')" style="padding:12px;font-size:13px;box-shadow:none">Feminina</button>
         </div>
         <div style="font-size:11px;color:var(--text4);margin-bottom:7px;letter-spacing:1px;font-weight:600;text-transform:uppercase">Timbre da Voz</div>
         <div class="chips" id="timbre-chips"></div>
@@ -1130,6 +1130,7 @@ window.onload=()=>{
   buildChips("tempo-chips",TEMPOS,"sel-b",()=>selTempo,v=>selTempo=v);
   buildTimbreChips();
   buildEstruturaChips();
+  selVoice(selVoz);
   renderFavorites();
   updateSunoPreview();
   updateLibN();
@@ -2183,8 +2184,7 @@ function surpresaMe(){
   document.querySelectorAll("#tempo-chips .chip").forEach(b=>{b.className="chip"+(b.textContent.trim()===t.l?"chip sel-b":"chip");});
   const tc=document.getElementById("timbre-chips");if(tc){tc.innerHTML="";buildTimbreChips();}
   const masc=document.getElementById("voz-masc");const fem=document.getElementById("voz-fem");
-  if(v==="fp"){fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";}
-  else{masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";}
+  selVoice(v);
   updateSunoPreview();
   showToast("Aleatorio: "+g.l+" / "+m.l+" / "+(v==="fp"?"Feminina":"Masculina")+" / "+t.bpm+" BPM","ok");
 }
