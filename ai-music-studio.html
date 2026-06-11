@@ -1654,14 +1654,19 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
-    history=[entry,...history].slice(0,30);
-    saveHistory();
-    updateLibN();activeRTab="letra";
-  ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
+    if(!isRefazing){
+      // Normal generation: save to library
+      history=[entry,...history].slice(0,30);
+      saveHistory();
+      updateLibN();
+    }
+    isRefazing=false;
+    activeRTab="letra";
+    ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
     renderResult(secsToUse);
-    versionsHistory=versionsHistory.slice(-5); // keep max 5
+    versionsHistory=versionsHistory.slice(-5);
     renderVersionsBar();
-    showToast("🎵 Música criada!","ok");
+    showToast("🎵 Música gerada!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
 }
@@ -1753,9 +1758,10 @@ function renderResult(structs){
   const ra=document.getElementById("page-result");
   ra.innerHTML=`<div style="animation:fadeup .4s ease">
 
-    <div style="display:flex;gap:8px;margin-bottom:14px">
-      <button onclick="editingFromLib?setPage('lib'):setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid #eee;background:#fff;font-size:12px;color:#666;cursor:pointer">← Voltar</button>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <button onclick="editingFromLib?setPage('lib'):setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);font-size:12px;color:var(--text3);cursor:pointer">← Voltar</button>
       ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':''}
+      ${!editingFromLib?'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Guardar Rascunho</button>':''}
     </div>
 
     <div class="song-header">
@@ -2078,6 +2084,7 @@ function toggleSecPanel(sid,mode){
   if(mode==="estender"&&!extOpen){if(ext)ext.style.display="block";if(sb)sb.className="sec-btn son";}
 }
 
+let isRefazing=false; // flag to prevent auto-save to library
 function refazerMusica(){
   if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
   // Save current version before redoing
@@ -2088,6 +2095,7 @@ function refazerMusica(){
     struct:Object.keys(currentSections)
   });
   showToast("🔄 Versão salva! Gerando nova...","ok");
+  isRefazing=true;
   setTimeout(function(){generate();},300);
 }
 
@@ -2122,6 +2130,40 @@ function useVersion(versionIdx){
   versionsHistory.splice(versionIdx,1);
   renderResult(Object.keys(currentSections));
   showToast("✅ Versão restaurada!","ok");
+}
+
+function useCurrentSong(){
+  if(!currentSong)return;
+  // Check if already in library
+  const existing=history.find(h=>h.id===currentSong.id||h.title===currentSong.title);
+  if(existing){showToast("✅ Música já está na Biblioteca!","ok");setPage("lib");return;}
+  const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:Object.keys(currentSections)};
+  history=[entry,...history].slice(0,30);
+  saveHistory();
+  updateLibN();
+  showToast("✅ Música salva na Biblioteca!","ok");
+  setPage("lib");
+}
+
+function saveCurrentAsDraft(){
+  if(!currentSong)return;
+  const draft={
+    id:Date.now(),
+    title:currentSong.title,
+    genre:currentSong.genre,
+    mood:currentSong.mood,
+    bpm:currentSong.bpm,
+    duration:currentSong.duration||"",
+    voice:currentSong.voice||"",
+    date:new Date().toLocaleDateString("pt-BR"),
+    song:JSON.parse(JSON.stringify(currentSong)),
+    sections:JSON.parse(JSON.stringify(currentSections)),
+    struct:Object.keys(currentSections),
+    isDraft:true
+  };
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  showToast("📝 Guardado como Rascunho!","ok");
 }
 
 function promoteDraft(draftId){
