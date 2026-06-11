@@ -289,6 +289,17 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .result-tabs{display:flex;gap:2px;border-bottom:2px solid #eee;margin-bottom:16px}
 .rtab{flex:1;text-align:center;padding:10px 6px;font-size:11px;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
 .rtab-refazer{color:#22c55e!important;font-weight:600}
+/* Versões */
+.versions-bar{margin-top:18px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px}
+.versions-bar-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.version-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.version-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--bg3);color:var(--text3);transition:all .2s}
+.version-chip.active{background:#1b6ca8;color:#fff;border-color:#1b6ca8}
+.version-detail{background:var(--bg3);border-radius:12px;padding:12px;border:1px solid var(--border)}
+.version-detail-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+.version-detail-lyrics{font-size:12px;color:var(--text3);line-height:1.7;white-space:pre-wrap;max-height:180px;overflow-y:auto;margin-bottom:10px}
+.version-detail-btns{display:flex;gap:8px}
+.draft-badge{display:inline-block;padding:2px 8px;background:#6366f1;color:#fff;border-radius:10px;font-size:10px;font-weight:700;margin-left:6px}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
 .rtab.active{color:#f97316;border-bottom-color:#f97316;font-weight:600}
 
@@ -723,6 +734,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <button onclick="setLibFilter('')" id="lf-all" class="chip sel" style="font-size:11px">Todas</button>
       <button onclick="setLibFilter('fav')" id="lf-fav" class="chip" style="font-size:11px">⭐ Favoritas</button>
       <button onclick="setLibFilter('audio')" id="lf-audio" class="chip" style="font-size:11px">🎵 Com áudio</button>
+      <button onclick="setLibFilter('drafts')" id="lf-drafts" class="chip" style="font-size:11px">📝 Rascunhos</button>
     </div>
 
     <div class="lib-grid" id="lib-grid">
@@ -959,6 +971,9 @@ let selExtras=[],selDuration="normal";
 let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
+let versionsHistory=[]; // armazena versões anteriores {song, sections, struct}
+let drafts=[]; // rascunhos guardados
+try{drafts=JSON.parse(localStorage.getItem("ams_drafts")||"[]");}catch{}
 let currentPage="criar",mainTab="descrever";
 let history=[];
 try{
@@ -1579,7 +1594,7 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
     if(!tema){showToast("Cole a letra de referência!","err");return;}
   }
 
-  setLoading(true);currentSong=null;currentSections={};
+  setLoading(true);currentSong=null;currentSections={};versionsHistory=[];activeVersionIdx=null;
 
   const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial, com profundo conhecimento em teoria musical, prosódia, construção de letras poéticas e técnicas de produção profissional. Trabalhou com os maiores artistas do país e compreende os segredos que fazem uma música se tornar um hit atemporal.
 
@@ -1644,6 +1659,8 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     updateLibN();activeRTab="letra";
   ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
     renderResult(secsToUse);
+    versionsHistory=versionsHistory.slice(-5); // keep max 5
+    renderVersionsBar();
     showToast("🎵 Música criada!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
@@ -1766,6 +1783,9 @@ function renderResult(structs){
       <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
       <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
     </div>
+
+    <!-- Versions bar -->
+    <div id="versions-bar" style="display:none" class="versions-bar"></div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
       <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
@@ -2060,8 +2080,98 @@ function toggleSecPanel(sid,mode){
 
 function refazerMusica(){
   if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
-  showToast("🔄 Refazendo com as mesmas configurações...","ok");
+  // Save current version before redoing
+  if(versionsHistory.length>=5)versionsHistory.shift(); // max 5
+  versionsHistory.push({
+    song:JSON.parse(JSON.stringify(currentSong)),
+    sections:JSON.parse(JSON.stringify(currentSections)),
+    struct:Object.keys(currentSections)
+  });
+  showToast("🔄 Versão salva! Gerando nova...","ok");
   setTimeout(function(){generate();},300);
+}
+
+function saveDraft(versionIdx){
+  const v=versionsHistory[versionIdx];
+  if(!v)return;
+  const draft={
+    id:Date.now(),
+    title:v.song.title,
+    genre:v.song.genre,
+    mood:v.song.mood,
+    bpm:v.song.bpm,
+    duration:v.song.duration,
+    voice:v.song.voice,
+    date:new Date().toLocaleDateString("pt-BR"),
+    song:v.song,
+    sections:v.sections,
+    struct:v.struct,
+    isDraft:true
+  };
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  showToast("📝 Rascunho salvo!","ok");
+  renderVersionsBar();
+}
+
+function useVersion(versionIdx){
+  const v=versionsHistory[versionIdx];
+  if(!v)return;
+  currentSong=JSON.parse(JSON.stringify(v.song));
+  currentSections=JSON.parse(JSON.stringify(v.sections));
+  versionsHistory.splice(versionIdx,1);
+  renderResult(Object.keys(currentSections));
+  showToast("✅ Versão restaurada!","ok");
+}
+
+function promoteDraft(draftId){
+  const idx=drafts.findIndex(d=>d.id===draftId);
+  if(idx<0)return;
+  const d=drafts[idx];
+  // Add to main library
+  const entry={...d,isDraft:false,id:Date.now()};
+  history.unshift(entry);
+  drafts.splice(idx,1);
+  saveLocal();
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  updateLibN();
+  showToast("✅ Música movida para a Biblioteca!","ok");
+  setPage("lib");
+}
+
+function deleteDraft(draftId){
+  drafts=drafts.filter(d=>d.id!==draftId);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  renderLib();
+  showToast("Rascunho apagado","ok");
+}
+
+let activeVersionIdx=null;
+function renderVersionsBar(){
+  const bar=document.getElementById("versions-bar");
+  if(!bar)return;
+  if(!versionsHistory.length){bar.style.display="none";return;}
+  bar.style.display="block";
+  const chips=versionsHistory.map((v,i)=>`<div class="version-chip${activeVersionIdx===i?" active":""}" onclick="showVersion(${i})">V${i+1} · ${esc(v.song.title||"Sem título").slice(0,20)}</div>`).join("");
+  let detail="";
+  if(activeVersionIdx!==null&&versionsHistory[activeVersionIdx]){
+    const v=versionsHistory[activeVersionIdx];
+    const lyricsPreview=Object.values(v.sections).join("\n\n").slice(0,300)+"...";
+    detail=`<div class="version-detail">
+      <div class="version-detail-title">${esc(v.song.title)} · ${v.song.genre} · ${v.song.bpm} BPM</div>
+      <div class="version-detail-lyrics">${esc(lyricsPreview)}</div>
+      <div class="version-detail-btns">
+        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar esta</button>
+        <button onclick="saveDraft(${activeVersionIdx})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
+      </div>
+    </div>`;
+  }
+  bar.innerHTML=`<div class="versions-bar-title">📚 Versões anteriores (${versionsHistory.length}/5)</div><div class="version-chips">${chips}</div>${detail}`;
+}
+
+function showVersion(idx){
+  activeVersionIdx=activeVersionIdx===idx?null:idx;
+  renderVersionsBar();
 }
 
 function switchRTab(tab){
@@ -2209,7 +2319,7 @@ async function sugerirTitulo(){
 let libFilter="";
 function setLibFilter(f){
   libFilter=f;
-  ["all","fav","audio"].forEach(id=>{
+  ["all","fav","audio","drafts"].forEach(id=>{
     const btn=document.getElementById("lf-"+id);
     if(btn)btn.className="chip"+(((f===""&&id==="all")||(f===id))?" sel":"");
   });
@@ -2222,11 +2332,50 @@ function toggleFav(id){
   saveLocal();renderLib();
 }
 
+function renderDrafts(el,q){
+  if(!el)return;
+  let filtered=drafts;
+  if(q)filtered=filtered.filter(d=>(d.title||"").toLowerCase().includes(q)||(d.genre||"").toLowerCase().includes(q)||(d.mood||"").toLowerCase().includes(q));
+  if(!filtered.length){
+    el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#aaa;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">📝</div><div style="font-size:14px">${q?"Nenhum rascunho encontrado":"Nenhum rascunho ainda"}</div><div style="font-size:12px;margin-top:8px;color:#999">Ao refazer músicas, guarde as versões anteriores como rascunhos</div></div>`;
+    return;
+  }
+  el.innerHTML=filtered.map(d=>`
+    <div class="lib-card" style="border-left:3px solid #6366f1">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.title)}</div>
+        <span class="draft-badge">📝 Rascunho</span>
+      </div>
+      <div style="font-size:12px;color:#6366f1;margin-bottom:2px">${esc(d.genre)} · ${d.bpm} BPM</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(d.mood)} · ${d.date}</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.6;max-height:80px;overflow:hidden;margin-bottom:10px;white-space:pre-wrap">${esc(Object.values(d.sections||{}).join("\n").slice(0,150))}...</div>
+      <div style="display:flex;gap:7px">
+        <button onclick="promoteDraft(${d.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button>
+        <button onclick="loadDraftForEdit(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer">✏️</button>
+        <button onclick="deleteDraft(${d.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #fca5a5;background:#fef2f2;color:#999;font-size:12px;cursor:pointer">🗑</button>
+      </div>
+    </div>`).join("");
+}
+
+function loadDraftForEdit(draftId){
+  const d=drafts.find(x=>x.id===draftId);
+  if(!d)return;
+  currentSong=JSON.parse(JSON.stringify(d.song));
+  currentSections=JSON.parse(JSON.stringify(d.sections||{}));
+  versionsHistory=[];
+  renderResult(d.struct||Object.keys(currentSections));
+  showToast("📝 Rascunho carregado para edição","ok");
+}
+
 function renderLib(){
   if(activeLibTab==="galeria"){renderGallery();return;}
   const el=document.getElementById("lib-grid");
   if(!el)return;
   const q=(document.getElementById("lib-search")?.value||"").toLowerCase().trim();
+  // Rascunhos mode — show drafts instead of history
+  if(libFilter==="drafts"){
+    renderDrafts(el,q);return;
+  }
   let filtered=history.filter(e=>{
     if(libFilter==="fav")return e.fav;
     if(libFilter==="audio")return e.audio;
