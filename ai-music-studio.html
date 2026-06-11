@@ -1664,8 +1664,9 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, s
     activeRTab="letra";
     ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
     renderResult(secsToUse);
-    versionsHistory=versionsHistory.slice(-5);
-    renderVersionsBar();
+    // renderVersionsBar AFTER renderResult so the DOM element exists
+    versionsHistory=versionsHistory.slice(0,5);
+    setTimeout(function(){renderVersionsBar();},100);
     showToast("🎵 Música gerada!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{setLoading(false);}
@@ -1873,6 +1874,9 @@ function renderResult(structs){
       </div>
       <div id="ajuste-estilo-content"></div>
     </div>
+
+    <!-- BARRA DE VERSÕES — aparece após Refazer -->
+    <div id="versions-bar" style="display:none" class="versions-bar"></div>
 
   </div>`;
   setTimeout(function(){renderAjusteEstilo();},50);
@@ -2194,21 +2198,31 @@ function renderVersionsBar(){
   if(!bar)return;
   if(!versionsHistory.length){bar.style.display="none";return;}
   bar.style.display="block";
-  const chips=versionsHistory.map((v,i)=>`<div class="version-chip${activeVersionIdx===i?" active":""}" onclick="showVersion(${i})">V${i+1} · ${esc(v.song.title||"Sem título").slice(0,20)}</div>`).join("");
+
+  const chips=versionsHistory.map((v,i)=>`
+    <button onclick="showVersion(${i})" class="version-chip${activeVersionIdx===i?" active":""}">
+      V${i+1} · ${esc((v.song.title||"Sem título").slice(0,18))}
+    </button>`).join("");
+
   let detail="";
-  if(activeVersionIdx!==null&&versionsHistory[activeVersionIdx]){
+  if(activeVersionIdx!==null && versionsHistory[activeVersionIdx]){
     const v=versionsHistory[activeVersionIdx];
-    const lyricsPreview=Object.values(v.sections).join("\n\n").slice(0,300)+"...";
-    detail=`<div class="version-detail">
-      <div class="version-detail-title">${esc(v.song.title)} · ${v.song.genre} · ${v.song.bpm} BPM</div>
-      <div class="version-detail-lyrics">${esc(lyricsPreview)}</div>
+    const lyricsPreview=Object.values(v.sections||{}).join("\n\n").slice(0,400);
+    detail=`
+    <div class="version-detail" style="margin-top:10px">
+      <div class="version-detail-title">${esc(v.song.title)} · ${esc(v.song.genre)} · ${v.song.bpm} BPM · ${esc(v.song.mood)}</div>
+      <div class="version-detail-lyrics">${esc(lyricsPreview)}${lyricsPreview.length>=400?"...":""}</div>
       <div class="version-detail-btns">
-        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar esta</button>
-        <button onclick="saveDraft(${activeVersionIdx})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
+        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar esta na Biblioteca</button>
+        <button onclick="saveDraft(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
       </div>
     </div>`;
   }
-  bar.innerHTML=`<div class="versions-bar-title">📚 Versões anteriores (${versionsHistory.length}/5)</div><div class="version-chips">${chips}</div>${detail}`;
+
+  bar.innerHTML=`
+    <div class="versions-bar-title">📚 Versões anteriores — clique para ver (${versionsHistory.length}/5)</div>
+    <div class="version-chips">${chips}</div>
+    ${detail}`;
 }
 
 function showVersion(idx){
