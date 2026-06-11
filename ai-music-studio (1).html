@@ -274,10 +274,10 @@ body.dark .btn-main,body.dark #btn-gen{background:linear-gradient(135deg,#1b6ca8
 .btn-main:disabled{background:#e5e5e5;color:#aaa;box-shadow:none;cursor:not-allowed}
 
 /* STICKY FOOTER BTN */
-.footer-btn{position:fixed;bottom:0;left:0;right:0;padding:16px 16px 24px;background:linear-gradient(to top,var(--bg) 60%,color-mix(in srgb,var(--bg) 80%,transparent) 85%,transparent);z-index:50}
+.footer-btn{position:fixed;bottom:0;left:0;right:0;padding:16px 16px 24px;background:linear-gradient(to top,var(--bg) 60%,color-mix(in srgb,var(--bg) 80%,transparent) 85%,transparent);z-index:50;box-sizing:border-box}
 .footer-btn.has-player{bottom:90px}
 @media(max-width:700px){.footer-btn.has-player{bottom:80px}}
-.footer-btn-inner{display:flex;flex-direction:row;gap:10px;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box;padding:0}
+.footer-btn-inner{display:flex;gap:10px;max-width:600px;margin:0 auto;box-sizing:border-box}
 .footer-btn-inner>.btn-main{flex:1!important;width:auto!important;min-width:0!important;max-width:none!important}
 
 /* REDES RESULTADOS */
@@ -345,10 +345,10 @@ body.dark .btn-main,body.dark #btn-gen{background:linear-gradient(135deg,#1b6ca8
   max-width:600px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:300px 1fr 300px;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
   align-items:center;
-  padding:10px 24px 8px;
-  gap:12px;
+  padding:10px 16px 8px;
+  gap:8px;
   box-sizing:border-box;
 }
 @media(max-width:700px){
