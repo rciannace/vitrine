@@ -1192,7 +1192,6 @@ async function fbLoad(){
     // refresh ambas as abas
     if(currentPage==="lib"){
       renderLib();
-      renderGallery();
     }
     return true;
   }catch(e){console.warn("fbLoad error:",e);return false;}
@@ -2473,7 +2472,7 @@ let spShuffle=false;
 let spRepeat="none"; // none | all | one
 let spIndex=-1;   // índice atual
 let spPlaying=false;
-const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
+let spAudio=null;
 
 function renderGallery(){
   const withAudio=history.filter(e=>e.audio);
@@ -2637,7 +2636,8 @@ function spUpdateUI(){
 
 // Audio events
 (function(){
-  const audio=document.getElementById("sp-audio");
+  spAudio=document.getElementById("sp-audio");
+  const audio=spAudio;
   if(!audio)return;
   audio.addEventListener("timeupdate",()=>{
     if(!audio.duration)return;
