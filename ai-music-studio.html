@@ -449,7 +449,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   <div class="header-actions">
     <button class="btn-lib" onclick="setPage('lib')">
       <span>📚</span>
-      <span>Biblioteca</span>
+      <span>BIBLIOTECA</span>
       <span class="lib-count" id="lib-n">0</span>
     </button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
@@ -693,7 +693,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   <div id="page-lib" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div>
-        <div style="font-size:18px;font-weight:700;color:var(--text)">Suas Músicas</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">SUAS MÚSICAS</div>
         <div id="sync-status" style="margin-top:4px"></div>
       </div>
       <button onclick="setPage('criar')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);font-size:12px;color:var(--text3);cursor:pointer">← Voltar</button>
@@ -2447,6 +2447,7 @@ function renderLib(){
       <div style="display:flex;gap:7px">
         <button onclick="editTitle(${e.id})" style="padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#666;font-size:12px;cursor:pointer" title="Renomear">✏️</button>
         <button onclick="loadEntry(${e.id})" style="flex:1;padding:8px;border-radius:8px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;cursor:pointer">📝 Editar</button>
+        <button onclick="moveToRascunho(${e.id})" style="padding:8px 10px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:11px;font-weight:600;cursor:pointer" title="Mover para Rascunhos">📝 Rascunho</button>
         ${e.audio ? `<button onclick="removeAudio(${e.id})" style="padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#aaa;font-size:12px;cursor:pointer" title="Remover áudio">🔇</button>` : ""}
         <button onclick="delEntry(${e.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#999;font-size:12px;cursor:pointer">🗑</button>
       </div>
@@ -2471,6 +2472,25 @@ function addAudio(id,input){
     })
     .catch(e=>{showToast("❌ Erro: "+e.message,"err");renderLib();});
 }
+function moveToRascunho(id){
+  const idx=history.findIndex(h=>h.id===id);
+  if(idx<0)return;
+  const entry=history[idx];
+  const draft={
+    ...entry,
+    id:Date.now(),
+    isDraft:true,
+    date:entry.date||new Date().toLocaleDateString("pt-BR")
+  };
+  drafts.unshift(draft);
+  try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
+  history.splice(idx,1);
+  saveLocal();
+  updateLibN();
+  renderLib();
+  showToast("📝 Música movida para Rascunhos!","ok");
+}
+
 function removeAudio(id){
   const idx=history.findIndex(x=>x.id===id);
   if(idx>=0){delete history[idx].audio;saveHistory();renderLib();showToast("Áudio removido","ok");}
