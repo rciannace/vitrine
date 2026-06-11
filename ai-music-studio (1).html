@@ -17,8 +17,9 @@
 body.dark{
   --bg:#0b132b;--bg2:#1c3461;--bg3:#162040;
   --border:#1b3a5c;--border2:#1b4a6b;
-  --text:#c8dff0;--text2:#a0c4dd;--text3:#6a9ab8;--text4:#3a6a8a;--text5:#2a5070;
+  --text:#daeaf5;--text2:#b8d4e8;--text3:#7aaac8;--text4:#3a6a8a;--text5:#2a5070;
   --card-bg:#162040;--input-bg:#0f1d38;
+  --accent:#00c2d1;--accent2:#1b6ca8;
   --shadow:#00000080;
   --accent-dark: linear-gradient(135deg,#1b6ca8,#00c2d1);
 }
@@ -28,6 +29,7 @@ html{overflow-x:hidden;width:100%;touch-action:manipulation}body{overflow-x:hidd
 
 /* DARK MODE OVERRIDES */
 body.dark #main-tabs-card{background:linear-gradient(135deg,#0b132b,#1c3461)!important;border-color:#1b6ca8!important}
+body.dark #main-tabs-card .tab-item.active{color:#00c2d1!important;border-bottom-color:#00c2d1!important}
 body.dark #main-tabs-card .tab-item{color:rgba(255,255,255,0.85)}
 body.dark #main-tabs-card .tab-item.active{color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.3)}
 body.dark #main-tabs-card .tab-row{border-bottom-color:rgba(255,255,255,0.15)}
@@ -94,6 +96,23 @@ body.dark #page-lib{color:var(--text)}
 body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
 body.dark .sp-player{background:linear-gradient(180deg,#0b132b 0%,#0f1d38 100%);border-top:1px solid #1b6ca8}
+body.dark button[onclick*="sugerirTitulo"],body.dark #btn-cfg{background:var(--bg3)!important;border-color:var(--border)!important;color:var(--text2)!important}
+body.dark .dur-card.sel{border-color:#00c2d1!important;background:rgba(0,194,209,0.12)!important}
+body.dark .dur-name.sel{color:#00c2d1!important}
+body.dark .result-tabs{border-color:var(--border)!important}
+body.dark .rtab.active{color:#00c2d1!important;border-bottom-color:#00c2d1!important}
+body.dark .lib-tab.active{color:#00c2d1!important;border-bottom-color:#00c2d1!important}
+body.dark .tab-item.active{color:#00c2d1!important}
+body.dark .chip.sel{background:#1b6ca8!important;color:#daeaf5!important;border-color:#00c2d1!important}
+body.dark .chip.sel-r,body.dark .chip.sel-b,body.dark .chip.sel-g,body.dark .chip.sel-p{background:#162040!important;color:#00c2d1!important;border-color:#1b6ca8!important}
+body.dark .btn-lib{background:linear-gradient(135deg,#162040,#1c3461)!important;border-color:#1b6ca8!important;color:#00c2d1!important}
+body.dark .btn-lib .lib-count{background:#1b6ca8!important}
+body.dark .sp-player{background:linear-gradient(180deg,#0b132b,#0f1d38)!important;border-top-color:#1b6ca8!important}
+body.dark .sp-btn.play{background:#1b6ca8!important;color:#fff!important}
+body.dark .sp-bar{background:#00c2d1!important}
+body.dark .song-header{background:linear-gradient(135deg,#0f1d38,#162040)!important}
+body.dark .sec-head{background:linear-gradient(135deg,#0f1d38,#162040)!important}
+body.dark .export-label{color:#00c2d1!important}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
@@ -251,14 +270,14 @@ button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
 /* BTN MAIN */
 .btn-main{width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px #f9731630;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-body.dark .btn-main{background:linear-gradient(135deg,#1b6ca8,#00c2d1)!important;box-shadow:0 4px 16px rgba(27,108,168,0.4)!important}
+body.dark .btn-main,body.dark #btn-gen{background:linear-gradient(135deg,#1b6ca8,#00c2d1)!important;box-shadow:0 4px 16px rgba(27,108,168,0.4)!important;color:#fff!important}
 .btn-main:disabled{background:#e5e5e5;color:#aaa;box-shadow:none;cursor:not-allowed}
 
 /* STICKY FOOTER BTN */
 .footer-btn{position:fixed;bottom:0;left:0;right:0;padding:16px 16px 24px;background:linear-gradient(to top,var(--bg) 60%,color-mix(in srgb,var(--bg) 80%,transparent) 85%,transparent);z-index:50}
 .footer-btn.has-player{bottom:90px}
 @media(max-width:700px){.footer-btn.has-player{bottom:80px}}
-.footer-btn-inner{display:flex;flex-direction:row;gap:10px;max-width:600px;width:calc(100% - 32px);margin-left:auto;margin-right:auto;box-sizing:border-box}
+.footer-btn-inner{display:flex;flex-direction:row;gap:10px;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box;padding:0}
 .footer-btn-inner>.btn-main{flex:1!important;width:auto!important;min-width:0!important;max-width:none!important}
 
 /* REDES RESULTADOS */
@@ -323,7 +342,7 @@ body.dark .btn-main{background:linear-gradient(135deg,#1b6ca8,#00c2d1)!important
 /* layout de 3 colunas igual Spotify */
 .sp-player-inner{
   width:100%;
-  max-width:1400px;
+  max-width:600px;
   margin:0 auto;
   display:grid;
   grid-template-columns:300px 1fr 300px;
