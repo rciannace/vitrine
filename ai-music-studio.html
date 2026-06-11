@@ -2192,7 +2192,7 @@ function renderPromptHist(){
   if(!wrap||!chips)return;
   if(!promptHist.length){wrap.style.display="none";return;}
   wrap.style.display="block";
-  chips.innerHTML=promptHist.map((p,i)=>`<button onclick="usePromptHist(${i})" style="padding:4px 10px;border-radius:14px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:11px;cursor:pointer;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.replace(/"/g,"'")}">${p.length>30?p.slice(0,30)+"...":p} <span onclick="event.stopPropagation();removePromptHist(${i})" style="margin-left:4px;color:#aaa">x</span></button>`).join("");
+  chips.innerHTML=promptHist.map((p,i)=>`<button onclick="usePromptHist(${i})" style="padding:4px 10px;border-radius:14px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:11px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-flex;align-items:center;gap:6px" title="${p.replace(/"/g,"'")}">${p.length>28?p.slice(0,28)+"...":p}<span onclick="event.stopPropagation();removePromptHist(${i})" style="font-size:13px;color:#ef4444;font-weight:700;line-height:1;flex-shrink:0" title="Excluir">×</span></button>`).join("");
 }
 function usePromptHist(i){const el=document.getElementById("idea");if(el)el.value=promptHist[i];}
 function removePromptHist(i){promptHist.splice(i,1);localStorage.setItem("ams_prompt_hist",JSON.stringify(promptHist));renderPromptHist();}
