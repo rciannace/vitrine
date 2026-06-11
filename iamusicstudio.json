@@ -1,5 +1,119 @@
 [
   {
+    "id": 1781215425820,
+    "title": "Caminho da Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Caminho da Saudade",
+      "subtitle": "Onde o amor encontra o eco do tempo",
+      "key": "Mi maior",
+      "chords": "G - D - Em - C",
+      "vibe": "Um abraço musical que reverbera no peito, tingido pela doçura da saudade e a força de um amor que transcende a distância.",
+      "style_tags": [
+        "sertanejo romântico",
+        "amor verdadeiro",
+        "saudade",
+        "voz rouca"
+      ],
+      "sections": {
+        "Introdução": "O sol se põe, a viola geme\nUm eco de paixão que me consome\nNas curvas do tempo, o amor se esconde\nE a saudade em meu peito responde.\n\n(Violão dedilhado suave, com a entrada discreta da bateria marcando o pulso)",
+        "Verso 1": "Na noite que avança, em cada estrela;\nProcuro o teu rosto, em cada cancela.\nLembranças suspensas, num véu de luar,\nO cheiro do teu corpo, a me embriagar.\n\nUm beijo guardado, sabor de jasmim,\nNa pele marcado, o teu toque, enfim.\nSaudade que vem, em ondas sem fim.\nUm mar de lembranças me afoga assim.",
+        "Refrão": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A bateria entra com mais força, a guitarra suave cria contraponto com a melodia vocal. A segunda voz entra harmonizando.)",
+        "Verso 2": "O vento que sopra, em meu travesseiro,\nTraz o teu sussurro, desfaz o meu desespero.\nEm cada canção, em cada canção,\nEu te escuto baixinho, em meu coração.\n\nO tempo não apaga, a chama que ardeu,\nSeu rastro me guia, onde você se perdeu.\nE a cada manhã, que o sol renasceu,\nA certeza que o meu amor é só seu.",
+        "Refrão Final": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A intensidade aumenta gradualmente. A segunda voz se torna mais presente. O solo de guitarra entra, emotivo e melódico, culminando em um final grandioso com a dupla vocal harmonizando poderosamente.)"
+      },
+      "suno_style": "sertanejo, romantic, emotional, raspy male vocals, 90 BPM, acoustic guitar, slide guitar, powerful drums, vocal harmonies",
+      "instruments": [
+        "Violão dedilhado (base harmônica e melódica suave)",
+        "Guitarra slide (criando contraponto melódico e emotivo)",
+        "Bateria (com pegada forte e marcante, acentuando o refrão)",
+        "Segunda voz (harmonizando e enriquecendo a melodia vocal principal)",
+        "Baixo (sustentação rítmica e harmônica, com poucas linhas melódicas)"
+      ],
+      "production_notes": "A introdução deve ser delicada, com o violão dedilhado criando uma atmosfera íntima. A voz rouca do cantor principal entra em primeiro plano, com pouca saturação, para realçar sua textura única. A bateria começa timidamente, aumentando a pegada com a entrada do primeiro refrão. A segunda voz entra harmonizando sutilmente no primeiro refrão e se torna mais proeminente nos refrões subsequentes, criando um efeito 'dueto' característico do sertanejo. O solo de guitarra deve ser melódico e emotivo, evitando distorções pesadas, com um timbre quente e expressivo. A mixagem deve ter um wide stereo, com o violão e a guitarra slide ocupando espaços diferentes para clareza. A bateria deve ter um punch presente, especialmente no bumbo e na caixa, mas sem ofuscar as vozes. O final do último refrão deve soar grandioso, com todas as vozes e instrumentos em sua plenitude, com um leve reverb para dar profundidade. Dinâmica do verso para o refrão deve ser clara. Tons altos e baixos na melodia vocal para explorar a extensão e a emotividade da voz rouca.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🌫 Voz Rouca",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "O sol se põe, a viola geme\nUm eco de paixão que me consome\nNas curvas do tempo, o amor se esconde\nE a saudade em meu peito responde.\n\n(Violão dedilhado suave, com a entrada discreta da bateria marcando o pulso)",
+      "Verso 1": "Na noite que avança, em cada estrela;\nProcuro o teu rosto, em cada cancela.\nLembranças suspensas, num véu de luar,\nO cheiro do teu corpo, a me embriagar.\n\nUm beijo guardado, sabor de jasmim,\nNa pele marcado, o teu toque, enfim.\nSaudade que vem, em ondas sem fim.\nUm mar de lembranças me afoga assim.",
+      "Refrão": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A bateria entra com mais força, a guitarra suave cria contraponto com a melodia vocal. A segunda voz entra harmonizando.)",
+      "Verso 2": "O vento que sopra, em meu travesseiro,\nTraz o teu sussurro, desfaz o meu desespero.\nEm cada canção, em cada canção,\nEu te escuto baixinho, em meu coração.\n\nO tempo não apaga, a chama que ardeu,\nSeu rastro me guia, onde você se perdeu.\nE a cada manhã, que o sol renasceu,\nA certeza que o meu amor é só seu.",
+      "Refrão Final": "É o amor mais puro, que a vida presenteou,\nNo peito a saudade, mas o sentimento ficou.\nUm fio que nos liga, além de qualquer chão,\nCaminho da saudade, levo você no coração.\n\n(A intensidade aumenta gradualmente. A segunda voz se torna mais presente. O solo de guitarra entra, emotivo e melódico, culminando em um final grandioso com a dupla vocal harmonizando poderosamente.)"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
+    "id": 1781214228264,
+    "title": "Amor Que a Distância Não Apaga",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "11/06/2026",
+    "song": {
+      "title": "Amor Que a Distância Não Apaga",
+      "subtitle": "Um Sertanejo de Saudade e Fé no Reencontro",
+      "key": "G Maior",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Um abraço musical que aquece o coração, misturando a melancolia da saudade com a força serena do amor verdadeiro. A sanfona evoca lembranças, o violão embala a espera e as vozes em harmonia tecem a esperança.",
+      "style_tags": [
+        "Sertanejo Romântico",
+        "Sofrência com Esperança",
+        "Voz Masculina Dupla",
+        "Emotivo"
+      ],
+      "sections": {
+        "Introdução": "A sanfona chora um lamento suave,\nE o violão dedilha a calma,\nDo tempo que passa, imutável,\nMas não apaga a tua alma.\nNosso amor, um farol,\nNa noite escura da saudade,\nGuia meu coração, meu sol,\nEm busca da felicidade.",
+        "Verso 1": "O sol que nasceu hoje lá longe,\nNão tem o mesmo tom do teu olhar.\nAs nuvens passeiam, mas não te trazem,\nE a cama vazia me faz suspirar.\nLembro do teu cheiro na brisa,\nO eco da risada no peito.\nEssa distância é uma ironia,\nUm teste pesado, indiscreto.",
+        "Refrão": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.",
+        "Verso 2": "Recebi tua carta, o papel amarelado,\nCom a tua letra que faz meu peito vibrar.\nCada palavra, um beijo guardado,\nQue me faz continuar a te esperar.\nAs madrugadas longas e frias,\nSão preenchidas com teu querer.\nEm cada estrela que o céu irradia,\nVejo um motivo pra crer.",
+        "Refrão Final": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.\nAmor que a distância não apaga...\nA minha eterna lanterna... É você!"
+      },
+      "suno_style": "sertanejo romance, emotional, male duo vocals, 90 BPM, accordion, acoustic guitar, heartfelt, hopeful",
+      "instruments": [
+        "Sanfona (melodia principal, textura emotiva, contraponto com violão)",
+        "Violão (base harmônica com dedilhado suave nos versos, batida marcante no refrão)",
+        "Baixo acústico (sustentação rítmica e harmônica, marcando os tempos fortes de forma sutil)",
+        "Bateria (leve e precisa, com viradas discretas e bumbo marcante no refrão)",
+        "Vozes (dupla masculina em harmonia no refrão, solo emotivo nos versos, com timbre grave e expressivo)"
+      ],
+      "production_notes": "A ideia é criar uma atmosfera intimista e acolhedora, com a sanfona e o violão sendo os protagonistas na introdução e nos versos, evocando a saudade de forma poética. No refrão, a bateria e o baixo entram para dar mais corpo e força à música, impulsionando a emoção com a entrada da segunda voz em harmonia, criando um 'abraço' sonoro. A dinâmica deve ser crescente, com os versos mais calmos e o refrão explodindo com sentimento. Uso sutil de reverb nas vozes para dar profundidade e um leve 'delay' na sanfona em momentos chave para acentuar a melancolia. O espaço estéreo deve ser amplo para os instrumentos de base, mantendo as vozes focadas no centro, mas com um leve afastamento para as harmonias. A mixagem final deve ser limpa e equilibrada, permitindo que cada instrumento seja ouvido com clareza, mas sem sacrificar a emoção do conjunto. Referência sonora: a pureza melódica e a entrega vocal de Victor & Leo, com a assinatura de uma produção moderna e radiofônica.",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Masculina — 🎙 Voz Grossa",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "A sanfona chora um lamento suave,\nE o violão dedilha a calma,\nDo tempo que passa, imutável,\nMas não apaga a tua alma.\nNosso amor, um farol,\nNa noite escura da saudade,\nGuia meu coração, meu sol,\nEm busca da felicidade.",
+      "Verso 1": "O sol que nasceu hoje lá longe,\nNão tem o mesmo tom do teu olhar.\nAs nuvens passeiam, mas não te trazem,\nE a cama vazia me faz suspirar.\nLembro do teu cheiro na brisa,\nO eco da risada no peito.\nEssa distância é uma ironia,\nUm teste pesado, indiscreto.",
+      "Refrão": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.",
+      "Verso 2": "Recebi tua carta, o papel amarelado,\nCom a tua letra que faz meu peito vibrar.\nCada palavra, um beijo guardado,\nQue me faz continuar a te esperar.\nAs madrugadas longas e frias,\nSão preenchidas com teu querer.\nEm cada estrela que o céu irradia,\nVejo um motivo pra crer.",
+      "Refrão Final": "E o amor que a distância não apaga,\nÉ rocha que o mar não desfaz.\nNo peito a saudade me afaga,\nMas teu nome é minha paz.\nSe o tempo às vezes nos castiga,\nNa minha memória você é eterna.\nNessa estrada longa e antiga,\nVocê é a minha lanterna.\nAmor que a distância não apaga...\nA minha eterna lanterna... É você!"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Refrão",
+      "Verso 2",
+      "Refrão Final"
+    ]
+  },
+  {
     "genre": "Rock",
     "mood": "Romantico",
     "struct": [
