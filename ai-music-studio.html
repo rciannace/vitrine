@@ -2648,15 +2648,16 @@ function spUpdateUI(){
     document.getElementById("sp-dur").textContent=spFmt(audio.duration);
   });
   audio.addEventListener("ended",()=>{
+    if(spQueue.length===0)return;
     if(spRepeat==="one"){
-      const a=document.getElementById("sp-audio");a.currentTime=0;a.play();
+      audio.currentTime=0;audio.play();
     }else if(spRepeat==="all"){
-      // always advance, wrapping around
-      const i=(spIndex+1)%spQueue.length;
-      spPlay(i);
+      const next=(spIndex+1)%spQueue.length;
+      setTimeout(()=>spPlay(next),100);
     }else{
-      // no repeat — only advance if not last track
-      if(spIndex<spQueue.length-1){spNext();}
+      if(spIndex<spQueue.length-1){
+        setTimeout(()=>spNext(),100);
+      }
     }
   });
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
