@@ -296,7 +296,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .version-chip.active{background:#1b6ca8;color:#fff;border-color:#1b6ca8}
 .version-detail{background:var(--bg3);border-radius:12px;padding:12px;border:1px solid var(--border);margin-top:8px}
 .version-detail-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
-.version-detail-lyrics{font-size:12px;color:var(--text3);line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:10px}
+.version-detail-lyrics{font-size:12px;color:var(--text3);line-height:1.7;white-space:pre-wrap;max-height:400px;overflow-y:auto;margin-bottom:10px;padding-right:4px}
 .version-detail-btns{display:flex;gap:8px}
 .draft-badge{display:inline-block;padding:2px 8px;background:#6366f1;color:#fff;border-radius:10px;font-size:10px;font-weight:700;margin-left:6px}
 .rtab-refazer:hover{color:#16a34a!important;background:#22c55e10}
@@ -699,8 +699,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
     </div>
     <!-- Lib tabs -->
     <div class="lib-tab-row">
-      <div class="lib-tab active" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 Biblioteca</div>
-      <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 Player</div>
+      <div class="lib-tab active" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 BIBLIOTECA</div>
+      <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 PLAYER</div>
     </div>
     <!-- Sub-pages -->
     <div id="libpage-biblioteca">
@@ -2270,10 +2270,10 @@ function renderVersionsBar(){
   let detail="";
   if(activeVersionIdx!==null&&versionsHistory[activeVersionIdx]){
     const v=versionsHistory[activeVersionIdx];
-    const lyricsPreview=Object.values(v.sections||{}).join("\n\n").slice(0,400);
+    const lyricsPreview=Object.values(v.sections||{}).join("\n\n");
     detail=`<div class="version-detail">
       <div class="version-detail-title">${esc(v.song.title)} · ${esc(v.song.genre)} · ${v.song.bpm} BPM</div>
-      <div class="version-detail-lyrics">${esc(lyricsPreview)}${lyricsPreview.length>=400?"...":""}</div>
+      <div class="version-detail-lyrics">${esc(lyricsPreview)}</div>
       <div class="version-detail-btns">
         <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar na Biblioteca</button>
         <button onclick="saveDraftFromVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
