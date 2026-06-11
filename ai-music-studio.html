@@ -2432,7 +2432,7 @@ function renderLib(){
   if(libFilter==="drafts"){
     renderDrafts(el,q);return;
   }
-  let filtered=history.filter(e=>{
+  let filtered=history.filter(e=>!e.isDraft).filter(e=>{
     if(libFilter==="fav")return e.fav;
     if(libFilter==="audio")return e.audio;
     return true;
