@@ -66,8 +66,6 @@ body.dark .dur-name.sel{color:#00c2d1!important}
 body.dark .dur-desc{color:var(--text4)}
 body.dark .dur-name{color:var(--text2)}
 body.dark .dur-desc{color:var(--text4)}
-body.dark #voz-masc,body.dark #voz-fem{background:#0f1d38!important;color:#6a9ab8!important;border-color:#1b3a5c!important}
-body.dark #voz-masc[style*="f97316"],body.dark #voz-fem[style*="f97316"]{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important}
 body.dark .dur-card{background:#0f1d38!important;border-color:#1b3a5c!important;color:#7aaac8!important}
 body.dark .dur-card.sel{background:#00c2d1!important;border-color:#00c2d1!important}
 body.dark .dur-card.sel .dur-name{color:#0b132b!important;font-weight:700!important}
@@ -79,13 +77,14 @@ body.dark .lib-tab.active{color:#00c2d1!important;border-bottom-color:#00c2d1!im
 body.dark .rtab{color:#6a9ab8!important}
 body.dark .rtab.active{color:#00c2d1!important;border-bottom-color:#00c2d1!important;font-weight:700!important}
 body.dark .export-box{background:var(--bg3);border-color:var(--border)}
+body.dark #voz-masc,body.dark #voz-fem{background:#162040!important;color:#7aaac8!important;border:1.5px solid #1b3a5c!important;font-weight:400!important;box-shadow:none!important}
+body.dark #voz-masc.voz-sel,body.dark #voz-fem.voz-sel{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important;box-shadow:0 0 10px rgba(0,194,209,0.3)!important}
+
 /* ── CHIPS DARK MODE ── */
 body.dark .chip{background:#162040;color:#7aaac8;border-color:#1b3a5c;font-weight:400}
 body.dark .chip:hover{background:#1c3461;color:#a0c4dd}
 body.dark .chip.sel,body.dark .chip.sel-r,body.dark .chip.sel-b,body.dark .chip.sel-g,body.dark .chip.sel-p,body.dark .chip.sel-y{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important;box-shadow:0 0 10px rgba(0,194,209,0.4)!important}
 /* ── VOZ BUTTONS DARK ── */
-body.dark #voz-masc,body.dark #voz-fem{background:#162040!important;color:#7aaac8!important;border:1.5px solid #1b3a5c!important;box-shadow:none!important;font-weight:400!important}
-body.dark #voz-fem[style*="f97316"],body.dark #voz-masc[style*="f97316"]{background:#00c2d1!important;color:#0b132b!important;border-color:#00c2d1!important;font-weight:700!important;box-shadow:0 0 10px rgba(0,194,209,0.4)!important}
 /* ── DURAÇÃO DARK ── */
 body.dark .dur-card{background:#162040!important;border-color:#1b3a5c!important}
 body.dark .dur-name{color:#7aaac8!important}
@@ -1417,18 +1416,14 @@ function selVoice(v){
   const masc=document.getElementById("voz-masc");
   const fem=document.getElementById("voz-fem");
   const isDark=document.body.classList.contains("dark");
-  const selBg=isDark?"#00c2d1":"#f97316";
-  const selColor=isDark?"#0b132b":"#fff";
-  const selBorder=isDark?"#00c2d1":"transparent";
-  const unselBg=isDark?"#162040":"#f8f8f8";
-  const unselColor=isDark?"#7aaac8":"#555";
-  const unselBorder=isDark?"#1b3a5c":"#eee";
   if(isFem){
-    fem.style.background=selBg;fem.style.color=selColor;fem.style.borderColor=selBorder;fem.style.fontWeight="700";
-    masc.style.background=unselBg;masc.style.color=unselColor;masc.style.borderColor=unselBorder;masc.style.fontWeight="400";
+    fem.classList.add("voz-sel");masc.classList.remove("voz-sel");
+    if(!isDark){fem.style.background="#f97316";fem.style.color="#fff";fem.style.borderColor="transparent";masc.style.background="#f8f8f8";masc.style.color="#555";masc.style.borderColor="#eee";}
+    else{fem.style.cssText="padding:12px;font-size:13px;box-shadow:none";masc.style.cssText="padding:12px;font-size:13px;box-shadow:none";}
   }else{
-    masc.style.background=selBg;masc.style.color=selColor;masc.style.borderColor=selBorder;masc.style.fontWeight="700";
-    fem.style.background=unselBg;fem.style.color=unselColor;fem.style.borderColor=unselBorder;fem.style.fontWeight="400";
+    masc.classList.add("voz-sel");fem.classList.remove("voz-sel");
+    if(!isDark){masc.style.background="#f97316";masc.style.color="#fff";masc.style.borderColor="transparent";fem.style.background="#f8f8f8";fem.style.color="#555";fem.style.borderColor="#eee";}
+    else{masc.style.cssText="padding:12px;font-size:13px;box-shadow:none";fem.style.cssText="padding:12px;font-size:13px;box-shadow:none";}
   }
   updateSunoPreview();
 }
