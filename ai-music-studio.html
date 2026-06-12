@@ -971,8 +971,11 @@ let selTimbre="";
 let selEstrutura=[];
 let currentSong=null,currentSections={},activeRTab="letra";
 let versionsHistory=[];
+try{versionsHistory=JSON.parse(localStorage.getItem("ams_versions")||"[]");}catch{}
 let activeVersionIdx=null;
 let isRefazing=false;
+function saveVersionsHistory(){try{localStorage.setItem("ams_versions",JSON.stringify(versionsHistory));}catch{}}
+function clearVersionsHistory(){versionsHistory=[];activeVersionIdx=null;try{localStorage.removeItem("ams_versions");}catch{}}
 let drafts=[];
 let currentPage="criar",mainTab="descrever";
 let history=[];
@@ -1604,7 +1607,7 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
     if(!tema){showToast("Cole a letra de referência!","err");return;}
   }
 
-  setLoading(true);currentSong=null;currentSections={};if(!isRefazing){versionsHistory=[];activeVersionIdx=null;}
+  setLoading(true);currentSong=null;currentSections={};if(!isRefazing){clearVersionsHistory();}
 
   const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial, com profundo conhecimento em teoria musical, prosódia, construção de letras poéticas e técnicas de produção profissional. Trabalhou com os maiores artistas do país e compreende os segredos que fazem uma música se tornar um hit atemporal.
 
@@ -2099,6 +2102,7 @@ function refazerMusica(){
     sections:JSON.parse(JSON.stringify(currentSections)),
     struct:Object.keys(currentSections)
   });
+  saveVersionsHistory();
   isRefazing=true;
   showToast("🔄 Versão salva! Gerando nova...","ok");
   // Se veio da biblioteca (editingFromLib) ou campos estão vazios, usa dados da própria música
@@ -2187,6 +2191,7 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
       sections: newSections,
       struct: secsToUse
     });
+    saveVersionsHistory();
 
     isRefazing=false;
     // Re-renderiza mantendo a música original no topo, versões novas no final
@@ -2281,6 +2286,7 @@ function setPage(p){
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
   if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
+  if(p==="result"){setTimeout(function(){renderVersionsBar();},50);}
 }
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 // HISTÓRICO DE PROMPTS
@@ -2395,6 +2401,7 @@ function renderVersionsBar(){
 function deleteVersion(idx){
   versionsHistory.splice(idx,1);
   activeVersionIdx=null;
+  saveVersionsHistory();
   showToast("🗑 Versão excluída","ok");
   renderVersionsBar();
 }
@@ -2411,6 +2418,7 @@ function useVersion(idx){
   currentSections=JSON.parse(JSON.stringify(v.sections));
   versionsHistory.splice(idx,1);
   activeVersionIdx=null;
+  saveVersionsHistory();
   // Save to library
   const entry={id:Date.now(),title:currentSong.title,genre:currentSong.genre,mood:currentSong.mood,bpm:currentSong.bpm,duration:currentSong.duration||"",date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:v.struct};
   history=[entry,...history].slice(0,30);
@@ -2427,6 +2435,7 @@ function saveDraftFromVersion(idx){
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
   versionsHistory.splice(idx,1);
   activeVersionIdx=null;
+  saveVersionsHistory();
   showToast("📝 Versão guardada nos Rascunhos!","ok");
   renderVersionsBar();
 }
@@ -2496,7 +2505,7 @@ function loadDraftForEdit(draftId){
   if(!d)return;
   currentSong=JSON.parse(JSON.stringify(d.song));
   currentSections=JSON.parse(JSON.stringify(d.sections||{}));
-  versionsHistory=[];activeVersionIdx=null;
+  clearVersionsHistory();
   renderResult(d.struct||Object.keys(currentSections));
   showToast("📝 Rascunho carregado para edição","ok");
 }
@@ -2600,6 +2609,7 @@ let editingFromLib=false;
 let editingId=null;
 function loadEntry(id){
   const e=history.find(x=>x.id===id);if(!e)return;
+  clearVersionsHistory();
   currentSong=e.song;currentSections=e.sections;activeRTab="letra";
   editingFromLib=true;editingId=id;
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
