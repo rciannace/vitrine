@@ -2609,7 +2609,7 @@ let editingFromLib=false;
 let editingId=null;
 function loadEntry(id){
   const e=history.find(x=>x.id===id);if(!e)return;
-  clearVersionsHistory();
+  if(editingId!==id){clearVersionsHistory();}
   currentSong=e.song;currentSections=e.sections;activeRTab="letra";
   editingFromLib=true;editingId=id;
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
