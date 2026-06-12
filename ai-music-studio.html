@@ -1053,10 +1053,17 @@ async function ghLoad(){
     }catch{
       decoded=JSON.parse(raw);
     }
-    // merge: cloud wins, keep local if same id
-    const cloudMap=Object.fromEntries(decoded.map(e=>[e.id,e]));
+    // merge: local-wins — respeita deleções e saves feitos antes do sync
+    // itens na nuvem que NÃO existem no local foram deletados pelo usuário → não restaurar
     const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-    const merged=Object.values({...localMap,...cloudMap});
+    const localIds=new Set(history.map(e=>e.id));
+    // pega da nuvem apenas itens que ainda existem no local (atualiza campos) OU itens novos
+    // Para saber se um item foi "deletado localmente", comparamos com um snapshot de ids conhecidos
+    const knownDeletedIds=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
+    const deletedSet=new Set(knownDeletedIds);
+    const cloudMap=Object.fromEntries(decoded.filter(e=>!deletedSet.has(e.id)).map(e=>[e.id,e]));
+    // local-wins: local sobrescreve nuvem para ids iguais
+    const merged=Object.values({...cloudMap,...localMap});
     history=merged.sort((a,b)=>b.id-a.id);
     localStorage.setItem("ams6",JSON.stringify(history));
     updateLibN();
@@ -1065,7 +1072,8 @@ async function ghLoad(){
   }catch(e){console.warn("ghLoad:",e);}
 }
 async function ghSave(){
-  if(!ghToken){saveLocal();return;}
+  saveLocal(); // garante save local ANTES de qualquer operação assíncrona
+  if(!ghToken){return;}
   syncStatus="syncing";renderSyncUI();
   try{
     const json=JSON.stringify(history,null,2);
@@ -2251,7 +2259,7 @@ function toggleFav(id){
   const idx=history.findIndex(h=>h.id===id);
   if(idx<0)return;
   history[idx].fav=!history[idx].fav;
-  saveLocal();renderLib();
+  ghSave();renderLib();
 }
 
 
@@ -2519,6 +2527,11 @@ function editTitle(id){
 }
 function delEntry(id){
   history=history.filter(x=>x.id!==id);
+  // persiste o id deletado para evitar restauração pelo ghLoad
+  try{
+    const del=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
+    if(!del.includes(id)){del.push(id);localStorage.setItem("ams6_deleted",JSON.stringify(del.slice(-200)));}
+  }catch{}
   ghSave();
   updateLibN();renderLib();showToast("Removida","ok");
 }
