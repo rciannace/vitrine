@@ -2374,6 +2374,8 @@ function toggleFav(id){
 function renderVersionsBar(){
   const bar=document.getElementById("versions-bar");
   if(!bar)return;
+  // recarrega do localStorage caso o array esteja vazio em memória
+  if(!versionsHistory.length){try{const ls=JSON.parse(localStorage.getItem("ams_versions")||"[]");if(ls.length)versionsHistory=ls;}catch{}}
   if(!versionsHistory.length){bar.style.display="none";return;}
   bar.style.display="block";
   const chips=versionsHistory.map((v,i)=>`
