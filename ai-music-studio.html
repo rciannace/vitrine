@@ -1885,7 +1885,7 @@ function renderResult(structs){
     <div id="versions-bar" style="display:none" class="versions-bar"></div>
 
   </div>`;
-  setTimeout(function(){renderAjusteEstilo();},50);
+  setTimeout(function(){renderAjusteEstilo();renderVersionsBar();},50);
 }
 
 // ══════════════════════════════════════
@@ -2286,8 +2286,8 @@ function setPage(p){
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
   if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
-  if(p==="result"){setTimeout(function(){renderVersionsBar();},50);}
 }
+
 function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
 // HISTÓRICO DE PROMPTS
 let promptHist=[];
@@ -2621,6 +2621,7 @@ function saveEditedEntry(){
   history[idx].sections=currentSections;
   history[idx].song=currentSong;
   saveHistory();
+  setTimeout(function(){renderVersionsBar();},50);
   showToast("✅ Música salva!","ok");
 }
 function saveHistory(){ghSave();}
