@@ -1662,52 +1662,56 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
 
   setLoading(true);currentSong=null;currentSections={};if(!isRefazing){clearVersionsHistory();}
 
-  const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial, com profundo conhecimento em teoria musical, prosódia, construção de letras poéticas e técnicas de produção profissional. Trabalhou com os maiores artistas do país e compreende os segredos que fazem uma música se tornar um hit atemporal.
+  const prompt=`Você é o maior compositor de músicas populares brasileiras do país. Seu dom é criar letras que fazem as pessoas chorarem, se apaixonarem e pedirem bis. Você escreveu hits de sertanejo, pagode, rock e pop que tocaram em todo o Brasil.
 
 MODO: ${modoDesc}
 
-TEMA / IDEIA DO USUÁRIO:
+TEMA / IDEIA:
 ${tema}
 
 ═══════════════════════════════════════
-ESPECIFICAÇÕES MUSICAIS
+ESPECIFICAÇÕES
 ═══════════════════════════════════════
-• Gênero principal : ${g.l}
-• Mood / Emoção    : ${m.l}
-• Tempo            : ${t.bpm} BPM
-• Tipo de voz      : ${vozLabel}
-• Formato          : ${dur} → seções: ${secsToUse.join(" › ")}
-${titulo?`• Título desejado  : "${titulo}"\n`:""}${artist?`• Referência artística: ${artist}\n`:""}${extrasStr?`• Elementos extras : ${extrasStr}\n`:""}${producao?`• Diretrizes de produção: ${producao}\n`:""}
+• Gênero : ${g.l}
+• Mood   : ${m.l}
+• Tempo  : ${t.bpm} BPM
+• Voz    : ${vozLabel}
+• Seções : ${secsToUse.join(" › ")}
+${titulo?`• Título: "${titulo}"\n`:""}${artist?`• Referência: ${artist}\n`:""}${extrasStr?`• Extras: ${extrasStr}\n`:""}${producao?`• Produção: ${producao}\n`:""}
 ═══════════════════════════════════════
-DIRETRIZES DE COMPOSIÇÃO PROFISSIONAL
+REGRAS DE OURO DA LETRA
 ═══════════════════════════════════════
-LETRA:
-• Estrutura: ${DUR_NOTES[dur]}
-• Use PROSÓDIA perfeita: o acento tônico das palavras deve coincidir naturalmente com o tempo forte do compasso.
-• Rimas: alterne rimas ricas (consoantes) e toantes; evite rimas pobres ou forçadas. Use esquemas ABAB, AABB ou ABBA conforme o gênero.
-• Imagens poéticas concretas e sensoriais — mostre, não apenas diga. Use metáforas originais ligadas à cultura do gênero escolhido.
-• Cada verso deve ter função narrativa: desenvolvimento, virada emocional ou clímax. Elimine versos "de enchimento".
-• O refrão deve ser instantaneamente memorável, com uma "frase gancho" (hook) que sintetize toda a emoção da música.
-• A bridge deve trazer uma virada de perspectiva — harmônica, melódica ou temática — que eleve o impacto do último refrão.
-• Controle de tensão e release: construa tensão no verso, alivie no pré-refrão, exploda no refrão.
+RIMA (PRIORIDADE MÁXIMA):
+• Toda seção DEVE ter rima rica e consistente — use esquema AABB ou ABAB do início ao fim.
+• Rima rica = consonância total (ex: "coração / solidão", "te amar / guardar").
+• NUNCA deixe verso sem rima — se uma linha não rima, reescreva-a.
+• Conte as sílabas: cada verso da mesma seção deve ter número de sílabas similar (±2 sílabas).
 
-PRODUÇÃO E ARRANJO:
-• Sugira tonalidade e progressão de acordes adequados ao gênero e ao mood, considerando as características vocais.
-• Os instrumentos devem ter papéis definidos: base rítmica, harmonia, melodia, contraponto, textura.
-• As notas de produção devem incluir: dinâmica, uso de espaço estéreo, sugestões de efeitos e referências de som.
+EMOÇÃO E TEMA:
+• Temas que conectam: amor, saudade, traição, reencontro, distância, ciúme, entrega, promessa.
+• Escreva como se fosse uma história real — use situações concretas (a foto guardada, a camiseta esquecida, o cheiro que ainda fica).
+• O ouvinte deve se sentir dentro da música, não apenas ouvindo.
+• Mostre a emoção com cenas vívidas, não com declarações genéricas.
 
-SUNO STYLE PROMPT (CRÍTICO):
-• Máximo EXATO de 120 caracteres — conte com cuidado.
-• Apenas palavras-chave em INGLÊS separadas por vírgula.
-• Ordem ideal: gênero › sub-gênero › mood › tipo de voz › BPM › 2-3 instrumentos-chave › 1-2 adjetivos de produção.
-• Ex de alta qualidade: "sertanejo universitario, romantic, emotional, raspy female vocals, 90 BPM, acoustic guitar, violao, lush strings, radio-ready"
-• Seja ESPECÍFICO: não escreva apenas "guitar" — escreva "fingerpicked acoustic guitar" ou "overdriven electric guitar". Não escreva "vocals" — escreva "powerful female belting vocals" ou "smooth baritone". Isso faz enorme diferença no Suno.
+ESTRUTURA:
+• ${DUR_NOTES[dur]}
+• VERSO: conta a história, cria tensão, rima AABB ou ABAB.
+• PRÉ-REFRÃO: aumenta a emoção, prepara a explosão do refrão.
+• REFRÃO: a frase que fica na cabeça — hook de 1 linha que resume tudo, repetível, fácil de cantar.
+• BRIDGE: virada emocional — muda perspectiva, eleva intensidade, justifica o refrão final.
+• Cada linha tem função: nenhum verso de enchimento.
+
+SUNO STYLE PROMPT:
+• Máximo EXATO 120 caracteres, inglês, vírgulas.
+• Ordem: gênero › mood › tipo de voz › BPM › instrumentos específicos › produção.
+• Específico: "fingerpicked acoustic guitar", "raspy male tenor", "driving kick drum" — não "guitar", "vocals", "drums".
+• Ex: "sertanejo universitario, romantic, longing, emotional raspy male tenor, 90 BPM, acoustic guitar, violao, strings, radio-ready"
 
 ═══════════════════════════════════════
-FORMATO DE SAÍDA — SOMENTE JSON VÁLIDO
+SAÍDA — SOMENTE JSON VÁLIDO
 ═══════════════════════════════════════
-Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown, sem \`\`\`:
-{"title":"Título impactante","subtitle":"Subtítulo ou tagline poética","key":"Tom (ex: Lá menor)","chords":"Progressão principal (ex: Am - F - C - G)","vibe":"Descrição atmosférica da música em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra da seção com quebras de linha \\n — mínimo 4 linhas, máximo 10"`).join(",")}},"suno_style":"keywords em inglês vírgula máx 120 chars — CONTAR ANTES DE ESCREVER","instruments":["instrumento 1 com papel","instrumento 2 com papel","instrumento 3 com papel","instrumento 4 com papel","instrumento 5 com papel"],"production_notes":"Notas detalhadas de produção: dinâmica, mix, referências sonoras, técnicas de gravação e arranjo"}`;
+Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
+{"title":"Título que emociona","subtitle":"Tagline poética de 1 frase","key":"Tom (ex: Lá menor)","chords":"Progressão (ex: Am - F - C - G)","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra com rima rica, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst 1 + papel","inst 2 + papel","inst 3 + papel","inst 4 + papel","inst 5 + papel"],"production_notes":"dinâmica, mix, referências, técnicas"}`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -1749,7 +1753,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é compositor musical profissional brasileiro de nível mundial.\n\nTAREFA: Reescrever SOMENTE a seção "${sec}" da música abaixo, mantendo total coerência com as demais seções.\n\nCONTEXTO DA MÚSICA:\n• Título: "${currentSong.title}"\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DA SEÇÃO "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO COMPOSITOR: "${instr}"\n\nDIRETRIZES:\n• Prosódia perfeita: acentos tônicos alinhados ao tempo forte do compasso.\n• Mantenha o esquema de rimas e contagem silábica compatíveis com o gênero.\n• Imagens poéticas concretas, originais e sensoriais — sem clichês.\n• Se refrão: hook instantaneamente memorável que sintetize a emoção central.\n• Se verso: cada linha com propósito narrativo claro.\n• Se bridge: virada emocional ou mudança de perspectiva real.\n• A nova letra deve fluir naturalmente ao ser cantada.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra completa com quebras \\n — mínimo 4 linhas"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você reescreve seções com rima perfeita e emoção que parte o coração.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente do começo ao fim.\n• Mesma quantidade de sílabas por linha (±2) — a letra tem que caber na melodia.\n• Emoção real: amor, saudade, dor, entrega — com cenas concretas, não palavras vazias.\n• Se for refrão: hook de 1 frase que grude na cabeça, fácil de cantar.\n• Se for verso: conta uma história, cada linha avança a narrativa.\n• Se for bridge: vira a perspectiva emocional, eleva antes do refrão final.\n• Flua naturalmente ao ser cantado — teste mentalmente cada linha.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra com rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -1769,7 +1773,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é compositor musical profissional brasileiro de nível mundial.\n\nTAREFA: Completar a seção "${sec}" a partir do trecho do usuário, mantendo continuidade musical perfeita.\n\nCONTEXTO DA MÚSICA:\n• Título: "${currentSong.title}"\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO USUÁRIO (mantenha EXATAMENTE no início, sem alterar uma sílaba):\n${trecho}\n\nDIRETRIZES PARA COMPLETAR:\n• Preserve o trecho acima palavra por palavra — é a voz criativa do artista.\n• Analise: número de sílabas, acentuação, esquema de rimas e clima emocional do trecho.\n• Complete com 3-6 linhas que soem como se o próprio usuário as tivesse escrito.\n• Mantenha o padrão rítmico e a prosódia consistentes com o que foi iniciado.\n• Eleve a emoção gradualmente em direção ao clímax da seção.\n• Use vocabulário e imagética coerentes com o gênero musical.\n• A continuação deve parecer inevitável — como se não houvesse outra forma de completar aquele trecho.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO DO USUÁRIO + \\n + continuação natural com 3-6 linhas de alta qualidade"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você completa trechos de letras mantendo a voz do artista e criando rimas perfeitas.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo.\n• Rima rica: "te esperar / voltar", "coração / perdão" — não rimas fracas como "amor / dor".\n• Mesma contagem de sílabas por linha — cabe na mesma melodia.\n• Continue a história: avance a emoção, não repita o que já foi dito.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação com rima rica, 3-6 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -2169,23 +2173,31 @@ async function sugerirIdeia(){
   const tempoIds=TEMPOS.map(t=>t.id).join(",");
   const estruturaOpcoes=ESTRUTURA_OPCOES.join(",");
 
-  const prompt=`Você é um compositor musical brasileiro criativo. Sugira uma ideia original para uma nova música.
+  const prompt=`Você é compositor de hits brasileiros. Sugira uma ideia para uma música popular brasileira.
+
+UNIVERSO TEMÁTICO (escolha dentro disso):
+- Amor que não passa: saudade, distância, espera, reencontro
+- Relacionamento: traição, ciúme, entrega total, segunda chance
+- Fim de namoro: mágoa, orgulho ferido, ainda amar em silêncio
+- Festa e alegria: curtição, verão, paixão de verão, dançar até o amanhecer
+- Fé e superação: força, acreditar, recomeço após dor
+
+GÊNEROS POPULARES (prefira estes): sertanejo, sertuniv, pagode, rock, pop, forró, arrocha, mpb, bregafunk
 
 Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
 {
-  "tema": "Descrição da ideia musical em 2-3 frases — tema, emoção, contexto narrativo",
-  "genre": "um dos ids: ${genreIds}",
-  "mood": "um dos ids: ${moodIds}",
-  "tempo": "um dos ids: ${tempoIds}",
-  "voz": "fp para feminina ou mg para masculina",
-  "estrutura": ["seções escolhidas de: ${estruturaOpcoes}"]
+  "tema": "Ideia específica em 2-3 frases com situação concreta — ex: ela ainda guarda a camiseta dele, o cheiro não foi embora, e toda sexta à noite ela passa na rua onde eles se conheceram",
+  "genre": "um id de: ${genreIds}",
+  "mood": "um id de: ${moodIds}",
+  "tempo": "um id de: ${tempoIds}",
+  "voz": "fp ou mg",
+  "estrutura": ["seções de: ${estruturaOpcoes} — entre 4 e 7 seções"]
 }
 
 Regras:
-- Seja criativo, surpreendente, evite clichês óbvios
-- Misture gêneros e emoções de formas inusitadas
-- tema deve ser específico e inspirador, não genérico
-- estrutura deve ter entre 4 e 7 seções coerentes com o gênero`;
+- tema concreto com detalhe visual/sensorial — não genérico
+- gênero deve combinar com o tema e o mood escolhidos
+- estrutura coerente com o gênero (sertanejo e pagode têm refrão forte; rock tem bridge)`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -2321,37 +2333,31 @@ async function generateFromSong(song, sections){
   const g=GENRES.find(x=>x.id===genreId)||GENRES[0];
   const m=MOODS.find(x=>x.id===moodId)||MOODS[0];
 
-  const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial.
+  const prompt=`Você é o maior compositor de músicas populares brasileiras. Você recria músicas com novas letras que emocionam ainda mais do que o original.
 
-MODO: REFAZER — Crie uma versão COMPLETAMENTE NOVA desta música.
-Preserve o gênero, o mood e a estrutura de seções, mas reescreva TODA a letra do zero.
-Use novas metáforas, imagens poéticas diferentes, palavras diferentes — como se fosse outra música sobre o mesmo tema.
+MODO: REFAZER — Mesma alma, letra completamente nova.
+Preserve: gênero, mood, BPM, estrutura de seções e o tema emocional central.
+Crie do zero: todas as palavras, rimas, metáforas, imagens, título.
 
-MÚSICA ORIGINAL (use apenas como referência de tema e clima):
-Título: "${song.title}"
-Gênero: ${song.genre} | Mood: ${song.mood} | BPM: ${song.bpm||"—"}
-Subtítulo/vibe: ${song.subtitle||""} ${song.vibe||""}
-
-LETRA ORIGINAL (NÃO repita — inspire-se apenas no tema e emoção):
+REFERÊNCIA (tema e clima apenas — NÃO repita nada):
+Título: "${song.title}" | Gênero: ${song.genre} | Mood: ${song.mood}
 ${letraAtual}
 
-═══════════════════════════════════════
-ESPECIFICAÇÕES MUSICAIS
-═══════════════════════════════════════
-• Gênero principal : ${g.l}
-• Mood / Emoção    : ${m.l}
-• Tempo            : ${song.bpm||tempoObj.bpm} BPM
-• Tipo de voz      : ${song.voice||"—"}
-• Formato          : ${dur} → seções: ${secsToUse.join(" › ")}
+ESPECIFICAÇÕES:
+• Gênero: ${g.l} | Mood: ${m.l} | BPM: ${song.bpm||tempoObj.bpm}
+• Voz: ${song.voice||"—"} | Seções: ${secsToUse.join(" › ")}
 
-DIRETRIZES:
-• Prosódia perfeita, rimas ricas, imagens concretas e sensoriais.
-• Refrão com hook memorável. Bridge com virada emocional real.
-• Sugira nova tonalidade e nova progressão de acordes se quiser.
-• Suno style prompt: máx 120 chars, palavras-chave em inglês.
+REGRAS DE OURO:
+• RIMA RICA obrigatória em todas as seções — AABB ou ABAB consistente do início ao fim.
+• Mesma contagem de sílabas por linha (±2) — cabe na melodia original.
+• Temas que conectam: amor, saudade, reencontro, entrega, dor de amar.
+• Cenas concretas e sensoriais — não declarações genéricas.
+• Refrão: hook de 1 frase, fácil de cantar, impossível de esquecer.
+• Bridge: virada emocional real que eleva o último refrão.
+• Suno style: máx 120 chars, inglês, específico (ex: "raspy male tenor", "fingerpicked acoustic guitar").
 
-Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
-{"title":"Novo título impactante","subtitle":"Subtítulo ou tagline poética","key":"Tom","chords":"Progressão principal","vibe":"Descrição atmosférica em 1 frase","style_tags":["tag1","tag2","tag3"],"sections":{${secsToUse.map(s=>`"${s}":"letra nova da seção com quebras \\n — mín 4 linhas"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["inst1","inst2","inst3"],"production_notes":"Notas de produção"}`;
+Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
+{"title":"Novo título que emociona","subtitle":"Tagline poética","key":"Tom","chords":"Progressão","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3"],"sections":{${secsToUse.map(s=>`"${s}":"letra nova com rima rica, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst1","inst2","inst3"],"production_notes":"dinâmica, mix, referências"}`;
 
   // Mostra loading SEM tocar em currentSong/currentSections
   // Desabilita o botão Refazer temporariamente
