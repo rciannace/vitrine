@@ -2158,10 +2158,15 @@ DIRETRIZES:
 Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
 {"title":"Novo título impactante","subtitle":"Subtítulo ou tagline poética","key":"Tom","chords":"Progressão principal","vibe":"Descrição atmosférica em 1 frase","style_tags":["tag1","tag2","tag3"],"sections":{${secsToUse.map(s=>`"${s}":"letra nova da seção com quebras \\n — mín 4 linhas"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["inst1","inst2","inst3"],"production_notes":"Notas de produção"}`;
 
-  setLoading(true);
-  const songBefore=JSON.parse(JSON.stringify(currentSong));
-  const secsBefore=JSON.parse(JSON.stringify(currentSections));
-  currentSong=null;currentSections={};
+  // Mostra loading SEM tocar em currentSong/currentSections
+  // Desabilita o botão Refazer temporariamente
+  const refBtn=document.querySelector('.rtab-refazer');
+  if(refBtn){refBtn.style.opacity="0.5";refBtn.style.pointerEvents="none";}
+  const loadingDiv=document.createElement("div");
+  loadingDiv.id="refazer-loading";
+  loadingDiv.style.cssText="position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:200;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px #0008";
+  loadingDiv.innerHTML='<div class="spinner"></div> Gerando nova versão...';
+  document.body.appendChild(loadingDiv);
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -2171,21 +2176,31 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
-    currentSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
-    currentSections=Object.assign({},parsed.sections||{});
-    // NÃO salva na biblioteca automaticamente (isRefazing=true) — usuário decide com "Usar música"
+
+    // Monta a versão nova MAS NÃO toca em currentSong nem currentSections
+    const newSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
+    const newSections=Object.assign({},parsed.sections||{});
+
+    // Adiciona ao versionsHistory (aparece no final como V1, V2...)
+    versionsHistory.push({
+      song: newSong,
+      sections: newSections,
+      struct: secsToUse
+    });
+
     isRefazing=false;
-    activeRTab="letra";
-    ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
-    renderResult(secsToUse);
+    // Re-renderiza mantendo a música original no topo, versões novas no final
+    renderResult(Object.keys(currentSections));
     setTimeout(function(){renderVersionsBar();},100);
-    showToast("🎵 Nova versão gerada!","ok");
+    showToast("✅ Nova versão gerada no final da página!","ok");
   }catch(e){
-    // restaura em caso de erro
-    currentSong=songBefore;currentSections=secsBefore;
     isRefazing=false;
     showToast("Erro: "+e.message,"err");
-  }finally{setLoading(false);}
+  }finally{
+    const ld=document.getElementById("refazer-loading");
+    if(ld)ld.remove();
+    if(refBtn){refBtn.style.opacity="";refBtn.style.pointerEvents="";}
+  }
 }
 
 function switchRTab(tab){
