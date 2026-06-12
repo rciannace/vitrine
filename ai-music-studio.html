@@ -2101,7 +2101,91 @@ function refazerMusica(){
   });
   isRefazing=true;
   showToast("🔄 Versão salva! Gerando nova...","ok");
-  setTimeout(function(){generate();},300);
+  // Se veio da biblioteca (editingFromLib) ou campos estão vazios, usa dados da própria música
+  const temaCampo=(document.getElementById("idea")?.value.trim())||"";
+  if(editingFromLib || !temaCampo){
+    setTimeout(function(){generateFromSong(currentSong, currentSections);},300);
+  } else {
+    setTimeout(function(){generate();},300);
+  }
+}
+
+async function generateFromSong(song, sections){
+  const apiKey=(document.getElementById("api-key")?.value.trim())||localStorage.getItem("or_key")||"";
+  if(!apiKey){showToast("Cole sua API Key primeiro!","err");isRefazing=false;return;}
+
+  // monta o tema a partir da letra atual
+  const letraAtual=Object.entries(sections||{}).map(([sec,txt])=>"["+sec+"]\n"+txt).join("\n\n");
+  const secsToUse=Object.keys(sections||{});
+  const dur=song.duration||"normal";
+
+  // tenta recuperar as seleções originais da música, senão usa os valores atuais da tela
+  const genreId=GENRES.find(g=>g.l===song.genre)?.id||selGenre;
+  const moodId=MOODS.find(m=>m.l===song.mood)?.id||selMood;
+  const tempoObj=TEMPOS.find(t=>t.bpm===song.bpm)||TEMPOS.find(x=>x.id===selTempo)||TEMPOS[1];
+  const g=GENRES.find(x=>x.id===genreId)||GENRES[0];
+  const m=MOODS.find(x=>x.id===moodId)||MOODS[0];
+
+  const prompt=`Você é um compositor e produtor musical brasileiro de nível mundial.
+
+MODO: REFAZER — Crie uma versão COMPLETAMENTE NOVA desta música.
+Preserve o gênero, o mood e a estrutura de seções, mas reescreva TODA a letra do zero.
+Use novas metáforas, imagens poéticas diferentes, palavras diferentes — como se fosse outra música sobre o mesmo tema.
+
+MÚSICA ORIGINAL (use apenas como referência de tema e clima):
+Título: "${song.title}"
+Gênero: ${song.genre} | Mood: ${song.mood} | BPM: ${song.bpm||"—"}
+Subtítulo/vibe: ${song.subtitle||""} ${song.vibe||""}
+
+LETRA ORIGINAL (NÃO repita — inspire-se apenas no tema e emoção):
+${letraAtual}
+
+═══════════════════════════════════════
+ESPECIFICAÇÕES MUSICAIS
+═══════════════════════════════════════
+• Gênero principal : ${g.l}
+• Mood / Emoção    : ${m.l}
+• Tempo            : ${song.bpm||tempoObj.bpm} BPM
+• Tipo de voz      : ${song.voice||"—"}
+• Formato          : ${dur} → seções: ${secsToUse.join(" › ")}
+
+DIRETRIZES:
+• Prosódia perfeita, rimas ricas, imagens concretas e sensoriais.
+• Refrão com hook memorável. Bridge com virada emocional real.
+• Sugira nova tonalidade e nova progressão de acordes se quiser.
+• Suno style prompt: máx 120 chars, palavras-chave em inglês.
+
+Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
+{"title":"Novo título impactante","subtitle":"Subtítulo ou tagline poética","key":"Tom","chords":"Progressão principal","vibe":"Descrição atmosférica em 1 frase","style_tags":["tag1","tag2","tag3"],"sections":{${secsToUse.map(s=>`"${s}":"letra nova da seção com quebras \\n — mín 4 linhas"`).join(",")}},"suno_style":"keywords inglês vírgula máx 120 chars","instruments":["inst1","inst2","inst3"],"production_notes":"Notas de produção"}`;
+
+  setLoading(true);
+  const songBefore=JSON.parse(JSON.stringify(currentSong));
+  const secsBefore=JSON.parse(JSON.stringify(currentSections));
+  currentSong=null;currentSections={};
+
+  try{
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
+    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    currentSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
+    currentSections=Object.assign({},parsed.sections||{});
+    // NÃO salva na biblioteca automaticamente (isRefazing=true) — usuário decide com "Usar música"
+    isRefazing=false;
+    activeRTab="letra";
+    ajGenre=null;ajMood=null;ajTempo=null;ajVoz=null;ajTimbre=null;ajExtras=[];
+    renderResult(secsToUse);
+    setTimeout(function(){renderVersionsBar();},100);
+    showToast("🎵 Nova versão gerada!","ok");
+  }catch(e){
+    // restaura em caso de erro
+    currentSong=songBefore;currentSections=secsBefore;
+    isRefazing=false;
+    showToast("Erro: "+e.message,"err");
+  }finally{setLoading(false);}
 }
 
 function switchRTab(tab){
