@@ -503,15 +503,68 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
     <!-- ── TAB: DESCREVER ── -->
     <div id="tab-descrever">
       <div class="card">
-        <div class="card-title">💡 Como você imagina sua música?</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="card-title" style="margin-bottom:0">💡 Como você imagina sua música?</div>
+          <button id="btn-sugerir" onclick="sugerirIdeia()" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">✨ Sugerir</button>
+        </div>
         <textarea id="idea" class="txt-area" rows="4" placeholder="Ex: Uma música romantica sobre amor de verão, com clima feliz e ritmo dançante..." onblur="savePromptHist()"></textarea>
         <div id="prompt-hist-wrap" style="margin-top:8px;display:none">
           <div style="font-size:10px;color:var(--text4);margin-bottom:5px;letter-spacing:1px;font-weight:600;text-transform:uppercase">🕐 Usados recentemente</div>
           <div id="prompt-hist-chips" style="display:flex;flex-wrap:wrap;gap:5px"></div>
         </div>
-        <div class="mic-row">
+        <div class="mic-row"></div>
+      </div>
 
+      <!-- Card de sugestão gerada pela IA -->
+      <div id="sugestao-card" style="display:none;background:var(--card-bg);border-radius:16px;border:2px solid #7c3aed;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:700;color:#a855f7">✨ Sugestão da IA — edite à vontade</div>
+          <button onclick="fecharSugestao()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text3)">✕</button>
         </div>
+
+        <!-- Tema -->
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">💡 Tema / Ideia</div>
+          <textarea id="sug-tema" class="txt-area" rows="3" style="font-size:13px"></textarea>
+        </div>
+
+        <!-- Gênero + Mood -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">🎵 Gênero</div>
+            <select id="sug-genre" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--input-bg);color:var(--text);font-size:12px"></select>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">😊 Mood</div>
+            <select id="sug-mood" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--input-bg);color:var(--text);font-size:12px"></select>
+          </div>
+        </div>
+
+        <!-- Tempo + Voz -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">🥁 Tempo</div>
+            <select id="sug-tempo" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--input-bg);color:var(--text);font-size:12px"></select>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">🎤 Voz</div>
+            <select id="sug-voz" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--input-bg);color:var(--text);font-size:12px">
+              <option value="fp">Feminina</option>
+              <option value="mg">Masculina</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Estrutura -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📋 Estrutura</div>
+          <div id="sug-estrutura-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+
+        <!-- Botão usar -->
+        <button onclick="aplicarSugestao()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:14px;font-weight:700;cursor:pointer">
+          ✅ Usar esta ideia
+        </button>
       </div>
     </div>
 
@@ -2092,6 +2145,144 @@ function toggleSecPanel(sid,mode){
   if(rb)rb.className="sec-btn";if(sb)sb.className="sec-btn";
   if(mode==="refazer"&&!iaOpen){if(ia)ia.style.display="block";if(rb)rb.className="sec-btn ron";}
   if(mode==="estender"&&!extOpen){if(ext)ext.style.display="block";if(sb)sb.className="sec-btn son";}
+}
+
+// ══════════════════════════════════════
+// SUGERIR IDEIA
+// ══════════════════════════════════════
+let _sugEstrutura=[]; // estrutura selecionada no card de sugestão
+
+function fecharSugestao(){
+  const c=document.getElementById("sugestao-card");
+  if(c)c.style.display="none";
+}
+
+async function sugerirIdeia(){
+  const apiKey=(document.getElementById("api-key")?.value.trim())||localStorage.getItem("or_key")||"";
+  if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
+
+  const btn=document.getElementById("btn-sugerir");
+  btn.disabled=true;btn.innerHTML='<div class="spinner" style="width:14px;height:14px;border-width:2px"></div> Gerando...';
+
+  const genreIds=GENRES.filter(g=>g.id!=="personalizado").map(g=>g.id).join(",");
+  const moodIds=MOODS.map(m=>m.id).join(",");
+  const tempoIds=TEMPOS.map(t=>t.id).join(",");
+  const estruturaOpcoes=ESTRUTURA_OPCOES.join(",");
+
+  const prompt=`Você é um compositor musical brasileiro criativo. Sugira uma ideia original para uma nova música.
+
+Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
+{
+  "tema": "Descrição da ideia musical em 2-3 frases — tema, emoção, contexto narrativo",
+  "genre": "um dos ids: ${genreIds}",
+  "mood": "um dos ids: ${moodIds}",
+  "tempo": "um dos ids: ${tempoIds}",
+  "voz": "fp para feminina ou mg para masculina",
+  "estrutura": ["seções escolhidas de: ${estruturaOpcoes}"]
+}
+
+Regras:
+- Seja criativo, surpreendente, evite clichês óbvios
+- Misture gêneros e emoções de formas inusitadas
+- tema deve ser específico e inspirador, não genérico
+- estrutura deve ter entre 4 e 7 seções coerentes com o gênero`;
+
+  try{
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:600,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
+    const sug=JSON.parse(text.replace(/```json|```/g,"").trim());
+
+    // Preenche os campos do card
+    document.getElementById("sug-tema").value=sug.tema||"";
+
+    // Popula selects
+    const sgEl=document.getElementById("sug-genre");
+    sgEl.innerHTML=GENRES.filter(g=>g.id!=="personalizado").map(g=>`<option value="${g.id}"${g.id===sug.genre?" selected":""}>${g.l}</option>`).join("");
+    const smEl=document.getElementById("sug-mood");
+    smEl.innerHTML=MOODS.map(m=>`<option value="${m.id}"${m.id===sug.mood?" selected":""}>${m.l}</option>`).join("");
+    const stEl=document.getElementById("sug-tempo");
+    stEl.innerHTML=TEMPOS.map(t=>`<option value="${t.id}"${t.id===sug.tempo?" selected":""}>${t.l}</option>`).join("");
+    document.getElementById("sug-voz").value=sug.voz||"fp";
+
+    // Estrutura com chips editáveis
+    _sugEstrutura=[...(sug.estrutura||["Verso 1","Refrão","Refrão Final"])];
+    renderSugEstruturaChips();
+
+    document.getElementById("sugestao-card").style.display="block";
+    document.getElementById("sugestao-card").scrollIntoView({behavior:"smooth",block:"nearest"});
+    showToast("✨ Sugestão gerada!","ok");
+  }catch(e){
+    showToast("Erro ao gerar sugestão: "+e.message,"err");
+  }finally{
+    btn.disabled=false;btn.innerHTML="✨ Sugerir";
+  }
+}
+
+function renderSugEstruturaChips(){
+  const el=document.getElementById("sug-estrutura-chips");if(!el)return;
+  el.innerHTML="";
+  ESTRUTURA_OPCOES.forEach(sec=>{
+    const b=document.createElement("button");
+    const sel=_sugEstrutura.includes(sec);
+    b.className="chip"+(sel?" sel":"");
+    b.style.cssText=sel?"background:#7c3aed;color:#fff;border-color:#7c3aed":"";
+    b.textContent=sec;
+    b.onclick=()=>{
+      if(_sugEstrutura.includes(sec)){_sugEstrutura=_sugEstrutura.filter(x=>x!==sec);}
+      else{_sugEstrutura.push(sec);}
+      renderSugEstruturaChips();
+    };
+    el.appendChild(b);
+  });
+}
+
+function aplicarSugestao(){
+  const tema=document.getElementById("sug-tema").value.trim();
+  const genre=document.getElementById("sug-genre").value;
+  const mood=document.getElementById("sug-mood").value;
+  const tempo=document.getElementById("sug-tempo").value;
+  const voz=document.getElementById("sug-voz").value;
+
+  // Preenche campo de ideia
+  document.getElementById("idea").value=tema;
+
+  // Aplica gênero
+  selGenre=genre;
+  document.getElementById("genre-chips").querySelectorAll(".chip").forEach(b=>{
+    const gId=GENRES.find(g=>g.l===b.textContent)?.id;
+    b.className="chip"+(gId===genre?" sel":"");
+  });
+
+  // Aplica mood
+  selMood=mood;
+  document.getElementById("mood-chips").querySelectorAll(".chip").forEach(b=>{
+    const mId=MOODS.find(m=>m.l===b.textContent)?.id;
+    b.className="chip"+(mId===mood?" sel-r":"");
+  });
+
+  // Aplica tempo
+  selTempo=tempo;
+  document.getElementById("tempo-chips").querySelectorAll(".chip").forEach(b=>{
+    const tId=TEMPOS.find(t=>t.l===b.textContent)?.id;
+    b.className="chip"+(tId===tempo?" sel-b":"");
+  });
+
+  // Aplica voz
+  selVoice(voz);
+
+  // Aplica estrutura
+  selEstrutura=[..._sugEstrutura];
+  // Rebuild estrutura chips para refletir seleção
+  const ec=document.getElementById("estrutura-chips");
+  if(ec){ec.innerHTML="";buildEstruturaChips();}
+  updateSunoPreview();
+
+  fecharSugestao();
+  showToast("✅ Ideia aplicada! Clique em Criar Letra.","ok");
 }
 
 function refazerMusica(){
