@@ -3047,13 +3047,15 @@ function sunoAudioSelected(input){
   };
   xhr.ontimeout=function(){
     label.textContent="❌ Tempo esgotado";
-    status.textContent="Upload demorou demais. Tente com um arquivo menor.";
+    const szMB=(file.size/1024/1024).toFixed(1);
+    status.textContent="Arquivo de "+szMB+"MB demorou demais. Tente comprimir o MP3 ou usar Wi-Fi.";
     status.style.color="#ef4444";
   };
-  xhr.timeout=120000; // 2 minutos
+  xhr.timeout=300000; // 5 minutos
   xhr.open("POST","https://api.cloudinary.com/v1_1/"+CLOUD+"/video/upload");
+  const sizeMB=(file.size/1024/1024).toFixed(1);
   label.textContent="⏳ Enviando... 0%";
-  status.textContent="Iniciando upload...";
+  status.textContent="Arquivo: "+sizeMB+"MB — iniciando upload...";
   status.style.color="#f97316";
   xhr.send(fd);
 }
