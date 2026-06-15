@@ -335,7 +335,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .gal-thumb{width:100%;aspect-ratio:0.75;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
 .gal-play-icon{position:absolute;bottom:6px;right:6px;width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 8px #0003;transition:all .2s}
 .gal-card.playing .gal-play-icon{background:#ef4444}
-.gal-info{padding:5px 7px 8px}
+.gal-info{padding:5px 7px 8px;text-align:center}
 .gal-title{font-size:10px;font-weight:700;color:#1a1a1a;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;min-height:26px}
 .gal-sub{font-size:9px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gal-no-audio{opacity:.5}
@@ -885,9 +885,12 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         </div>
         <div class="sp-progress-row">
           <span class="sp-time" id="sp-cur">0:00</span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">
+            <div id="sp-bar-title" style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.75);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.3px"></div>
           <div class="sp-progress" id="sp-progress" onclick="spSeek(event)" ontouchstart="spSeekTouch(event)" ontouchmove="spSeekTouch(event)">
             <div class="sp-track"></div>
             <div class="sp-bar" id="sp-bar"></div>
+          </div>
           </div>
           <span class="sp-time" id="sp-dur">0:00</span>
         </div>
@@ -3212,6 +3215,8 @@ function spUpdateUI(){
   player.classList.add("active");
   title.textContent=e.title;
   sub.style.display="none";
+  const barTitle=document.getElementById("sp-bar-title");
+  if(barTitle)barTitle.textContent=e.title||"";
   // show nature photo as thumb
   const h=Array.from(e.title||'').reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
   const pm2={'sertanejo':['1500534314209-a25ddb2bd429','1504701954957-2010ec3bcec1','1516912481800-cf2cde1b2249','1500076656116-558758c991c1'],'viola caipira':['1448375240586-882707db888b','1433086966358-54859d0ed716','1441974231531-c6227db76b6e','1472214103451-9374bd1c798e'],'funk':['1493514789931-586cb221d7a7','1470225620780-dba8ba36b745','1514525253161-7a46d19cd819','1516450360452-9312f5e86fc7'],'gospel':['1490730141103-6cac27aaab94','1507525428034-b723cf961d3e','1519046904884-53103b34b206','1464822759023-fed622ff2c3b'],'rock':['1464822759023-fed622ff2c3b','1454496522488-7a8e488e8606','1518609878373-06d740f60d8b','1519681393784-d120267933ba'],'pop':['1519046904884-53103b34b206','1507525428034-b723cf961d3e','1490730141103-6cac27aaab94','1500076656116-558758c991c1']};
