@@ -116,7 +116,6 @@ body.dark .sec-lbl{color:var(--text3)}
 body.dark #page-lib{color:var(--text)}
 body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
-body.dark .gal-title{color:var(--text)}
 body.dark .sp-player{background:linear-gradient(180deg,#0b132b 0%,#0f1d38 100%);border-top:1px solid #1b6ca8}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
@@ -1599,64 +1598,21 @@ function toggleMicExt(){
   const btn=document.getElementById("mic-ext-btn");
   const hint=document.getElementById("mic-ext-hint");
   if(micExtOn){
-    if(micExt){try{micExt.stop();}catch(e){} micExt=null;}
+    if(micExt){micExt.stop();micExt=null;}
     micExtOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";
     hint.className="mic-hint";hint.textContent="Ou cante/fale o trecho";return;
   }
-  if(!SR){
-    hint.textContent="⚠ Use o Chrome para gravar";
-    showToast("Use o Chrome para usar o microfone","err");return;
-  }
-  if(navigator.permissions){
-    navigator.permissions.query({name:"microphone"}).then(function(r){
-      if(r.state==="denied"){
-        hint.textContent="⚠ Microfone bloqueado — libere nas config. do Chrome";
-        showToast("Toque no 🔒 da barra de endereço > Permissões > Microfone","err");
-        return;
-      }
-      _startMicExt(SR,btn,hint);
-    }).catch(function(){_startMicExt(SR,btn,hint);});
-  } else {
-    _startMicExt(SR,btn,hint);
-  }
+  if(!SR){hint.textContent="Use Chrome/Edge";return;}
+  micExt=new SR();micExt.lang="pt-BR";micExt.continuous=true;micExt.interimResults=true;
+  micExt.onresult=e=>{
+    let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
+    if(fin){const ta=document.getElementById("trecho-estender");ta.value+=(ta.value?"\n":"")+fin.trim();}
+  };
+  micExt.onerror=micExt.onend=()=>{micExtOn=false;btn.className="btn-mic-sm";btn.textContent="🎙";hint.className="mic-hint";hint.textContent="Ou cante/fale o trecho";};
+  micExt.start();micExtOn=true;
+  btn.className="btn-mic-sm rec";btn.textContent="⏹";
+  hint.className="mic-hint rec";hint.textContent="Gravando... toque para parar";
 }
-function _startMicExt(SR,btn,hint){
-  try{
-    micExt=new SR();micExt.lang="pt-BR";micExt.continuous=true;micExt.interimResults=true;
-    hint.textContent="Aguardando permissão...";
-    micExt.onstart=function(){
-      micExtOn=true;
-      btn.className="btn-mic-sm rec";btn.textContent="⏹";
-      hint.className="mic-hint rec";hint.textContent="🔴 Gravando... toque para parar";
-    };
-    micExt.onresult=function(e){
-      let fin="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript+" ";
-      if(fin){const ta=document.getElementById("trecho-estender");ta.value+=(ta.value?"\n":"")+fin.trim();}
-    };
-    micExt.onerror=function(e){
-      micExtOn=false;micExt=null;
-      btn.className="btn-mic-sm";btn.textContent="🎙";hint.className="mic-hint";
-      if(e.error==="not-allowed"||e.error==="permission-denied"){
-        hint.textContent="⚠ Permissão negada — toque no 🔒 > Microfone > Permitir";
-        showToast("Microfone bloqueado! Toque no cadeado da barra de endereço","err");
-      } else if(e.error==="no-speech"){
-        hint.textContent="Nenhuma fala detectada, tente novamente";
-      } else {
-        hint.textContent="Erro: "+e.error+" — tente novamente";
-        showToast("Erro no microfone: "+e.error,"err");
-      }
-    };
-    micExt.onend=function(){
-      if(micExtOn){micExtOn=false;}
-      btn.className="btn-mic-sm";btn.textContent="🎙";
-      hint.className="mic-hint";hint.textContent="Ou cante/fale o trecho";
-    };
-    micExt.start();
-  }catch(err){
-    micExtOn=false;
-    hint.className="mic-hint";hint.textContent="Erro ao iniciar: "+err.message;
-    showToast("Erro ao iniciar microfone","err");
-  }
 
 // ══════════════════════════════════════
 // GENERATE
