@@ -884,15 +884,17 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
           <button class="sp-btn" id="sp-repeat-btn" onclick="spToggleRepeat()" title="Repetir">🔁</button>
         </div>
         <div class="sp-progress-row">
-          <span class="sp-time" id="sp-cur">0:00</span>
-          <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">
-            <div id="sp-bar-title" style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.75);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.3px"></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0">
+            <div id="sp-bar-title" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.85);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;max-width:200px"></div>
+            <div style="display:flex;align-items:center;gap:8px;width:100%">
+            <span class="sp-time" id="sp-cur">0:00</span>
           <div class="sp-progress" id="sp-progress" onclick="spSeek(event)" ontouchstart="spSeekTouch(event)" ontouchmove="spSeekTouch(event)">
             <div class="sp-track"></div>
             <div class="sp-bar" id="sp-bar"></div>
           </div>
+            <span class="sp-time" id="sp-dur">0:00</span>
+            </div>
           </div>
-          <span class="sp-time" id="sp-dur">0:00</span>
         </div>
       </div>
 
@@ -3093,7 +3095,7 @@ function renderGallery(){
     const d4=["1500534314209-a25ddb2bd429","1507525428034-b723cf961d3e","1448375240586-882707db888b","1464822759023-fed622ff2c3b"];
     const arr=rom?r4:(pm[g]||d4);
     const purl="https://images.unsplash.com/photo-"+arr[h%4]+"?w=300&q=70&fit=crop&crop=entropy";
-    return '<div class="gal-card'+(isPlaying?' playing':'')+'" id="gal-card-'+i+'" onclick="spPlay('+i+')">'+('<div class="gal-thumb" style="background:'+genreColor(e.genre)+'">')+('<img src="'+purl+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'"/>')+'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%)"></div>'+('<div class="gal-play-icon">')+(isPlaying?"⏸":"▶")+'</div></div>'+('<div class="gal-info"><div class="gal-title">')+esc(e.title)+('</div><div class="gal-sub" id="gal-dur-')+i+'">--:--</div></div></div>';
+    return '<div class="gal-card'+(isPlaying?' playing':'')+'" id="gal-card-'+i+'" onclick="'+(isPlaying?'spToggle()':'spPlay('+i+')')+'">'+('<div class="gal-thumb" style="background:'+genreColor(e.genre)+'">')+('<img src="'+purl+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'"/>')+'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%)"></div>'+('<div class="gal-play-icon">')+(isPlaying?"⏸":"▶")+'</div></div>'+('<div class="gal-info"><div class="gal-title">')+esc(e.title)+('</div><div class="gal-sub" id="gal-dur-')+i+'">--:--</div></div></div>';
   }).join("");
   withAudio.forEach(function(e,i){if(!e.audio)return;var a=new Audio();a.src=e.audio;a.addEventListener("loadedmetadata",function(){var el=document.getElementById("gal-dur-"+i);if(el)el.textContent=spFmt(a.duration);});});
 }
