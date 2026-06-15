@@ -1698,7 +1698,20 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
 
   setLoading(true);currentSong=null;currentSections={};if(!isRefazing){clearVersionsHistory();}
 
-  const prompt=`Você é o maior compositor de músicas populares brasileiras do país. Seu dom é criar letras que fazem as pessoas chorarem, se apaixonarem e pedirem bis. Você escreveu hits de sertanejo, pagode, rock e pop que tocaram em todo o Brasil.
+  const genreExamples={
+    "Sertanejo Universitário":"Ex de verso bom: 'Tô com a garrafa na mão, pensando em você / O bar tá cheio mas me sinto só outra vez'. Ex de refrão bom: 'Me liga, me liga / Que eu tô louco pra te ver'. EVITE: 'ó coração ferido', 'meu peito a sangrar', qualquer coisa que seu avô cantaria.",
+    "Pagode":"Ex de verso bom: 'Você chegou na festa e eu perdi o fio / Minha cabeça girou, o chão ficou vazio'. Ex de refrão bom: 'Vai, vai, vai / Que essa saudade não me deixa em paz'. EVITE: 'ó flor do meu jardim', 'teus olhos são estrelas', linguagem de carta de amor de 1940.",
+    "Funk":"Linguagem direta, atual, que rola nas ruas. Ex: 'Ela chegou na pista e parou tudo / O brother do meu lado ficou mudo'. Rima fácil, batida na fala. EVITE: qualquer palavra que não use na vida real.",
+    "Forró":"Animado, dançante, palavras simples. Ex: 'Segura minha mão, não me deixa cair / O forró tá pedindo pra gente sorrir'. EVITE: linguagem rebuscada, metáforas complexas.",
+    "Pop Brasileiro":"Atual, como Luísa Sonza, Anitta, Ludmilla fazem. Ex refrão: 'Vai ser minha essa noite / ou vai ficar só na dúvida'. Direto, impacto imediato. EVITE: língua de livro de poesia.",
+    "Rock Brasileiro":"Energia, urgência. Ex: 'Tô cansado de fingir que tá tudo bem / Essa cidade me engoliu e não tem'. EVITE: metáforas poéticas clássicas, parece música caipira antiga.",
+    "Axé / Baiano":"Alegre, solto, fácil de cantar. Ex: 'Joga pra cima, joga pra baixo / Essa festa não tem jeito, vai até o racho'. EVITE: qualquer coisa séria ou pesada demais.",
+    "MPB":"Pode ter mais poesia MAS ainda deve soar atual — pense Marisa Monte, não Vicente Celestino. Metáforas sim, mas de coisas reais de hoje.",
+  };
+  const gExKey=Object.keys(genreExamples).find(k=>g.l.toLowerCase().includes(k.toLowerCase().split(" ")[0]))||"";
+  const gExTip=gExKey?`\n\nGUIA ESPECÍFICO PARA ${g.l.toUpperCase()}:\n${genreExamples[gExKey]}`:"";
+
+  const prompt=`Você é o maior compositor de hits do Brasil hoje — você escreve músicas que tocam em todo lugar, do carro ao TikTok. Você conhece como o Suno AI gera música: letras naturais, linguagem atual, rimas que grudam.
 
 MODO: ${modoDesc}
 
@@ -1715,27 +1728,41 @@ ESPECIFICAÇÕES
 • Seções : ${secsToUse.join(" › ")}
 ${titulo?`• Título: "${titulo}"\n`:""}${artist?`• Referência: ${artist}\n`:""}${extrasStr?`• Extras: ${extrasStr}\n`:""}${producao?`• Produção: ${producao}\n`:""}
 ═══════════════════════════════════════
+REGRAS ABSOLUTAS — LINGUAGEM
+═══════════════════════════════════════
+PROIBIDO USAR (palavras antigas/formais que matam a música):
+vislumbro, éter, pervade, ó coração, meu peito a sangrar, teus olhos, suave brisa, flor do jardim, doce amor, alma ferida, oh saudade, bela donzela, nobre sentimento, ardente paixão, chama que queima, tua beleza, divina criatura — qualquer coisa que parece carta de amor de 1800 ou poesia clássica.
+
+USE (linguagem atual, real, de hoje):
+- Palavras que as pessoas falam no dia a dia: "saudade", "sufoco", "tô mal", "não tô conseguindo", "fica", "vai", "me liga", "me chama", "sumi", "some"
+- Situações reais de hoje: story, celular, foto, mensagem, bloco, festa, barzinho, playlist
+- Gírias quando fizerem sentido pro gênero: "bonde", "mete", "lacra", "arrasa", "tô on"
+- Frases curtas e diretas que cabem num refrão: "Me liga quando estiver sozinho" > "Quando a solidão te assombrar, lembra de mim"
+${gExTip}
+
+═══════════════════════════════════════
 REGRAS DE OURO DA LETRA
 ═══════════════════════════════════════
 RIMA (PRIORIDADE MÁXIMA):
 • Toda seção DEVE ter rima rica e consistente — use esquema AABB ou ABAB do início ao fim.
-• Rima rica = consonância total (ex: "coração / solidão", "te amar / guardar").
-• NUNCA deixe verso sem rima — se uma linha não rima, reescreva-a.
-• Conte as sílabas: cada verso da mesma seção deve ter número de sílabas similar (±2 sílabas).
+• Rima boa: "te esperar / voltar", "confiar / ficar", "coração / decisão", "te ver / acontecer".
+• NUNCA deixe verso sem rima — se uma linha não rima, reescreva.
+• Conte as sílabas: cada verso da mesma seção deve ter número similar (±2 sílabas) — a letra tem que caber na melodia naturalmente.
+• Teste em voz alta: se travar ao falar rápido, reescreva.
 
-EMOÇÃO E TEMA:
-• Temas que conectam: amor, saudade, traição, reencontro, distância, ciúme, entrega, promessa.
-• Escreva como se fosse uma história real — use situações concretas (a foto guardada, a camiseta esquecida, o cheiro que ainda fica).
-• O ouvinte deve se sentir dentro da música, não apenas ouvindo.
-• Mostre a emoção com cenas vívidas, não com declarações genéricas.
+EMOÇÃO COM CENAS CONCRETAS:
+• Não diga "estou com saudade" — mostre: "fico olhando pro teu lado da cama que tá vazio"
+• Não diga "você me faz feliz" — mostre: "quando você chega, até o dia parece diferente"
+• Situações reais que qualquer pessoa reconhece: a última mensagem, a foto que não apaga, o lugar que não consegue voltar
+• O ouvinte deve se sentir dentro da música, não apenas ouvindo
 
 ESTRUTURA:
 • ${DUR_NOTES[dur]}
-• VERSO: conta a história, cria tensão, rima AABB ou ABAB.
-• PRÉ-REFRÃO: aumenta a emoção, prepara a explosão do refrão.
-• REFRÃO: a frase que fica na cabeça — hook de 1 linha que resume tudo, repetível, fácil de cantar.
-• BRIDGE: virada emocional — muda perspectiva, eleva intensidade, justifica o refrão final.
-• Cada linha tem função: nenhum verso de enchimento.
+• VERSO: conta a história em cenas reais, linguagem natural, rima AABB ou ABAB
+• PRÉ-REFRÃO: aumenta a tensão, 2-4 linhas, prepara a explosão
+• REFRÃO: 1 frase que gruda na cabeça, fácil de cantar, todo mundo consegue repetir na primeira vez que ouve
+• BRIDGE: virada — muda perspectiva ou revela algo novo, eleva antes do refrão final
+• Cada linha tem função: zero verso de enchimento
 
 SUNO STYLE PROMPT:
 • Máximo EXATO 120 caracteres, inglês, vírgulas.
@@ -1747,7 +1774,7 @@ SUNO STYLE PROMPT:
 SAÍDA — SOMENTE JSON VÁLIDO
 ═══════════════════════════════════════
 Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
-{"title":"Título que emociona","subtitle":"Tagline poética de 1 frase","key":"Tom (ex: Lá menor)","chords":"Progressão (ex: Am - F - C - G)","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra com rima rica, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst 1 + papel","inst 2 + papel","inst 3 + papel","inst 4 + papel","inst 5 + papel"],"production_notes":"dinâmica, mix, referências, técnicas"}`;
+{"title":"Título que emociona","subtitle":"Tagline de 1 frase atual (não poética demais)","key":"Tom (ex: Lá menor)","chords":"Progressão (ex: Am - F - C - G)","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra com rima rica, linguagem atual, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst 1 + papel","inst 2 + papel","inst 3 + papel","inst 4 + papel","inst 5 + papel"],"production_notes":"dinâmica, mix, referências, técnicas"}`;
 
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -1789,7 +1816,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você reescreve seções com rima perfeita e emoção que parte o coração.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente do começo ao fim.\n• Mesma quantidade de sílabas por linha (±2) — a letra tem que caber na melodia.\n• Emoção real: amor, saudade, dor, entrega — com cenas concretas, não palavras vazias.\n• Se for refrão: hook de 1 frase que grude na cabeça, fácil de cantar.\n• Se for verso: conta uma história, cada linha avança a narrativa.\n• Se for bridge: vira a perspectiva emocional, eleva antes do refrão final.\n• Flua naturalmente ao ser cantado — teste mentalmente cada linha.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra com rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\n• Se for refrão: 1 frase curta que qualquer um consegue repetir na primeira vez que ouve.\n• Se for verso: conta uma história em cenas reais, cada linha avança a narrativa.\n• Se for bridge: vira a perspectiva, revela algo novo, eleva antes do refrão final.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
@@ -1809,7 +1836,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você completa trechos de letras mantendo a voz do artista e criando rimas perfeitas.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo.\n• Rima rica: "te esperar / voltar", "coração / perdão" — não rimas fracas como "amor / dor".\n• Mesma contagem de sílabas por linha — cabe na mesma melodia.\n• Continue a história: avance a emoção, não repita o que já foi dito.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação com rima rica, 3-6 linhas"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você completa trechos mantendo a voz do artista, com linguagem atual e rima que gruda.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo e linguagem.\n• Mantenha a MESMA linguagem do trecho: se o artista usa gírias, continue com gírias; se é direto, seja direto. PROIBIDO inserir palavras formais ou antigas ("teus", "vislumbro", "doce") se o trecho é coloquial.\n• Rima que gruda: "te esperar/voltar", "confiar/ficar", "coração/decisão" — não rimas fracas.\n• Mesma contagem de sílabas — cabe na mesma melodia, testa falando rápido.\n• Continue a história com cenas reais: avance a emoção, não repita.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação linguagem atual, rima rica, 3-6 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
