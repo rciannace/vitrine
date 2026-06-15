@@ -1773,10 +1773,11 @@ EMOÇÃO COM CENAS CONCRETAS:
 ESTRUTURA:
 • ${DUR_NOTES[dur]}
 • VERSO: conta a história em cenas reais, linguagem natural, rima AABB ou ABAB
-• PRÉ-REFRÃO: aumenta a tensão, 2-4 linhas, prepara a explosão
-• REFRÃO: 1 frase que gruda na cabeça, fácil de cantar, todo mundo consegue repetir na primeira vez que ouve
-• BRIDGE: virada — muda perspectiva ou revela algo novo, eleva antes do refrão final
-• Cada linha tem função: zero verso de enchimento
+• PRÉ-REFRÃO: aumenta a tensão, 2-4 linhas, o momento em que para de fingir
+• REFRÃO: frase que gruda na cabeça + pedido concreto, fácil de cantar na primeira vez
+• BRIDGE: a decisão final — muda tom, eleva intensidade, prepara o refrão final
+• REFRÃO FINAL: igual ao refrão MAS com 1-2 linhas diferentes que mostram evolução emocional
+• Cada linha tem função: zero verso de enchimento, cada palavra conta a história
 
 SUNO STYLE PROMPT:
 • Máximo EXATO 120 caracteres, inglês, vírgulas.
@@ -1830,7 +1831,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\n• Se for refrão: 1 frase curta que qualquer um consegue repetir na primeira vez que ouve.\n• Se for verso: conta uma história em cenas reais, cada linha avança a narrativa.\n• Se for bridge: vira a perspectiva, revela algo novo, eleva antes do refrão final.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\\n• CONFLITO INTERNO: o obstáculo deve ser medo, orgulho, dúvida — não culpa de outra pessoa. "Cada orgulho é um adeus" toca mais que "você me deixou".\\n• Se for verso 1: apresenta personagem e conflito interno. Se for verso 2: nova camada — nunca repete o verso 1. Inclua uma pergunta retórica que o ouvinte faz pra si mesmo.\\n• Se for pré-refrão: momento em que para de fingir — admissão da emoção real.\\n• Se for refrão: frase que gruda + pedido concreto. Se for REFRÃO FINAL: mude 1-2 linhas mostrando evolução — não pode ser cópia exata.\\n• Se for bridge/ponte: decisão final, muda o tom, eleva antes do refrão final.\\n\\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
