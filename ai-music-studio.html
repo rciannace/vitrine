@@ -2885,22 +2885,33 @@ function renderLib(){
 }
 function addAudio(id,input){
   const file=input.files[0];if(!file)return;
-  const card=input.closest(".lib-card");
   const label=input.closest("label");
-  if(label)label.innerHTML="<span style='color:#f97316'>⏳ Enviando...</span>";
+  const sizeMB=(file.size/1024/1024).toFixed(1);
+  if(label)label.innerHTML="<span style='color:#f97316'>⏳ 0% · "+sizeMB+"MB</span>";
   const CLOUD="dftsx4wv0",PRESET="ia_foto_studio";
   const fd=new FormData();
   fd.append("file",file);
   fd.append("upload_preset",PRESET);
-  fd.append("resource_type","video"); // audio files use video resource type
-  fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/video/upload`,{method:"POST",body:fd})
-    .then(r=>r.json())
-    .then(d=>{
+  const xhr=new XMLHttpRequest();
+  xhr.upload.onprogress=function(e){
+    if(e.lengthComputable){
+      const pct=Math.round(e.loaded/e.total*100);
+      if(label)label.innerHTML="<span style='color:#f97316'>⏳ "+pct+"% · "+sizeMB+"MB</span>";
+    }
+  };
+  xhr.onload=function(){
+    try{
+      const d=JSON.parse(xhr.responseText);
       if(!d.secure_url)throw new Error(d.error?.message||"Erro upload");
       const idx=history.findIndex(x=>x.id===id);
       if(idx>=0){history[idx].audio=d.secure_url;saveHistory();renderLib();showToast("🎵 Áudio salvo!","ok");}
-    })
-    .catch(e=>{showToast("❌ Erro: "+e.message,"err");renderLib();});
+    }catch(e){showToast("❌ Erro: "+e.message,"err");renderLib();}
+  };
+  xhr.onerror=function(){showToast("❌ Falha na conexão","err");renderLib();};
+  xhr.ontimeout=function(){showToast("❌ Tempo esgotado. Use Wi-Fi ou arquivo menor.","err");renderLib();};
+  xhr.timeout=300000;
+  xhr.open("POST","https://api.cloudinary.com/v1_1/"+CLOUD+"/video/upload");
+  xhr.send(fd);
 }
 function removeAudio(id){
   const idx=history.findIndex(x=>x.id===id);
@@ -3148,7 +3159,7 @@ let spPlaying=false;
 const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
 
 function renderGallery(){
-  const withAudio=history.filter(e=>e.audio);
+  const withAudio=history.filter(e=>e.audio).slice().sort((a,b)=>(a.title||"").localeCompare(b.title||"","pt",{sensitivity:"base"}));
   const grid=document.getElementById("gal-grid");
   const empty=document.getElementById("gal-empty");
   spQueue=withAudio;
