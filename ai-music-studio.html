@@ -2522,7 +2522,7 @@ function setPage(p){
   if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
 }
 
-function updateLibN(){document.getElementById("lib-n").textContent=history.length;}
+function updateLibN(){document.getElementById("lib-n").textContent=history.filter(e=>!e.isDraft).length;}
 // HISTÓRICO DE PROMPTS
 let promptHist=[];
 try{promptHist=JSON.parse(localStorage.getItem("ams_prompt_hist")||"[]");}catch{}
