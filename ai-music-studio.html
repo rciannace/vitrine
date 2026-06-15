@@ -1617,6 +1617,51 @@ function toggleMicExt(){
 // ══════════════════════════════════════
 // GENERATE
 // ══════════════════════════════════════
+// Parse JSON robusto — corrige markdown, newlines literais e aspas internas da IA
+function safeParseJSON(raw){
+  // 1) limpa markdown e normaliza newlines literais dentro de strings
+  let txt=raw.replace(/```json/g,"").replace(/```/g,"").trim();
+  // newlines literais dentro de string JSON quebram o parse — escapa eles
+  txt=txt.replace(/("(?:[^"\\]|\\.)*")|([\r\n]+)/g,function(m,str,nl){
+    if(str)return str; // dentro de string: mantém
+    return ""; // fora de string: remove (whitespace estrutural)
+  });
+  // 2) tenta direto
+  try{return JSON.parse(txt);}catch(e1){}
+  // 3) extrai primeiro bloco JSON completo
+  let depth=0,start=-1,end=-1;
+  for(let i=0;i<txt.length;i++){
+    const c=txt[i];
+    if(c==="{"){ if(depth===0)start=i; depth++; }
+    else if(c==="}"){ depth--; if(depth===0){end=i;break;} }
+  }
+  if(start>=0&&end>start){
+    const block=txt.slice(start,end+1);
+    try{return JSON.parse(block);}catch(e2){}
+    // 4) aspas duplas internas nas strings: substitui por apóstrofo
+    // percorre o bloco respeitando strings JSON
+    let result="",inStr=false,i=0;
+    while(i<block.length){
+      const c=block[i];
+      if(!inStr){
+        if(c==='"'){inStr=true;result+=c;}
+        else{result+=c;}
+      }else{
+        if(c==="\\"){ result+=c+block[i+1];i+=2;continue; }
+        else if(c==='"'){
+          // é fechamento ou aspas interna?
+          const rest=block.slice(i+1).trimStart();
+          if(/^[,:\}\]\n\r]/.test(rest)||rest===""){inStr=false;result+=c;}
+          else{result+="'";}// aspas interna — vira apóstrofo
+        }else{result+=c;}
+      }
+      i++;
+    }
+    try{return JSON.parse(result);}catch(e3){}
+  }
+  throw new Error("JSON inválido da IA");
+}
+
 async function generate(){
   const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
   if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
@@ -1720,7 +1765,7 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    const parsed=safeParseJSON(text);
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
@@ -1756,7 +1801,7 @@ async function rewriteSec(sec){
       body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você reescreve seções com rima perfeita e emoção que parte o coração.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente do começo ao fim.\n• Mesma quantidade de sílabas por linha (±2) — a letra tem que caber na melodia.\n• Emoção real: amor, saudade, dor, entrega — com cenas concretas, não palavras vazias.\n• Se for refrão: hook de 1 frase que grude na cabeça, fácil de cantar.\n• Se for verso: conta uma história, cada linha avança a narrativa.\n• Se for bridge: vira a perspectiva emocional, eleva antes do refrão final.\n• Flua naturalmente ao ser cantado — teste mentalmente cada linha.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra com rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    const parsed=safeParseJSON(text);
     currentSections[sec]=parsed.lyrics;
     renderResult(Object.keys(currentSections));showToast("✨ Seção reescrita!","ok");
   }catch(e){showToast("Erro: "+e.message,"err");if(btn){btn.disabled=false;btn.textContent="🔄 Reescrever";}}
@@ -1776,7 +1821,7 @@ async function extendSec(sec){
       body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de músicas populares brasileiras. Você completa trechos de letras mantendo a voz do artista e criando rimas perfeitas.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo.\n• Rima rica: "te esperar / voltar", "coração / perdão" — não rimas fracas como "amor / dor".\n• Mesma contagem de sílabas por linha — cabe na mesma melodia.\n• Continue a história: avance a emoção, não repita o que já foi dito.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação com rima rica, 3-6 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    const parsed=safeParseJSON(text);
     currentSections[sec]=parsed.lyrics;
     // update currentSong sections
     if(currentSong)currentSong.sections=Object.assign({},currentSong.sections||{},currentSections);
@@ -2206,7 +2251,7 @@ Regras:
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const sug=JSON.parse(text.replace(/```json|```/g,"").trim());
+    const sug=safeParseJSON(text);
 
     // Preenche os campos do card
     document.getElementById("sug-tema").value=sug.tema||"";
@@ -2299,16 +2344,8 @@ function aplicarSugestao(){
 
 function refazerMusica(){
   if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
-  if(versionsHistory.length>=5)versionsHistory.shift();
-  versionsHistory.push({
-    song:JSON.parse(JSON.stringify(currentSong)),
-    sections:JSON.parse(JSON.stringify(currentSections)),
-    struct:Object.keys(currentSections)
-  });
-  saveVersionsHistory();
   isRefazing=true;
-  showToast("🔄 Versão salva! Gerando nova...","ok");
-  // Se veio da biblioteca (editingFromLib) ou campos estão vazios, usa dados da própria música
+  showToast("🔄 Gerando nova versão...","ok");
   const temaCampo=(document.getElementById("idea")?.value.trim())||"";
   if(editingFromLib || !temaCampo){
     setTimeout(function(){generateFromSong(currentSong, currentSections);},300);
@@ -2376,7 +2413,7 @@ Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
+    const parsed=safeParseJSON(text);
 
     // Monta a versão nova MAS NÃO toca em currentSong nem currentSections
     const newSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
