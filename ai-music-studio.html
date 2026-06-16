@@ -2498,23 +2498,27 @@ Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
 
-    // Monta a versão nova MAS NÃO toca em currentSong nem currentSections
+    // Salva a versão ATUAL no histórico antes de sobrescrever
+    if(currentSong&&currentSections){
+      versionsHistory.push({
+        song: JSON.parse(JSON.stringify(currentSong)),
+        sections: JSON.parse(JSON.stringify(currentSections)),
+        struct: Object.keys(currentSections)
+      });
+      if(versionsHistory.length>5)versionsHistory.shift();
+      saveVersionsHistory();
+    }
+
+    // Agora substitui a versão atual pela nova
     const newSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
     const newSections=Object.assign({},parsed.sections||{});
-
-    // Adiciona ao versionsHistory (aparece no final como V1, V2...)
-    versionsHistory.push({
-      song: newSong,
-      sections: newSections,
-      struct: secsToUse
-    });
-    saveVersionsHistory();
+    currentSong=newSong;
+    currentSections=newSections;
 
     isRefazing=false;
-    // Re-renderiza mantendo a música original no topo, versões novas no final
-    renderResult(Object.keys(currentSections));
+    renderResult(secsToUse);
     setTimeout(function(){renderVersionsBar();},100);
-    showToast("✅ Nova versão gerada no final da página!","ok");
+    showToast("✅ Nova versão gerada! Versão anterior salva abaixo.","ok");
   }catch(e){
     isRefazing=false;
     showToast("Erro: "+e.message,"err");
@@ -2692,30 +2696,36 @@ function toggleFav(id){
 function renderVersionsBar(){
   const bar=document.getElementById("versions-bar");
   if(!bar)return;
-  // recarrega do localStorage caso o array esteja vazio em memória
   if(!versionsHistory.length){try{const ls=JSON.parse(localStorage.getItem("ams_versions")||"[]");if(ls.length)versionsHistory=ls;}catch{}}
   if(!versionsHistory.length){bar.style.display="none";return;}
   bar.style.display="block";
-  const chips=versionsHistory.map((v,i)=>`
-    <button onclick="showVersion(${i})" class="version-chip${activeVersionIdx===i?" active":""}">
-      V${i+1} · ${esc((v.song.title||"Sem título").slice(0,18))}
-    </button>`).join("");
-  let detail="";
-  if(activeVersionIdx!==null&&versionsHistory[activeVersionIdx]){
-    const v=versionsHistory[activeVersionIdx];
-    const lyricsPreview=Object.values(v.sections||{}).join("\n\n");
-    detail=`<div class="version-detail">
-      <div class="version-detail-title">${esc(v.song.title)} · ${esc(v.song.genre)} · ${v.song.bpm} BPM</div>
-      <div class="version-detail-lyrics">${esc(lyricsPreview)}</div>
-      <div class="version-detail-btns">
-        <button onclick="useVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar na Biblioteca</button>
-        <button onclick="saveDraftFromVersion(${activeVersionIdx})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Guardar Rascunho</button>
-        <button onclick="deleteVersion(${activeVersionIdx})" style="padding:9px 12px;border-radius:8px;border:1px solid #fca5a5;background:#fef2f2;color:#ef4444;font-size:12px;cursor:pointer" title="Excluir versão">🗑</button>
+
+  // Monta um card completo por versão (mais recente primeiro)
+  const cards=[...versionsHistory].reverse().map((v,ri)=>{
+    const i=versionsHistory.length-1-ri; // índice real no array
+    const secs=Object.entries(v.sections||{});
+    const lyricsHtml=secs.map(([sec,txt])=>`
+      <div style="margin-bottom:12px">
+        <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${esc(sec)}</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.7;white-space:pre-line">${esc(txt)}</div>
+      </div>`).join("");
+    return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:14px;font-weight:800;color:var(--text)">V${versionsHistory.length-ri} · ${esc(v.song.title||"Sem título")}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${esc(v.song.genre||"")} · ${v.song.bpm||"—"} BPM · ${esc(v.song.mood||"")}</div>
+        </div>
+        <button onclick="deleteVersion(${i})" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text4)" title="Excluir">🗑</button>
+      </div>
+      <div style="max-height:320px;overflow-y:auto;margin-bottom:12px;padding-right:4px">${lyricsHtml}</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="useVersion(${i})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar esta versão</button>
+        <button onclick="saveDraftFromVersion(${i})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Rascunho</button>
       </div>
     </div>`;
-  }
-  bar.innerHTML=`<div class="versions-bar-title">📚 Versões anteriores — clique para ver (${versionsHistory.length}/5)</div>
-    <div class="version-chips">${chips}</div>${detail}`;
+  }).join("");
+
+  bar.innerHTML=`<div class="versions-bar-title" style="margin-bottom:12px">📚 Versões anteriores (${versionsHistory.length}/5)</div>${cards}`;
 }
 
 function deleteVersion(idx){
