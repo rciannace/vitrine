@@ -2723,6 +2723,7 @@ function renderVersionsBar(){
       <div style="display:flex;gap:8px">
         <button onclick="useVersion(${i})" style="flex:1;padding:9px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar esta versão</button>
         <button onclick="saveDraftFromVersion(${i})" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid #6366f1;background:transparent;color:#6366f1;font-size:12px;font-weight:600;cursor:pointer">📝 Rascunho</button>
+        <button onclick="copyVersion(${i},this)" style="padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer" title="Copiar letra">📋</button>
       </div>
     </div>`;
   }).join("");
@@ -2736,6 +2737,23 @@ function deleteVersion(idx){
   saveVersionsHistory();
   showToast("🗑 Versão excluída","ok");
   renderVersionsBar();
+}
+
+function copyVersion(idx,btn){
+  const v=versionsHistory[idx];
+  if(!v)return;
+  const title=v.song.title||"Sem título";
+  const secs=Object.entries(v.sections||{});
+  const text=title+"\n\n"+secs.map(([sec,txt])=>"["+sec+"]\n"+txt).join("\n\n");
+  navigator.clipboard.writeText(text).then(function(){
+    const orig=btn.textContent;
+    btn.textContent="✅";
+    btn.style.color="#22c55e";
+    setTimeout(function(){btn.textContent=orig;btn.style.color="";},2000);
+    showToast("📋 Letra copiada!","ok");
+  }).catch(function(){
+    showToast("Erro ao copiar","err");
+  });
 }
 
 function showVersion(idx){
