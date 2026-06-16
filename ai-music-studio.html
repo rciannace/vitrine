@@ -2427,6 +2427,15 @@ function aplicarSugestao(){
 
 function refazerMusica(){
   if(!currentSong){showToast("Nenhuma música para refazer","err");return;}
+  // Salva a versão ATUAL antes de gerar nova — captura agora antes de qualquer async
+  if(currentSong&&currentSections){
+    const snapSong=JSON.parse(JSON.stringify(currentSong));
+    const snapSecs=JSON.parse(JSON.stringify(currentSections));
+    const snapStruct=Object.keys(currentSections);
+    versionsHistory.push({song:snapSong,sections:snapSecs,struct:snapStruct});
+    if(versionsHistory.length>5)versionsHistory.shift();
+    saveVersionsHistory();
+  }
   isRefazing=true;
   showToast("🔄 Gerando nova versão...","ok");
   const temaCampo=(document.getElementById("idea")?.value.trim())||"";
@@ -2498,18 +2507,7 @@ Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
 
-    // Salva a versão ATUAL no histórico antes de sobrescrever
-    if(currentSong&&currentSections){
-      versionsHistory.push({
-        song: JSON.parse(JSON.stringify(currentSong)),
-        sections: JSON.parse(JSON.stringify(currentSections)),
-        struct: Object.keys(currentSections)
-      });
-      if(versionsHistory.length>5)versionsHistory.shift();
-      saveVersionsHistory();
-    }
-
-    // Agora substitui a versão atual pela nova
+    // Substitui a versão atual pela nova (snapshot já foi salvo em refazerMusica)
     const newSong={...parsed,bpm:song.bpm||tempoObj.bpm,genre:song.genre,mood:song.mood,voice:song.voice||"",duration:dur};
     const newSections=Object.assign({},parsed.sections||{});
     currentSong=newSong;
