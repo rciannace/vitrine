@@ -1592,7 +1592,7 @@ async function validateKey(){
   try{
     const r=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
     const d=await r.json();
     if(r.ok&&d.choices){
       localStorage.setItem("or_key",key);
@@ -1831,7 +1831,7 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
     try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -1868,7 +1868,7 @@ async function rewriteSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\\n• CONFLITO INTERNO: o obstáculo deve ser medo, orgulho, dúvida — não culpa de outra pessoa. "Cada orgulho é um adeus" toca mais que "você me deixou".\\n• Se for verso 1: apresenta personagem e conflito interno. Se for verso 2: nova camada — nunca repete o verso 1. Inclua uma pergunta retórica que o ouvinte faz pra si mesmo.\\n• Se for pré-refrão: momento em que para de fingir — admissão da emoção real.\\n• Se for refrão: frase que gruda + pedido concreto. Se for REFRÃO FINAL: mude 1-2 linhas mostrando evolução — não pode ser cópia exata.\\n• Se for bridge/ponte: decisão final, muda o tom, eleva antes do refrão final.\\n\\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\\n• CONFLITO INTERNO: o obstáculo deve ser medo, orgulho, dúvida — não culpa de outra pessoa. "Cada orgulho é um adeus" toca mais que "você me deixou".\\n• Se for verso 1: apresenta personagem e conflito interno. Se for verso 2: nova camada — nunca repete o verso 1. Inclua uma pergunta retórica que o ouvinte faz pra si mesmo.\\n• Se for pré-refrão: momento em que para de fingir — admissão da emoção real.\\n• Se for refrão: frase que gruda + pedido concreto. Se for REFRÃO FINAL: mude 1-2 linhas mostrando evolução — não pode ser cópia exata.\\n• Se for bridge/ponte: decisão final, muda o tom, eleva antes do refrão final.\\n\\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
@@ -1888,7 +1888,7 @@ async function extendSec(sec){
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você completa trechos mantendo a voz do artista, com linguagem atual e rima que gruda.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo e linguagem.\n• Mantenha a MESMA linguagem do trecho: se o artista usa gírias, continue com gírias; se é direto, seja direto. PROIBIDO inserir palavras formais ou antigas ("teus", "vislumbro", "doce") se o trecho é coloquial.\n• Rima que gruda: "te esperar/voltar", "confiar/ficar", "coração/decisão" — não rimas fracas.\n• Mesma contagem de sílabas — cabe na mesma melodia, testa falando rápido.\n• Continue a história com cenas reais: avance a emoção, não repita.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação linguagem atual, rima rica, 3-6 linhas"}`}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você completa trechos mantendo a voz do artista, com linguagem atual e rima que gruda.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo e linguagem.\n• Mantenha a MESMA linguagem do trecho: se o artista usa gírias, continue com gírias; se é direto, seja direto. PROIBIDO inserir palavras formais ou antigas ("teus", "vislumbro", "doce") se o trecho é coloquial.\n• Rima que gruda: "te esperar/voltar", "confiar/ficar", "coração/decisão" — não rimas fracas.\n• Mesma contagem de sílabas — cabe na mesma melodia, testa falando rápido.\n• Continue a história com cenas reais: avance a emoção, não repita.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação linguagem atual, rima rica, 3-6 linhas"}`}]})});
     const data=await res.json();
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
@@ -2317,7 +2317,7 @@ Regras:
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:600,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:600,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -2488,7 +2488,7 @@ Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
   try{
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
@@ -2645,7 +2645,7 @@ async function sugerirTitulo(){
   const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
   showToast("Gerando sugestoes...","ok");
   try{
-    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:"google/gemini-2.0-flash-exp:free",max_tokens:100,messages:[{role:"user",content:"Sugira 3 titulos criativos para uma musica de "+g.l+" com clima "+m.l+". Tema: "+(tema||"livre")+". Retorne APENAS os 3 titulos, um por linha, sem numeracao."}]})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:"meta-llama/llama-3.3-70b-instruct:free",max_tokens:100,messages:[{role:"user",content:"Sugira 3 titulos criativos para uma musica de "+g.l+" com clima "+m.l+". Tema: "+(tema||"livre")+". Retorne APENAS os 3 titulos, um por linha, sem numeracao."}]})});
     const data=await res.json();
     const titulos=data.choices[0].message.content.trim().split("\n").filter(t=>t.trim()).slice(0,3);
     document.getElementById("titulo-popup")?.remove();
