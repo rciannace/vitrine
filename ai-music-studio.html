@@ -1170,8 +1170,9 @@ function saveLocal(){try{localStorage.setItem("ams6",JSON.stringify(history));lo
 // EXPORT / IMPORT
 // ══════════════════════════════════════
 function exportLib(){
-  if(!history.length){showToast("Nenhuma música para exportar","err");return;}
-  const data=JSON.stringify(history,null,2);
+  if(!history.length&&!drafts.length){showToast("Nenhuma música para exportar","err");return;}
+  const payload={history:history,drafts:drafts,exportedAt:new Date().toISOString()};
+  const data=JSON.stringify(payload,null,2);
   const blob=new Blob([data],{type:"application/json;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
@@ -1179,22 +1180,35 @@ function exportLib(){
   a.download="minhas-musicas-"+new Date().toISOString().slice(0,10)+".json";
   a.click();
   URL.revokeObjectURL(url);
-  showToast("📤 Exportado com sucesso!","ok");
+  const total=history.length+drafts.length;
+  showToast("📤 Exportado: "+history.length+" músicas + "+drafts.length+" rascunhos","ok");
 }
 function importLib(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=function(e){
     try{
-      // fix encoding issues
       let raw=e.target.result;
       const imported=JSON.parse(raw);
-      if(!Array.isArray(imported))throw new Error("Formato inválido");
-      // merge: imported wins for new ids, keep existing
+      // Suporta formato novo {history,drafts} e formato antigo (array)
+      let impHistory=[],impDrafts=[];
+      if(Array.isArray(imported)){
+        impHistory=imported;
+      } else if(imported.history){
+        impHistory=imported.history||[];
+        impDrafts=imported.drafts||[];
+      } else {
+        throw new Error("Formato inválido");
+      }
+      // merge history
       const existMap=Object.fromEntries(history.map(x=>[x.id,x]));
-      const impMap=Object.fromEntries(imported.map(x=>[x.id,x]));
-      const merged=Object.values({...existMap,...impMap}).sort((a,b)=>b.id-a.id);
-      history=merged;
+      const impMap=Object.fromEntries(impHistory.map(x=>[x.id,x]));
+      history=Object.values({...existMap,...impMap}).sort((a,b)=>b.id-a.id);
+      // merge drafts
+      const draftExistMap=Object.fromEntries(drafts.map(x=>[x.id,x]));
+      const draftImpMap=Object.fromEntries(impDrafts.map(x=>[x.id,x]));
+      drafts=Object.values({...draftExistMap,...draftImpMap}).sort((a,b)=>b.id-a.id);
+      try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
       ghSave();
       updateLibN();
       renderLib();
