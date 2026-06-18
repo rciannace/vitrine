@@ -483,14 +483,14 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 <!-- API PANEL DROPDOWN -->
 <div id="api-panel" style="display:none;position:fixed;top:60px;right:12px;z-index:200;background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;width:300px;box-shadow:0 8px 32px #0000001a">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 GOOGLE GEMINI API KEY</span>
+    <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:1px">🔑 OPENROUTER API KEY</span>
     <button onclick="toggleApiPanel()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#aaa;line-height:1">×</button>
   </div>
   <div class="api-row">
-    <input type="password" id="api-key" class="api-input" placeholder="AQ.Ab8..." oninput="resetApiStatus()" style="font-size:11px"/>
+    <input type="password" id="api-key" class="api-input" placeholder="sk-or-v1-..." oninput="resetApiStatus()" style="font-size:11px"/>
     <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
   </div>
-  <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://aistudio.google.com" target="_blank" style="color:#f97316">aistudio.google.com</a></div>
+  <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
 
@@ -1590,11 +1590,11 @@ async function validateKey(){
   const btn=document.getElementById("btn-api");
   btn.textContent="...";btn.disabled=true;
   try{
-    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-      body:JSON.stringify({contents:[{parts:[{text:"oi"}]}],generationConfig:{maxOutputTokens:5}})});
+    const r=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:5,messages:[{role:"user",content:"oi"}]})});
     const d=await r.json();
-    if(r.ok&&d.candidates){
+    if(r.ok&&d.choices){
       localStorage.setItem("or_key",key);
       document.getElementById("api-key").className="api-input ok";
       btn.className="btn-api ok";btn.textContent="✓ OK";
@@ -1763,78 +1763,95 @@ REGRA ABSOLUTA: nenhuma palavra ou expressão da letra de referência pode apare
   const gExKey=Object.keys(genreExamples).find(k=>g.l.toLowerCase().includes(k.toLowerCase().split(" ")[0]))||"";
   const gExTip=gExKey?`\n\nGUIA ESPECÍFICO PARA ${g.l.toUpperCase()}:\n${genreExamples[gExKey]}`:"";
 
-  const prompt=`Você é o maior letrista do Brasil. Sua missão é criar letras que façam o ouvinte parar o que está fazendo, sentir um aperto no peito e pensar "essa música fala de mim".
+  const prompt=`Você é o maior compositor de hits do Brasil hoje — você escreve músicas que tocam em todo lugar, do carro ao TikTok. Você conhece como o Suno AI gera música: letras naturais, linguagem atual, rimas que grudam.
 
-Você vai criar a letra para o Suno gerar a música. Foque 100% na LETRA — história, emoção, rima. A música o Suno faz.
+MODO: ${modoDesc}
 
-IDEIA / TEMA:
+TEMA / IDEIA:
 ${tema}
 
-GÊNERO: ${g.l} | MOOD: ${m.l} | VOZ: ${vozLabel}
-SEÇÕES: ${secsToUse.join(" › ")}
-${titulo?`TÍTULO SUGERIDO: "${titulo}"\n`:""}${artist?`REFERÊNCIA DE ESTILO: ${artist}\n`:""}
+═══════════════════════════════════════
+ESPECIFICAÇÕES
+═══════════════════════════════════════
+• Gênero : ${g.l}
+• Mood   : ${m.l}
+• Tempo  : ${t.bpm} BPM
+• Voz    : ${vozLabel}
+• Seções : ${secsToUse.join(" › ")}
+${titulo?`• Título: "${titulo}"\n`:""}${artist?`• Referência: ${artist}\n`:""}${extrasStr?`• Extras: ${extrasStr}\n`:""}${producao?`• Produção: ${producao}\n`:""}
+═══════════════════════════════════════
+REGRAS ABSOLUTAS — LINGUAGEM
+═══════════════════════════════════════
+PROIBIDO USAR (palavras antigas/formais):
+vislumbro, éter, pervade, ó coração, meu peito a sangrar, teus olhos, suave brisa, flor do jardim, doce amor, alma ferida, bela donzela, nobre sentimento, ardente paixão, chama que queima, tua beleza, divina criatura — qualquer coisa que parece carta de amor de 1800.
+
+PROIBIDO TAMBÉM (gírias forçadas que soam artificiais):
+"cê", "ce não tá", "mete", "bonde", "lacra", "tô on", "story", "playlist", "feed" — gírias de internet que não cabem numa música cantada. A letra precisa soar natural quando CANTADA, não quando digitada.
+
+USE (linguagem natural, fluida, que qualquer brasileiro entende):
+- Português natural do dia a dia: "você", "a gente", "tô", "tá", "não tô conseguindo", "fica", "vai embora", "me liga", "sumi", "me perdi"
+- Emoções concretas: saudade, ciúme, orgulho, medo de perder, coragem de ficar
+- Situações que qualquer um reconhece: a última conversa, a foto que não apaga, o silêncio que dói, a distância que aumentou
+- Frases que cabem num refrão e qualquer um canta na primeira vez: simples, diretas, sem precisar de contexto
+- O vocabulário deve combinar com o GÊNERO — sertanejo fala diferente de funk, que fala diferente de MPB
 ${gExTip}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PASSO 1 — CONSTRUA A HISTÓRIA ANTES DE ESCREVER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Antes de escrever uma linha, defina mentalmente:
-→ QUEM é o personagem? O que ele está sentindo AGORA, neste momento?
-→ O QUE aconteceu? Qual cena gerou essa emoção?
-→ CONFLITO INTERNO: medo, orgulho, saudade, dúvida — não o vilão externo
-→ VIRADA: em que momento ele muda — decide, cede, perde, ganha?
-→ COMO TERMINA: resolução, dúvida, dor, esperança?
+═══════════════════════════════════════
+REGRAS DE OURO DA LETRA
+═══════════════════════════════════════
+HISTÓRIA COM CONFLITO (OBRIGATÓRIO):
+A música precisa contar uma história que faça o ouvinte torcer, sentir e se reconhecer. Pense na letra "Fica mais um pouco" — não é "te amo", é alguém que AMA mas está FUGINDO do sentimento. Isso cria tensão. Siga essa estrutura narrativa:
 
-A história precisa ter ARC: começo (conflito apresentado) › meio (tensão cresce) › fim (virada ou decisão).
+• CONFLITO INTERNO obrigatório: o obstáculo deve ser interno — medo, orgulho, dúvida, tempo — não externo. "Cada orgulho é um adeus" toca mais que "você me deixou". O ouvinte deve pensar "isso sou eu".
+• VERSO 1: apresenta o personagem e o conflito — quem é, o que sente, o que está evitando. Ex: "Eu tentei fugir do que eu sentia / Disfarçar o medo em solidão".
+• VERSO 2: aprofunda o conflito, adiciona uma nova camada — uma pergunta, uma descoberta, uma consequência. Nunca repita a emoção do verso 1 com outras palavras.
+• PRÉ-REFRÃO: admissão — o momento em que a pessoa para de fingir. "E eu finjo que tanto faz / Mas quando você não tá / O silêncio grita alto demais".
+• REFRÃO: o pedido ou a decisão — direto, fácil de cantar, frase que fica na cabeça. Pode ter 2 partes: a declaração + o pedido concreto.
+• BRIDGE/PONTE: a virada — o momento da decisão final. "Se for pra recomeçar / Que seja agora". Muda o tom, eleva a intensidade.
+• REFRÃO FINAL DIFERENTE: pelo menos 1-2 linhas diferentes do refrão normal — a evolução emocional. Não pode ser cópia exata. Ex: trocar "Fica mais um pouco aqui" por "Eu só preciso te ouvir chamar".
+• PERGUNTA RETÓRICA: inclua pelo menos 1 pergunta que o ouvinte faz pra si mesmo. Ex: "Por que a gente se perdeu?".
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PASSO 2 — REGRAS DA LETRA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LINGUAGEM NATURAL:
-• Português fluido e cantável — "você", "a gente", "tô", "não consegui", "me perdi", "fica"
-• PROIBIDO palavras antigas: vislumbro, éter, teus olhos, ardente paixão, alma ferida, bela donzela
-• PROIBIDO gírias de internet: cê, bonde, lacra, tô on, story, feed — soam artificiais cantadas
-• A letra deve soar como alguém FALANDO com emoção — natural, sem esforço
+RIMA (PRIORIDADE MÁXIMA):
+• Toda seção DEVE ter rima rica e consistente — use esquema AABB ou ABAB do início ao fim.
+• Rima boa: "te esperar / voltar", "confiar / ficar", "coração / decisão", "te ver / acontecer".
+• NUNCA deixe verso sem rima — se uma linha não rima, reescreva.
+• Conte as sílabas: cada verso da mesma seção deve ter número similar (±2 sílabas) — a letra tem que caber na melodia naturalmente.
+• Teste em voz alta: se travar ao falar rápido, reescreva.
 
-MOSTRE, NÃO DIGA:
-• ❌ "Estou com saudade" → ✅ "Fico olhando pro teu lado da cama que tá vazio"
-• ❌ "Você me faz falta" → ✅ "Ligo o carro e seu nome ainda tá na playlist"
-• ❌ "Eu te amo" → ✅ "Deixo a luz acesa quando você não tá — como se isso te trouxesse de volta"
-• Use detalhes sensoriais: cheiro, som, objeto, lugar — o ouvinte deve VER a cena
+EMOÇÃO COM CENAS CONCRETAS:
+• Não diga "estou com saudade" — mostre: "fico olhando pro teu lado da cama que tá vazio"
+• Não diga "você me faz feliz" — mostre: "quando você chega, até o dia parece diferente"
+• Situações reais que qualquer pessoa reconhece: a última mensagem, a foto que não apaga, o lugar que não consegue voltar
+• O ouvinte deve se sentir dentro da música, não apenas ouvindo
 
-CADA SEÇÃO AVANÇA A HISTÓRIA:
-• VERSO 1: personagem numa CENA específica — onde está, o que sente, o que aconteceu. Sem generalidades.
-• VERSO 2: nova camada — informação nova, nunca repete o verso 1. Inclui pergunta que o ouvinte faz pra si mesmo.
-• PRÉ-REFRÃO: o momento em que para de fingir — admissão, tensão máxima antes da explosão.
-• REFRÃO: essência emocional — 1 frase que resume tudo, qualquer um canta na primeira vez. Simples, direta, inevitável.
-• BRIDGE/PONTE: VIRADA — perspectiva nova, decisão, revelação. Muda o tom completamente.
-• REFRÃO FINAL: igual ao refrão MAS 1-2 linhas diferentes — o personagem mudou, evoluiu.
+ESTRUTURA:
+• ${DUR_NOTES[dur]}
+• VERSO: conta a história em cenas reais, linguagem natural, rima AABB ou ABAB
+• PRÉ-REFRÃO: aumenta a tensão, 2-4 linhas, o momento em que para de fingir
+• REFRÃO: frase que gruda na cabeça + pedido concreto, fácil de cantar na primeira vez
+• BRIDGE: a decisão final — muda tom, eleva intensidade, prepara o refrão final
+• REFRÃO FINAL: igual ao refrão MAS com 1-2 linhas diferentes que mostram evolução emocional
+• Cada linha tem função: zero verso de enchimento, cada palavra conta a história
 
-RIMA OBRIGATÓRIA:
-• Esquema AABB ou ABAB consistente em cada seção — sem exceção
-• Rimas ricas: "te esperar/voltar", "decisão/coração", "acontecer/te ver"
-• Sílabas equilibradas por linha (±2) — deve caber na melodia naturalmente
-• Teste em voz alta: se travar, reescreva
+SUNO STYLE PROMPT:
+• Máximo EXATO 120 caracteres, inglês, vírgulas.
+• Ordem: gênero › mood › tipo de voz › BPM › instrumentos específicos › produção.
+• Específico: "fingerpicked acoustic guitar", "raspy male tenor", "driving kick drum" — não "guitar", "vocals", "drums".
+• Ex: "sertanejo universitario, romantic, longing, emotional raspy male tenor, 90 BPM, acoustic guitar, violao, strings, radio-ready"
 
-PADRÃO DE QUALIDADE:
-• Cada linha existe por um motivo — zero enchimento
-• O refrão deve ser impossível de esquecer depois de ouvir 1 vez
-• O ouvinte deve pensar "isso aconteceu comigo"
-• A letra deve ser como um conto curto cantado — começo, meio e fim
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+═══════════════════════════════════════
 SAÍDA — SOMENTE JSON VÁLIDO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+═══════════════════════════════════════
 Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
-{"title":"Título que emociona e resume a história","subtitle":"Tagline de 1 frase que dá vontade de ouvir","key":"Tom (ex: Lá menor)","chords":"Progressão (ex: Am - F - C - G)","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra completa, rima rica, linguagem natural, quebras \n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars específico","instruments":["inst 1 + papel","inst 2 + papel","inst 3 + papel","inst 4 + papel","inst 5 + papel"],"production_notes":"dinâmica, mix, referências, técnicas"}`;
+{"title":"Título que emociona","subtitle":"Tagline de 1 frase atual (não poética demais)","key":"Tom (ex: Lá menor)","chords":"Progressão (ex: Am - F - C - G)","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3","tag4"],"sections":{${secsToUse.map(s=>`"${s}":"letra com rima rica, linguagem atual, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst 1 + papel","inst 2 + papel","inst 3 + papel","inst 4 + papel","inst 5 + papel"],"production_notes":"dinâmica, mix, referências, técnicas"}`;
 
-    try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:4000,temperature:0.9}})});
+  try{
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
-    if(!res.ok)throw new Error(data?.error?.message||data?.error?.status||"Erro Gemini");
-    const text=(data.candidates||[]).map(c=>c.content?.parts?.map(p=>p.text||"").join("")||"").join("");
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
@@ -1866,11 +1883,11 @@ async function rewriteSec(sec){
   const btn=document.getElementById("btn-rw-"+sid);
   if(btn){btn.disabled=true;btn.textContent="Reescrevendo...";}
   try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
-      body:JSON.stringify({contents:[{parts:[{text:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\\n• CONFLITO INTERNO: o obstáculo deve ser medo, orgulho, dúvida — não culpa de outra pessoa. "Cada orgulho é um adeus" toca mais que "você me deixou".\\n• Se for verso 1: apresenta personagem e conflito interno. Se for verso 2: nova camada — nunca repete o verso 1. Inclua uma pergunta retórica que o ouvinte faz pra si mesmo.\\n• Se for pré-refrão: momento em que para de fingir — admissão da emoção real.\\n• Se for refrão: frase que gruda + pedido concreto. Se for REFRÃO FINAL: mude 1-2 linhas mostrando evolução — não pode ser cópia exata.\\n• Se for bridge/ponte: decisão final, muda o tom, eleva antes do refrão final.\\n\\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]}],generationConfig:{maxOutputTokens:1000,temperature:0.9}})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você reescreve seções com linguagem atual, rima que gruda e emoção real.\n\nTAREFA: Reescrever APENAS a seção "${sec}" da música "${currentSong.title}" conforme a instrução do artista.\n\nCONTEXTO:\n• Gênero: ${currentSong.genre} | Mood: ${currentSong.mood} | BPM: ${currentSong.bpm||"—"}\n\nLETRA ATUAL DE "${sec}":\n${currentSections[sec]}\n\nINSTRUÇÃO DO ARTISTA: "${instr}"\n\nREGRAS OBRIGATÓRIAS:\n• LINGUAGEM ATUAL — palavras de hoje: "tô", "fica", "me liga", "some", "sumi", "sufoco", situações reais do cotidiano. PROIBIDO: "vislumbro", "éter", "teus olhos", "ó coração", "doce amor", "ardente paixão", "tua beleza" — nada que parece poesia clássica ou carta de 1800.\n• RIMA RICA em todo verso — esquema AABB ou ABAB consistente. Rima boa: "te esperar/voltar", "confiar/ficar". NUNCA deixe verso sem rima.\n• Mesma quantidade de sílabas por linha (±2) — teste falando em voz alta, tem que fluir natural.\n• Mostre emoção com cenas concretas: não "estou com saudade" mas "fico olhando pro teu lado da cama vazio".\\n• CONFLITO INTERNO: o obstáculo deve ser medo, orgulho, dúvida — não culpa de outra pessoa. "Cada orgulho é um adeus" toca mais que "você me deixou".\\n• Se for verso 1: apresenta personagem e conflito interno. Se for verso 2: nova camada — nunca repete o verso 1. Inclua uma pergunta retórica que o ouvinte faz pra si mesmo.\\n• Se for pré-refrão: momento em que para de fingir — admissão da emoção real.\\n• Se for refrão: frase que gruda + pedido concreto. Se for REFRÃO FINAL: mude 1-2 linhas mostrando evolução — não pode ser cópia exata.\\n• Se for bridge/ponte: decisão final, muda o tom, eleva antes do refrão final.\\n\\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"nova letra linguagem atual, rima rica, quebras \\n, mínimo 4 linhas"}`}]})});
     const data=await res.json();
-    const text=(data.candidates||[]).map(c=>c.content?.parts?.map(p=>p.text||"").join("")||"").join("");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
     currentSections[sec]=parsed.lyrics;
     renderResult(Object.keys(currentSections));showToast("✨ Seção reescrita!","ok");
@@ -1886,11 +1903,11 @@ async function extendSec(sec){
   const btn=document.getElementById("btn-ext-sec-"+sid);
   if(btn){btn.disabled=true;btn.textContent="Gerando...";}
   try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
-      body:JSON.stringify({contents:[{parts:[{text:`Você é o maior compositor de hits do Brasil hoje. Você completa trechos mantendo a voz do artista, com linguagem atual e rima que gruda.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo e linguagem.\n• Mantenha a MESMA linguagem do trecho: se o artista usa gírias, continue com gírias; se é direto, seja direto. PROIBIDO inserir palavras formais ou antigas ("teus", "vislumbro", "doce") se o trecho é coloquial.\n• Rima que gruda: "te esperar/voltar", "confiar/ficar", "coração/decisão" — não rimas fracas.\n• Mesma contagem de sílabas — cabe na mesma melodia, testa falando rápido.\n• Continue a história com cenas reais: avance a emoção, não repita.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação linguagem atual, rima rica, 3-6 linhas"}`}]}],generationConfig:{maxOutputTokens:1000,temperature:0.9}})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1000,messages:[{role:"user",content:`Você é o maior compositor de hits do Brasil hoje. Você completa trechos mantendo a voz do artista, com linguagem atual e rima que gruda.\n\nTAREFA: Completar a seção "${sec}" de "${currentSong.title}" a partir do trecho do artista.\n\nGênero: ${currentSong.genre} | Mood: ${currentSong.mood}\n\nTRECHO DO ARTISTA (copie EXATAMENTE, sem mudar nada):\n${trecho}\n\nCOMO COMPLETAR:\n• Copie o trecho acima palavra por palavra — é a voz do artista, não mude uma vírgula.\n• Analise o esquema de rimas do trecho (o que rima com o quê).\n• Complete com 3-6 linhas que rimem ricamente com o trecho, no mesmo estilo e linguagem.\n• Mantenha a MESMA linguagem do trecho: se o artista usa gírias, continue com gírias; se é direto, seja direto. PROIBIDO inserir palavras formais ou antigas ("teus", "vislumbro", "doce") se o trecho é coloquial.\n• Rima que gruda: "te esperar/voltar", "confiar/ficar", "coração/decisão" — não rimas fracas.\n• Mesma contagem de sílabas — cabe na mesma melodia, testa falando rápido.\n• Continue a história com cenas reais: avance a emoção, não repita.\n• A continuação deve soar inevitável — como se o artista mesmo tivesse escrito.\n\nRetorne EXCLUSIVAMENTE o JSON abaixo, sem texto extra, sem markdown:\n{"lyrics":"TRECHO EXATO + \\n + continuação linguagem atual, rima rica, 3-6 linhas"}`}]})});
     const data=await res.json();
-    const text=(data.candidates||[]).map(c=>c.content?.parts?.map(p=>p.text||"").join("")||"").join("");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
     currentSections[sec]=parsed.lyrics;
     // update currentSong sections
@@ -2315,12 +2332,12 @@ Regras:
 - estrutura coerente com o gênero (sertanejo e pagode têm refrão forte; rock tem bridge)`;
 
   try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:600,temperature:0.9}})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:600,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
-    if(!res.ok)throw new Error(data?.error?.message||data?.error?.status||"Erro Gemini");
-    const text=(data.candidates||[]).map(c=>c.content?.parts?.map(p=>p.text||"").join("")||"").join("");
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const sug=safeParseJSON(text);
 
     // Preenche os campos do card
@@ -2486,12 +2503,12 @@ Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
   document.body.appendChild(loadingDiv);
 
   try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:4000,temperature:0.9}})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
-    if(!res.ok)throw new Error(data?.error?.message||data?.error?.status||"Erro Gemini");
-    const text=(data.candidates||[]).map(c=>c.content?.parts?.map(p=>p.text||"").join("")||"").join("");
+    if(!res.ok)throw new Error(data?.error?.message||"Erro API");
+    const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
     const parsed=safeParseJSON(text);
 
     // Substitui a versão atual pela nova (snapshot já foi salvo em refazerMusica)
@@ -2645,9 +2662,9 @@ async function sugerirTitulo(){
   const m=MOODS.find(x=>x.id===selMood)||MOODS[0];
   showToast("Gerando sugestoes...","ok");
   try{
-    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Sugira 3 titulos criativos para uma musica de "+g.l+" com clima "+m.l+". Tema: "+(tema||"livre")+". Retorne APENAS os 3 titulos, um por linha, sem numeracao."}]}],generationConfig:{maxOutputTokens:100,temperature:0.9}})});
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:"anthropic/claude-sonnet-4-5",max_tokens:100,messages:[{role:"user",content:"Sugira 3 titulos criativos para uma musica de "+g.l+" com clima "+m.l+". Tema: "+(tema||"livre")+". Retorne APENAS os 3 titulos, um por linha, sem numeracao."}]})});
     const data=await res.json();
-    const titulos=(data.candidates?.[0]?.content?.parts?.[0]?.text||"").trim().split("\n").filter(t=>t.trim()).slice(0,3);
+    const titulos=data.choices[0].message.content.trim().split("\n").filter(t=>t.trim()).slice(0,3);
     document.getElementById("titulo-popup")?.remove();
     const pop=document.createElement("div");
     pop.id="titulo-popup";
