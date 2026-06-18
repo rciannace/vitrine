@@ -184,69 +184,6 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3"
   },
   {
-    "id": 1781534888884,
-    "title": "Seu Melhor Palco",
-    "genre": "Sertanejo",
-    "mood": "Romântico ❤️",
-    "bpm": 90,
-    "duration": "normal",
-    "date": "15/06/2026",
-    "song": {
-      "title": "Seu Melhor Palco",
-      "subtitle": "Onde a alma encontra a mais pura verdade",
-      "key": "G Maior",
-      "chords": "G - D - Em - C",
-      "vibe": "Intensidade apaixonada e um toque de melancolia.",
-      "style_tags": [
-        "sertanejo",
-        "romântico",
-        "dor-de-cotovelo",
-        "declaração"
-      ],
-      "sections": {
-        "Intro": "A noite esconde o que o dia revelou\nUm perfume que o vento espalhou\nContaram agora o brilho do teu olhar\nEu sei, fui eu quem te ensinei a amar.",
-        "Verso 1": "Eles dizem que a voz que te embala\nÉ um canto que ninguém mais iguala\nConheço cada nota, o tom que te atrai\nFui eu quem te disse, em qual caminho vai.\n\nNão preciso de um novo juramento\nCada passo seu é um lamento\nQue o espelho reflete sem alarde\nO fim de um ciclo, chega tarde.",
-        "Pré-Refrão": "O tempo se apaga, a aurora se avizinha,\nMas a febre do teu toque ainda me alucina.\nQuero sentir em meu peito a sua vibração,\nNum eterno momento, sem mais desilusão.",
-        "Refrão": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nAqui somos nós, o que o tempo não desfaz,\nA sua essência mais pura, em completa paz.",
-        "Verso 2": "Dizem que os beijos que te dão agora\nSão de um sabor que nunca se esgotara\nEu bem lembro o gosto do seu querer\nE as promessas que te fiz pra nunca esquecer.\n\nNão venha pedir explicações vãs\nO sol já pregou os primeiros afãs\nSua jornada segue, não há o que esconder\nO meu futuro, com você, já não há de ser.",
-        "Bridge": "Os rastros que deixam, não apagam o que foi\nA marca mais funda, em nós dois, pois\nHouve um tempo que o pranto era só meu\nHoje o seu palco, quem roubou foi o céu.\n\nPois a verdade crua que me foi contada\nÉ que a sua aura é a mais desejada.",
-        "Refrão Final": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nA mais bela cena, que o tempo não desfaz,\nSua alma mais sincera, em completa paz.\nEssa é a sua essência, a mais pura em minhas mãos,\nO amor que te faz forte, em outros corações."
-      },
-      "suno_style": "sertanejo, romantic, longing, male tenor, 90 BPM, acoustic guitar, emotional ballad, driving kick drum, subtle strings, powerful vocals",
-      "instruments": [
-        "violão acústico com dedilhados suaves",
-        "viola caipira para o lamento",
-        "baixo marcando o compasso com sutileza",
-        "bateria com bumbo pulsante e caixa presente no refrão",
-        "orquestração leve para preencher a atmosfera"
-      ],
-      "production_notes": "Começar com um violão introduzindo a melodia. Versos com voz mais intimista, piano discreto. Pré-refrão crescendo em intensidade com a entrada da percussão leve. Refrão com voz potente, backing vocals suaves e toda a banda em volume mais alto. Bridge com uma leve queda de intensidade seguida por uma explosão emocional. Refrão final com a mesma energia do primeiro, estendendo a melodia final.",
-      "bpm": 90,
-      "genre": "Sertanejo",
-      "mood": "Romântico ❤️",
-      "voice": "Masculina",
-      "duration": "normal"
-    },
-    "sections": {
-      "Intro": "A noite esconde o que o dia revelou\nUm perfume que o vento espalhou\nContaram agora o brilho do teu olhar\nEu sei, fui eu quem te ensinei a amar.",
-      "Verso 1": "Eles dizem que a voz que te embala\nÉ um canto que ninguém mais iguala\nConheço cada nota, o tom que te atrai\nFui eu quem te disse, em qual caminho vai.\n\nNão preciso de um novo juramento\nCada passo seu é um lamento\nQue o espelho reflete sem alarde\nO fim de um ciclo, chega tarde.",
-      "Pré-Refrão": "O tempo se apaga, a aurora se avizinha,\nMas a febre do teu toque ainda me alucina.\nQuero sentir em meu peito a sua vibração,\nNum eterno momento, sem mais desilusão.",
-      "Refrão": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nAqui somos nós, o que o tempo não desfaz,\nA sua essência mais pura, em completa paz.",
-      "Verso 2": "Dizem que os beijos que te dão agora\nSão de um sabor que nunca se esgotara\nEu bem lembro o gosto do seu querer\nE as promessas que te fiz pra nunca esquecer.\n\nNão venha pedir explicações vãs\nO sol já pregou os primeiros afãs\nSua jornada segue, não há o que esconder\nO meu futuro, com você, já não há de ser.",
-      "Bridge": "Os rastros que deixam, não apagam o que foi\nA marca mais funda, em nós dois, pois\nHouve um tempo que o pranto era só meu\nHoje o seu palco, quem roubou foi o céu.\n\nPois a verdade crua que me foi contada\nÉ que a sua aura é a mais desejada.",
-      "Refrão Final": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nA mais bela cena, que o tempo não desfaz,\nSua alma mais sincera, em completa paz.\nEssa é a sua essência, a mais pura em minhas mãos,\nO amor que te faz forte, em outros corações."
-    },
-    "struct": [
-      "Intro",
-      "Verso 1",
-      "Pré-Refrão",
-      "Refrão",
-      "Verso 2",
-      "Bridge",
-      "Refrão Final"
-    ]
-  },
-  {
     "id": 1781388424432,
     "title": "Ceu Florido",
     "genre": "Sertanejo",
