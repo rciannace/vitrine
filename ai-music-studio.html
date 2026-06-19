@@ -2005,6 +2005,8 @@ function toggleMicResult(sid){
 // ══════════════════════════════════════
 // RENDER RESULT
 // ══════════════════════════════════════
+const SEC_TRANSLATE={"Verse 1":"Verso 1","Verse 2":"Verso 2","Verse 3":"Verso 3","Verse":"Verso","Pre-Chorus":"Pré-Refrão","Pre-chorus":"Pré-Refrão","Chorus":"Refrão","Chorus 2":"Refrão 2","Refrao":"Refrão","Refrão Final":"Refrão Final","Bridge":"Ponte","Outro":"Final","Outro 2":"Final 2","Hook":"Gancho","Intro":"Introdução","Introduction":"Introdução","Interlude":"Interlúdio","Breakdown":"Quebrada","Instrumental Solo":"Solo Instrumental","Instrumental Outro":"Final Instrumental","Verse (Instrumental)":"Verso Instrumental"};
+function secName(s){return SEC_TRANSLATE[s]||s;}
 function renderResult(structs){
   const s=currentSong;
   const secsToShow=structs||Object.keys(currentSections);
@@ -2254,12 +2256,13 @@ function buildSecBlock(sec){
     <div class="sec-head">
       <div style="display:flex;align-items:center;gap:7px">
         <div class="sec-dot" style="background:${color}"></div>
-        <span class="sec-lbl" style="color:${color}">${esc(sec)}</span>
+        <span class="sec-lbl" style="color:${color}">${esc(secName(sec))}</span>
       </div>
       <div class="sec-actions">
         <button class="sec-btn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
         <button class="sec-btn" id="rb-${sid}" onclick="toggleSecPanel('${sid}','refazer')">🔄 Refazer</button>
         <button class="sec-btn" id="sb-${sid}" onclick="toggleSecPanel('${sid}','estender')">✨ Estender</button>
+        ${/refrao|chorus|refrão/i.test(sec)?`<button class="sec-btn" style="background:#6366f1;color:#fff;border-color:#6366f1" onclick="newChorus('${sec}')">🎯 Novo</button>`:""}
       </div>
     </div>
     <div id="body-${sid}" class="sec-body">
@@ -2269,7 +2272,7 @@ function buildSecBlock(sec){
       <div class="ia-label">O que quer mudar nesta seção?</div>
       <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Mais emotivo", "Muda as rimas", "Fala de saudade"...'></textarea>
       <button style="margin-top:8px;padding:9px 18px;border-radius:9px;border:none;background:#f97316;color:#fff;font-size:13px;font-weight:600;cursor:pointer" id="btn-rw-${sid}" onclick="rewriteSec('${sec}')">🔄 Reescrever com IA</button>
-      ${/refrao|chorus|refrão/i.test(sec)?`<button style="margin-top:8px;margin-left:6px;padding:9px 18px;border-radius:9px;border:none;background:#6366f1;color:#fff;font-size:13px;font-weight:600;cursor:pointer" onclick="newChorus('${sec}')">🎯 Novo Refrão</button>`:""}
+
     </div>
     <div class="ext-panel" id="ext-${sid}">
       <div class="ia-label" style="color:#22c55e;font-weight:600;letter-spacing:1px">✨ ESTENDER — A IA completa a partir do seu trecho</div>
