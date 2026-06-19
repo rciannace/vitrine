@@ -116,13 +116,13 @@ body.dark .sec-lbl{color:var(--text3)}
 body.dark #page-lib{color:var(--text)}
 body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
-body.dark /* Karaokê flutuante */
-#kara-modal{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:320px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden}@media(max-width:700px){#kara-modal{bottom:80px;right:8px;left:8px;width:auto}}
+body.dark #kara-modal{display:none;position:fixed;bottom:100px;left:16px;z-index:500;width:300px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.5);overflow:hidden}
 #kara-modal.open{display:flex;flex-direction:column}
 #kara-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text)}
-#kara-body{padding:12px 14px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
-.kara-block{padding:8px 10px;border-radius:8px;border-left:3px solid var(--border);font-size:11px;color:var(--text4);line-height:1.7;transition:all .4s;cursor:default;white-space:pre-wrap}
-.kara-block.active{color:var(--text);font-weight:600;background:var(--bg2);border-left-color:#f97316;box-shadow:0 2px 10px rgba(249,115,22,0.15)}
+#kara-body{padding:12px 14px;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.kara-block{padding:8px 10px;border-radius:8px;border-left:3px solid var(--border);font-size:11px;color:var(--text4);line-height:1.7;transition:all .4s;white-space:pre-wrap}
+.kara-block.active{color:var(--text);font-weight:600;background:var(--bg2);border-left-color:#f97316}
+@media(max-width:700px){#kara-modal{bottom:80px;left:8px;right:8px;width:auto}}
 .sp-player{background:linear-gradient(180deg,#0b132b 0%,#0f1d38 100%);border-top:1px solid #1b6ca8}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
@@ -398,10 +398,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   box-sizing:border-box;
 }
 @media(max-width:700px){
-  .sp-player-inner{grid-template-columns:auto 1fr 40px;padding:8px 10px 6px;gap:6px}
+  .sp-player-inner{grid-template-columns:1fr auto 40px;padding:10px 12px 8px;gap:6px}
   .sp-right{display:none}
-  #kara-btn{display:none!important}
-  .sp-thumb{width:44px;height:44px;font-size:22px}
 }
 
 /* coluna esq: capa + info */
@@ -908,11 +906,10 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   </div>
 
   <!-- PLAYER FIXO SPOTIFY -->
-  <!-- Karaokê flutuante -->
   <div id="kara-modal">
     <div id="kara-header">
-      <span id="kara-title">🎤 Karaokê</span>
-      <button onclick="toggleKaraoke()" style="background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;padding:0 4px">✕</button>
+      <span id="kara-title">🎤 Letra</span>
+      <button onclick="toggleKaraoke()" style="background:none;border:none;color:var(--text4);font-size:18px;cursor:pointer;line-height:1">✕</button>
     </div>
     <div id="kara-body"></div>
   </div>
@@ -922,7 +919,6 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <!-- ESQUERDA: capa + info -->
       <div class="sp-left">
         <div class="sp-thumb" id="sp-thumb" onclick="toggleKaraoke()" title="Ver letra sincronizada">🎵</div>
-        <button onclick="toggleKaraoke()" id="kara-btn" title="Ver letra sincronizada" style="display:none;background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;flex-shrink:0">🎤</button>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
           <div class="sp-sub" id="sp-sub">—</div>
@@ -3387,52 +3383,56 @@ function spToggleRepeat(){
     btn.title=spRepeat==="one"?"Repetir uma":spRepeat==="all"?"Repetir todas":"Repetir";
   }
 }
-// Karaokê
+// Karaokê — destaca bloco ativo baseado no tempo proporcional
+function spKaraokeHighlight(currentTime,duration){
+  // só funciona se estiver na tela de resultado
+  const blocks=document.querySelectorAll(".sec-block");
+  if(!blocks.length)return;
+  const n=blocks.length;
+  const idx=Math.min(Math.floor((currentTime/duration)*n),n-1);
+  blocks.forEach((b,i)=>{
+    if(i===idx){
+      b.style.transition="all .4s";
+      b.style.boxShadow="0 0 0 2px "+getComputedStyle(b).borderLeftColor+", 0 4px 20px rgba(0,0,0,0.2)";
+      b.style.transform="scale(1.01)";
+      b.scrollIntoView({behavior:"smooth",block:"nearest"});
+    } else {
+      b.style.boxShadow="";
+      b.style.transform="";
+    }
+  });
+}
 let _karaOpen=false;
 function toggleKaraoke(){
+  if(!spQueue[spIndex]){showToast("Toque uma música primeiro","err");return;}
   _karaOpen=!_karaOpen;
   document.getElementById("kara-modal").classList.toggle("open",_karaOpen);
   if(_karaOpen)spKaraokeBuild();
 }
 function spKaraokeBuild(){
   const e=spQueue[spIndex];if(!e)return;
-  // sections pode estar em e.sections ou e.song.sections
   const secs=e.sections||e.song?.sections||{};
   const struct=e.struct||e.song?.struct||Object.keys(secs);
   const body=document.getElementById("kara-body");
   const title=document.getElementById("kara-title");
   if(title)title.textContent="🎤 "+e.title;
   if(!body)return;
-  if(!struct.length){body.innerHTML="<div style='color:var(--text4);font-size:12px;padding:8px'>Letra não disponível para esta música.</div>";return;}
+  if(!struct.length){body.innerHTML="<div style='color:var(--text4);font-size:12px'>Letra não disponível.</div>";return;}
   body.innerHTML=struct.map((s,i)=>{
     const txt=(secs[s]||"").trim();
     if(!txt)return"";
-    return `<div class="kara-block" id="kara-blk-${i}" data-sec="${s}"><div style="font-size:9px;font-weight:700;color:#f97316;letter-spacing:1px;margin-bottom:4px">${secName(s)}</div>${esc(txt)}</div>`;
+    return `<div class="kara-block" id="kara-blk-${i}"><div style="font-size:9px;font-weight:700;color:#f97316;letter-spacing:1px;margin-bottom:4px">${secName(s)}</div>${esc(txt)}</div>`;
   }).filter(Boolean).join("");
 }
 function spKaraokeHighlight(currentTime,duration){
-  // Destaca na tela de resultado
-  const blocks=document.querySelectorAll(".sec-block");
-  if(blocks.length){
-    const n=blocks.length;
-    const idx=Math.min(Math.floor((currentTime/duration)*n),n-1);
-    blocks.forEach((b,i)=>{
-      if(i===idx){b.style.transition="all .4s";b.style.boxShadow="0 0 0 2px "+getComputedStyle(b).borderLeftColor+", 0 4px 20px rgba(0,0,0,0.2)";b.style.transform="scale(1.01)";}
-      else{b.style.boxShadow="";b.style.transform="";}
-    });
-  }
-  // Destaca no modal flutuante
   if(!_karaOpen)return;
   const kblocks=document.querySelectorAll(".kara-block");
   if(!kblocks.length)return;
   const n=kblocks.length;
   const idx=Math.min(Math.floor((currentTime/duration)*n),n-1);
   kblocks.forEach((b,i)=>{
-    const active=i===idx;
-    b.classList.toggle("active",active);
-    if(active){
-      b.scrollIntoView({behavior:"smooth",block:"center"});
-    }
+    b.classList.toggle("active",i===idx);
+    if(i===idx)b.scrollIntoView({behavior:"smooth",block:"center"});
   });
 }
 let spMuted=false,spLastVol=100;
@@ -3541,8 +3541,6 @@ function spPlay(i){
     spPlaying=true;
     spUpdateUI();
     renderGallery();
-    // Mostra botão karaokê e atualiza modal
-    const kb=document.getElementById("kara-btn");if(kb)kb.style.display="block";
     if(_karaOpen)spKaraokeBuild();
     // Contador de plays
     const hi=history.findIndex(x=>x.id===e.id);
