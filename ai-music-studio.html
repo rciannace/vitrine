@@ -1892,6 +1892,42 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
 // ══════════════════════════════════════
 // REWRITE / EXTEND
 // ══════════════════════════════════════
+async function newChorus(sec){
+  const apiKey=(document.getElementById("api-key")?.value.trim())||localStorage.getItem("or_key")||"";
+  if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
+  const btn=event?.target;
+  if(btn){btn.disabled=true;btn.textContent="✨ Gerando...";}
+  try{
+    const prompt=`Você é o maior compositor de hits do Brasil. Gere um NOVO REFRÃO completamente diferente para a música "${currentSong?.title||"esta música"}" (${currentSong?.genre||""}, ${currentSong?.mood||""}).
+
+REFRÃO ATUAL (NÃO REPITA, crie algo totalmente diferente):
+${currentSections[sec]||""}
+
+REGRAS DO NOVO REFRÃO:
+• 1 frase central que gruda na cabeça — qualquer um canta na primeira vez
+• Mais impactante, mais direto, mais emocionante que o atual
+• Rima rica AABB ou ABAB — sem exceção
+• Linguagem natural e cantável — sem gírias forçadas ou palavras antigas
+• Conflito interno: medo, orgulho, saudade — não culpa de outra pessoa
+• 4-8 linhas no total
+• Mostre emoção com cenas concretas, não declarações genéricas
+
+Retorne EXCLUSIVAMENTE o JSON: {"lyrics":"novo refrão completo com quebras \n"}`;
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:600,messages:[{role:"user",content:prompt}]})});
+    const d=await res.json();
+    if(!res.ok)throw new Error(d?.error?.message||"Erro API");
+    const txt=(d.choices||[]).map(c=>c.message?.content||"").join("").replace(/```json|```/g,"").trim();
+    const parsed=JSON.parse(txt);
+    if(parsed.lyrics){
+      currentSections[sec]=parsed.lyrics;
+      renderResult(Object.keys(currentSections));
+      showToast("🎯 Novo refrão gerado!","ok");
+    }
+  }catch(e){showToast("Erro: "+e.message,"err");}
+  finally{if(btn){btn.disabled=false;btn.textContent="🎯 Novo Refrão";}}
+}
 async function rewriteSec(sec){
   const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
   if(!apiKey||!currentSong)return;
@@ -2233,6 +2269,7 @@ function buildSecBlock(sec){
       <div class="ia-label">O que quer mudar nesta seção?</div>
       <textarea class="ia-ta" id="ia-ta-${sid}" placeholder='Ex: "Mais emotivo", "Muda as rimas", "Fala de saudade"...'></textarea>
       <button style="margin-top:8px;padding:9px 18px;border-radius:9px;border:none;background:#f97316;color:#fff;font-size:13px;font-weight:600;cursor:pointer" id="btn-rw-${sid}" onclick="rewriteSec('${sec}')">🔄 Reescrever com IA</button>
+      ${/refrao|chorus|refrão/i.test(sec)?`<button style="margin-top:8px;margin-left:6px;padding:9px 18px;border-radius:9px;border:none;background:#6366f1;color:#fff;font-size:13px;font-weight:600;cursor:pointer" onclick="newChorus('${sec}')">🎯 Novo Refrão</button>`:""}
     </div>
     <div class="ext-panel" id="ext-${sid}">
       <div class="ia-label" style="color:#22c55e;font-weight:600;letter-spacing:1px">✨ ESTENDER — A IA completa a partir do seu trecho</div>
