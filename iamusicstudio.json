@@ -1,5 +1,71 @@
 [
   {
+    "id": 1781896923629,
+    "title": "Cheiro de Canjica e Saudade",
+    "genre": "Sertanejo",
+    "mood": "Romântico ❤️",
+    "bpm": 70,
+    "duration": "normal",
+    "date": "19/06/2026",
+    "song": {
+      "title": "Cheiro de Canjica e Saudade",
+      "subtitle": "Tudo parou quando vi você na festa.",
+      "key": "Sol Maior",
+      "chords": "G - D/F# - Em - C",
+      "vibe": "Lembranças agridoce de um amor antigo transformadas em uma nova esperança.",
+      "style_tags": [
+        "sertanejo romântico",
+        "nostalgia",
+        "festa junina",
+        "second chance"
+      ],
+      "sections": {
+        "Introdução": "A sanfona chora baixinho, viola no compasso,\nUm mar de gente dança, cada um com seu abraço.\nMas meu olho procurava, meio sem ter direção,\nUm tempo que sumiu, presa na imaginação.\n",
+        "Verso 1": "Anos viraram poeira, a vida seguiu seu rumo,\nCada um com seu caminho, vivendo seu costume.\nMas quando o milho cozinhou e o cheiro se espalhou,\nLembrei daquele abraço que o tempo me roubou.\nVeio um arrepio estranho, na alma um incômodo,\nPequeno medo bobo, ou um novo episódio?",
+        "Pré-Refrão": "E eu fingi que era o fogo da fogueira que esquenta,\nMas era sua lembrança que dentro me atormenta.\nTentei me distrair, com o burburinho e o som,\nMas meu corpo te chamava, num segredo, num dom.\n",
+        "Refrão": "Que cheiro bom, que cheiro vem no ar,\nCanjica doce e um perfume no lugar.\nEra você que estava perto, sem a gente perceber,\nO tempo parou no instante em que você apareceu.\nUma promessa nos olhos, me diz o que vai ser.\n",
+        "Verso 2": "A gente foi se afastando, sem saber explicar,\nOrgulho e incerteza, o medo de falar.\nGuardei seu número antigo, mas jamais te chamei,\nDeixei a vida levar, sem saber que te esperarei.\nAgora te vejo aqui, e o que eu fiz fez sentido,\nAquele nó na garganta era um amor contido.\n",
+        "Bridge": "Por que a gente se perdeu nesse caminho torto?\nA vida dá as voltas, e agora tô aqui, te busco.\nSe for pra ter um recomeço, pra virar essa página,\nQuero sentir de novo o teu toque, a tua magia.\n",
+        "Refrão Final": "Que cheiro bom, que cheiro vem no ar,\nCanjica doce e um perfume no lugar.\nEra você que estava perto, sem a gente perceber,\nO tempo parou no instante em que você apareceu.\nE nesse seu olhar, a gente pode reviver.\n",
+        "Outro": "O tempo parou no instante em que você apareceu...\nCheiro de canjica, saudade e um novo querer.\n"
+      },
+      "suno_style": "sertanejo, romantic, nostalgic, female vocal, 70 BPM, accordion, acoustic guitar, brazilian percussion, warm pads, emotive",
+      "instruments": [
+        "fingerpicked acoustic guitar",
+        "accordion (sanfona)",
+        "violão (nylon string)",
+        "gentle Brazilian percussion (pandeiro, zabumba)",
+        "warm pad synthesizer"
+      ],
+      "production_notes": "Manter a atmosfera de festa junina com a sanfona proeminente, mas com a intimidade do sertanejo romântico. A voz feminina deve carregar a emoção e a saudade, com um timbre claro mas tocante. Usar dinâmica suave na introdução e versos, crescendo para o refrão. Ponte com um aumento sutil na intensidade. Mix limpo, deixando espaço para cada instrumento respirar. Referência tonal: \"Evidências\" - Chitãozinho & Xororó (na melancolia), \"Pássaro Cantor\" - Luiza e Maurílio (na vibe de festa junina romântica).",
+      "bpm": 70,
+      "genre": "Sertanejo",
+      "mood": "Romântico ❤️",
+      "voice": "Feminina",
+      "duration": "normal"
+    },
+    "sections": {
+      "Introdução": "A sanfona chora baixinho, viola no compasso,\nUm mar de gente dança, cada um com seu abraço.\nMas meu olho procurava, meio sem ter direção,\nUm tempo que sumiu, presa na imaginação.\n",
+      "Verso 1": "Anos viraram poeira, a vida seguiu seu rumo,\nCada um com seu caminho, vivendo seu costume.\nMas quando o milho cozinhou e o cheiro se espalhou,\nLembrei daquele abraço que o tempo me roubou.\nVeio um arrepio estranho, na alma um incômodo,\nPequeno medo bobo, ou um novo episódio?",
+      "Pré-Refrão": "E eu fingi que era o fogo da fogueira que esquenta,\nMas era sua lembrança que dentro me atormenta.\nTentei me distrair, com o burburinho e o som,\nMas meu corpo te chamava, num segredo, num dom.\n",
+      "Refrão": "Que cheiro bom, que cheiro vem no ar,\nCanjica doce e um perfume no lugar.\nEra você que estava perto, sem a gente perceber,\nO tempo parou no instante em que você apareceu.\nUma promessa nos olhos, me diz o que vai ser.\n",
+      "Verso 2": "A gente foi se afastando, sem saber explicar,\nOrgulho e incerteza, o medo de falar.\nGuardei seu número antigo, mas jamais te chamei,\nDeixei a vida levar, sem saber que te esperarei.\nAgora te vejo aqui, e o que eu fiz fez sentido,\nAquele nó na garganta era um amor contido.\n",
+      "Bridge": "Por que a gente se perdeu nesse caminho torto?\nA vida dá as voltas, e agora tô aqui, te busco.\nSe for pra ter um recomeço, pra virar essa página,\nQuero sentir de novo o teu toque, a tua magia.\n",
+      "Refrão Final": "Que cheiro bom, que cheiro vem no ar,\nCanjica doce e um perfume no lugar.\nEra você que estava perto, sem a gente perceber,\nO tempo parou no instante em que você apareceu.\nE nesse seu olhar, a gente pode reviver.\n",
+      "Outro": "O tempo parou no instante em que você apareceu...\nCheiro de canjica, saudade e um novo querer.\n"
+    },
+    "struct": [
+      "Introdução",
+      "Verso 1",
+      "Pré-Refrão",
+      "Refrão",
+      "Verso 2",
+      "Bridge",
+      "Refrão Final",
+      "Outro"
+    ]
+  },
+  {
     "id": 1781827468701,
     "title": "10 minutos",
     "genre": "Sertanejo",
