@@ -3000,6 +3000,11 @@ function renderLib(){
   }
   el.innerHTML=filtered.map(e=>`
     <div class="lib-card">
+      <!-- Capa automática por gênero/mood -->
+      <div style="position:relative;margin-bottom:10px;border-radius:10px;overflow:hidden;height:120px;background:${genreColor(e.genre)}">
+        <img src="${libCoverUrl(e)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 50%)"></div>
+      </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
         <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.title)}</div>
         <button onclick="toggleFav(${e.id})" style="background:none;border:none;font-size:18px;cursor:pointer;flex-shrink:0;padding:0 0 0 6px" title="${e.fav?"Remover favorito":"Favoritar"}">${e.fav?"⭐":"☆"}</button>
@@ -3022,6 +3027,17 @@ function renderLib(){
         <button onclick="delEntry(${e.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#999;font-size:12px;cursor:pointer">🗑</button>
       </div>
     </div>`).join("");
+}
+function libCoverUrl(e){
+  const g=(e.genre||"").toLowerCase();
+  const m=(e.mood||"").toLowerCase();
+  const h=Array.from(e.title||"").reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
+  const rom=m.includes("rom")||m.includes("amor")||m.includes("saudade");
+  const pm={"sertanejo":["1500534314209-a25ddb2bd429","1504701954957-2010ec3bcec1","1516912481800-cf2cde1b2249","1500076656116-558758c991c1"],"funk":["1493514789931-586cb221d7a7","1470225620780-dba8ba36b745","1514525253161-7a46d19cd819","1516450360452-9312f5e86fc7"],"gospel":["1490730141103-6cac27aaab94","1507525428034-b723cf961d3e","1519046904884-53103b34b206","1464822759023-fed622ff2c3b"],"rock":["1464822759023-fed622ff2c3b","1454496522488-7a8e488e8606","1518609878373-06d740f60d8b","1519681393784-d120267933ba"],"pop":["1519046904884-53103b34b206","1507525428034-b723cf961d3e","1490730141103-6cac27aaab94","1500076656116-558758c991c1"]};
+  const r4=["1507525428034-b723cf961d3e","1519046904884-53103b34b206","1490730141103-6cac27aaab94","1500076656116-558758c991c1"];
+  const d4=["1500534314209-a25ddb2bd429","1507525428034-b723cf961d3e","1448375240586-882707db888b","1464822759023-fed622ff2c3b"];
+  const arr=rom?r4:(pm[g]||d4);
+  return "https://images.unsplash.com/photo-"+arr[h%4]+"?w=400&q=70&fit=crop&crop=entropy";
 }
 function addAudio(id,input){
   const file=input.files[0];if(!file)return;
