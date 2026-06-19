@@ -464,6 +464,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -2068,6 +2069,7 @@ function renderResult(structs){
           <span class="export-label" style="color:#ef4444">LYRICS</span>
           <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
           <button class="btn-copy-sm" style="background:#25D366;color:#fff" onclick="shareWhatsApp()">WhatsApp</button>
+          <button class="btn-copy-sm" style="background:#6366f1;color:#fff" onclick="exportPDF()">📄 PDF</button>
         </div>
         <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
       </div>
@@ -3260,6 +3262,59 @@ function spVolChange(val){
   spMuted=val==0;
   icon.textContent=val==0?"🔇":val<40?"🔉":"🔊";
   spLastVol=val>0?val:spLastVol;
+}
+function exportPDF(){
+  try{
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({unit:"mm",format:"a4"});
+    const title=currentSong?.title||"Música";
+    const genre=currentSong?.genre||"";
+    const mood=currentSong?.mood||"";
+    const bpm=currentSong?.bpm||"";
+    const key=currentSong?.key||"";
+    const chords=currentSong?.chords||"";
+    const lyrics=document.getElementById("ex-lyrics")?.textContent||"";
+
+    // Header
+    doc.setFillColor(15,23,42);
+    doc.rect(0,0,210,40,"F");
+    doc.setTextColor(249,115,22);
+    doc.setFontSize(22);doc.setFont("helvetica","bold");
+    doc.text("🎵 "+title,14,20);
+    doc.setFontSize(10);doc.setFont("helvetica","normal");
+    doc.setTextColor(180,180,180);
+    const meta=[genre,mood,bpm?"BPM: "+bpm:"",key?"Tom: "+key:""].filter(Boolean).join("  ·  ");
+    doc.text(meta,14,30);
+    if(chords){doc.text("Acordes: "+chords,14,37);}
+
+    // Lyrics
+    doc.setTextColor(30,30,30);
+    doc.setFontSize(11);doc.setFont("helvetica","normal");
+    const lines=doc.splitTextToSize(lyrics,182);
+    let y=52;
+    lines.forEach(line=>{
+      if(y>275){doc.addPage();y=20;}
+      if(line.startsWith("[")&&line.endsWith("]")){
+        doc.setFont("helvetica","bold");
+        doc.setTextColor(249,115,22);
+        y+=3;
+      } else {
+        doc.setFont("helvetica","normal");
+        doc.setTextColor(30,30,30);
+      }
+      doc.text(line,14,y);
+      y+=6;
+    });
+
+    // Footer
+    doc.setFontSize(8);doc.setTextColor(150,150,150);
+    doc.text("Criado com IA Music Studio · "+new Date().toLocaleDateString("pt-BR"),14,285);
+
+    doc.save(title.replace(/[^a-zA-Z0-9À-ú ]/g,"_")+".pdf");
+    showToast("📄 PDF exportado!","ok");
+  }catch(e){
+    showToast("Erro ao gerar PDF: "+e.message,"err");
+  }
 }
 function shareWhatsApp(){
   const title=document.getElementById("ex-title")?.textContent||currentSong?.title||"Música";
