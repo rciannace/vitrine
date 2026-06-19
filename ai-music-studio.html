@@ -3283,8 +3283,8 @@ function exportPDF(){
     doc.text(title,14,18);
     doc.setFontSize(10);doc.setFont("helvetica","normal");
     doc.setTextColor(180,180,180);
-    const dur=currentSong?.duration||"";const meta=[genre,dur?"Duração: "+dur:""].filter(Boolean).join("  ·  ");
-    doc.text(meta,14,28);
+    const durMap={"jingle":"~1 min","curta":"~2 min","normal":"~3-4 min","longa":"~5 min"};const dur=currentSong?.duration||"";const durLabel=durMap[dur]||dur;const meta=[genre,durLabel?"Tempo: "+durLabel:""].filter(Boolean).join("  ·  ");
+    if(meta)doc.text(meta,14,28);
 
     // Lyrics
     doc.setTextColor(30,30,30);
@@ -3309,15 +3309,15 @@ function exportPDF(){
     doc.setFontSize(8);doc.setTextColor(150,150,150);
     doc.text("Criado com IA Music Studio · "+new Date().toLocaleDateString("pt-BR"),14,285);
 
-    // Abre em nova aba E baixa
+    // Baixa o PDF
     const pdfBlob=doc.output("blob");
     const pdfUrl=URL.createObjectURL(pdfBlob);
-    // Baixar
     const a=document.createElement("a");
-    a.href=pdfUrl;a.download=title.replace(/[^a-zA-Z0-9À-ú ]/g,"_")+".pdf";a.click();
-    // Abrir em nova aba
-    setTimeout(()=>window.open(pdfUrl,"_blank"),300);
-    showToast("📄 PDF gerado!","ok");
+    a.href=pdfUrl;
+    a.download=(currentSong?.title||"musica").replace(/[^\x00-\xFF]/g,"").replace(/[^a-zA-Z0-9À-ú ]/g,"_").trim()+".pdf";
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(pdfUrl),1000);
+    showToast("📄 PDF baixado!","ok");
   }catch(e){
     showToast("Erro ao gerar PDF: "+e.message,"err");
   }
