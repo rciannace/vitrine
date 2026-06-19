@@ -3267,7 +3267,7 @@ function exportPDF(){
   try{
     const {jsPDF}=window.jspdf;
     const doc=new jsPDF({unit:"mm",format:"a4"});
-    const title=currentSong?.title||"Música";
+    const title=(currentSong?.title||"Musica").replace(/[^\x00-\xFF]/g,"").trim()||"Musica";
     const genre=currentSong?.genre||"";
     const mood=currentSong?.mood||"";
     const bpm=currentSong?.bpm||"";
@@ -3309,8 +3309,15 @@ function exportPDF(){
     doc.setFontSize(8);doc.setTextColor(150,150,150);
     doc.text("Criado com IA Music Studio · "+new Date().toLocaleDateString("pt-BR"),14,285);
 
-    doc.save(title.replace(/[^a-zA-Z0-9À-ú ]/g,"_")+".pdf");
-    showToast("📄 PDF exportado!","ok");
+    // Abre em nova aba E baixa
+    const pdfBlob=doc.output("blob");
+    const pdfUrl=URL.createObjectURL(pdfBlob);
+    // Baixar
+    const a=document.createElement("a");
+    a.href=pdfUrl;a.download=title.replace(/[^a-zA-Z0-9À-ú ]/g,"_")+".pdf";a.click();
+    // Abrir em nova aba
+    setTimeout(()=>window.open(pdfUrl,"_blank"),300);
+    showToast("📄 PDF gerado!","ok");
   }catch(e){
     showToast("Erro ao gerar PDF: "+e.message,"err");
   }
