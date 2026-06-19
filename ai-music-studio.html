@@ -3277,15 +3277,14 @@ function exportPDF(){
 
     // Header
     doc.setFillColor(15,23,42);
-    doc.rect(0,0,210,40,"F");
+    doc.rect(0,0,210,35,"F");
     doc.setTextColor(249,115,22);
     doc.setFontSize(22);doc.setFont("helvetica","bold");
-    doc.text("🎵 "+title,14,20);
+    doc.text(title,14,18);
     doc.setFontSize(10);doc.setFont("helvetica","normal");
     doc.setTextColor(180,180,180);
-    const meta=[genre,mood,bpm?"BPM: "+bpm:"",key?"Tom: "+key:""].filter(Boolean).join("  ·  ");
-    doc.text(meta,14,30);
-    if(chords){doc.text("Acordes: "+chords,14,37);}
+    const dur=currentSong?.duration||"";const meta=[genre,dur?"Duração: "+dur:""].filter(Boolean).join("  ·  ");
+    doc.text(meta,14,28);
 
     // Lyrics
     doc.setTextColor(30,30,30);
