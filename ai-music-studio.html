@@ -600,7 +600,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
     <!-- ── TAB: LETRA (usuário já tem a letra) ── -->
     <div id="tab-letra" style="display:none">
       <div class="card">
-        <div class="card-title">📝 Letra da Música</div>
+        <div class="card-title">Letra da Música</div>
         <div style="font-size:12px;color:#aaa;margin-bottom:10px">Você já tem a letra? Cole aqui e a IA cria a música.</div>
         <textarea id="letra-propria" class="txt-area" rows="8" placeholder="[Verso 1]&#10;Escreva aqui sua letra...&#10;&#10;[Refrão]&#10;..."></textarea>
         <div style="font-size:10px;color:#f97316;margin-top:8px">⚠ Evite nomes de artistas, bandas ou letras de músicas conhecidas.</div>
@@ -868,7 +868,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
       <!-- Letra -->
       <div style="margin-bottom:12px">
-        <label style="font-size:12px;font-weight:600;color:#444;display:block;margin-bottom:6px">📝 Letra (opcional)</label>
+        <label style="font-size:12px;font-weight:600;color:#444;display:block;margin-bottom:6px">Letra (opcional)</label>
         <textarea id="suno-letra" class="txt-area" rows="6" placeholder="Cole a letra aqui...&#10;&#10;[Verso 1]&#10;...&#10;&#10;[Refrão]&#10;..."></textarea>
       </div>
 
@@ -2060,7 +2060,7 @@ function renderResult(structs){
       ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Guardar Rascunho</button>'}
     </div>
 
-    <div class="song-header">
+    <div class="song-header" style="border-top:4px solid ${genreAccent(s.genre)};background:linear-gradient(135deg,${genreAccent(s.genre)}15 0%,var(--card-bg) 60%)">
       <div class="song-title">${esc(s.title)}</div>
       <div class="song-sub">${esc(s.subtitle||"")}</div>
       <div class="song-vibe">"${esc(s.vibe||"")}"</div>
@@ -2080,15 +2080,15 @@ function renderResult(structs){
     </div>
 
     <div class="result-tabs">
-      <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')">📝 Letra</div>
-      <div class="rtab rtab-refazer" onclick="refazerMusica()">🔄 Refazer</div>
-      <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')">🚀 Exportar pro Suno</div>
-      <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')">🎨 Ajustar Estilo</div>
+      <div class="rtab ${activeRTab==="letra"?"active":""}" onclick="switchRTab('letra')" style="${activeRTab==="letra"?'color:'+genreAccent(s.genre)+';border-bottom-color:'+genreAccent(s.genre):''}" >Letra</div>
+      <div class="rtab rtab-refazer" onclick="refazerMusica()">Refazer</div>
+      <div class="rtab ${activeRTab==="suno"?"active":""}" onclick="switchRTab('suno')" style="${activeRTab==="suno"?'color:'+genreAccent(s.genre)+';border-bottom-color:'+genreAccent(s.genre):''}" >Exportar pro Suno</div>
+      <div class="rtab ${activeRTab==="estilo"?"active":""}" onclick="switchRTab('estilo')" style="${activeRTab==="estilo"?'color:'+genreAccent(s.genre)+';border-bottom-color:'+genreAccent(s.genre):''}" >Ajustar Estilo</div>
     </div>
 
     <div id="rtab-letra" style="display:${activeRTab==="letra"?"block":"none"}">
       <div style="background:#fff8f0;border:1px solid #f9731430;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.6">
-        <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">🔄 Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar com seu trecho
+        <strong style="color:#f97316">✏ Editar</strong> para modificar · <strong style="color:#ef4444">Refazer</strong> para a IA reescrever · <strong style="color:#22c55e">✨ Estender</strong> para completar com seu trecho
       </div>
       <button onclick="openPasteLyrics()" style="margin-bottom:14px;width:100%;padding:9px;border-radius:10px;border:1px dashed #f97316;background:none;color:#f97316;font-size:12px;font-weight:600;cursor:pointer">📋 Colar letra inteira</button>
       ${secsToShow.filter(sec=>currentSections[sec]).map(sec=>buildSecBlock(sec)).join("")}
@@ -2301,7 +2301,7 @@ function buildSecBlock(sec){
       </div>
       <div class="sec-actions">
         <button class="sec-btn" id="eb-${sid}" onclick="toggleEdit('${sid}','${sec}')">✏ Editar</button>
-        <button class="sec-btn" id="rb-${sid}" onclick="toggleSecPanel('${sid}','refazer')">🔄 Refazer</button>
+        <button class="sec-btn" id="rb-${sid}" onclick="toggleSecPanel('${sid}','refazer')">Refazer</button>
         <button class="sec-btn" id="sb-${sid}" onclick="toggleSecPanel('${sid}','estender')">✨ Estender</button>
         ${/refrao|chorus|refrão/i.test(sec)?`<button class="sec-btn" style="background:#6366f1;color:#fff;border-color:#6366f1" onclick="newChorus('${sec}')">🎯 Novo</button>`:""}
       </div>
@@ -3344,6 +3344,10 @@ function renderGallery(){
 function genreEmoji(g){
   const map={sertanejo:"🤠",funk:"🎤",pagode:"🥁",samba:"🎶",gospel:"✝️",pop:"⭐",rock:"🎸",forró:"🪗",mpb:"🎵",trap:"🔥",lofi:"🌙",jazz:"🎷",blues:"🎸",rnb:"💜",reggae:"🌿",arrocha:"❤️"};
   return map[g]||"🎵";
+}
+function genreAccent(g){
+  const map={sertanejo:"#f59e0b",funk:"#8b5cf6",pagode:"#22c55e",samba:"#f97316",gospel:"#3b82f6",pop:"#ec4899",rock:"#374151","rock brasileiro":"#374151",forró:"#f59e0b",lofi:"#6366f1",jazz:"#d97706",blues:"#1e40af",rnb:"#a855f7",reggae:"#16a34a",arrocha:"#ef4444","sertanejo universitário":"#f59e0b","sertanejo romântico":"#f59e0b","viola caipira":"#78716c","sertanejo raiz":"#92400e"};
+  return map[(g||"").toLowerCase()]||"#f97316";
 }
 function genreColor(g){
   const map={sertanejo:"linear-gradient(135deg,#f59e0b,#d97706)",funk:"linear-gradient(135deg,#8b5cf6,#7c3aed)",pagode:"linear-gradient(135deg,#22c55e,#16a34a)",samba:"linear-gradient(135deg,#f97316,#ea580c)",gospel:"linear-gradient(135deg,#3b82f6,#2563eb)",pop:"linear-gradient(135deg,#ec4899,#db2777)",rock:"linear-gradient(135deg,#374151,#111827)",forró:"linear-gradient(135deg,#f59e0b,#f97316)",lofi:"linear-gradient(135deg,#6366f1,#4f46e5)",jazz:"linear-gradient(135deg,#d97706,#92400e)"};
