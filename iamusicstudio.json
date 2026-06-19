@@ -1,5 +1,98 @@
 [
   {
+    "id": 1781827468701,
+    "title": "10 minutos",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 110,
+    "duration": "normal",
+    "date": "18/06/2026",
+    "song": {
+      "title": "10 minutos",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "O carro tá no limite da velocidade\nTô cruzando os sinais dessa cidade\nA vontade de te ver não quer esperar\nO ponteiro do relógio quer me provocar\nJá faz uma hora que a gente desligou\nE o meu coração aqui dentro já mudou",
+        "Pre-Chorus": "Eu tô contando o que falta pra te abraçar\nA rua tá vazia, mas eu não consigo parar\nEu quero o teu beijo, eu quero o teu calor\nNão faz sentido essa vida sem o nosso amor",
+        "Chorus": "(Strong and powerful vocals)\nE cada minuto longe de você\nÉ um tempo que eu não queria viver\nO meu destino é o teu lado, é o teu olhar\nE eu não vejo a hora de te encontrar\nSão dez minutos que parecem uma eternidade\nMas eu tô chegando pra matar essa saudade",
+        "Instrumental Solo": "(Electric guitar solo with a touch of sertanejo melody)",
+        "Verse 2": "Já consigo ver a luz lá no teu portão\nAcelera o batimento do meu coração\nEsquece tudo que a gente passou no dia\nO que importa é essa nossa energia\nO celular toca, mas eu não vou atender\nO que eu quero agora é estar com você",
+        "Bridge": "Chega de pressa, chega de tanta espera\nVocê é o meu hoje, o meu sempre, a minha primavera\nO teu abraço é o lugar onde eu me sinto bem\nE eu não troco o teu amor por mais ninguém",
+        "Instrumental Outro": "(Electric guitar solo fading out with accordion)",
+        "Outro": "São dez minutos que parecem uma eternidade...\nMas eu tô chegando pra matar essa saudade."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 110,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "O carro tá no limite da velocidade\nTô cruzando os sinais dessa cidade\nA vontade de te ver não quer esperar\nO ponteiro do relógio quer me provocar\nJá faz uma hora que a gente desligou\nE o meu coração aqui dentro já mudou",
+      "Pre-Chorus": "Eu tô contando o que falta pra te abraçar\nA rua tá vazia, mas eu não consigo parar\nEu quero o teu beijo, eu quero o teu calor\nNão faz sentido essa vida sem o nosso amor",
+      "Chorus": "(Strong and powerful vocals)\nE cada minuto longe de você\nÉ um tempo que eu não queria viver\nO meu destino é o teu lado, é o teu olhar\nE eu não vejo a hora de te encontrar\nSão dez minutos que parecem uma eternidade\nMas eu tô chegando pra matar essa saudade",
+      "Instrumental Solo": "(Electric guitar solo with a touch of sertanejo melody)",
+      "Verse 2": "Já consigo ver a luz lá no teu portão\nAcelera o batimento do meu coração\nEsquece tudo que a gente passou no dia\nO que importa é essa nossa energia\nO celular toca, mas eu não vou atender\nO que eu quero agora é estar com você",
+      "Bridge": "Chega de pressa, chega de tanta espera\nVocê é o meu hoje, o meu sempre, a minha primavera\nO teu abraço é o lugar onde eu me sinto bem\nE eu não troco o teu amor por mais ninguém",
+      "Instrumental Outro": "(Electric guitar solo fading out with accordion)",
+      "Outro": "São dez minutos que parecem uma eternidade...\nMas eu tô chegando pra matar essa saudade."
+    },
+    "struct": [
+      "Verse 1",
+      "Pre-Chorus",
+      "Chorus",
+      "Instrumental Solo",
+      "Verse 2",
+      "Chorus",
+      "Bridge",
+      "Chorus",
+      "Instrumental Outro",
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3"
+  },
+  {
+    "id": 1781825629388,
+    "title": "Abraço Dividido",
+    "genre": "Sertanejo universitário",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "18/06/2026",
+    "song": {
+      "title": "Abraço Dividido",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "Nesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo universitário",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "Nesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?"
+    },
+    "struct": [
+      "Verso 1"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3"
+  },
+  {
     "id": 1781739849628,
     "title": "Melhor Versão",
     "genre": "Sertanejo",
@@ -32,7 +125,7 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739847/td5khtvcr0wdekfsrsfh.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3"
   },
   {
     "id": 1781739144499,
@@ -182,69 +275,6 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3"
-  },
-  {
-    "id": 1781534888884,
-    "title": "Seu Melhor Palco",
-    "genre": "Sertanejo",
-    "mood": "Romântico ❤️",
-    "bpm": 90,
-    "duration": "normal",
-    "date": "15/06/2026",
-    "song": {
-      "title": "Seu Melhor Palco",
-      "subtitle": "Onde a alma encontra a mais pura verdade",
-      "key": "G Maior",
-      "chords": "G - D - Em - C",
-      "vibe": "Intensidade apaixonada e um toque de melancolia.",
-      "style_tags": [
-        "sertanejo",
-        "romântico",
-        "dor-de-cotovelo",
-        "declaração"
-      ],
-      "sections": {
-        "Intro": "A noite esconde o que o dia revelou\nUm perfume que o vento espalhou\nContaram agora o brilho do teu olhar\nEu sei, fui eu quem te ensinei a amar.",
-        "Verso 1": "Eles dizem que a voz que te embala\nÉ um canto que ninguém mais iguala\nConheço cada nota, o tom que te atrai\nFui eu quem te disse, em qual caminho vai.\n\nNão preciso de um novo juramento\nCada passo seu é um lamento\nQue o espelho reflete sem alarde\nO fim de um ciclo, chega tarde.",
-        "Pré-Refrão": "O tempo se apaga, a aurora se avizinha,\nMas a febre do teu toque ainda me alucina.\nQuero sentir em meu peito a sua vibração,\nNum eterno momento, sem mais desilusão.",
-        "Refrão": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nAqui somos nós, o que o tempo não desfaz,\nA sua essência mais pura, em completa paz.",
-        "Verso 2": "Dizem que os beijos que te dão agora\nSão de um sabor que nunca se esgotara\nEu bem lembro o gosto do seu querer\nE as promessas que te fiz pra nunca esquecer.\n\nNão venha pedir explicações vãs\nO sol já pregou os primeiros afãs\nSua jornada segue, não há o que esconder\nO meu futuro, com você, já não há de ser.",
-        "Bridge": "Os rastros que deixam, não apagam o que foi\nA marca mais funda, em nós dois, pois\nHouve um tempo que o pranto era só meu\nHoje o seu palco, quem roubou foi o céu.\n\nPois a verdade crua que me foi contada\nÉ que a sua aura é a mais desejada.",
-        "Refrão Final": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nA mais bela cena, que o tempo não desfaz,\nSua alma mais sincera, em completa paz.\nEssa é a sua essência, a mais pura em minhas mãos,\nO amor que te faz forte, em outros corações."
-      },
-      "suno_style": "sertanejo, romantic, longing, male tenor, 90 BPM, acoustic guitar, emotional ballad, driving kick drum, subtle strings, powerful vocals",
-      "instruments": [
-        "violão acústico com dedilhados suaves",
-        "viola caipira para o lamento",
-        "baixo marcando o compasso com sutileza",
-        "bateria com bumbo pulsante e caixa presente no refrão",
-        "orquestração leve para preencher a atmosfera"
-      ],
-      "production_notes": "Começar com um violão introduzindo a melodia. Versos com voz mais intimista, piano discreto. Pré-refrão crescendo em intensidade com a entrada da percussão leve. Refrão com voz potente, backing vocals suaves e toda a banda em volume mais alto. Bridge com uma leve queda de intensidade seguida por uma explosão emocional. Refrão final com a mesma energia do primeiro, estendendo a melodia final.",
-      "bpm": 90,
-      "genre": "Sertanejo",
-      "mood": "Romântico ❤️",
-      "voice": "Masculina",
-      "duration": "normal"
-    },
-    "sections": {
-      "Intro": "A noite esconde o que o dia revelou\nUm perfume que o vento espalhou\nContaram agora o brilho do teu olhar\nEu sei, fui eu quem te ensinei a amar.",
-      "Verso 1": "Eles dizem que a voz que te embala\nÉ um canto que ninguém mais iguala\nConheço cada nota, o tom que te atrai\nFui eu quem te disse, em qual caminho vai.\n\nNão preciso de um novo juramento\nCada passo seu é um lamento\nQue o espelho reflete sem alarde\nO fim de um ciclo, chega tarde.",
-      "Pré-Refrão": "O tempo se apaga, a aurora se avizinha,\nMas a febre do teu toque ainda me alucina.\nQuero sentir em meu peito a sua vibração,\nNum eterno momento, sem mais desilusão.",
-      "Refrão": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nAqui somos nós, o que o tempo não desfaz,\nA sua essência mais pura, em completa paz.",
-      "Verso 2": "Dizem que os beijos que te dão agora\nSão de um sabor que nunca se esgotara\nEu bem lembro o gosto do seu querer\nE as promessas que te fiz pra nunca esquecer.\n\nNão venha pedir explicações vãs\nO sol já pregou os primeiros afãs\nSua jornada segue, não há o que esconder\nO meu futuro, com você, já não há de ser.",
-      "Bridge": "Os rastros que deixam, não apagam o que foi\nA marca mais funda, em nós dois, pois\nHouve um tempo que o pranto era só meu\nHoje o seu palco, quem roubou foi o céu.\n\nPois a verdade crua que me foi contada\nÉ que a sua aura é a mais desejada.",
-      "Refrão Final": "O mundo não sabe, não vê, não tem noção,\nQue em meus braços você encontra a sua perfeição.\nA mais bela cena, que o tempo não desfaz,\nSua alma mais sincera, em completa paz.\nEssa é a sua essência, a mais pura em minhas mãos,\nO amor que te faz forte, em outros corações."
-    },
-    "struct": [
-      "Intro",
-      "Verso 1",
-      "Pré-Refrão",
-      "Refrão",
-      "Verso 2",
-      "Bridge",
-      "Refrão Final"
-    ]
   },
   {
     "id": 1781388424432,
