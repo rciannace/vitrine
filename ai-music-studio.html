@@ -3250,6 +3250,24 @@ function spPlay(i){
     spPlaying=true;
     spUpdateUI();
     renderGallery();
+    // Media Session API — controles nativos do SO (Windows, Android, Mac)
+    if("mediaSession" in navigator){
+      // Gera cor de capa baseada no gênero
+      const h=Array.from(e.title||"").reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title: e.title||"Sem título",
+        artist: (e.genre||"")+(e.mood?" · "+e.mood:""),
+        album: "IA Music Studio",
+        artwork:[
+          {src:"https://raw.githubusercontent.com/rciannace/rciannace.github.io/main/favicon.png",sizes:"512x512",type:"image/png"}
+        ]
+      });
+      navigator.mediaSession.setActionHandler("play",()=>{audio.play();spPlaying=true;spUpdateUI();});
+      navigator.mediaSession.setActionHandler("pause",()=>{audio.pause();spPlaying=false;spUpdateUI();});
+      navigator.mediaSession.setActionHandler("previoustrack",()=>spPrev());
+      navigator.mediaSession.setActionHandler("nexttrack",()=>spNext());
+      navigator.mediaSession.setActionHandler("seekto",(d)=>{if(d.seekTime)audio.currentTime=d.seekTime;});
+    }
   }).catch(err=>{showToast("❌ Erro ao reproduzir","err");});
 }
 
