@@ -822,6 +822,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         <option value="alpha">🔤 A-Z</option>
         <option value="genre">🎸 Gênero</option>
         <option value="fav">⭐ Favoritas primeiro</option>
+        <option value="plays">▶ Mais tocadas</option>
       </select>
     </div>
 
@@ -2911,6 +2912,7 @@ function renderLib(){
   else if(sortVal==="alpha")filtered.sort((a,b)=>(a.title||"").localeCompare(b.title||"","pt",{sensitivity:"base"}));
   else if(sortVal==="genre")filtered.sort((a,b)=>(a.genre||"").localeCompare(b.genre||"","pt",{sensitivity:"base"}));
   else if(sortVal==="fav")filtered.sort((a,b)=>(b.fav?1:0)-(a.fav?1:0));
+  else if(sortVal==="plays")filtered.sort((a,b)=>(b.plays||0)-(a.plays||0));
   if(!filtered.length){
     el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">${q?"🔍":"🎵"}</div><div>${q?"Nenhum resultado para '"+q+"'":"Nenhuma música ainda"}</div></div>`;
     return;
@@ -2921,7 +2923,7 @@ function renderLib(){
         <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.title)}</div>
         <button onclick="toggleFav(${e.id})" style="background:none;border:none;font-size:18px;cursor:pointer;flex-shrink:0;padding:0 0 0 6px" title="${e.fav?"Remover favorito":"Favoritar"}">${e.fav?"⭐":"☆"}</button>
       </div>
-      <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}</div>
+      <div style="font-size:12px;color:#f97316;margin-bottom:2px">${esc(e.genre)} · ${e.bpm} BPM · ${durIcon(e.duration)} ${esc(e.duration)}${e.plays?` · ▶ ${e.plays}`:""}</div>
       <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
       ${e.audio ? `
       <div style="margin-bottom:10px">
@@ -3372,6 +3374,9 @@ function spPlay(i){
     spPlaying=true;
     spUpdateUI();
     renderGallery();
+    // Contador de plays
+    const hi=history.findIndex(x=>x.id===e.id);
+    if(hi>=0){history[hi].plays=(history[hi].plays||0)+1;saveHistory();}
     // Media Session API — controles nativos do SO (Windows, Android, Mac)
     if("mediaSession" in navigator){
       // Gera cor de capa baseada no gênero
