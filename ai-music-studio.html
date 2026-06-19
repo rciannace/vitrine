@@ -1897,20 +1897,26 @@ async function newChorus(sec){
   if(!apiKey){showToast("Cole sua API Key primeiro!","err");return;}
   const btn=event?.target;
   if(btn){btn.disabled=true;btn.textContent="✨ Gerando...";}
+  // Remove alternative anterior se existir
+  const sid=safeid(sec);
+  const oldAlt=document.getElementById("alt-chorus-"+sid);
+  if(oldAlt)oldAlt.remove();
   try{
+    // Coleta refrões já rejeitados para não repetir
+    const rejected=(window._rejectedChorus||[]).join("\n\n---\n\n");
     const prompt=`Você é o maior compositor de hits do Brasil. Gere um NOVO REFRÃO completamente diferente para a música "${currentSong?.title||"esta música"}" (${currentSong?.genre||""}, ${currentSong?.mood||""}).
 
-REFRÃO ATUAL (NÃO REPITA, crie algo totalmente diferente):
+REFRÃO ATUAL (não repita, crie algo totalmente diferente):
 ${currentSections[sec]||""}
+${rejected?`\nREFRÕES JÁ REJEITADOS (não repita nenhum desses):\n${rejected}`:""}
 
-REGRAS DO NOVO REFRÃO:
+REGRAS:
 • 1 frase central que gruda na cabeça — qualquer um canta na primeira vez
-• Mais impactante, mais direto, mais emocionante que o atual
+• Completamente diferente dos anteriores em melodia, rima e imagem
 • Rima rica AABB ou ABAB — sem exceção
-• Linguagem natural e cantável — sem gírias forçadas ou palavras antigas
-• Conflito interno: medo, orgulho, saudade — não culpa de outra pessoa
+• Linguagem natural e cantável
 • 4-8 linhas no total
-• Mostre emoção com cenas concretas, não declarações genéricas
+• Mostre emoção com cenas concretas
 
 Retorne EXCLUSIVAMENTE o JSON: {"lyrics":"novo refrão completo com quebras \n"}`;
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
@@ -1921,12 +1927,47 @@ Retorne EXCLUSIVAMENTE o JSON: {"lyrics":"novo refrão completo com quebras \n"}
     const txt=(d.choices||[]).map(c=>c.message?.content||"").join("").replace(/```json|```/g,"").trim();
     const parsed=JSON.parse(txt);
     if(parsed.lyrics){
-      currentSections[sec]=parsed.lyrics;
-      renderResult(Object.keys(currentSections));
-      showToast("🎯 Novo refrão gerado!","ok");
+      // Mostra o novo refrão abaixo do atual sem substituir
+      const secBlock=document.getElementById("body-"+sid);
+      if(secBlock){
+        const altDiv=document.createElement("div");
+        altDiv.id="alt-chorus-"+sid;
+        altDiv.style.cssText="margin-top:12px;border:2px solid #6366f1;border-radius:10px;padding:12px;background:rgba(99,102,241,0.08)";
+        altDiv.innerHTML=`
+          <div style="font-size:10px;font-weight:700;color:#6366f1;letter-spacing:1px;margin-bottom:8px">✨ NOVO REFRÃO — OPÇÃO ${((window._chorusCount||0)+1)}</div>
+          <pre style="font-size:13px;color:var(--text);line-height:1.8;white-space:pre-wrap;margin:0 0 10px">${esc(parsed.lyrics)}</pre>
+          <div style="display:flex;gap:8px">
+            <button onclick="useAltChorus('${sec}','${sid}',this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar este</button>
+            <button onclick="discardAltChorus('${sec}','${sid}',this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:12px;font-weight:600;cursor:pointer">🗑 Descartar</button>
+          </div>`;
+        altDiv.dataset.lyrics=parsed.lyrics;
+        secBlock.appendChild(altDiv);
+        altDiv.scrollIntoView({behavior:"smooth",block:"nearest"});
+        window._chorusCount=(window._chorusCount||0)+1;
+      }
+      showToast("🎯 Opção "+((window._chorusCount))+" gerada!","ok");
     }
   }catch(e){showToast("Erro: "+e.message,"err");}
-  finally{if(btn){btn.disabled=false;btn.textContent="🎯 Novo Refrão";}}
+  finally{if(btn){btn.disabled=false;btn.textContent="🎯 Novo";}}
+}
+function useAltChorus(sec,sid,btn){
+  const altDiv=document.getElementById("alt-chorus-"+sid);
+  if(!altDiv)return;
+  currentSections[sec]=altDiv.dataset.lyrics;
+  window._rejectedChorus=[];
+  window._chorusCount=0;
+  altDiv.remove();
+  renderResult(Object.keys(currentSections));
+  showToast("✅ Refrão aplicado!","ok");
+}
+function discardAltChorus(sec,sid,btn){
+  const altDiv=document.getElementById("alt-chorus-"+sid);
+  if(!altDiv)return;
+  // Guarda como rejeitado para não repetir
+  if(!window._rejectedChorus)window._rejectedChorus=[];
+  window._rejectedChorus.push(altDiv.dataset.lyrics);
+  altDiv.remove();
+  showToast("🗑 Descartado — clique Novo para outra opção","ok");
 }
 async function rewriteSec(sec){
   const apiKey=(document.getElementById("api-key").value.trim())||localStorage.getItem("or_key")||"";
