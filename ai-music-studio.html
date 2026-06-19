@@ -816,6 +816,13 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <button onclick="setLibFilter('fav')" id="lf-fav" class="chip" style="font-size:11px">⭐ Favoritas</button>
       <button onclick="setLibFilter('audio')" id="lf-audio" class="chip" style="font-size:11px">🎵 Com áudio</button>
       <button onclick="setLibFilter('drafts')" id="lf-drafts" class="chip" style="font-size:11px">📝 Rascunhos</button>
+      <select id="lib-sort" onchange="renderLib()" style="margin-left:auto;font-size:11px;padding:4px 8px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer">
+        <option value="date_desc">📅 Mais recentes</option>
+        <option value="date_asc">📅 Mais antigas</option>
+        <option value="alpha">🔤 A-Z</option>
+        <option value="genre">🎸 Gênero</option>
+        <option value="fav">⭐ Favoritas primeiro</option>
+      </select>
     </div>
 
     <div class="lib-grid" id="lib-grid">
@@ -2897,6 +2904,13 @@ function renderLib(){
     return true;
   });
   if(q)filtered=filtered.filter(e=>(e.title||"").toLowerCase().includes(q)||(e.genre||"").toLowerCase().includes(q)||(e.mood||"").toLowerCase().includes(q));
+  // Sort
+  const sortVal=(document.getElementById("lib-sort")?.value)||"date_desc";
+  if(sortVal==="date_desc")filtered.sort((a,b)=>b.id-a.id);
+  else if(sortVal==="date_asc")filtered.sort((a,b)=>a.id-b.id);
+  else if(sortVal==="alpha")filtered.sort((a,b)=>(a.title||"").localeCompare(b.title||"","pt",{sensitivity:"base"}));
+  else if(sortVal==="genre")filtered.sort((a,b)=>(a.genre||"").localeCompare(b.genre||"","pt",{sensitivity:"base"}));
+  else if(sortVal==="fav")filtered.sort((a,b)=>(b.fav?1:0)-(a.fav?1:0));
   if(!filtered.length){
     el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">${q?"🔍":"🎵"}</div><div>${q?"Nenhum resultado para '"+q+"'":"Nenhuma música ainda"}</div></div>`;
     return;
