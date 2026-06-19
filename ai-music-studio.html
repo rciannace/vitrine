@@ -3396,16 +3396,19 @@ function toggleKaraoke(){
 }
 function spKaraokeBuild(){
   const e=spQueue[spIndex];if(!e)return;
-  const secs=e.sections||{};
-  const struct=e.struct||Object.keys(secs);
+  // sections pode estar em e.sections ou e.song.sections
+  const secs=e.sections||e.song?.sections||{};
+  const struct=e.struct||e.song?.struct||Object.keys(secs);
   const body=document.getElementById("kara-body");
   const title=document.getElementById("kara-title");
   if(title)title.textContent="🎤 "+e.title;
   if(!body)return;
+  if(!struct.length){body.innerHTML="<div style='color:var(--text4);font-size:12px;padding:8px'>Letra não disponível para esta música.</div>";return;}
   body.innerHTML=struct.map((s,i)=>{
     const txt=(secs[s]||"").trim();
+    if(!txt)return"";
     return `<div class="kara-block" id="kara-blk-${i}" data-sec="${s}"><div style="font-size:9px;font-weight:700;color:#f97316;letter-spacing:1px;margin-bottom:4px">${secName(s)}</div>${esc(txt)}</div>`;
-  }).join("");
+  }).filter(Boolean).join("");
 }
 function spKaraokeHighlight(currentTime,duration){
   // Destaca na tela de resultado
@@ -3425,8 +3428,11 @@ function spKaraokeHighlight(currentTime,duration){
   const n=kblocks.length;
   const idx=Math.min(Math.floor((currentTime/duration)*n),n-1);
   kblocks.forEach((b,i)=>{
-    b.classList.toggle("active",i===idx);
-    if(i===idx)b.scrollIntoView({behavior:"smooth",block:"nearest"});
+    const active=i===idx;
+    b.classList.toggle("active",active);
+    if(active){
+      b.scrollIntoView({behavior:"smooth",block:"center"});
+    }
   });
 }
 let spMuted=false,spLastVol=100;
