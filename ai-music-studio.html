@@ -2067,7 +2067,7 @@ function renderResult(structs){
         <div class="export-head">
           <span class="export-label" style="color:#ef4444">LYRICS</span>
           <button class="btn-copy-sm" style="background:#ef4444;color:#fff" onclick="copyEl('ex-lyrics','Letra copiada! ✓')">📋 Copiar</button>
-          <button class="btn-copy-sm" style="background:#25D366;color:#fff" onclick="shareWhatsApp()">WhatsApp</button>
+          <button class="btn-copy-sm" style="background:#25D366;color:#fff;font-size:10px;padding:4px 10px" onclick="shareWhatsApp()">📲 WhatsApp</button>
         </div>
         <pre class="export-pre" id="ex-lyrics">${esc(buildSunoLyrics(secsToShow))}</pre>
       </div>
