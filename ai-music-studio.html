@@ -453,6 +453,10 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .sp-progress:hover .sp-bar{height:6px;background:#f97316}
 .sp-time{font-size:11px;color:#b3b3b3;flex-shrink:0;min-width:32px}
 .sp-time:last-child{text-align:right}
+.sp-volume{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sp-vol-icon{font-size:14px;color:#b3b3b3;cursor:pointer;flex-shrink:0}
+.sp-vol-slider{-webkit-appearance:none;appearance:none;width:70px;height:4px;border-radius:4px;background:linear-gradient(to right,#f97316 var(--vol,100%),#555 var(--vol,100%));outline:none;cursor:pointer}
+.sp-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;cursor:pointer}
 
 /* coluna dir: vazia por ora, reservada p/ volume futuro */
 .sp-right{display:flex;justify-content:flex-end;align-items:center}
@@ -922,8 +926,13 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         </div>
       </div>
 
-      <!-- DIREITA: reservado -->
-      <div class="sp-right"></div>
+      <!-- DIREITA: volume -->
+      <div class="sp-right">
+        <div class="sp-volume">
+          <span class="sp-vol-icon" onclick="spVolMute()" id="sp-vol-icon">🔊</span>
+          <input type="range" class="sp-vol-slider" id="sp-vol-slider" min="0" max="100" value="100" oninput="spVolChange(this.value)" style="--vol:100%">
+        </div>
+      </div>
 
     </div>
   </div>
@@ -3238,6 +3247,28 @@ function spToggleRepeat(){
     btn.className="sp-btn"+(spRepeat!=="none"?" active-mode":"");
     btn.textContent=spRepeat==="one"?"🔂":"🔁";
     btn.title=spRepeat==="one"?"Repetir uma":spRepeat==="all"?"Repetir todas":"Repetir";
+  }
+}
+let spMuted=false,spLastVol=100;
+function spVolChange(val){
+  const audio=document.getElementById("sp-audio");
+  const slider=document.getElementById("sp-vol-slider");
+  const icon=document.getElementById("sp-vol-icon");
+  audio.volume=val/100;
+  slider.style.setProperty("--vol",val+"%");
+  spMuted=val==0;
+  icon.textContent=val==0?"🔇":val<40?"🔉":"🔊";
+  spLastVol=val>0?val:spLastVol;
+}
+function spVolMute(){
+  const slider=document.getElementById("sp-vol-slider");
+  if(spMuted){
+    slider.value=spLastVol;
+    spVolChange(spLastVol);
+  } else {
+    spLastVol=parseInt(slider.value)||100;
+    slider.value=0;
+    spVolChange(0);
   }
 }
 function spPlay(i){
