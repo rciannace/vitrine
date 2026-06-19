@@ -117,7 +117,7 @@ body.dark #page-lib{color:var(--text)}
 body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
 body.dark /* Karaokê flutuante */
-#kara-modal{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:320px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden}
+#kara-modal{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:320px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden}@media(max-width:700px){#kara-modal{bottom:80px;right:8px;left:8px;width:auto}}
 #kara-modal.open{display:flex;flex-direction:column}
 #kara-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text)}
 #kara-body{padding:12px 14px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
@@ -398,8 +398,10 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   box-sizing:border-box;
 }
 @media(max-width:700px){
-  .sp-player-inner{grid-template-columns:1fr auto 40px;padding:10px 12px 8px;gap:6px}
+  .sp-player-inner{grid-template-columns:auto 1fr 40px;padding:8px 10px 6px;gap:6px}
   .sp-right{display:none}
+  #kara-btn{display:none!important}
+  .sp-thumb{width:44px;height:44px;font-size:22px}
 }
 
 /* coluna esq: capa + info */
@@ -919,7 +921,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
       <!-- ESQUERDA: capa + info -->
       <div class="sp-left">
-        <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
+        <div class="sp-thumb" id="sp-thumb" onclick="toggleKaraoke()" title="Ver letra sincronizada">🎵</div>
         <button onclick="toggleKaraoke()" id="kara-btn" title="Ver letra sincronizada" style="display:none;background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;flex-shrink:0">🎤</button>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
