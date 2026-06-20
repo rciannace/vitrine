@@ -3657,7 +3657,7 @@ function spUpdateUI(){
   const d4=['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
   const arr2=rom2?r4:(pm2[(e.genre||'').toLowerCase()]||d4);
   const pid2=arr2[h%4];
-  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display=\'none\'"/>';
+  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;border-radius:10px;cursor:pointer" onclick="toggleKaraoke()" onerror="this.style.display=\'none\'"/>';
   thumb.style.background=genreColor(e.genre);
   btn.textContent=spPlaying?"⏸":"▶";
   // update main padding so player doesn't cover content
