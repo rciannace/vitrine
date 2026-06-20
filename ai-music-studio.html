@@ -116,7 +116,31 @@ body.dark .sec-lbl{color:var(--text3)}
 body.dark #page-lib{color:var(--text)}
 body.dark #page-lib h1, body.dark #page-lib div{color:inherit}
 body.dark .gal-info .gal-sub{color:var(--text4)}
-body.dark .sp-player{background:linear-gradient(180deg,#0b132b 0%,#0f1d38 100%);border-top:1px solid #1b6ca8}
+body.dark /* Tela cheia estilo Spotify */
+#sp-fullscreen{display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0d1b2a 0%,#000 100%);flex-direction:column;overflow:hidden}
+#sp-fullscreen.open{display:flex}
+#sp-fs-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px}
+#sp-fs-cover{width:220px;height:220px;border-radius:16px;margin:16px auto;flex-shrink:0;background:#1a1a2e;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.6)}
+#sp-fs-cover img{width:100%;height:100%;object-fit:cover}
+#sp-fs-info{text-align:center;padding:0 24px 12px}
+#sp-fs-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+#sp-fs-genre{font-size:13px;color:rgba(255,255,255,0.5)}
+#sp-fs-lyrics{flex:1;overflow-y:auto;padding:0 24px 16px;display:flex;flex-direction:column;gap:12px}
+.fs-block{padding:10px 14px;border-radius:10px;border-left:3px solid rgba(255,255,255,0.1);transition:all .4s}
+.fs-block.active{background:rgba(255,255,255,0.08);border-left-color:#f97316}
+.fs-block-label{font-size:9px;font-weight:700;color:#f97316;letter-spacing:1.5px;margin-bottom:6px}
+.fs-block-text{font-size:14px;color:rgba(255,255,255,0.75);line-height:1.8;white-space:pre-wrap}
+.fs-block.active .fs-block-text{color:#fff;font-weight:500}
+#sp-fs-controls{padding:16px 32px 32px;display:flex;align-items:center;justify-content:center;gap:28px;flex-shrink:0}
+#sp-fs-progress{padding:0 24px 8px}
+#sp-fs-prog-bar{height:4px;background:rgba(255,255,255,0.2);border-radius:4px;position:relative;cursor:pointer}
+#sp-fs-prog-fill{height:100%;background:#f97316;border-radius:4px;transition:width .5s linear}
+#sp-fs-times{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px}
+.fs-btn{background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;font-size:28px;padding:4px;transition:transform .15s}
+.fs-btn:hover{transform:scale(1.1);color:#fff}
+.fs-btn.play{font-size:52px;color:#fff}
+.fs-btn.sm{font-size:20px;color:rgba(255,255,255,0.5)}
+.sp-player{background:linear-gradient(180deg,#0b132b 0%,#0f1d38 100%);border-top:1px solid #1b6ca8}
 textarea,input{outline:none!important;font-family:'Inter',sans-serif;-webkit-appearance:none}
 button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-appearance:none}
 
@@ -901,12 +925,39 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   </div>
 
   <!-- PLAYER FIXO SPOTIFY -->
+  <!-- Tela cheia estilo Spotify -->
+  <div id="sp-fullscreen">
+    <div id="sp-fs-header">
+      <button onclick="closeFullscreen()" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:22px;cursor:pointer">⌄</button>
+      <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:1px">TOCANDO AGORA</span>
+      <div style="width:32px"></div>
+    </div>
+    <div id="sp-fs-cover"><img id="sp-fs-img" src="" onerror="this.style.display='none'"/></div>
+    <div id="sp-fs-info">
+      <div id="sp-fs-title">—</div>
+      <div id="sp-fs-genre">—</div>
+    </div>
+    <div id="sp-fs-progress">
+      <div id="sp-fs-prog-bar" onclick="spFsSeek(event)">
+        <div id="sp-fs-prog-fill" style="width:0%"></div>
+      </div>
+      <div id="sp-fs-times"><span id="sp-fs-cur">0:00</span><span id="sp-fs-dur">0:00</span></div>
+    </div>
+    <div id="sp-fs-controls">
+      <button class="fs-btn sm" onclick="spToggleShuffle()" id="fs-shuf">⇄</button>
+      <button class="fs-btn" onclick="spPrev()">⏮</button>
+      <button class="fs-btn play" id="fs-play-btn" onclick="spToggle()">▶</button>
+      <button class="fs-btn" onclick="spNext()">⏭</button>
+      <button class="fs-btn sm" onclick="spToggleRepeat()" id="fs-rep">↺</button>
+    </div>
+    <div id="sp-fs-lyrics"></div>
+  </div>
   <div class="sp-player" id="sp-player">
     <div class="sp-player-inner">
 
       <!-- ESQUERDA: capa + info -->
       <div class="sp-left">
-        <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
+        <div class="sp-thumb" id="sp-thumb" onclick="openFullscreen()" title="Ver tela cheia">🎵</div>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
           <div class="sp-sub" id="sp-sub">—</div>
@@ -3371,6 +3422,88 @@ function spToggleRepeat(){
     btn.title=spRepeat==="one"?"Repetir uma":spRepeat==="all"?"Repetir todas":"Repetir";
   }
 }
+let _fsOpen=false;
+function openFullscreen(){
+  if(!spQueue[spIndex]){showToast("Toque uma música primeiro","err");return;}
+  _fsOpen=true;
+  document.getElementById("sp-fullscreen").classList.add("open");
+  document.body.style.overflow="hidden";
+  spFsUpdate();
+  spFsBuildLyrics();
+}
+function closeFullscreen(){
+  _fsOpen=false;
+  document.getElementById("sp-fullscreen").classList.remove("open");
+  document.body.style.overflow="";
+}
+function spFsUpdate(){
+  const e=spQueue[spIndex];if(!e)return;
+  document.getElementById("sp-fs-title").textContent=e.title||"—";
+  document.getElementById("sp-fs-genre").textContent=(e.genre||"")+(e.mood?" · "+e.mood:"");
+  // cover image
+  const h=Array.from(e.title||"").reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
+  const pm2={"sertanejo":["1500534314209-a25ddb2bd429","1504701954957-2010ec3bcec1","1516912481800-cf2cde1b2249","1500076656116-558758c991c1"],"funk":["1493514789931-586cb221d7a7","1470225620780-dba8ba36b745"],"gospel":["1490730141103-6cac27aaab94","1507525428034-b723cf961d3e"]};
+  const r4=["1507525428034-b723cf961d3e","1519046904884-53103b34b206","1490730141103-6cac27aaab94","1500076656116-558758c991c1"];
+  const d4=["1500534314209-a25ddb2bd429","1507525428034-b723cf961d3e","1448375240586-882707db888b","1464822759023-fed622ff2c3b"];
+  const m2=(e.mood||"").toLowerCase();
+  const rom2=m2.includes("rom")||m2.includes("amor");
+  const arr2=rom2?r4:(pm2[(e.genre||"").toLowerCase()]||d4);
+  const pid2=arr2[h%arr2.length];
+  const img=document.getElementById("sp-fs-img");
+  if(img){img.src="https://images.unsplash.com/photo-"+pid2+"?w=400&q=80&fit=crop";img.style.display="";}
+  // play btn
+  const pb=document.getElementById("fs-play-btn");
+  if(pb)pb.textContent=spPlaying?"⏸":"▶";
+  // shuffle/repeat
+  const fs=document.getElementById("fs-shuf");
+  const fr=document.getElementById("fs-rep");
+  if(fs)fs.style.color=spShuffle?"#f97316":"rgba(255,255,255,0.5)";
+  if(fr)fr.style.color=spRepeat!=="none"?"#f97316":"rgba(255,255,255,0.5)";
+}
+function spFsBuildLyrics(){
+  const e=spQueue[spIndex];if(!e)return;
+  const secs=e.sections||e.song?.sections||{};
+  const struct=e.struct||e.song?.struct||Object.keys(secs);
+  const body=document.getElementById("sp-fs-lyrics");
+  if(!body)return;
+  body.innerHTML=struct.map((s,i)=>{
+    const txt=(secs[s]||"").trim();
+    if(!txt)return"";
+    return `<div class="fs-block" id="fs-blk-${i}"><div class="fs-block-label">${secName(s)}</div><div class="fs-block-text">${esc(txt)}</div></div>`;
+  }).filter(Boolean).join("");
+}
+function spFsHighlight(currentTime,duration){
+  if(!_fsOpen)return;
+  const audio=document.getElementById("sp-audio");
+  // progress
+  const fill=document.getElementById("sp-fs-prog-fill");
+  const cur=document.getElementById("sp-fs-cur");
+  const dur=document.getElementById("sp-fs-dur");
+  if(fill)fill.style.width=((currentTime/duration)*100)+"%";
+  if(cur)cur.textContent=spFmt(currentTime);
+  if(dur)dur.textContent=spFmt(duration);
+  // highlight block
+  const blocks=document.querySelectorAll(".fs-block");
+  if(!blocks.length)return;
+  const n=blocks.length;
+  const idx=Math.min(Math.floor((currentTime/duration)*n),n-1);
+  blocks.forEach((b,i)=>{
+    b.classList.toggle("active",i===idx);
+    if(i===idx)b.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  // play btn
+  const pb=document.getElementById("fs-play-btn");
+  if(pb)pb.textContent=spPlaying?"⏸":"▶";
+}
+function spFsSeek(ev){
+  const audio=document.getElementById("sp-audio");
+  if(!audio.duration)return;
+  const bar=document.getElementById("sp-fs-prog-bar");
+  const rect=bar.getBoundingClientRect();
+  audio.currentTime=((ev.clientX-rect.left)/rect.width)*audio.duration;
+}
+// Close on ESC
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&_fsOpen)closeFullscreen();});
 let spMuted=false,spLastVol=100;
 function spVolChange(val){
   const audio=document.getElementById("sp-audio");
@@ -3477,6 +3610,7 @@ function spPlay(i){
     spPlaying=true;
     spUpdateUI();
     renderGallery();
+    if(_fsOpen){spFsUpdate();spFsBuildLyrics();}
     // Contador de plays
     const hi=history.findIndex(x=>x.id===e.id);
     if(hi>=0){history[hi].plays=(history[hi].plays||0)+1;saveHistory();}
@@ -3565,6 +3699,8 @@ function spFmt(s){
 }
 
 function spUpdateUI(){
+  const pb=document.getElementById("fs-play-btn");
+  if(pb)pb.textContent=spPlaying?"⏸":"▶";
   const audio=document.getElementById("sp-audio");
   const player=document.getElementById("sp-player");
   const btn=document.getElementById("sp-play-btn");
@@ -3609,6 +3745,7 @@ function spUpdateUI(){
     document.getElementById("sp-bar").style.width=pct+"%";
     document.getElementById("sp-cur").textContent=spFmt(audio.currentTime);
     document.getElementById("sp-dur").textContent=spFmt(audio.duration);
+    spFsHighlight(audio.currentTime,audio.duration);
   });
   audio.addEventListener("ended",()=>{
     if(spQueue.length===0)return;
