@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1782046485570",
+      "title": "Envelhecimento",
+      "text": "Age subject naturally by 30 years, add realistic deep wrinkles and fine lines, natural skin sagging around jawline and neck, grey and silver hair transition, age spots and sun damage on skin, thinner lips, deeper set eyes, maintained bone structure and facial identity, natural ageing not theatrical makeup",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1782046308313",
       "title": "Melhoria de fotos cinema",
       "text": "Transform the source image into a high-resolution, moody cinematic film still, keeping 100% absolute fidelity to the original subject's facial features, pose, and gender. The person's pose must stay exactly 100% the same as the real image. Perform a hyper-realistic upscale with extremely sharp focus. Enhance and sharpen skin texture to be lifelike, showing visible pores and fine lines. Apply dramatic, low-key backlighting casting intense warm orange and deep amber tones as the dominant light source, creating strong rim lighting. Shadows must be crushed deep black, with distinct cool teal and muted dark green undertones in the background. Add a heavy, authentic analog film grain.\n\nShallow depth of field, high contrast chiaroscuro lighting, dark cinematic aesthetic.",
@@ -101,5 +110,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-06-21T12:51:50.322Z"
+  "savedAt": "2026-06-21T12:54:50.221Z"
 }
