@@ -1,5 +1,40 @@
 [
   {
+    "id": 1782057466922,
+    "title": "Meu Erro",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 110,
+    "duration": "normal",
+    "date": "21/06/2026",
+    "song": {
+      "title": "Meu Erro",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Outro": "(Slow down, voice getting deeper and raspy)\nO erro que eu não canso de repetir...\nÉ insistir em quem já quis partir.\nTô aqui... bebendo por ti."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 110,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Outro": "(Slow down, voice getting deeper and raspy)\nO erro que eu não canso de repetir...\nÉ insistir em quem já quis partir.\nTô aqui... bebendo por ti."
+    },
+    "struct": [
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782057518/wyyghnrxwuthdlqlejaj.mp3"
+  },
+  {
     "id": 1781827468701,
     "title": "10 minutos",
     "genre": "Sertanejo",
@@ -55,7 +90,8 @@
       "Instrumental Outro",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
+    "plays": 4
   },
   {
     "id": 1781825629388,
@@ -85,12 +121,14 @@
       "duration": "normal"
     },
     "sections": {
-      "Verso 1": "Nesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?"
+      "intro": "Nesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?"
     },
     "struct": [
-      "Verso 1"
+      "intro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3",
+    "plays": 3,
+    "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n"
   },
   {
     "id": 1781739849628,
@@ -125,7 +163,8 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3",
+    "plays": 1
   },
   {
     "id": 1781739144499,
@@ -160,7 +199,8 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3",
+    "plays": 2
   },
   {
     "id": 1781566763204,
@@ -213,7 +253,8 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
+    "plays": 9
   },
   {
     "id": 1781535068368,
@@ -274,7 +315,8 @@
       "Bridge",
       "Refrão Final"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
+    "plays": 3
   },
   {
     "id": 1781388424432,
@@ -319,7 +361,8 @@
       "Chorus",
       "Verse"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
+    "plays": 4
   },
   {
     "id": 1781316597462,
@@ -369,7 +412,8 @@
       "Bridge",
       "Chorus"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3",
+    "plays": 1
   },
   {
     "id": 1781316490885,
@@ -466,7 +510,8 @@
     "bpm": 90,
     "duration": "normal",
     "title": "O Retorno do Meu Sol",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
+    "plays": 1
   },
   {
     "duration": "normal",
@@ -501,7 +546,8 @@
     ],
     "sections": {
       "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
-    }
+    },
+    "plays": 2
   },
   {
     "duration": "normal",
@@ -610,7 +656,8 @@
     "id": 1781042011782,
     "date": "09/06/2026",
     "mood": "Romantico",
-    "genre": "Rock"
+    "genre": "Rock",
+    "plays": 1
   },
   {
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
@@ -675,7 +722,8 @@
         "Bateria"
       ],
       "genre": "Sertanejo"
-    }
+    },
+    "plays": 1
   },
   {
     "duration": "normal",
@@ -734,7 +782,8 @@
       "key": "Am",
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
-    "bpm": 90
+    "bpm": 90,
+    "plays": 5
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
@@ -797,7 +846,8 @@
       "refrão final"
     ],
     "date": "08/06/2026",
-    "id": 1780966074065
+    "id": 1780966074065,
+    "plays": 1
   },
   {
     "id": 1780956051780,
@@ -834,7 +884,7 @@
       },
       "subtitle": "",
       "mood": "Romantico",
-      "title": "Volta pra mim",
+      "title": "Perfume de Jasmim",
       "chords": "",
       "vibe": "",
       "bpm": 90,
@@ -847,7 +897,7 @@
       "style_tags": []
     },
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
-    "title": "Volta pra mim",
+    "title": "Perfume de Jasmim",
     "duration": "normal"
   },
   {
@@ -883,7 +933,8 @@
     },
     "title": "Fica mais um pouco",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
-    "duration": "normal"
+    "duration": "normal",
+    "plays": 1
   },
   {
     "date": "07/06/2026",
