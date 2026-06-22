@@ -818,6 +818,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <button onclick="setLibFilter('fav')" id="lf-fav" class="chip" style="font-size:11px">⭐ Favoritas</button>
       <button onclick="setLibFilter('audio')" id="lf-audio" class="chip" style="font-size:11px">🎵 Com áudio</button>
       <button onclick="setLibFilter('drafts')" id="lf-drafts" class="chip" style="font-size:11px">📝 Rascunhos</button>
+      <button onclick="setLibFilter('trash')" id="lf-trash" class="chip" style="font-size:11px">🗑 Lixeira</button>
       <select id="lib-sort" onchange="renderLib()" style="margin-left:auto;font-size:11px;padding:4px 8px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer">
         <option value="date_desc">📅 Mais recentes</option>
         <option value="date_asc">📅 Mais antigas</option>
@@ -2974,6 +2975,25 @@ function renderDrafts(el,q){
     </div>`).join("");
 }
 
+let trash=JSON.parse(localStorage.getItem("ia_trash")||"[]");
+function saveTrash(){localStorage.setItem("ia_trash",JSON.stringify(trash));}
+function renderTrash(el){
+  if(!trash.length){
+    el.innerHTML='<div style="text-align:center;padding:48px 24px;color:var(--text4)"><div style="font-size:40px;margin-bottom:12px">🗑</div><div style="font-size:14px">Lixeira vazia</div><div style="font-size:12px;margin-top:6px;opacity:.6">Músicas apagadas aparecem aqui por 30 dias</div></div>';
+    return;
+  }
+  const days=e=>Math.max(0,30-Math.floor((Date.now()-e._deletedAt)/(24*60*60*1000)));
+  el.innerHTML='<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button onclick="emptyTrash()" style="background:#ef4444;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer">🗑 Esvaziar lixeira</button></div>'+
+  trash.map(e=>`
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;opacity:.8">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">${esc(e.title||"Sem título")}</div>
+      <div style="font-size:12px;color:#f97316;margin-bottom:8px">${esc(e.genre||"")} · ${esc(e.mood||"")} · ${days(e)} dias restantes</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="restoreEntry(${e.id})" style="flex:1;padding:7px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">↩ Restaurar</button>
+        <button onclick="deleteForever(${e.id})" style="padding:7px 12px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:12px;cursor:pointer">✕</button>
+      </div>
+    </div>`).join("");
+}
 function renderLib(){
   if(activeLibTab==="galeria"){renderGallery();return;}
   const el=document.getElementById("lib-grid");
@@ -2981,6 +3001,7 @@ function renderLib(){
   const q=(document.getElementById("lib-search")?.value||"").toLowerCase().trim();
   // Rascunhos mode
   if(libFilter==="drafts"){renderDrafts(el,q);return;}
+  if(libFilter==="trash"){renderTrash(el);return;}
   // Normal: exclude isDraft
   let filtered=history.filter(e=>!e.isDraft).filter(e=>{
     if(libFilter==="fav")return e.fav;
@@ -3106,14 +3127,22 @@ function editTitle(id){
   showToast("✅ Nome atualizado!","ok");
 }
 function delEntry(id){
-  history=history.filter(x=>x.id!==id);
+  if(!confirm("Mover para a lixeira?"))return;
+  const idx=history.findIndex(x=>x.id===id);
+  if(idx<0)return;
+  const entry=history.splice(idx,1)[0];
+  entry._deletedAt=Date.now();
+  trash.unshift(entry);
+  // Limpa itens com mais de 30 dias
+  trash=trash.filter(e=>(Date.now()-e._deletedAt)<30*24*60*60*1000);
+  saveTrash();
   // persiste o id deletado para evitar restauração pelo ghLoad
   try{
     const del=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
     if(!del.includes(id)){del.push(id);localStorage.setItem("ams6_deleted",JSON.stringify(del.slice(-200)));}
   }catch{}
   ghSave();
-  updateLibN();renderLib();showToast("Removida","ok");
+  updateLibN();renderLib();showToast("🗑 Movido para a lixeira","ok");
 }
 
 // ══════════════════════════════════════
