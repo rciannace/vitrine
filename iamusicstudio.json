@@ -1,5 +1,98 @@
 [
   {
+    "id": 1782321557964,
+    "title": "Nosso Lugar",
+    "genre": "Rock",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "24/06/2026",
+    "song": {
+      "title": "Nosso Lugar",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 2": "De onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.",
+        "Chorus, powerful baritone vocals, steady tempo": "Diz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!",
+        "Verse 3": "Você não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.",
+        "Verse 4": "Não tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.",
+        "Melodic guitar solo, moderate pace": "",
+        "Bridge": "Só me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.",
+        "Final Chorus, powerful baritone vocals, anthemic": "Diz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Rock",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "intro": "Na sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.",
+      "verse 2": "De onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.",
+      "chorus, powerful baritone vocals, steady tempo": "Diz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!",
+      "verse 3": "Você não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.",
+      "verse 4": "Não tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.",
+      "melodic guitar solo, moderate pace": "",
+      "bridge": "Só me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.",
+      "final chorus, powerful baritone vocals, anthemic": "Diz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
+    },
+    "struct": [
+      "intro",
+      "verse 2",
+      "chorus, powerful baritone vocals, steady tempo",
+      "verse 3",
+      "verse 4",
+      "melodic guitar solo, moderate pace",
+      "bridge",
+      "final chorus, powerful baritone vocals, anthemic"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782321580/ohpdtpvrpvmenukbsnk7.mp3",
+    "plays": 3,
+    "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
+  },
+  {
+    "id": 1782254118222,
+    "title": "O Vazio do Bar",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "23/06/2026",
+    "song": {
+      "title": "O Vazio do Bar",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "Mais uma noite na mesa do bar, onde a saudade vem me encontrar,\nBebendo a mesma dose, tentando me acostumar.\nDe repente a porta abre, o meu coração acelera,\nEla entrando no bar, com quem menos se espera.\n\n\nSentou na mesa ao lado, nem viu que eu tava ali,\nO beijo que eles deram me fez querer sumir.\nEle abraça a cintura, ela ri do que ele diz,\nE eu aqui do lado, vendo o que me faz infeliz.\nA esperança se esconde, o peito aperta,\nO resto da noite, é uma ferida aberta.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nEu finjo que tô bem, olho pro lado oposto,\nMas o ciúme é um veneno que já mudou meu rosto.\nO gelo derreteu, a bebida já esquentou,\nE o tempo nessa mesa, parece que parou.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nA vontade é de levantar e ir tirar satisfação,\nMas eu não tenho direito, perdi meu coração.\nEles pagam a conta e saem de mãos dadas,\nMe deixando no escuro, entre tantas doses viradas.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nO bar tá esvaziando, a luz quer se apagar,\nA dor no meu peito não para de pulsar.\nVou pra rua agora, deixando tudo pra trás,\nO que a gente foi, não existe nunca mais."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "Mais uma noite na mesa do bar, onde a saudade vem me encontrar,\nBebendo a mesma dose, tentando me acostumar.\nDe repente a porta abre, o meu coração acelera,\nEla entrando no bar, com quem menos se espera.\n\n\nSentou na mesa ao lado, nem viu que eu tava ali,\nO beijo que eles deram me fez querer sumir.\nEle abraça a cintura, ela ri do que ele diz,\nE eu aqui do lado, vendo o que me faz infeliz.\nA esperança se esconde, o peito aperta,\nO resto da noite, é uma ferida aberta.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nEu finjo que tô bem, olho pro lado oposto,\nMas o ciúme é um veneno que já mudou meu rosto.\nO gelo derreteu, a bebida já esquentou,\nE o tempo nessa mesa, parece que parou.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nA vontade é de levantar e ir tirar satisfação,\nMas eu não tenho direito, perdi meu coração.\nEles pagam a conta e saem de mãos dadas,\nMe deixando no escuro, entre tantas doses viradas.\n​\nNo vazio do bar, se perdeu a paixão,\nVer você dando a ele o que era o meu coração.\nHoje o resto é saudade, não adianta insistir,\nO que a gente viveu, não tem como seguir.\n​\nO bar tá esvaziando, a luz quer se apagar,\nA dor no meu peito não para de pulsar.\nVou pra rua agora, deixando tudo pra trás,\nO que a gente foi, não existe nunca mais."
+    },
+    "struct": [
+      "Verso 1"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782254116/wtmqdidf2idj58z4vwn7.mp3",
+    "plays": 1
+  },
+  {
     "id": 1782173065596,
     "title": "Último Brinde",
     "genre": "Sertanejo",
@@ -52,7 +145,7 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 5
+    "plays": 2
   },
   {
     "id": 1782057466922,
@@ -87,7 +180,8 @@
     "struct": [
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782057518/wyyghnrxwuthdlqlejaj.mp3"
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782057518/wyyghnrxwuthdlqlejaj.mp3",
+    "plays": 1
   },
   {
     "id": 1781827468701,
@@ -146,7 +240,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 6
+    "plays": 4
   },
   {
     "id": 1781825629388,
@@ -309,7 +403,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
-    "plays": 10
+    "plays": 9
   },
   {
     "id": 1781535068368,
@@ -371,7 +465,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
-    "plays": 6
+    "plays": 3
   },
   {
     "id": 1781388424432,
@@ -468,7 +562,7 @@
       "Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3",
-    "plays": 4
+    "plays": 2
   },
   {
     "id": 1781316490885,
@@ -778,7 +872,7 @@
       ],
       "genre": "Sertanejo"
     },
-    "plays": 2
+    "plays": 3
   },
   {
     "duration": "normal",
@@ -838,7 +932,7 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 5
+    "plays": 6
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
@@ -902,7 +996,7 @@
     ],
     "date": "08/06/2026",
     "id": 1780966074065,
-    "plays": 2
+    "plays": 1
   },
   {
     "id": 1780956051780,
@@ -1051,6 +1145,7 @@
     },
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780947220/mz4b6ufjasol3atcaqsn.mp3",
     "title": "O Silêncio da Varanda",
-    "duration": "normal"
+    "duration": "normal",
+    "plays": 1
   }
 ]
