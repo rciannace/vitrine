@@ -953,7 +953,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
           <button class="sp-btn play" id="sp-play-btn" onclick="spToggle()">▶</button>
           <button class="sp-btn" onclick="spNext()" title="Próxima">⏭</button>
           <button class="sp-btn" id="sp-repeat-btn" onclick="spToggleRepeat()" title="Repetir">🔁</button>
-          <button class="sp-btn" id="sp-queue-ctrl" onclick="toggleQueue()" title="Ver fila" style="font-size:15px">☰</button>
+          <button class="sp-btn" id="sp-queue-ctrl" onclick="toggleQueue()" title="Ver fila" style="font-size:13px;letter-spacing:0">☰ Fila</button>
         </div>
         <div class="sp-progress-row">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0">
@@ -3461,23 +3461,20 @@ function renderQueue(){
   }
   if(manualQueue.length){
     html+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text4);letter-spacing:1px">PRÓXIMAS ('+manualQueue.length+')</div>';
-    html+=manualQueue.map((e,i)=>'<div class="queue-item" draggable="true" data-idx="'+i+'" ondragstart="qDragStart(event,'+i+')" ondragover="qDragOver(event)" ondrop="qDrop(event,'+i+')" ondragleave="qDragLeave(event)" style="cursor:grab"><span style="color:var(--text4);font-size:16px;padding:0 6px 0 0;cursor:grab;flex-shrink:0">⠿</span><div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div><button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
+    html+=manualQueue.map((e,i)=>'<div class="queue-item"><div style="display:flex;flex-direction:column;gap:2px;margin-right:6px;flex-shrink:0">'+
+      (i>0?'<button onclick="qMove('+i+',-1)" style="background:none;border:none;color:var(--text4);cursor:pointer;font-size:12px;line-height:1;padding:0">▲</button>':'<span style="height:16px"></span>')+
+      (i<manualQueue.length-1?'<button onclick="qMove('+i+',1)" style="background:none;border:none;color:var(--text4);cursor:pointer;font-size:12px;line-height:1;padding:0">▼</button>':'<span style="height:16px"></span>')+
+      '</div><div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div><button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
   } else if(!curr){
     html='<div style="text-align:center;padding:32px;color:var(--text4);font-size:13px">Fila vazia<br><span style="font-size:11px;opacity:.6">Clique em "+ Fila" em qualquer música</span></div>';
   }
   body.innerHTML=html;
 }
-let _qDragIdx=null;
-function qDragStart(ev,i){_qDragIdx=i;ev.dataTransfer.effectAllowed="move";}
-function qDragOver(ev){ev.preventDefault();ev.currentTarget.style.background="rgba(249,115,22,0.1)";}
-function qDragLeave(ev){ev.currentTarget.style.background="";}
-function qDrop(ev,toIdx){
-  ev.preventDefault();
-  ev.currentTarget.style.background="";
-  if(_qDragIdx===null||_qDragIdx===toIdx)return;
-  const item=manualQueue.splice(_qDragIdx,1)[0];
+function qMove(i,dir){
+  const toIdx=i+dir;
+  if(toIdx<0||toIdx>=manualQueue.length)return;
+  const item=manualQueue.splice(i,1)[0];
   manualQueue.splice(toIdx,0,item);
-  _qDragIdx=null;
   renderQueue();
 }
 let spMuted=false,spLastVol=100;
