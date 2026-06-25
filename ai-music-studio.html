@@ -3461,11 +3461,24 @@ function renderQueue(){
   }
   if(manualQueue.length){
     html+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text4);letter-spacing:1px">PRÓXIMAS ('+manualQueue.length+')</div>';
-    html+=manualQueue.map((e,i)=>'<div class="queue-item"><div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div><button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
+    html+=manualQueue.map((e,i)=>'<div class="queue-item" draggable="true" data-idx="'+i+'" ondragstart="qDragStart(event,'+i+')" ondragover="qDragOver(event)" ondrop="qDrop(event,'+i+')" ondragleave="qDragLeave(event)" style="cursor:grab"><span style="color:var(--text4);font-size:16px;padding:0 6px 0 0;cursor:grab;flex-shrink:0">⠿</span><div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div><button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
   } else if(!curr){
     html='<div style="text-align:center;padding:32px;color:var(--text4);font-size:13px">Fila vazia<br><span style="font-size:11px;opacity:.6">Clique em "+ Fila" em qualquer música</span></div>';
   }
   body.innerHTML=html;
+}
+let _qDragIdx=null;
+function qDragStart(ev,i){_qDragIdx=i;ev.dataTransfer.effectAllowed="move";}
+function qDragOver(ev){ev.preventDefault();ev.currentTarget.style.background="rgba(249,115,22,0.1)";}
+function qDragLeave(ev){ev.currentTarget.style.background="";}
+function qDrop(ev,toIdx){
+  ev.preventDefault();
+  ev.currentTarget.style.background="";
+  if(_qDragIdx===null||_qDragIdx===toIdx)return;
+  const item=manualQueue.splice(_qDragIdx,1)[0];
+  manualQueue.splice(toIdx,0,item);
+  _qDragIdx=null;
+  renderQueue();
 }
 let spMuted=false,spLastVol=100;
 function spVolChange(val){
