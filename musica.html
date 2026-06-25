@@ -367,6 +367,191 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 #backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
 
 
+/* ── OVERLAY PEDIDO ── */
+#musicaPedidoOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8500;
+  background: rgba(5,5,10,.96);
+  backdrop-filter: blur(20px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0;
+  overflow-y: auto;
+}
+#musicaPedidoOverlay.open { display: flex; }
+
+.musica-pedido-box {
+  background: #12101a;
+  width: 100%;
+  min-height: 100%;
+  padding: 36px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #e84400, #c40060) 1;
+}
+.musica-pedido-close {
+  position: absolute; top: 16px; right: 20px;
+  background: rgba(255,255,255,.08); border: none;
+  color: rgba(255,255,255,.5); font-size: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.musica-pedido-close:hover { background: rgba(255,255,255,.15); color: #fff; }
+.musica-pedido-eyebrow {
+  font-size: 10px; letter-spacing: 3px;
+  color: #e84400; font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: 8px;
+}
+.musica-pedido-eyebrow::after { content: ''; flex: 1; height: 1px; background: #e84400; opacity: .3; }
+.musica-pedido-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 7vw, 52px);
+  line-height: .95; color: #fff; letter-spacing: 2px;
+}
+.musica-pedido-title span {
+  background: linear-gradient(90deg, #e84400, #c40060);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-pedido-label {
+  font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,.4);
+  font-weight: 600; margin-bottom: 6px; text-transform: uppercase;
+}
+.musica-pedido-input {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 16px; color: #fff; outline: none;
+  transition: border-color .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.musica-pedido-input:focus { border-color: #e84400; }
+.musica-pedido-input::placeholder { color: rgba(255,255,255,.25); }
+.musica-pedido-textarea {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 15px; color: #fff; outline: none;
+  transition: border-color .15s; resize: vertical;
+  min-height: 100px; font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+}
+.musica-pedido-textarea:focus { border-color: #e84400; }
+.musica-pedido-textarea::placeholder { color: rgba(255,255,255,.25); }
+
+/* ── CARDS DE PREÇO ── */
+.musica-precos {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 14px; margin-bottom: 32px;
+}
+.musica-preco-card {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; padding: 24px 18px; text-align: center;
+  transition: all .2s; position: relative; overflow: hidden; cursor: pointer;
+}
+.musica-preco-card:hover {
+  background: rgba(255,255,255,.09); border-color: rgba(232,68,0,.5); transform: translateY(-4px);
+}
+.musica-preco-card.destaque {
+  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.45);
+}
+.musica-preco-card.destaque::before {
+  content: 'MAIS PEDIDO';
+  position: absolute; top: 11px; right: -24px;
+  background: var(--musica-grad); color: #fff;
+  font-size: 8px; letter-spacing: 1px; padding: 4px 32px;
+  transform: rotate(45deg); font-weight: 700;
+}
+.musica-preco-icon { font-size: 28px; margin-bottom: 8px; }
+.musica-preco-nome {
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px;
+  letter-spacing: 1px; color: rgba(255,255,255,.65); margin-bottom: 8px;
+}
+.musica-preco-val {
+  font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+  line-height: 1; letter-spacing: 1px;
+  background: var(--musica-grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-preco-val sup { font-size: 16px; vertical-align: super; font-family: 'DM Sans', sans-serif; }
+.musica-preco-val span { font-size: 18px; font-family: 'DM Sans', sans-serif; }
+.musica-preco-desc { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 8px; line-height: 1.4; }
+.musica-preco-whats {
+  display: block; margin-top: 12px; padding: 9px;
+  background: var(--musica-grad); color: #fff; border: none;
+  border-radius: 10px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: opacity .15s; width: 100%;
+}
+.musica-preco-whats:hover { opacity: .85; }
+
+/* ── BOX PEDIDO ── */
+.musica-pedido-box {
+  background: #12101a;
+  width: 100%;
+  min-height: 100%;
+  padding: 36px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #e84400, #c40060) 1;
+}
+.musica-pedido-close {
+  position: absolute; top: 16px; right: 20px;
+  background: rgba(255,255,255,.08); border: none;
+  color: rgba(255,255,255,.5); font-size: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.musica-pedido-close:hover { background: rgba(255,255,255,.15); color: #fff; }
+.musica-pedido-eyebrow {
+  font-size: 10px; letter-spacing: 3px;
+  color: #e84400; font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: 8px;
+}
+.musica-pedido-eyebrow::after { content: ''; flex: 1; height: 1px; background: #e84400; opacity: .3; }
+.musica-pedido-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 7vw, 52px);
+  line-height: .95; color: #fff; letter-spacing: 2px;
+}
+.musica-pedido-title span {
+  background: linear-gradient(90deg, #e84400, #c40060);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-pedido-label {
+  font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,.4);
+  font-weight: 600; margin-bottom: 6px; text-transform: uppercase;
+}
+.musica-pedido-input {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 16px; color: #fff; outline: none;
+  transition: border-color .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.musica-pedido-input:focus { border-color: #e84400; }
+.musica-pedido-input::placeholder { color: rgba(255,255,255,.25); }
+.musica-pedido-textarea {
+  width: 100%; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 15px; color: #fff; outline: none;
+  transition: border-color .15s; resize: vertical;
+  min-height: 100px; font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+}
+.musica-pedido-textarea:focus { border-color: #e84400; }
+.musica-pedido-textarea::placeholder { color: rgba(255,255,255,.25); }
+
 </style>
 </head>
 <body>
@@ -454,7 +639,7 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 
 
 <!-- TELA PEDIDO DE MÚSICA -->
-<div id="musicaPedidoOverlay">
+<div id="musicaPedidoOverlay" style="display:none;">
   <div class="musica-pedido-box">
     <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
 
@@ -856,9 +1041,6 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 </div>
 </body></html>
 
-<!-- Firebase + JS -->
-<script type="module">
-</style>
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
@@ -876,34 +1058,17 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  // Expõe para o código global
-  window._fbDb      = db;
-  window._fbDoc     = doc;
-  window._fbGetDoc  = getDoc;
-  window._fbSetDoc  = setDoc;
-  window._fbReady   = true;
-  window.dispatchEvent(new Event('firebase-ready'));
-
-  // Chama initApp daqui — garante que Firebase já está pronto
-  // (módulos ES6 sempre executam após scripts normais)
-  if (typeof initApp === 'function') {
-    initApp();
-  } else {
-
-  window._fbApp = initializeApp(firebaseConfig);
-  window._fbDb  = getFirestore(window._fbApp);
-  window._fbGetDoc = getDoc;
+  window._fbDb     = db;
   window._fbDoc    = doc;
+  window._fbGetDoc = getDoc;
   window._fbSetDoc = setDoc;
 
   try {
-    const snap = await getDoc(doc(window._fbDb, 'vitrine', 'data'));
+    const snap = await getDoc(doc(db, 'vitrine', 'data'));
     if (snap.exists()) {
       const data = snap.data();
       if (data.musicaDemos && data.musicaDemos.length) {
-        musicaDemos = data.musicaDemos;
-        localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
-        renderMusicaDemos();
+        window._musicaDemosFromFb = data.musicaDemos;
       }
       if (data.pricing) {
         localStorage.setItem('iafotostudio_pricing', JSON.stringify(data.pricing));
@@ -912,9 +1077,19 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   } catch(e) { console.warn('Firebase load error:', e); }
 
   window._fbReady = true;
+  window.dispatchEvent(new CustomEvent('firebase-ready'));
 </script>
 
 <script>
+// Carrega dados do Firebase quando estiver pronto
+window.addEventListener('firebase-ready', () => {
+  if (window._musicaDemosFromFb && window._musicaDemosFromFb.length) {
+    musicaDemos = window._musicaDemosFromFb;
+    localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
+    renderMusicaDemos();
+  }
+});
+
 const CLOUDINARY_CLOUD  = 'dftsx4wv0';
 const CLOUDINARY_PRESET = 'ia_foto_studio';
 const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
@@ -1414,8 +1589,6 @@ async function forceSyncAdPairs() {
   }, 100);
   setTimeout(function() { clearInterval(_salaInterval); }, 10000);
 })();
-</script>
-
 </script>
 
 </body>
