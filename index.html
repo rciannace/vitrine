@@ -10261,15 +10261,116 @@ function toggleMusicaDemo(i) {
 }
 
 function adicionarMusicaDemo() {
-  const nome = prompt('Nome da música (ex: Ensaio Gestante - Romântico):');
-  if (!nome) return;
-  const estilo = prompt('Estilo musical (ex: 💕 Romântico):') || '🎵 Diversos';
-  const url = prompt('URL da música - cole o link direto de áudio:');
-  if (!url) return;
-  musicaDemos.push({ nome, estilo, url });
-  saveMusicaDemos();
-  renderMusicaDemos();
-  toast('🎵 Demo adicionada!');
+  // Abre o modal de upload de áudio
+  const overlay = document.getElementById('musicaUploadOverlay');
+  if (overlay) {
+    // Reset estado
+    document.getElementById('musicaUploadFile').value = '';
+    document.getElementById('musicaUploadNome').textContent = '';
+    document.getElementById('musicaUploadProgress').style.display = 'none';
+    document.getElementById('musicaUploadProgressBar').style.width = '0%';
+    document.getElementById('musicaUploadBtn').disabled = true;
+    document.getElementById('musicaUploadDropzone').querySelector('.musica-drop-hint').textContent = 'Clique ou arraste um arquivo de áudio';
+    overlay.classList.add('open');
+  }
+}
+
+function fecharMusicaUpload() {
+  const overlay = document.getElementById('musicaUploadOverlay');
+  if (overlay) { overlay.classList.remove('open'); overlay.style.display = ''; }
+  if (currentAudioUpload) { currentAudioUpload.abort && currentAudioUpload.abort(); currentAudioUpload = null; }
+}
+
+let currentAudioUpload = null;
+
+function musicaUploadFileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const nomeEl = document.getElementById('musicaUploadNome');
+  // Nome automático = nome do arquivo sem extensão
+  const nomeAuto = file.name.replace(/\.[^/.]+$/, '');
+  nomeEl.textContent = nomeAuto;
+  nomeEl.dataset.nome = nomeAuto;
+  document.getElementById('musicaUploadDropzone').querySelector('.musica-drop-hint').textContent = '🎵 ' + file.name;
+  document.getElementById('musicaUploadBtn').disabled = false;
+}
+
+function musicaUploadDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById('musicaUploadFile');
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+  musicaUploadFileSelected(input);
+  document.getElementById('musicaUploadDropzone').classList.remove('drag-over');
+}
+
+async function confirmarMusicaUpload() {
+  const input = document.getElementById('musicaUploadFile');
+  const file = input.files[0];
+  if (!file) return;
+
+  const nomeEl = document.getElementById('musicaUploadNome');
+  const nome = nomeEl.dataset.nome || file.name.replace(/\.[^/.]+$/, '');
+
+  const btn = document.getElementById('musicaUploadBtn');
+  const progress = document.getElementById('musicaUploadProgress');
+  const progressBar = document.getElementById('musicaUploadProgressBar');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  progress.style.display = 'block';
+
+  // Upload para Cloudinary com resource_type=video (aceita áudio)
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('resource_type', 'video');
+
+  const xhr = new XMLHttpRequest();
+  currentAudioUpload = xhr;
+
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
+    }
+  };
+
+  xhr.onload = () => {
+    currentAudioUpload = null;
+    try {
+      const res = JSON.parse(xhr.responseText);
+      if (res.secure_url) {
+        musicaDemos.push({ nome, estilo: '🎵', url: res.secure_url });
+        saveMusicaDemos();
+        renderMusicaDemos();
+        fecharMusicaUpload();
+        toast('🎵 "' + nome + '" adicionada!');
+      } else {
+        toast('⚠️ Erro no upload: ' + (res.error?.message || 'tente novamente'));
+        btn.disabled = false;
+        btn.textContent = 'Enviar música';
+        progress.style.display = 'none';
+      }
+    } catch(e) {
+      toast('⚠️ Erro ao processar resposta do upload.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar música';
+    }
+  };
+
+  xhr.onerror = () => {
+    toast('⚠️ Falha na conexão. Tente novamente.');
+    btn.disabled = false;
+    btn.textContent = 'Enviar música';
+    progress.style.display = 'none';
+    currentAudioUpload = null;
+  };
+
+  xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`);
+  xhr.send(formData);
 }
 
 function deleteMusicaDemo(i) {
@@ -10903,6 +11004,95 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
     <div class="upload-modal-footer">
       <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
       <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+     MODAL UPLOAD DE MÚSICA
+     ══════════════════════════════════════════════════════ -->
+<style>
+#musicaUploadOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9200;
+  background: rgba(5,5,10,.93); backdrop-filter: blur(18px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#musicaUploadOverlay.open { display: flex; }
+.musica-upload-box {
+  background: #1a1a1f; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px; width: min(420px, 96vw);
+  padding: 28px 24px 22px; display: flex; flex-direction: column;
+  gap: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.5);
+  animation: mpop .22s cubic-bezier(.34,1.46,.64,1) both;
+}
+.musica-upload-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  letter-spacing: 2px; color: #fff;
+}
+.musica-upload-dropzone {
+  border: 2px dashed rgba(232,68,0,.35); border-radius: 12px;
+  padding: 28px 16px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+  background: rgba(232,68,0,.04);
+}
+.musica-upload-dropzone.drag-over {
+  border-color: #e84400; background: rgba(232,68,0,.1);
+}
+.musica-upload-dropzone:hover { border-color: rgba(232,68,0,.6); }
+.musica-drop-icon { font-size: 36px; margin-bottom: 8px; }
+.musica-drop-hint { font-size: 13px; color: rgba(255,255,255,.5); }
+.musica-upload-nome {
+  font-size: 13px; color: #e84400; font-weight: 600;
+  min-height: 18px; text-align: center; word-break: break-all;
+}
+#musicaUploadProgress {
+  height: 4px; background: rgba(255,255,255,.1); border-radius: 4px;
+  overflow: hidden; display: none;
+}
+#musicaUploadProgressBar {
+  height: 100%; background: #e84400; border-radius: 4px;
+  transition: width .2s;
+}
+.musica-upload-footer { display: flex; gap: 10px; }
+.musica-upload-footer button {
+  flex: 1; padding: 12px; border-radius: 10px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  font-weight: 700; cursor: pointer; transition: all .15s;
+}
+#musicaUploadBtn {
+  background: #e84400; color: #fff;
+}
+#musicaUploadBtn:disabled { background: rgba(255,255,255,.08); color: rgba(255,255,255,.25); cursor: not-allowed; }
+#musicaUploadBtn:not(:disabled):hover { background: #c93a00; }
+.musica-upload-cancel { background: rgba(255,255,255,.06); color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.1) !important; }
+.musica-upload-cancel:hover { background: rgba(255,255,255,.1) !important; color: #fff !important; }
+</style>
+
+<div id="musicaUploadOverlay" onclick="if(event.target===this)fecharMusicaUpload()">
+  <div class="musica-upload-box">
+    <div class="musica-upload-title">🎵 Adicionar Música</div>
+
+    <div class="musica-upload-dropzone" id="musicaUploadDropzone"
+      onclick="document.getElementById('musicaUploadFile').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="musicaUploadDrop(event)">
+      <div class="musica-drop-icon">🎧</div>
+      <div class="musica-drop-hint">Clique ou arraste um arquivo de áudio</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;">MP3, WAV, M4A, OGG</div>
+    </div>
+
+    <input type="file" id="musicaUploadFile" accept="audio/*"
+      style="display:none" onchange="musicaUploadFileSelected(this)">
+
+    <div class="musica-upload-nome" id="musicaUploadNome"></div>
+
+    <div id="musicaUploadProgress">
+      <div id="musicaUploadProgressBar"></div>
+    </div>
+
+    <div class="musica-upload-footer">
+      <button class="musica-upload-cancel" onclick="fecharMusicaUpload()">Cancelar</button>
+      <button id="musicaUploadBtn" onclick="confirmarMusicaUpload()" disabled>Enviar música</button>
     </div>
   </div>
 </div>
