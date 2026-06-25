@@ -9604,6 +9604,30 @@ if(typeof _oia==='function'){
 </div>
 
 <!-- ══════════════════════════════════════════════════════
+     SALA DE SELEÇÃO — BARRA FLUTUANTE (salaModeBar)
+     ══════════════════════════════════════════════════════ -->
+<div id="salaModeBar">
+  <span class="sala-bar-brand">✦ SALA</span>
+  <span class="sala-bar-cliente">Olá, <strong id="salaBarCliente">—</strong></span>
+  <div class="sala-bar-pill" id="salaBarPill">
+    <div class="sala-bar-nums"><span id="salaCountSel2">0</span>/<span id="salaCountMax2">10</span></div>
+    <div class="sala-bar-label">fotos</div>
+  </div>
+  <button class="sala-bar-send" id="salaBarSendBtn" onclick="abrirSalaConfirm()" disabled>✓ Enviar</button>
+  <button class="sala-bar-exit" onclick="fecharSala()" title="Sair da Sala">✕</button>
+</div>
+
+<!-- Banner dica -->
+<div id="salaModeHint">
+  <strong>Toque nas fotos</strong> para selecionar. Escolha suas favoritas e clique em "Enviar seleção".
+</div>
+
+<!-- Barra de progresso fina no topo -->
+<div id="salaModeProgress">
+  <div id="salaModeProgressFill" style="width:0%"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
      SALA DE SELEÇÃO — VIEW PRINCIPAL
      ══════════════════════════════════════════════════════ -->
 <div id="viewSala">
@@ -9688,7 +9712,9 @@ function openSalaEntrada(qtdPresel) {
 }
 
 function fecharSalaWelcome() {
-  document.getElementById('salaWelcomeOverlay').classList.remove('open');
+  const w = document.getElementById('salaWelcomeOverlay');
+  w.classList.remove('open');
+  w.style.display = 'none';
   abrirSalaEntradaDireta();
 }
 
@@ -9793,7 +9819,9 @@ function iniciarSala() {
   salaClienteNome = nome;
   salaSelecao = [];
   salaCatFilter = null;
-  document.getElementById('salaEntradaOverlay').classList.remove('open');
+  const entradaEl = document.getElementById('salaEntradaOverlay');
+  entradaEl.classList.remove('open');
+  entradaEl.style.display = 'none';
 
   // Ativa modo sala no body — CSS cuida do resto
   document.body.classList.add('sala-mode');
@@ -9806,9 +9834,18 @@ function iniciarSala() {
   document.getElementById('salaInstrMax').textContent = salaMaxFotos;
   document.getElementById('salaCountSel').textContent = '0';
 
-  // Vai para home (galerias) e renderiza normalmente
-  currentCat = null;
-  render();
+  // Ativa a view da Sala de Seleção
+  const viewSala = document.getElementById('viewSala');
+  if (viewSala) viewSala.classList.add('active');
+
+  // Atualiza nome do cliente na topbar da sala
+  const clienteLabel = document.getElementById('salaClienteLabel');
+  if (clienteLabel) clienteLabel.textContent = salaClienteNome;
+
+  // Renderiza categorias e fotos da sala
+  salaRenderCats();
+  salaRender();
+
   window.scrollTo(0,0);
   salaUpdateCounter();
 }
@@ -9820,6 +9857,8 @@ function fecharSala() {
   }
   document.body.classList.remove('sala-mode');
   document.getElementById('salaModeBar').style.display = 'none';
+  const viewSala = document.getElementById('viewSala');
+  if (viewSala) viewSala.classList.remove('active');
   salaSelecao = [];
   salaUpdateCounter();
   render();
@@ -9967,7 +10006,7 @@ function salaUpdateCounter() {
   const max = salaMaxFotos;
 
   // Barra flutuante (sala-mode no site normal)
-  const selEls = document.querySelectorAll('#salaCountSel');
+  const selEls = document.querySelectorAll('#salaCountSel, #salaCountSel2');
   const maxEls = document.querySelectorAll('#salaCountMax, #salaCountMax2');
   selEls.forEach(el => el.textContent = n);
   maxEls.forEach(el => el.textContent = max);
