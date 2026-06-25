@@ -9834,6 +9834,10 @@ function iniciarSala() {
   document.getElementById('salaInstrMax').textContent = salaMaxFotos;
   document.getElementById('salaCountSel').textContent = '0';
 
+  // Esconde o conteúdo principal (funciona no desktop e no mobile)
+  const mainEl = document.querySelector('.main');
+  if (mainEl) mainEl.style.display = 'none';
+
   // Ativa a view da Sala de Seleção
   const viewSala = document.getElementById('viewSala');
   if (viewSala) viewSala.classList.add('active');
@@ -9859,6 +9863,8 @@ function fecharSala() {
   document.getElementById('salaModeBar').style.display = 'none';
   const viewSala = document.getElementById('viewSala');
   if (viewSala) viewSala.classList.remove('active');
+  const mainEl = document.querySelector('.main');
+  if (mainEl) mainEl.style.display = '';
   salaSelecao = [];
   salaUpdateCounter();
   render();
