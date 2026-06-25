@@ -3458,7 +3458,9 @@ function removeFromQueue(id){
 function clearQueue(){manualQueue=[];renderQueue();showToast("Fila limpa","ok");}
 function renderQueue(){
   const body=document.getElementById("queue-body");if(!body)return;
-  const curr=spQueue[spIndex];
+  // Usa o título do player diretamente para evitar índice desatualizado
+  const currTitle=document.getElementById("sp-title")?.textContent||"";
+  const curr=spQueue.find(e=>e.title===currTitle)||spQueue[spIndex];
   let html="";
   if(curr){
     html+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:#f97316;letter-spacing:1px">TOCANDO AGORA</div><div class="queue-item now-playing"><div class="queue-item-info"><div class="queue-item-title">'+esc(curr.title)+'</div><div class="queue-item-genre">'+esc(curr.genre||"")+'</div></div></div>';
