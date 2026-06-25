@@ -10210,14 +10210,14 @@ function renderMusicaDemos() {
     const bars = heights.map(h =>
       '<div class="musica-demo-wave-bar" style="height:' + h + 'px;"></div>'
     ).join('');
-    return '<div class="musica-demo-card" id="mdemo-' + i + '" onclick="musicaDemoCardClick(event,' + i + ')">' +
+    return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
       '<div class="musica-demo-top">' +
         '<div class="musica-demo-play">▶</div>' +
         '<div class="musica-demo-info">' +
           '<div class="musica-demo-nome">' + d.nome + '</div>' +
           '<div class="musica-demo-estilo">' + d.estilo + '</div>' +
         '</div>' +
-        (isAdmin ? '<button class="musica-del-btn" data-idx="' + i + '" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;">✕</button>' : '') +
+        (isAdmin ? '<button onclick="event.stopImmediatePropagation();deleteMusicaDemo(' + i + ')" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;z-index:10;position:relative;">✕</button>' : '') +
       '</div>' +
       '<div class="musica-demo-wave">' + bars + '</div>' +
     '</div>';
@@ -10228,6 +10228,16 @@ function renderMusicaDemos() {
     : '';
 
   grid.innerHTML = demosHtml + addBtn;
+
+  // Adiciona listeners de play/pause em cada card (exceto no botão X)
+  musicaDemos.forEach((d, i) => {
+    const card = document.getElementById('mdemo-' + i);
+    if (!card) return;
+    card.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON') return; // ignora clique no X
+      toggleMusicaDemo(i);
+    });
+  });
 }
 
 function musicaDemoCardClick(event, i) {
