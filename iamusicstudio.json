@@ -1,5 +1,64 @@
 [
   {
+    "id": 1782388274092,
+    "title": "Melhor Atriz",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "25/06/2026",
+    "song": {
+      "title": "Melhor Atriz",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Intro": "(Solo de guitarra e violão marcante)",
+        "Verse 1": "Eu voltei do trabalho, pois esqueci o celular\nDobrei a esquina, resolvi voltar\nA porta encostada, um clima de horror\nFoi ali que eu vi o fim do nosso amor",
+        "Verse 2": "O celular brilhou, eu li sem nem querer\nA mensagem que dizia: \"Eu nasci pra você\"\nNão precisei perguntar, nem pedir explicação\nVocê me deu o golpe e eu perdi o meu chão",
+        "Chorus": "Pode ir embora, não quero explicação\nJá vi de perto a tua traição\nA máscara caiu, a verdade apareceu\nO nosso amor, você que destruiu e esqueceu",
+        "Solo": "(Solo de guitarra com muito feeling)",
+        "Verse 3": "Não tenta justificar, não tem como negar\nO brilho do seu olhar acabou de se apagar\nO erro foi tamanho que não dá pra perdoar\nQuem busca outra cama, não merece o meu lar",
+        "Verse 4": "Pode catar suas coisas, faz o seu caminho\nQuem traiu a confiança, vai seguir sozinho\nA casa tá vazia, mas a minha consciência\nTá limpa da mentira e dessa sua indecência",
+        "Outro": "(Solo final de guitarra)"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro": "(Solo de guitarra e violão marcante)",
+      "Verse 1": "Eu voltei do trabalho, pois esqueci o celular\nDobrei a esquina, resolvi voltar\nA porta encostada, um clima de horror\nFoi ali que eu vi o fim do nosso amor",
+      "Verse 2": "O celular brilhou, eu li sem nem querer\nA mensagem que dizia: \"Eu nasci pra você\"\nNão precisei perguntar, nem pedir explicação\nVocê me deu o golpe e eu perdi o meu chão",
+      "Chorus": "Pode ir embora, não quero explicação\nJá vi de perto a tua traição\nA máscara caiu, a verdade apareceu\nO nosso amor, você que destruiu e esqueceu",
+      "Solo": "(Solo de guitarra com muito feeling)",
+      "Verse 3": "Não tenta justificar, não tem como negar\nO brilho do seu olhar acabou de se apagar\nO erro foi tamanho que não dá pra perdoar\nQuem busca outra cama, não merece o meu lar",
+      "Verse 4": "Pode catar suas coisas, faz o seu caminho\nQuem traiu a confiança, vai seguir sozinho\nA casa tá vazia, mas a minha consciência\nTá limpa da mentira e dessa sua indecência",
+      "Outro": "(Solo final de guitarra)"
+    },
+    "struct": [
+      "Intro",
+      "Verse 1",
+      "Verse 2",
+      "Chorus",
+      "Chorus",
+      "Solo",
+      "Verse 3",
+      "Verse 4",
+      "Chorus",
+      "Chorus",
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782388272/bhmfjn1f0luvathn3tic.mp3"
+  },
+  {
     "id": 1782321557964,
     "title": "Nosso Lugar",
     "genre": "Rock",
@@ -145,7 +204,7 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 5
+    "plays": 4
   },
   {
     "id": 1782057466922,
@@ -181,7 +240,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782057518/wyyghnrxwuthdlqlejaj.mp3",
-    "plays": 2
+    "plays": 1
   },
   {
     "id": 1781827468701,
@@ -240,7 +299,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 7
+    "plays": 4
   },
   {
     "id": 1781825629388,
@@ -313,7 +372,7 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3",
-    "plays": 3
+    "plays": 1
   },
   {
     "id": 1781739144499,
@@ -349,7 +408,7 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3",
-    "plays": 5
+    "plays": 4
   },
   {
     "id": 1781566763204,
@@ -403,7 +462,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
-    "plays": 10
+    "plays": 9
   },
   {
     "id": 1781535068368,
@@ -465,7 +524,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
-    "plays": 4
+    "plays": 3
   },
   {
     "id": 1781388424432,
@@ -511,7 +570,7 @@
       "Verse"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
-    "plays": 5
+    "plays": 4
   },
   {
     "id": 1781316597462,
@@ -614,8 +673,7 @@
       "Bridge",
       "Final Chorus"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3",
-    "plays": 2
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3"
   },
   {
     "genre": "Rock",
@@ -661,7 +719,7 @@
     "duration": "normal",
     "title": "O Retorno do Meu Sol",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
-    "plays": 3
+    "plays": 2
   },
   {
     "duration": "normal",
@@ -697,7 +755,7 @@
     "sections": {
       "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
     },
-    "plays": 5
+    "plays": 3
   },
   {
     "duration": "normal",
@@ -807,7 +865,7 @@
     "date": "09/06/2026",
     "mood": "Romantico",
     "genre": "Rock",
-    "plays": 2
+    "plays": 1
   },
   {
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
@@ -933,7 +991,7 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 7
+    "plays": 6
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
@@ -997,7 +1055,7 @@
     ],
     "date": "08/06/2026",
     "id": 1780966074065,
-    "plays": 3
+    "plays": 1
   },
   {
     "id": 1780956051780,
@@ -1048,8 +1106,7 @@
     },
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
     "title": "Perfume de Jasmim",
-    "duration": "normal",
-    "plays": 1
+    "duration": "normal"
   },
   {
     "struct": [
@@ -1085,7 +1142,7 @@
     "title": "Fica mais um pouco",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
     "duration": "normal",
-    "plays": 3
+    "plays": 2
   },
   {
     "date": "07/06/2026",
@@ -1148,6 +1205,6 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780947220/mz4b6ufjasol3atcaqsn.mp3",
     "title": "O Silêncio da Varanda",
     "duration": "normal",
-    "plays": 3
+    "plays": 1
   }
 ]
