@@ -3442,7 +3442,13 @@ let _queueOpen=false;
 function toggleQueue(){
   _queueOpen=!_queueOpen;
   document.getElementById("queue-panel").classList.toggle("open",_queueOpen);
-  if(_queueOpen)renderQueue();
+  if(_queueOpen){
+    // Garante que _spCurrentId está atualizado antes de renderizar
+    if(!window._spCurrentId&&spIndex>=0&&spQueue[spIndex]){
+      window._spCurrentId=spQueue[spIndex].id;
+    }
+    renderQueue();
+  }
 }
 function addToQueue(galIdx){
   const e=spQueue[galIdx];if(!e)return;
