@@ -10231,14 +10231,18 @@ function renderMusicaDemos() {
 }
 
 function musicaDemoCardClick(event, i) {
-  // Se clicou no botão de deletar, deleta
-  const btn = event.target.closest('.musica-del-btn');
-  if (btn) {
-    const idx = parseInt(btn.dataset.idx);
-    deleteMusicaDemo(idx);
-    return;
+  // Verifica se clicou no botão X ou em qualquer elemento dentro dele
+  let el = event.target;
+  while (el && el !== event.currentTarget) {
+    if (el.classList && el.classList.contains('musica-del-btn')) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      deleteMusicaDemo(parseInt(el.dataset.idx));
+      return;
+    }
+    el = el.parentElement;
   }
-  // Caso contrário, toca/pausa
+  // Clicou fora do X — toca/pausa
   toggleMusicaDemo(i);
 }
 
@@ -10386,12 +10390,16 @@ async function confirmarMusicaUpload() {
 }
 
 function deleteMusicaDemo(i) {
-  if (!confirm('Remover esta música demo?')) return;
-  if (currentCard === i && currentAudio) { currentAudio.pause(); currentAudio = null; currentCard = null; }
+  // Para o áudio se estiver tocando
+  if (currentCard === i && currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    currentCard = null;
+  }
   musicaDemos.splice(i, 1);
   saveMusicaDemos();
   renderMusicaDemos();
-  toast('🗑 Demo removida.');
+  toast('🗑 Música removida.');
 }
 
 // Inicializar demos ao carregar
