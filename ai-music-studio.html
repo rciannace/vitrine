@@ -410,8 +410,12 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   .sp-right{display:none!important}
   .sp-volume{display:none!important}
   .sp-info{display:none}
-  #sp-queue-ctrl{display:none}
+  #sp-queue-ctrl{display:none!important}
   #sp-queue-mobile{display:block!important}
+}
+@media(min-width:701px){
+  #sp-queue-mobile{display:none!important}
+  #sp-queue-ctrl{display:inline-flex!important}
 }
 
 /* coluna esq: capa + info */
@@ -953,7 +957,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
           <button class="sp-btn play" id="sp-play-btn" onclick="spToggle()">▶</button>
           <button class="sp-btn" onclick="spNext()" title="Próxima">⏭</button>
           <button class="sp-btn" id="sp-repeat-btn" onclick="spToggleRepeat()" title="Repetir">🔁</button>
-          <button class="sp-btn" id="sp-queue-ctrl" onclick="toggleQueue()" title="Ver fila" style="font-size:13px;letter-spacing:0">☰ Fila</button>
+          <button class="sp-btn" id="sp-queue-ctrl" onclick="toggleQueue()" title="Ver fila" style="font-size:13px;background:rgba(249,115,22,0.15);border:1px solid #f97316;border-radius:8px;color:#f97316;padding:5px 10px;font-weight:700">☰ Fila</button>
         </div>
         <div class="sp-progress-row">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0">
@@ -3461,10 +3465,12 @@ function renderQueue(){
   }
   if(manualQueue.length){
     html+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text4);letter-spacing:1px">PRÓXIMAS ('+manualQueue.length+')</div>';
-    html+=manualQueue.map((e,i)=>'<div class="queue-item"><div style="display:flex;flex-direction:column;gap:2px;margin-right:6px;flex-shrink:0">'+
-      (i>0?'<button onclick="qMove('+i+',-1)" style="background:none;border:none;color:var(--text4);cursor:pointer;font-size:12px;line-height:1;padding:0">▲</button>':'<span style="height:16px"></span>')+
-      (i<manualQueue.length-1?'<button onclick="qMove('+i+',1)" style="background:none;border:none;color:var(--text4);cursor:pointer;font-size:12px;line-height:1;padding:0">▼</button>':'<span style="height:16px"></span>')+
-      '</div><div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div><button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
+    const qBtnStyle="background:rgba(255,255,255,0.08);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:16px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0";
+    html+=manualQueue.map((e,i)=>'<div class="queue-item" style="gap:8px">'+
+      (i>0?'<button onclick="qMove('+i+',-1)" style="'+qBtnStyle+'">▲</button>':'<div style="width:36px;flex-shrink:0"></div>')+
+      '<div class="queue-item-info"><div class="queue-item-title">'+esc(e.title)+'</div><div class="queue-item-genre">'+esc(e.genre||"")+'</div></div>'+
+      (i<manualQueue.length-1?'<button onclick="qMove('+i+',1)" style="'+qBtnStyle+'">▼</button>':'<div style="width:36px;flex-shrink:0"></div>')+
+      '<button class="queue-item-remove" onclick="removeFromQueue('+e.id+')">✕</button></div>').join("");
   } else if(!curr){
     html='<div style="text-align:center;padding:32px;color:var(--text4);font-size:13px">Fila vazia<br><span style="font-size:11px;opacity:.6">Clique em "+ Fila" em qualquer música</span></div>';
   }
