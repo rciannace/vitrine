@@ -410,6 +410,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   .sp-right{display:none!important}
   .sp-volume{display:none!important}
   .sp-info{display:none}
+  #sp-queue-ctrl{display:none}
+  #sp-queue-mobile{display:block!important}
 }
 
 /* coluna esq: capa + info */
@@ -933,7 +935,10 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
       <!-- ESQUERDA: capa + info -->
       <div class="sp-left">
-        <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
+        <div style="position:relative;display:inline-block">
+          <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
+          <button onclick="toggleQueue()" title="Ver fila" style="display:none;position:absolute;top:-6px;right:-6px;background:#f97316;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;color:#fff;cursor:pointer;line-height:18px;text-align:center;padding:0" id="sp-queue-mobile">☰</button>
+        </div>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
           <div class="sp-sub" id="sp-sub">—</div>
@@ -948,6 +953,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
           <button class="sp-btn play" id="sp-play-btn" onclick="spToggle()">▶</button>
           <button class="sp-btn" onclick="spNext()" title="Próxima">⏭</button>
           <button class="sp-btn" id="sp-repeat-btn" onclick="spToggleRepeat()" title="Repetir">🔁</button>
+          <button class="sp-btn" id="sp-queue-ctrl" onclick="toggleQueue()" title="Ver fila" style="font-size:15px">☰</button>
         </div>
         <div class="sp-progress-row">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0">
@@ -964,9 +970,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         </div>
       </div>
 
-      <!-- DIREITA: fila + volume -->
-      <div class="sp-right" style="display:flex;align-items:center;gap:8px">
-        <button onclick="toggleQueue()" title="Ver fila" style="background:rgba(249,115,22,0.15);border:1px solid #f97316;border-radius:8px;color:#f97316;cursor:pointer;font-size:14px;padding:5px 10px;font-weight:700" id="queue-toggle-btn">☰ Fila</button>
+      <!-- DIREITA: volume -->
+      <div class="sp-right">
         <div class="sp-volume">
           <span class="sp-vol-icon" onclick="spVolMute()" id="sp-vol-icon">🔊</span>
           <input type="range" class="sp-vol-slider" id="sp-vol-slider" min="0" max="100" value="100" oninput="spVolChange(this.value)" style="--vol:100%">
