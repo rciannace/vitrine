@@ -3458,9 +3458,7 @@ function removeFromQueue(id){
 function clearQueue(){manualQueue=[];renderQueue();showToast("Fila limpa","ok");}
 function renderQueue(){
   const body=document.getElementById("queue-body");if(!body)return;
-  const audio=document.getElementById("sp-audio");
-  const currSrc=audio?.src||"";
-  const curr=spQueue.find(e=>e.audio&&currSrc.includes(e.audio.split("/").pop()))||spQueue[spIndex];
+  const curr=spQueue.find(e=>e.id===window._spCurrentId)||spQueue[spIndex];
   let html="";
   if(curr){
     html+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:#f97316;letter-spacing:1px">TOCANDO AGORA</div><div class="queue-item now-playing"><div class="queue-item-info"><div class="queue-item-title">'+esc(curr.title)+'</div><div class="queue-item-genre">'+esc(curr.genre||"")+'</div></div></div>';
@@ -3585,6 +3583,7 @@ function spPlay(i){
   if(!spQueue[i])return;
   spIndex=i;
   const e=spQueue[i];
+  window._spCurrentId=e.id;
   const audio=document.getElementById("sp-audio");
   audio.src=e.audio;
   audio.play().then(()=>{
