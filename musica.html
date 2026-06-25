@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<!-- v20260625-musica-v1 -->
+<html lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IA Foto Studio — Música Personalizada</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --surface2: #f2f1ee;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1a1f;
+  --muted: #888896;
+  --accent: #00c4ae;
+  --accent2: rgba(0,196,174,0.10);
+  --red: #e03050;
+  --shadow: 0 2px 16px rgba(0,0,0,0.07);
+  --r: 14px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #0d0d12;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── ADMIN BADGE ── */
+#adminBadge {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .15s;
+}
+#adminBadge:hover { background: rgba(255,255,255,.15); }
+body.admin-mode #adminBadge { background: rgba(232,68,0,.25); border-color: #e84400; }
+
+/* Toast */
+#toastEl {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(20,20,22,.95); color: #fff; padding: 10px 20px;
+  border-radius: 10px; font-size: 13px; z-index: 99999; pointer-events: none;
+  backdrop-filter: blur(8px); display: none; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+
+@keyframes mpop { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
+
+/* ══════════════════════════════════════
+   SEÇÃO MÚSICAS PERSONALIZADAS
+══════════════════════════════════════ */
+:root {
+  --musica-grad: linear-gradient(135deg, #e84400, #c40060);
+}
+.musica-section {
+  background: linear-gradient(135deg, #0a0a14 0%, #0e0e1a 40%, #1a0a0a 100%);
+  padding: 64px 32px 72px;
+  position: relative; overflow: hidden;
+}
+.musica-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 50%, rgba(232,68,0,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 30%, rgba(196,0,96,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.musica-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+.musica-eyebrow {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 10px; letter-spacing: 3px; color: #e84400;
+  font-family: 'DM Mono', monospace; margin-bottom: 16px;
+}
+.musica-eyebrow::before,.musica-eyebrow::after {
+  content: ''; width: 32px; height: 1px; background: #e84400; opacity: .5;
+}
+.musica-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 8vw, 76px);
+  line-height: .95; color: #fff;
+  text-align: center; letter-spacing: 2px; margin-bottom: 10px;
+}
+.musica-title span {
+  background: var(--musica-grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-sub {
+  text-align: center; font-size: 15px; color: rgba(255,255,255,.5);
+  max-width: 480px; margin: 0 auto 36px; line-height: 1.6;
+}
+/* Barras animadas */
+.musica-player {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; margin: 0 auto 36px; height: 56px;
+}
+.musica-bar {
+  width: 4px; border-radius: 4px;
+  background: var(--musica-grad);
+  animation: musicaBar 1.2s ease-in-out infinite; transform-origin: bottom;
+}
+.musica-bar:nth-child(1){height:18px;animation-delay:0s}
+.musica-bar:nth-child(2){height:32px;animation-delay:.1s}
+.musica-bar:nth-child(3){height:48px;animation-delay:.2s}
+.musica-bar:nth-child(4){height:38px;animation-delay:.3s}
+.musica-bar:nth-child(5){height:52px;animation-delay:.15s}
+.musica-bar:nth-child(6){height:28px;animation-delay:.25s}
+.musica-bar:nth-child(7){height:44px;animation-delay:.05s}
+.musica-bar:nth-child(8){height:22px;animation-delay:.35s}
+.musica-bar:nth-child(9){height:48px;animation-delay:.2s}
+.musica-bar:nth-child(10){height:36px;animation-delay:.1s}
+.musica-bar:nth-child(11){height:18px;animation-delay:.3s}
+.musica-bar:nth-child(12){height:40px;animation-delay:.0s}
+.musica-bar:nth-child(13){height:52px;animation-delay:.15s}
+.musica-bar:nth-child(14){height:26px;animation-delay:.25s}
+.musica-bar:nth-child(15){height:46px;animation-delay:.05s}
+@keyframes musicaBar {
+  0%,100%{transform:scaleY(.35);opacity:.5} 50%{transform:scaleY(1);opacity:1}
+}
+/* Estilos */
+.musica-estilos-title {
+  text-align: center; font-size: 10px; letter-spacing: 3px;
+  color: rgba(255,255,255,.3); font-family: 'DM Mono', monospace;
+  margin-bottom: 14px; text-transform: uppercase;
+}
+.musica-estilos {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin-bottom: 36px;
+}
+.musica-estilo-btn {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 9px 18px;
+  color: rgba(255,255,255,.7); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 7px;
+}
+.musica-estilo-btn:hover,.musica-estilo-btn.ativo {
+  background: rgba(232,68,0,.2); border-color: #e84400; color: #ff6622; transform: translateY(-2px);
+}
+/* Cards de preço */
+.musica-precos {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 14px; margin-bottom: 32px;
+}
+.musica-preco-card {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; padding: 24px 18px; text-align: center;
+  transition: all .2s; position: relative; overflow: hidden; cursor: pointer;
+}
+.musica-preco-card:hover {
+  background: rgba(255,255,255,.09); border-color: rgba(232,68,0,.5); transform: translateY(-4px);
+}
+.musica-preco-card.destaque {
+  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.45);
+}
+.musica-preco-card.destaque::before {
+  content: 'MAIS PEDIDO';
+  position: absolute; top: 11px; right: -24px;
+  background: var(--musica-grad); color: #fff;
+  font-size: 8px; letter-spacing: 1px; padding: 4px 32px;
+  transform: rotate(45deg); font-weight: 700;
+}
+.musica-preco-icon { font-size: 28px; margin-bottom: 8px; }
+.musica-preco-nome {
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px;
+  letter-spacing: 1px; color: rgba(255,255,255,.65); margin-bottom: 8px;
+}
+.musica-preco-val {
+  font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+  line-height: 1; letter-spacing: 1px;
+  background: var(--musica-grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.musica-preco-val sup { font-size: 16px; vertical-align: super; font-family: 'DM Sans', sans-serif; }
+.musica-preco-val span { font-size: 18px; font-family: 'DM Sans', sans-serif; }
+.musica-preco-desc { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 8px; line-height: 1.4; }
+.musica-preco-whats {
+  display: block; margin-top: 12px; padding: 9px;
+  background: var(--musica-grad); color: #fff; border: none;
+  border-radius: 10px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: opacity .15s; width: 100%;
+}
+.musica-preco-whats:hover { opacity: .85; }
+
+/* Galeria de demos */
+.musica-demos-title {
+  text-align: center; font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 2px; color: #fff;
+  margin-bottom: 6px;
+}
+.musica-demos-sub {
+  text-align: center; font-size: 13px; color: rgba(255,255,255,.4);
+  margin-bottom: 20px;
+}
+.musica-demos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px; margin-bottom: 32px;
+}
+.musica-demo-card {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px; padding: 18px 16px; transition: all .2s; cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.musica-demo-card:hover {
+  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.4); transform: translateY(-3px);
+}
+.musica-demo-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--musica-grad); opacity: 0; transition: opacity .2s;
+}
+.musica-demo-card:hover::before { opacity: .05; }
+.musica-demo-top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.musica-demo-play {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--musica-grad);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; transition: transform .15s;
+}
+.musica-demo-card:hover .musica-demo-play { transform: scale(1.1); }
+.musica-demo-info { flex: 1; min-width: 0; }
+.musica-demo-nome {
+  font-weight: 700; font-size: 14px; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.musica-demo-estilo {
+  font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px;
+}
+/* Mini barras de onda */
+.musica-demo-wave {
+  display: flex; align-items: center; gap: 2px; height: 24px;
+}
+.musica-demo-wave-bar {
+  width: 3px; border-radius: 3px;
+  background: rgba(232,68,0,.4);
+  transition: background .2s;
+}
+.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.8); }
+.musica-demo-card.playing .musica-demo-wave-bar {
+  background: #e84400;
+  animation: musicaBar .8s ease-in-out infinite;
+}
+.musica-demo-card.playing .musica-demo-play { background: linear-gradient(135deg, #c40060, #e84400); }
+/* Admin: adicionar demo */
+.musica-demo-add {
+  background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.15);
+  border-radius: 16px; padding: 18px 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: rgba(255,255,255,.3); font-size: 13px; transition: all .2s;
+}
+.musica-demo-add:hover { border-color: rgba(232,68,0,.4); color: #e84400; }
+body:not(.admin-mode) .musica-demo-add { display: none !important; }
+
+/* CTA */
+.musica-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.musica-cta-btn {
+  background: var(--musica-grad); color: #fff; border: none;
+  border-radius: 14px; padding: 16px 44px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 20px;
+  letter-spacing: 2px; cursor: pointer; transition: all .2s;
+  box-shadow: 0 8px 32px rgba(232,68,0,.35);
+  display: flex; align-items: center; gap: 10px;
+}
+.musica-cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(232,68,0,.5); }
+.musica-cta-note { font-size: 11px; color: rgba(255,255,255,.3); }
+
+@media (max-width: 768px) {
+  .musica-section { padding: 44px 16px 52px; }
+  .musica-precos { grid-template-columns: 1fr; gap: 10px; }
+  .musica-demos-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .musica-cta-btn { padding: 14px 28px; font-size: 17px; width: 100%; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .musica-demos-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════
+   FUNDO ESCURO VERDE/ROXO — ÁREA PRINCIPAL
+══════════════════════════════════════ */
+.main {
+  background: linear-gradient(160deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
+  position: relative;
+}
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 64px 0 0 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 5% 30%, rgba(0,196,174,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 95% 60%, rgba(168,85,247,.07) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.sidebar {
+  background: rgba(10,10,20,.85) !important;
+  border-right-color: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(8px);
+}
+.content {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+/* ── Sidebar: textos visíveis ── */
+.sidebar-section-title { color: rgba(255,255,255,.4) !important; }
+.sidebar-header-studio { color: rgba(255,255,255,.55) !important; }
+.sidebar-header-title { color: #fff !important; }
+.sidebar-header-sub { color: rgba(255,255,255,.4) !important; }
+
+/* Botões de categoria no sidebar */
+.cat-btn { color: rgba(255,255,255,.85) !important; }
+.cat-btn:hover { background: rgba(255,255,255,.08) !important; }
+.cat-btn.active { background: rgba(0,196,174,.15) !important; border-left-color: #00c4ae !important; }
+.cat-btn-name { color: rgba(255,255,255,.85) !important; font-size: 13px; }
+.cat-btn.active .cat-btn-name { color: #00c4ae !important; }
+.cat-btn-count { color: rgba(255,255,255,.4) !important; background: rgba(255,255,255,.08) !important; }
+.cat-btn.active .cat-btn-count { color: #00c4ae !important; background: rgba(0,196,174,.15) !important; }
+
+/* Toolbar textos */
+.cat-title { color: #fff !important; }
+.cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
+.btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; }
+.btn-ghost:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+
+/* Gallery cards */
+.gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
+.gallery-card:hover { border-color: rgba(0,196,174,.4) !important; background: rgba(0,196,174,.06) !important; }
+.gallery-card-name { color: #00c4ae !important; }
+.gallery-card-count { color: rgba(255,255,255,.45) !important; }
+
+/* Pricing textos */
+.pricing-section .pricing-qty { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-num { color: #fff !important; }
+.pricing-section .accent-price { color: #00c4ae !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.5) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.45) !important; }
+.pricing-section .pricing-btn-ghost {
+  border-color: rgba(255,255,255,.25) !important;
+  color: rgba(255,255,255,.7) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.1) !important;
+  color: #fff !important;
+}
+
+/* Textos gerais */
+.empty-state-title { color: rgba(255,255,255,.7) !important; }
+.empty-state-desc { color: rgba(255,255,255,.35) !important; }
+#backToGalleriesBtn { color: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.12) !important; }
+#backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
+
+
+</style>
+</head>
+<body>
+
+<!-- Admin badge -->
+<div id="adminBadge" onclick="toggleAdmin()" title="Admin">🔒</div>
+<div id="toastEl"></div>
+
+     MÚSICAS PERSONALIZADAS
+══════════════════════════════════════ -->
+<section class="musica-section" id="musicaSection">
+  <div class="musica-inner">
+
+    <div class="musica-eyebrow">🎵 NOVO · EXCLUSIVO · IA FOTO STUDIO</div>
+    <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
+    <p class="musica-sub">Criamos uma música única com Inteligência Artificial — feita sob medida para o seu momento especial</p>
+
+    <div class="musica-player">
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+      <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+    </div>
+
+    <div class="musica-estilos-title">escolha seu estilo</div>
+    <div class="musica-estilos">
+      <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)">🎤 Pop</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💃 Funk</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🤠 Sertanejo</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💕 Romântico</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎸 MPB</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">✝️ Gospel</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎹 Instrumental</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🔥 R&amp;B</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
+    </div>
+
+    <!-- Cards de preço com botão WhatsApp -->
+    <div class="musica-precos">
+      <div class="musica-preco-card" onclick="pedirMusica('Solo - R$49,90')">
+        <div class="musica-preco-icon">🎵</div>
+        <div class="musica-preco-nome">MÚSICA SOLO</div>
+        <div class="musica-preco-val"><sup>R$</sup>49<span>,90</span></div>
+        <div class="musica-preco-desc">1 música única com vocal e letra<br>no estilo que você escolher</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Solo - R$49,90')">💬 Pedir no WhatsApp</button>
+      </div>
+      <div class="musica-preco-card destaque" onclick="pedirMusica('Duo - R$89,90')">
+        <div class="musica-preco-icon">🎶</div>
+        <div class="musica-preco-nome">DUO</div>
+        <div class="musica-preco-val"><sup>R$</sup>89<span>,90</span></div>
+        <div class="musica-preco-desc">2 músicas únicas com vocal e letra<br>estilos diferentes para cada uma</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Duo - R$89,90')">💬 Pedir no WhatsApp</button>
+      </div>
+      <div class="musica-preco-card" onclick="pedirMusica('Premium - R$149,90')">
+        <div class="musica-preco-icon">👑</div>
+        <div class="musica-preco-nome">PREMIUM</div>
+        <div class="musica-preco-val"><sup>R$</sup>149<span>,90</span></div>
+        <div class="musica-preco-desc">3 músicas únicas com vocal e letra<br>cada uma com tema e estilo próprios</div>
+        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Premium - R$149,90')">💬 Pedir no WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- Galeria de demos -->
+    <div class="musica-demos-title">🎧 OUÇA EXEMPLOS</div>
+    <p class="musica-demos-sub">Clique para ouvir músicas criadas com IA — cada uma única, igual será a sua</p>
+
+    <div class="musica-demos-grid" id="musicaDemosGrid">
+      <!-- demos serão renderizadas aqui -->
+      <div class="musica-demo-add" onclick="adicionarMusicaDemo()">
+        <span style="font-size:20px;">＋</span> Adicionar música exemplo
+      </div>
+    </div>
+
+    <div class="musica-cta">
+      <button class="musica-cta-btn" onclick="pedirMusica()">
+        🎵 QUERO MINHA MÚSICA
+      </button>
+      <span class="musica-cta-note">Entrega em até 24h · Pagamento pelo WhatsApp</span>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- TELA PEDIDO DE MÚSICA -->
+<div id="musicaPedidoOverlay">
+  <div class="musica-pedido-box">
+    <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
+
+    <div class="musica-pedido-eyebrow">🎵 IA FOTO STUDIO</div>
+    <h2 class="musica-pedido-title" id="musicaPedidoTitulo">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
+
+    <!-- Nome -->
+    <div>
+      <div class="musica-pedido-label">◆ Seu nome</div>
+      <input class="musica-pedido-input" id="musicaNome"
+        type="text" placeholder="Ex: Maria Silva" autocomplete="off">
+    </div>
+
+    <!-- Container de músicas (1, 2 ou 3 blocos) -->
+    <div id="musicaBlocos" style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- Música 1 -->
+    <div class="musica-bloco" id="musicaBloco1" style="background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">🎵 SUA MÚSICA</div>
+
+      <div>
+        <div class="musica-pedido-label">🎸 Estilo musical</div>
+        <div class="musica-pedido-estilos" id="estilos1">
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎤 Pop</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💃 Funk</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🤠 Sertanejo</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💕 Romântico</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎸 MPB</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">✝️ Gospel</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎹 Instrumental</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🔥 R&amp;B</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🪗 Forró</button>
+        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🥁 Pagode</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="musica-pedido-label">✨ Tipo / clima</div>
+        <div class="musica-pedido-tipos" id="tipos1">
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">💞 Romântica</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">😄 Alegre</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">😢 Emocionante</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🕺 Animada</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌊 Calma</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🎉 Festiva</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">💪 Motivacional</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌙 Nostálgica</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🔥 Intensa</button>
+        <button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,1)">🌸 Suave</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="musica-pedido-label">💭 Ideia da música </div>
+        <textarea class="musica-pedido-textarea" id="musicaIdeia1"
+          placeholder="Ex: Uma música romântica para o meu ensaio gestante, com o nome da minha filha Sofia..." style="min-height:80px;"></textarea>
+      </div>
+    </div>
+    </div>
+
+    <!-- Dica -->
+    <div class="musica-pedido-dica">
+      💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará cada música!
+      Pode mencionar nomes, datas especiais, o que quer que a letra fale, se quer com ou sem voz...
+    </div>
+
+    <!-- Botão -->
+    <button class="musica-pedido-btn" id="musicaPedidoBtn" onclick="enviarPedidoMusica()">
+      🎵 ENVIAR PELO WHATSAPP
+    </button>
+    <div class="musica-pedido-voltar" onclick="voltarParaMusicas()">← Voltar</div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()" ontouchstart="lbTouchStart(event)" ontouchmove="lbTouchMove(event)" ontouchend="lbTouchEnd(event)">
+  <button class="lightbox-nav" id="lbPrev" onclick="lbNavigate(-1)">‹</button>
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lb-views-info" id="lbViewsInfo">👁 0 views</div>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-info">
+      <span class="lightbox-title" id="lightboxTitle"></span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="btn btn-ghost btn-sm" onclick="startSlideshow()" title="Modo apresentação" style="font-size:16px;padding:6px 10px;">▶</button>
+        <button class="btn btn-accent btn-sm lightbox-download-btn" onclick="downloadCurrentLb()">⬇ Download</button>
+      </div>
+    </div>
+    <div id="lbSwipeHint" class="lb-swipe-hint" style="display:none;">← deslize para navegar →</div>
+    <button id="lbBackBtn" onclick="closeLightbox()" style="margin-top:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;">← Voltar</button>
+  </div>
+  <button class="lightbox-nav" id="lbNext" onclick="lbNavigate(1)">›</button>
+</div>
+
+<!-- UPLOAD MODAL -->
+
+
+<!-- MOVE BULK MODAL -->
+<div id="moveBulkOverlay" onclick="if(event.target===this)closeMoveBulk()">
+  <div class="move-bulk-modal">
+    <div class="move-bulk-head">
+      <span class="move-bulk-title">↗ Mover para galeria</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeMoveBulk()">✕</button>
+    </div>
+    <div class="move-bulk-body">
+      <div class="move-bulk-info" id="moveBulkInfo">Mover fotos selecionadas para:</div>
+      <!-- Grade de categorias em ordem alfabética -->
+      <!-- Busca -->
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:10px;padding:8px 12px;transition:border-color .15s;" id="moveBulkSearchWrap">
+        <span style="font-size:14px;color:var(--muted);">🔍</span>
+        <input id="moveBulkSearch" type="text" placeholder="Buscar galeria..." autocomplete="off"
+          style="flex:1;border:none;background:transparent;font-size:13px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;"
+          oninput="filterMoveBulkCats(this.value)"
+          onfocus="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--accent)'"
+          onblur="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--border2)'">
+      </div>
+      <div class="move-bulk-cats-grid" id="moveBulkCatsGrid"></div>
+      <!-- Input oculto para guardar seleção -->
+      <input type="hidden" id="moveBulkSel" value="">
+      <div class="move-bulk-newcat" id="moveBulkNewCatRow" style="display:none;">
+        <input id="moveBulkNewCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key==='Enter')moveBulkAddCat()">
+        <button class="btn btn-accent btn-sm" onclick="moveBulkAddCat()">＋ Criar</button>
+      </div>
+      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova galeria</button>
+    </div>
+    <div class="move-bulk-footer">
+      <button class="btn btn-ghost" onclick="closeMoveBulk()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmMoveBulk()">Mover →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- CAT MANAGER MODAL -->
+<div id="catManagerOverlay" onclick="if(event.target===this)closeCatManager()" class="">
+  <div class="cat-manager-modal">
+    <div class="cat-manager-head">
+      <span class="cat-manager-title">Gerenciar Galerias</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeCatManager()">✕ Fechar</button>
+    </div>
+    <div class="cat-manager-body">
+      <!-- Nova galeria -->
+      <div class="new-cat-form">
+        <input id="newCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key===&#39;Enter&#39;)addCat()">
+        <button class="btn btn-accent btn-sm" onclick="addCat()">＋ Criar</button>
+      </div>
+      <div class="cat-list-divider"></div>
+      <div class="cat-manager-list-title">Galerias existentes</div>
+      <div id="catManagerList">
+      <div class="cat-row" id="catrow-c1777586793106">
+        <input class="cat-row-name" type="text" value="Animais" oninput="showSaveBtn(&#39;c1777586793106&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777586793106&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">1 foto</span>
+        <button class="cat-row-save" id="save-c1777586793106" onclick="saveCatName(&#39;c1777586793106&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1777586793106&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c5">
+        <input class="cat-row-name" type="text" value="Aniversário" oninput="showSaveBtn(&#39;c5&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c5&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">5 fotos</span>
+        <button class="cat-row-save" id="save-c5" onclick="saveCatName(&#39;c5&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c5&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c6">
+        <input class="cat-row-name" type="text" value="Casamento" oninput="showSaveBtn(&#39;c6&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c6&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c6" onclick="saveCatName(&#39;c6&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c6&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c4">
+        <input class="cat-row-name" type="text" value="Cinemático" oninput="showSaveBtn(&#39;c4&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c4&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c4" onclick="saveCatName(&#39;c4&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c4&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c1">
+        <input class="cat-row-name" type="text" value="Executivas Feminino" oninput="showSaveBtn(&#39;c1&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">18 fotos</span>
+        <button class="cat-row-save" id="save-c1" onclick="saveCatName(&#39;c1&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c2">
+        <input class="cat-row-name" type="text" value="Executivas Masculino" oninput="showSaveBtn(&#39;c2&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c2&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">34 fotos</span>
+        <button class="cat-row-save" id="save-c2" onclick="saveCatName(&#39;c2&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c2&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c1777515636960">
+        <input class="cat-row-name" type="text" value="Familia" oninput="showSaveBtn(&#39;c1777515636960&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777515636960&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">7 fotos</span>
+        <button class="cat-row-save" id="save-c1777515636960" onclick="saveCatName(&#39;c1777515636960&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1777515636960&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c3">
+        <input class="cat-row-name" type="text" value="Fantasy" oninput="showSaveBtn(&#39;c3&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c3&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c3" onclick="saveCatName(&#39;c3&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c3&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c7">
+        <input class="cat-row-name" type="text" value="Infantil" oninput="showSaveBtn(&#39;c7&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c7&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c7" onclick="saveCatName(&#39;c7&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c7&#39;)" title="Excluir galeria">🗑</button>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ Modo admin ativado!</div>
+
+<!-- MOVE PHOTO MODAL -->
+<div id="moveOverlay" onclick="if(event.target===this)closeMoveModal()">
+  <div class="move-modal">
+    <div class="move-modal-head">
+      <span class="move-modal-title">↗ Mover Foto</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeMoveModal()">✕ Fechar</button>
+    </div>
+    <div class="move-modal-body">
+      <div class="move-preview-wrap">
+        <img id="movePreviewImg" src="./IA Foto Studio — Vitrine de Referências_files/IA Foto Studio — Vitrine de Referências.html" alt="">
+        <span class="move-preview-label" id="movePreviewLabel"></span>
+      </div>
+      <div>
+        <div class="field-label">Mover para a galeria</div>
+        <select id="moveCatSel" class="select-field"></select>
+      </div>
+    </div>
+    <div class="move-modal-footer">
+      <button class="btn btn-ghost" onclick="closeMoveModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmMove()">↗ Mover</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASTE OVERLAY -->
+<div id="pasteOverlay" onclick="if(event.target===this)closePasteOverlay()" class="">
+  <div class="paste-modal">
+    <div class="paste-modal-head">
+      <span class="paste-modal-title">📋 Colar Imagem</span>
+      <button class="btn btn-ghost btn-sm" onclick="closePasteOverlay()">✕ Fechar</button>
+    </div>
+    <div class="paste-modal-body">
+      <div class="paste-hint-bar" id="pasteHintBar">
+        <span class="paste-hint-icon">⌨</span>
+        <span>Pressione <kbd>Ctrl+V</kbd> para colar a imagem</span>
+      </div>
+      <div style="text-align:center;margin:8px 0 0;">
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById(&#39;pasteFileInput&#39;).click()" style="font-size:12px;gap:6px;">
+          📁 Selecionar arquivo (mobile)
+        </button>
+        <input type="file" id="pasteFileInput" accept="image/*" style="display:none" onchange="pasteFromFile(this.files[0]);this.value=&#39;&#39;">
+      </div>
+      <div class="paste-preview-wrap" id="pastePreviewWrap" style="display:none">
+        <img id="pastePreviewImg" src="https://rciannace.github.io/index.html/IafotoStudio.html" alt="Preview">
+        <button class="paste-clear-btn" onclick="clearPastePreview()" title="Remover">✕</button>
+      </div>
+      <div>
+        <div class="field-label">Galeria de destino</div>
+        <select id="pasteCatSel" class="select-field"><option value="">— Sem galeria —</option><option value="c1">Executivas Feminino</option><option value="c2">Executivas Masculino</option><option value="c3">Fantasy</option><option value="c4">Cinemático</option><option value="c5">Aniversário</option><option value="c6">Casamento</option><option value="c7">Infantil</option><option value="c1777515636960">Familia</option><option value="c1777586793106">Animais</option></select>
+      </div>
+    </div>
+    <div class="paste-modal-footer">
+      <button class="btn btn-ghost" onclick="closePasteOverlay()">Cancelar</button>
+      <button class="btn btn-primary" id="pasteConfirmBtn" onclick="confirmPaste()" disabled="">Salvar foto</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASTE HOTKEY HINT (floating) -->
+<div class="paste-fab admin-only" id="pasteFab" onclick="openPasteOverlay()" title="Colar imagem (Ctrl+V)">
+  📋
+  <span class="paste-fab-label">Ctrl+V</span>
+</div>
+
+<!-- BULK SELECT BAR -->
+<div id="bulkBar">
+  <span id="bulkCount">0 fotos selecionadas</span>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;" onclick="selectAll()">☑ Todas</button>
+  <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
+  <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
+  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
+</div>
+
+<!-- PAINEL DE PEDIDOS -->
+<div id="pedidosOverlay">
+  <div class="pedidos-box">
+    <div class="pedidos-head">
+      <div class="pedidos-title">📋 Pedidos</div>
+      <button onclick="fecharPedidos()" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+    </div>
+    <div class="pedidos-list" id="pedidosList">
+      <div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- OBRIGADA MÚSICA -->
+<div id="salaObrigadaMusicaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
+  <div style="background:#1a1a1f;border:1px solid rgba(255,255,255,.1);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.5);">
+    <div style="font-size:64px;">🎵</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#e84400;">Pedido enviado!</div>
+    <div style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;">
+      Seu pedido foi enviado pelo WhatsApp.<br>Em breve entraremos em contato!
+    </div>
+    <button onclick="document.getElementById('salaObrigadaMusicaOverlay').style.display='none'" style="padding:14px 32px;background:#e84400;color:#fff;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;cursor:pointer;">
+      ✓ Fechar
+    </button>
+  </div>
+</div>
+
+     MODAL UPLOAD DE MÚSICA
+     ══════════════════════════════════════════════════════ -->
+<style>
+#musicaUploadOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9200;
+  background: rgba(5,5,10,.93); backdrop-filter: blur(18px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#musicaUploadOverlay.open { display: flex; }
+.musica-upload-box {
+  background: #1a1a1f; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px; width: min(420px, 96vw);
+  padding: 28px 24px 22px; display: flex; flex-direction: column;
+  gap: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.5);
+  animation: mpop .22s cubic-bezier(.34,1.46,.64,1) both;
+}
+.musica-upload-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  letter-spacing: 2px; color: #fff;
+}
+.musica-upload-dropzone {
+  border: 2px dashed rgba(232,68,0,.35); border-radius: 12px;
+  padding: 28px 16px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+  background: rgba(232,68,0,.04);
+}
+.musica-upload-dropzone.drag-over {
+  border-color: #e84400; background: rgba(232,68,0,.1);
+}
+.musica-upload-dropzone:hover { border-color: rgba(232,68,0,.6); }
+.musica-drop-icon { font-size: 36px; margin-bottom: 8px; }
+.musica-drop-hint { font-size: 13px; color: rgba(255,255,255,.5); }
+.musica-upload-nome {
+  font-size: 13px; color: #e84400; font-weight: 600;
+  min-height: 18px; text-align: center; word-break: break-all;
+}
+#musicaUploadProgress {
+  height: 4px; background: rgba(255,255,255,.1); border-radius: 4px;
+  overflow: hidden; display: none;
+}
+#musicaUploadProgressBar {
+  height: 100%; background: #e84400; border-radius: 4px;
+  transition: width .2s;
+}
+.musica-upload-footer { display: flex; gap: 10px; }
+.musica-upload-footer button {
+  flex: 1; padding: 12px; border-radius: 10px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  font-weight: 700; cursor: pointer; transition: all .15s;
+}
+#musicaUploadBtn {
+  background: #e84400; color: #fff;
+}
+#musicaUploadBtn:disabled { background: rgba(255,255,255,.08); color: rgba(255,255,255,.25); cursor: not-allowed; }
+#musicaUploadBtn:not(:disabled):hover { background: #c93a00; }
+.musica-upload-cancel { background: rgba(255,255,255,.06); color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.1) !important; }
+.musica-upload-cancel:hover { background: rgba(255,255,255,.1) !important; color: #fff !important; }
+</style>
+
+<div id="musicaUploadOverlay" onclick="if(event.target===this)fecharMusicaUpload()">
+  <div class="musica-upload-box">
+    <div class="musica-upload-title">🎵 Adicionar Música</div>
+
+    <div class="musica-upload-dropzone" id="musicaUploadDropzone"
+      onclick="document.getElementById('musicaUploadFile').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="musicaUploadDrop(event)">
+      <div class="musica-drop-icon">🎧</div>
+      <div class="musica-drop-hint">Clique ou arraste um arquivo de áudio</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;">MP3, WAV, M4A, OGG</div>
+    </div>
+
+    <input type="file" id="musicaUploadFile" accept="audio/*"
+      style="display:none" onchange="musicaUploadFileSelected(this)">
+
+    <div class="musica-upload-nome" id="musicaUploadNome"></div>
+
+    <div id="musicaUploadProgress">
+      <div id="musicaUploadProgressBar"></div>
+    </div>
+
+    <div class="musica-upload-footer">
+      <button class="musica-upload-cancel" onclick="fecharMusicaUpload()">Cancelar</button>
+      <button id="musicaUploadBtn" onclick="confirmarMusicaUpload()" disabled>Enviar música</button>
+    </div>
+  </div>
+</div>
+</body></html>
+
+<!-- Firebase + JS -->
+<script type="module">
+</style>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
+    authDomain: "ia-foto-studio-346ed.firebaseapp.com",
+    projectId: "ia-foto-studio-346ed",
+    storageBucket: "ia-foto-studio-346ed.firebasestorage.app",
+    messagingSenderId: "16163406496",
+    appId: "1:16163406496:web:ab936afab6f681a007ffc5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // Expõe para o código global
+  window._fbDb      = db;
+  window._fbDoc     = doc;
+  window._fbGetDoc  = getDoc;
+  window._fbSetDoc  = setDoc;
+  window._fbReady   = true;
+  window.dispatchEvent(new Event('firebase-ready'));
+
+  // Chama initApp daqui — garante que Firebase já está pronto
+  // (módulos ES6 sempre executam após scripts normais)
+  if (typeof initApp === 'function') {
+    initApp();
+  } else {
+
+  window._fbApp = initializeApp(firebaseConfig);
+  window._fbDb  = getFirestore(window._fbApp);
+  window._fbGetDoc = getDoc;
+  window._fbDoc    = doc;
+  window._fbSetDoc = setDoc;
+
+  try {
+    const snap = await getDoc(doc(window._fbDb, 'vitrine', 'data'));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.musicaDemos && data.musicaDemos.length) {
+        musicaDemos = data.musicaDemos;
+        localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
+        renderMusicaDemos();
+      }
+      if (data.pricing) {
+        localStorage.setItem('iafotostudio_pricing', JSON.stringify(data.pricing));
+      }
+    }
+  } catch(e) { console.warn('Firebase load error:', e); }
+
+  window._fbReady = true;
+</script>
+
+<script>
+const CLOUDINARY_CLOUD  = 'dftsx4wv0';
+const CLOUDINARY_PRESET = 'ia_foto_studio';
+const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
+
+// ── ADMIN ──
+let adminMode = false;
+const ADMIN_PASSWORD = 'rciannace';
+
+function toggleAdmin() {
+  if (adminMode) {
+    adminMode = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminBadge').textContent = '🔒';
+    toast('Modo admin desativado');
+  } else {
+    const pw = prompt('Senha admin:');
+    if (pw === ADMIN_PASSWORD) {
+      adminMode = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminBadge').textContent = '🔓';
+      toast('✓ Modo admin ativado');
+      renderMusicaDemos();
+    } else if (pw !== null) {
+      toast('❌ Senha incorreta');
+    }
+  }
+}
+
+// ── TOAST ──
+let _toastTimer;
+function toast(msg, dur=3000) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg; el.style.display = 'block';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.style.display = 'none', dur);
+}
+
+// ── PERSIST FIREBASE ──
+async function persistBg() {
+  if (!window._fbReady) return;
+  try {
+    const db = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    const current = snap.exists() ? snap.data() : {};
+    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+      ...current, musicaDemos, updatedAt: Date.now()
+    });
+  } catch(e) { console.error('Firebase save error:', e); }
+}
+
+function loadPricing() {
+  try {
+    const raw = localStorage.getItem(PRICING_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return [];
+}
+
+//  MÚSICAS PERSONALIZADAS
+// ══════════════════════════════════════
+
+function selecionarEstilo(btn) {
+  document.querySelectorAll('.musica-estilo-btn').forEach(b => b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+}
+
+function pedirMusica(pacote) {
+  abrirMusicaPedido(pacote || 'Solo - R$49,90');
+}
+
+// ── Galeria de demos ──
+let musicaDemos = JSON.parse(localStorage.getItem('iafoto_music_demos') || '[]');
+let currentAudio = null;
+let currentCard = null;
+
+function saveMusicaDemos() {
+  localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
+  // Salvar no Firebase para todos verem
+  if (window._fbReady) persistBg();
+}
+
+function renderMusicaDemos() {
+  const grid = document.getElementById('musicaDemosGrid');
+  if (!grid) return;
+  const isAdmin = document.body.classList.contains('admin-mode');
+
+  const demosHtml = musicaDemos.map((d, i) => {
+    const heights = [18,32,24,40,28,36,20,44,30,26,38,22,42,16,34];
+    const bars = heights.map(h =>
+      '<div class="musica-demo-wave-bar" style="height:' + h + 'px;"></div>'
+    ).join('');
+    return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
+      '<div class="musica-demo-top">' +
+        '<div class="musica-demo-play">▶</div>' +
+        '<div class="musica-demo-info">' +
+          '<div class="musica-demo-nome">' + d.nome + '</div>' +
+          '<div class="musica-demo-estilo">' + d.estilo + '</div>' +
+        '</div>' +
+        (isAdmin ? '<button onclick="event.stopImmediatePropagation();deleteMusicaDemo(' + i + ')" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;z-index:10;position:relative;">✕</button>' : '') +
+      '</div>' +
+      '<div class="musica-demo-wave">' + bars + '</div>' +
+    '</div>';
+  }).join('');
+
+  const addBtn = isAdmin
+    ? '<div class="musica-demo-add" onclick="adicionarMusicaDemo()"><span style="font-size:20px;">＋</span> Adicionar música exemplo</div>'
+    : '';
+
+  grid.innerHTML = demosHtml + addBtn;
+
+  // Adiciona listeners de play/pause em cada card (exceto no botão X)
+  musicaDemos.forEach((d, i) => {
+    const card = document.getElementById('mdemo-' + i);
+    if (!card) return;
+    card.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON') return; // ignora clique no X
+      toggleMusicaDemo(i);
+    });
+  });
+}
+
+function musicaDemoCardClick(event, i) {
+  // Verifica se clicou no botão X ou em qualquer elemento dentro dele
+  let el = event.target;
+  while (el && el !== event.currentTarget) {
+    if (el.classList && el.classList.contains('musica-del-btn')) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      deleteMusicaDemo(parseInt(el.dataset.idx));
+      return;
+    }
+    el = el.parentElement;
+  }
+  // Clicou fora do X — toca/pausa
+  toggleMusicaDemo(i);
+}
+
+function toggleMusicaDemo(i) {
+  const demo = musicaDemos[i];
+  if (!demo || !demo.url) return;
+
+  const card = document.getElementById('mdemo-' + i);
+
+  if (currentAudio && currentCard === i) {
+    currentAudio.pause();
+    currentAudio = null;
+    currentCard = null;
+    card.classList.remove('playing');
+    card.querySelector('.musica-demo-play').textContent = '▶';
+    return;
+  }
+
+  if (currentAudio) {
+    currentAudio.pause();
+    const prev = document.getElementById('mdemo-' + currentCard);
+    if (prev) { prev.classList.remove('playing'); prev.querySelector('.musica-demo-play').textContent = '▶'; }
+  }
+
+  const audio = new Audio(demo.url);
+  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir. Verifique o link.'));
+  audio.onended = () => { card.classList.remove('playing'); card.querySelector('.musica-demo-play').textContent = '▶'; currentAudio = null; currentCard = null; };
+  currentAudio = audio;
+  currentCard = i;
+  card.classList.add('playing');
+  card.querySelector('.musica-demo-play').textContent = '⏸';
+}
+
+function adicionarMusicaDemo() {
+  // Abre o modal de upload de áudio
+  const overlay = document.getElementById('musicaUploadOverlay');
+  if (overlay) {
+    // Reset estado
+    document.getElementById('musicaUploadFile').value = '';
+    document.getElementById('musicaUploadNome').textContent = '';
+    document.getElementById('musicaUploadProgress').style.display = 'none';
+    document.getElementById('musicaUploadProgressBar').style.width = '0%';
+    document.getElementById('musicaUploadBtn').disabled = true;
+    document.getElementById('musicaUploadDropzone').querySelector('.musica-drop-hint').textContent = 'Clique ou arraste um arquivo de áudio';
+    overlay.classList.add('open');
+  }
+}
+
+function fecharMusicaUpload() {
+  const overlay = document.getElementById('musicaUploadOverlay');
+  if (overlay) { overlay.classList.remove('open'); overlay.style.display = ''; }
+  if (currentAudioUpload) { currentAudioUpload.abort && currentAudioUpload.abort(); currentAudioUpload = null; }
+}
+
+let currentAudioUpload = null;
+
+function musicaUploadFileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const nomeEl = document.getElementById('musicaUploadNome');
+  // Nome automático = nome do arquivo sem extensão
+  const nomeAuto = file.name.replace(/\.[^/.]+$/, '');
+  nomeEl.textContent = nomeAuto;
+  nomeEl.dataset.nome = nomeAuto;
+  document.getElementById('musicaUploadDropzone').querySelector('.musica-drop-hint').textContent = '🎵 ' + file.name;
+  document.getElementById('musicaUploadBtn').disabled = false;
+}
+
+function musicaUploadDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById('musicaUploadFile');
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+  musicaUploadFileSelected(input);
+  document.getElementById('musicaUploadDropzone').classList.remove('drag-over');
+}
+
+async function confirmarMusicaUpload() {
+  const input = document.getElementById('musicaUploadFile');
+  const file = input.files[0];
+  if (!file) return;
+
+  const nomeEl = document.getElementById('musicaUploadNome');
+  const nome = nomeEl.dataset.nome || file.name.replace(/\.[^/.]+$/, '');
+
+  const btn = document.getElementById('musicaUploadBtn');
+  const progress = document.getElementById('musicaUploadProgress');
+  const progressBar = document.getElementById('musicaUploadProgressBar');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  progress.style.display = 'block';
+
+  // Upload para Cloudinary com resource_type=video (aceita áudio)
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('resource_type', 'video');
+
+  const xhr = new XMLHttpRequest();
+  currentAudioUpload = xhr;
+
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
+    }
+  };
+
+  xhr.onload = () => {
+    currentAudioUpload = null;
+    try {
+      const res = JSON.parse(xhr.responseText);
+      if (res.secure_url) {
+        musicaDemos.push({ nome, estilo: '🎵', url: res.secure_url });
+        saveMusicaDemos();
+        renderMusicaDemos();
+        fecharMusicaUpload();
+        toast('🎵 "' + nome + '" adicionada!');
+      } else {
+        toast('⚠️ Erro no upload: ' + (res.error?.message || 'tente novamente'));
+        btn.disabled = false;
+        btn.textContent = 'Enviar música';
+        progress.style.display = 'none';
+      }
+    } catch(e) {
+      toast('⚠️ Erro ao processar resposta do upload.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar música';
+    }
+  };
+
+  xhr.onerror = () => {
+    toast('⚠️ Falha na conexão. Tente novamente.');
+    btn.disabled = false;
+    btn.textContent = 'Enviar música';
+    progress.style.display = 'none';
+    currentAudioUpload = null;
+  };
+
+  xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`);
+  xhr.send(formData);
+}
+
+function deleteMusicaDemo(i) {
+  // Para o áudio se estiver tocando
+  if (currentCard === i && currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    currentCard = null;
+  }
+  musicaDemos.splice(i, 1);
+  saveMusicaDemos();
+  renderMusicaDemos();
+  toast('🗑 Música removida.');
+}
+
+// Inicializar demos ao carregar
+document.addEventListener('DOMContentLoaded', renderMusicaDemos);
+
+
+// ══════════════════════════════════════
+//  TELA PEDIDO DE MÚSICA
+// ══════════════════════════════════════
+
+// ── Número de músicas do pacote
+function qtdMusicasDoPacote(pacote) {
+  if (!pacote) return 1;
+  const p = pacote.toLowerCase();
+  if (p.includes('premium') || p.includes('3 m')) return 3;
+  if (p.includes('duo') || p.includes('2 m')) return 2;
+  return 1;
+}
+
+// ── Gerar bloco HTML de uma música
+function gerarBlocoMusica(idx) {
+  const num = idx;
+  const cor = 'rgba(255,255,255,.04)';
+  const borda = 'rgba(255,255,255,.1)';
+  const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
+  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🔥 R&B','🪗 Forró','🥁 Pagode'];
+  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
+  return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:'+cor+';border:1px solid '+borda+';border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
+    '<div style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">'+titulo+'</div>'+
+    '<div><div class="musica-pedido-label">🎸 Estilo musical</div>'+
+    '<div class="musica-pedido-estilos" id="estilos'+idx+'">'+
+    estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+e+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">✨ Tipo / clima</div>'+
+    '<div class="musica-pedido-tipos" id="tipos'+idx+'">'+
+    tipos.map(t => '<button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,'+idx+')">'+t+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">💭 Ideia da música'+(idx>1?' '+idx:'')+'</div>'+
+    '<textarea class="musica-pedido-textarea" id="musicaIdeia'+idx+'" placeholder="Descreva o que quer nesta música — estilo, tema, quem é, o que quer que a letra fale..." style="min-height:80px;"></textarea>'+
+    '</div></div>';
+}
+
+function abrirMusicaPedido(pacote) {
+  const qtd = qtdMusicasDoPacote(pacote);
+  document.getElementById('musicaPedidoOverlay').dataset.pacote = pacote || '';
+  document.getElementById('musicaPedidoOverlay').dataset.qtd = qtd;
+
+  // Gerar blocos dinamicamente
+  const container = document.getElementById('musicaBlocos');
+  container.innerHTML = '';
+  for (let i = 1; i <= qtd; i++) container.innerHTML += gerarBlocoMusica(i);
+
+  // Título dinâmico
+  const titulo = document.getElementById('musicaPedidoTitulo');
+  if (titulo) {
+    if (qtd === 1) titulo.innerHTML = 'SUA MÚSICA<br><span>PERSONALIZADA</span>';
+    else if (qtd === 2) titulo.innerHTML = 'SUAS 2 MÚSICAS<br><span>PERSONALIZADAS</span>';
+    else titulo.innerHTML = 'SUAS 3 MÚSICAS<br><span>PERSONALIZADAS</span>';
+  }
+
+  document.getElementById('musicaNome').value = '';
+  document.getElementById('musicaPedidoOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+
+function fecharMusicaPedido() {
+  document.getElementById('musicaPedidoOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
+}
+
+function voltarParaMusicas() {
+  fecharMusicaPedido();
+  // Rolar suavemente para a seção de músicas
+  setTimeout(() => {
+    const sec = document.getElementById('musicaSection');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+function toggleEstiloMusica(btn, idx) {
+  document.querySelectorAll('#estilos'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function toggleTipoMusica(btn, idx) {
+  btn.classList.toggle('sel');
+}
+
+function toggleMusicaTag(btn, tipo) {
+  if (tipo === 'estilo') {
+    document.querySelectorAll('.musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+  } else {
+    btn.classList.toggle('sel');
+  }
+}
+
+function enviarPedidoMusica() {
+  const nome = document.getElementById('musicaNome').value.trim();
+  const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
+  const qtd = parseInt(document.getElementById('musicaPedidoOverlay').dataset.qtd) || 1;
+
+  if (!nome) {
+    document.getElementById('musicaNome').focus();
+    toast('⚠️ Digite seu nome para continuar!');
+    return;
+  }
+
+  let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
+    '👤 Nome: ' + nome + '\n' +
+    '📦 Pacote: ' + pacote + '\n\n';
+
+  for (let i = 1; i <= qtd; i++) {
+    const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
+    const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+    const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
+    const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
+    const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
+
+    if (qtd > 1) msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n';
+    msg += '🎸 Estilo: ' + estilo + '\n';
+    msg += '✨ Clima: ' + tipos + '\n';
+    if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
+    msg += '\n';
+  }
+
+  msg += '_Aguardo retorno! 😊_';
+
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  fecharMusicaPedido();
+  abrirSalaObrigadaMusica(nome);
+}
+
+function abrirSalaObrigadaMusica(nome) {
+  // Reutiliza a tela de obrigada existente adaptada
+  const overlay = document.getElementById('salaObrigadaOverlay');
+  if (!overlay) return;
+  const title = overlay.querySelector('div[style*="Bebas"]') || overlay.querySelector('div:nth-child(3)');
+  document.getElementById('salaObrigadaOverlay').classList.add('open');
+}
+
+// ── Forçar sync dos adPairs no Firebase ──
+async function forceSyncAdPairs() {
+  const btn = document.getElementById('syncAdBtn');
+  if (btn) btn.textContent = '⏳ Salvando...';
+  
+  try {
+    const db = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    const current = snap.exists() ? snap.data() : {};
+    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+      ...current,
+      adPairs: adPairs,
+      updatedAt: Date.now()
+    });
+    if (btn) btn.textContent = '✓ Salvo!';
+    toast('✓ Antes & Depois sincronizado! Agora aparece para todos.');
+    setTimeout(() => { if (btn) btn.textContent = '🔄 Sync A/D'; }, 3000);
+  } catch(e) {
+    if (btn) btn.textContent = '✗ Erro';
+    toast('⚠ Erro ao sincronizar: ' + e.message);
+  }
+}
+
+// ── URL param: ?sala=1 — com verificação de expiração ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('sala') !== '1') return;
+
+  // Verificar expiração do token
+  const token = params.get('t');
+  if (token) {
+    try {
+      const expiry = parseInt(atob(token));
+      if (Date.now() > expiry) {
+        // Link expirado — mostrar aviso
+        const _waitExp = setInterval(function() {
+          if (document.body) {
+            clearInterval(_waitExp);
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(5,5,10,.97);display:flex;align-items:center;justify-content:center;padding:28px;';
+            overlay.innerHTML = '<div style="background:#1a1a2e;border-radius:24px;padding:40px 32px;text-align:center;max-width:360px;border:1px solid rgba(255,255,255,.1);">' +
+              '<div style="font-size:48px;margin-bottom:16px;">⏰</div>' +
+              '<div style="font-family:Bebas Neue,sans-serif;font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:12px;">Link Expirado</div>' +
+              '<div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:24px;">Este link de seleção expirou.<br>Entre em contato para receber um novo link.</div>' +
+              '<a href="https://wa.me/5511926029852" target="_blank" style="display:block;padding:14px;background:#00c4ae;color:#fff;border-radius:12px;font-size:16px;text-decoration:none;font-weight:700;">💬 Solicitar novo link</a>' +
+              '</div>';
+            document.body.appendChild(overlay);
+          }
+        }, 100);
+        return;
+      }
+    } catch(e) {}
+  }
+
+  const _salaInterval = setInterval(function() {
+    if (typeof openSalaEntrada === 'function' &&
+        document.getElementById('salaEntradaOverlay')) {
+      clearInterval(_salaInterval);
+      openSalaEntrada();
+    }
+  }, 100);
+  setTimeout(function() { clearInterval(_salaInterval); }, 10000);
+})();
+</script>
+
+</script>
+
+</body>
+</html>
