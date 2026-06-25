@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20260625-musica-v1 -->
+<!-- v20260625-musica-v2 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,21 +7,6 @@
 <title>IA Foto Studio — Música Personalizada</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #f8f7f4;
-  --surface: #ffffff;
-  --surface2: #f2f1ee;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.14);
-  --text: #1a1a1f;
-  --muted: #888896;
-  --accent: #00c4ae;
-  --accent2: rgba(0,196,174,0.10);
-  --red: #e03050;
-  --shadow: 0 2px 16px rgba(0,0,0,0.07);
-  --r: 14px;
-}
-
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   background: #0d0d12;
@@ -30,37 +15,20 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
-/* ── ADMIN BADGE ── */
 #adminBadge {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 9999;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all .15s;
+  position: fixed; bottom: 20px; left: 20px; z-index: 9999;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer; transition: all .15s;
 }
-#adminBadge:hover { background: rgba(255,255,255,.15); }
 body.admin-mode #adminBadge { background: rgba(232,68,0,.25); border-color: #e84400; }
-
-/* Toast */
 #toastEl {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
   background: rgba(20,20,22,.95); color: #fff; padding: 10px 20px;
   border-radius: 10px; font-size: 13px; z-index: 99999; pointer-events: none;
   backdrop-filter: blur(8px); display: none; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,.3);
 }
-
 @keyframes mpop { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
 
 /* ══════════════════════════════════════
@@ -366,8 +334,9 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 #backToGalleriesBtn { color: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.12) !important; }
 #backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
 
-
-/* ── OVERLAY PEDIDO ── */
+/* ══════════════════════════════════════
+   TELA PEDIDO DE MÚSICA
+══════════════════════════════════════ */
 #musicaPedidoOverlay {
   display: none;
   position: fixed;
@@ -443,125 +412,222 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
 }
 .musica-pedido-textarea:focus { border-color: #e84400; }
 .musica-pedido-textarea::placeholder { color: rgba(255,255,255,.25); }
-
-/* ── CARDS DE PREÇO ── */
-.musica-precos {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 14px; margin-bottom: 32px;
+/* Estilos clicáveis */
+.musica-pedido-estilos {
+  display: flex; flex-wrap: wrap; gap: 7px;
 }
-.musica-preco-card {
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 18px; padding: 24px 18px; text-align: center;
-  transition: all .2s; position: relative; overflow: hidden; cursor: pointer;
+.musica-pedido-estilo {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 8px 16px;
+  color: rgba(255,255,255,.6); font-size: 12px;
+  cursor: pointer; transition: all .15s;
 }
-.musica-preco-card:hover {
-  background: rgba(255,255,255,.09); border-color: rgba(232,68,0,.5); transform: translateY(-4px);
+.musica-pedido-estilo:hover { border-color: #e84400; color: #ff6622; }
+.musica-pedido-estilo.sel {
+  background: rgba(232,68,0,.2); border-color: #e84400; color: #ff6622; font-weight: 700;
 }
-.musica-preco-card.destaque {
-  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.45);
+/* Tipos clicáveis */
+.musica-pedido-tipos {
+  display: flex; flex-wrap: wrap; gap: 7px;
 }
-.musica-preco-card.destaque::before {
-  content: 'MAIS PEDIDO';
-  position: absolute; top: 11px; right: -24px;
-  background: var(--musica-grad); color: #fff;
-  font-size: 8px; letter-spacing: 1px; padding: 4px 32px;
-  transform: rotate(45deg); font-weight: 700;
+.musica-pedido-tipo {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 8px 16px;
+  color: rgba(255,255,255,.6); font-size: 12px;
+  cursor: pointer; transition: all .15s;
 }
-.musica-preco-icon { font-size: 28px; margin-bottom: 8px; }
-.musica-preco-nome {
-  font-family: 'Bebas Neue', sans-serif; font-size: 16px;
-  letter-spacing: 1px; color: rgba(255,255,255,.65); margin-bottom: 8px;
+.musica-pedido-tipo:hover { border-color: #c40060; color: #e040a0; }
+.musica-pedido-tipo.sel {
+  background: rgba(196,0,96,.2); border-color: #c40060; color: #e040a0; font-weight: 700;
 }
-.musica-preco-val {
-  font-family: 'Bebas Neue', sans-serif; font-size: 36px;
-  line-height: 1; letter-spacing: 1px;
-  background: var(--musica-grad);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.musica-preco-val sup { font-size: 16px; vertical-align: super; font-family: 'DM Sans', sans-serif; }
-.musica-preco-val span { font-size: 18px; font-family: 'DM Sans', sans-serif; }
-.musica-preco-desc { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 8px; line-height: 1.4; }
-.musica-preco-whats {
-  display: block; margin-top: 12px; padding: 9px;
-  background: var(--musica-grad); color: #fff; border: none;
-  border-radius: 10px; font-size: 12px; font-weight: 700;
-  cursor: pointer; transition: opacity .15s; width: 100%;
-}
-.musica-preco-whats:hover { opacity: .85; }
-
-/* ── BOX PEDIDO ── */
-.musica-pedido-box {
-  background: #12101a;
-  width: 100%;
-  min-height: 100%;
-  padding: 36px 28px 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: relative;
-  border-top: 3px solid;
-  border-image: linear-gradient(90deg, #e84400, #c40060) 1;
-}
-.musica-pedido-close {
-  position: absolute; top: 16px; right: 20px;
-  background: rgba(255,255,255,.08); border: none;
-  color: rgba(255,255,255,.5); font-size: 20px;
-  width: 36px; height: 36px; border-radius: 50%;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
-}
-.musica-pedido-close:hover { background: rgba(255,255,255,.15); color: #fff; }
-.musica-pedido-eyebrow {
-  font-size: 10px; letter-spacing: 3px;
-  color: #e84400; font-family: 'DM Mono', monospace;
-  display: flex; align-items: center; gap: 8px;
-}
-.musica-pedido-eyebrow::after { content: ''; flex: 1; height: 1px; background: #e84400; opacity: .3; }
-.musica-pedido-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(32px, 7vw, 52px);
-  line-height: .95; color: #fff; letter-spacing: 2px;
-}
-.musica-pedido-title span {
-  background: linear-gradient(90deg, #e84400, #c40060);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.musica-pedido-label {
-  font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,.4);
-  font-weight: 600; margin-bottom: 6px; text-transform: uppercase;
-}
-.musica-pedido-input {
-  width: 100%; background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.15);
+/* Dica */
+.musica-pedido-dica {
+  background: rgba(232,68,0,.08);
+  border: 1px solid rgba(232,68,0,.2);
   border-radius: 12px; padding: 14px 16px;
-  font-size: 16px; color: #fff; outline: none;
-  transition: border-color .15s;
-  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: rgba(255,255,255,.5);
+  line-height: 1.6;
 }
-.musica-pedido-input:focus { border-color: #e84400; }
-.musica-pedido-input::placeholder { color: rgba(255,255,255,.25); }
-.musica-pedido-textarea {
-  width: 100%; background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 12px; padding: 14px 16px;
-  font-size: 15px; color: #fff; outline: none;
-  transition: border-color .15s; resize: vertical;
-  min-height: 100px; font-family: 'DM Sans', sans-serif;
-  line-height: 1.5;
+.musica-pedido-dica strong { color: #e84400; }
+/* Botão */
+.musica-pedido-btn {
+  background: linear-gradient(135deg, #e84400, #c40060);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 16px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 2px; cursor: pointer;
+  transition: all .2s; box-shadow: 0 8px 32px rgba(232,68,0,.35);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
 }
-.musica-pedido-textarea:focus { border-color: #e84400; }
-.musica-pedido-textarea::placeholder { color: rgba(255,255,255,.25); }
+.musica-pedido-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,68,0,.5); }
+.musica-pedido-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.musica-pedido-voltar {
+  text-align: center; font-size: 13px; color: rgba(255,255,255,.3);
+  cursor: pointer; transition: color .15s;
+}
+.musica-pedido-voltar:hover { color: rgba(255,255,255,.6); }
+
+@media (max-width: 768px) {
+  .musica-pedido-box { padding: 24px 18px 40px; gap: 16px; }
+  .musica-pedido-title { font-size: 28px; }
+}
+
+/* ══ CORREÇÕES GLOBAIS DE VISIBILIDADE ══ */
+
+/* Pricing — todos os textos */
+.pricing-section .pricing-qty { color: rgba(255,255,255,.65) !important; }
+.pricing-section .pricing-num,
+.pricing-section .pricing-num .currency,
+.pricing-section .pricing-num .cents { color: #fff !important; }
+.pricing-section .accent-price,
+.pricing-section .accent-price .currency,
+.pricing-section .accent-price .cents { color: #00c4ae !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.55) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.65) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.5) !important; }
+.pricing-section .pricing-btn-ghost {
+  background: rgba(255,255,255,.08) !important;
+  border: 1px solid rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.75) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.14) !important;
+  color: #fff !important;
+}
+.pricing-section .pricing-btn-accent {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Botões voltar e navegação */
+#backToGalleriesBtn {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.85) !important;
+}
+#backToGalleriesBtn:hover {
+  background: rgba(255,255,255,.15) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+#mobileBackBtn,
+#mobileBackBtn .back-arrow {
+  color: var(--accent) !important;
+}
+/* Botão dentro do viewAntesDepois */
+#viewAntesDepois #backToGalleriesBtn,
+#viewAntesDepois .btn-ghost {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.85) !important;
+}
+
+/* Topbar no modo escuro */
+.topbar {
+  background: rgba(10,10,18,.92) !important;
+  border-bottom-color: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(16px) !important;
+}
+.topbar .brand-name,
+.topbar .brand-tagline { color: rgba(255,255,255,.8) !important; }
+.topbar-search input { 
+  background: rgba(255,255,255,.07) !important;
+  color: rgba(255,255,255,.8) !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,.3) !important; }
+.topbar-search-icon { color: rgba(255,255,255,.35) !important; }
+.topbar-divider { background: rgba(255,255,255,.1) !important; }
+
+/* Sala admin btn */
+.sala-admin-btn {
+  color: rgba(255,255,255,.7) !important;
+  border-color: rgba(255,255,255,.15) !important;
+}
+
+/* Cat chips mobile */
+.cat-chip { 
+  background: rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.7) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+.cat-chip.active {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Foto cards dentro da galeria */
+.photo-card .photo-title { color: rgba(255,255,255,.7) !important; }
+
+/* Toolbar admin buttons */
+.toolbar .btn { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.15) !important; }
+.toolbar .btn:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+.toolbar .btn[style*="color:var(--red)"],
+.toolbar .btn[style*="color: var(--red)"] { color: #ff6b6b !important; }
+
+/* Admin badge */
+#adminBadge { background: rgba(255,255,255,.1) !important; color: rgba(255,255,255,.6) !important; }
+
+/* Hero na área principal */
+.hero { position: relative; z-index: 1; }
+
+/* ── ANTES & DEPOIS — fundo escuro ── */
+#viewAntesDepois .ad-intro-banner { background: rgba(0,196,174,.12) !important; border-color: rgba(0,196,174,.25) !important; }
+#viewAntesDepois .ad-toolbar-title { color: #fff !important; }
+#viewAntesDepois .ad-count { color: rgba(255,255,255,.5) !important; background: rgba(255,255,255,.08) !important; }
+#viewAntesDepois .btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.15) !important; }
+#viewAntesDepois .ad-card { background: rgba(255,255,255,.05) !important; border-color: rgba(255,255,255,.1) !important; }
+#viewAntesDepois .ad-card:hover { border-color: rgba(0,196,174,.4) !important; }
+#viewAntesDepois .ad-card-label { color: rgba(255,255,255,.6) !important; }
+#viewAntesDepois .ad-card-btn { background: rgba(255,255,255,.08) !important; color: rgba(255,255,255,.6) !important; }
+#viewAntesDepois .ad-eyebrow { color: #00c4ae !important; }
+#viewAntesDepois .ad-main-title { color: #fff !important; }
+#viewAntesDepois .ad-main-title em { color: #00c4ae !important; }
+#viewAntesDepois .ad-sub { color: rgba(255,255,255,.45) !important; }
+
+/* ══ BOTÕES VOLTAR — FORÇAR VISIBILIDADE ══ */
+#backToGalleriesBtn {
+  background: rgba(255,255,255,.1) !important;
+  border: 1.5px solid rgba(255,255,255,.3) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+#backToGalleriesBtn:hover {
+  background: rgba(0,196,174,.2) !important;
+  border-color: #00c4ae !important;
+  color: #00c4ae !important;
+}
+#mobileBackBtn,
+#mobileBackBtn .back-arrow,
+#mobileBackBtn * {
+  color: #00c4ae !important;
+}
+
+/* Botão Voltar à galeria no sala mode */
+#salaVoltarGaleriaBtn,
+.sala-back-btn,
+[onclick*="selectCat(null)"],
+[onclick*="closeGallery"],
+[title*="Voltar"] {
+  color: #fff !important;
+}
+
+/* Botão admin adicionar demo de música — garantir visível */
+.musica-demo-add {
+  display: flex !important;
+}
+body:not(.admin-mode) .musica-demo-add {
+  display: none !important;
+}
 
 </style>
 </head>
 <body>
 
-<!-- Admin badge -->
 <div id="adminBadge" onclick="toggleAdmin()" title="Admin">🔒</div>
 <div id="toastEl"></div>
 
-     MÚSICAS PERSONALIZADAS
-══════════════════════════════════════ -->
 <section class="musica-section" id="musicaSection">
   <div class="musica-inner">
 
@@ -637,9 +703,8 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   </div>
 </section>
 
-
 <!-- TELA PEDIDO DE MÚSICA -->
-<div id="musicaPedidoOverlay" style="display:none;">
+<div id="musicaPedidoOverlay">
   <div class="musica-pedido-box">
     <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
 
@@ -714,243 +779,24 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   </div>
 </div>
 
-<!-- LIGHTBOX -->
-<div id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()" ontouchstart="lbTouchStart(event)" ontouchmove="lbTouchMove(event)" ontouchend="lbTouchEnd(event)">
-  <button class="lightbox-nav" id="lbPrev" onclick="lbNavigate(-1)">‹</button>
-  <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    <div class="lb-views-info" id="lbViewsInfo">👁 0 views</div>
-    <img id="lightboxImg" src="" alt="">
-    <div class="lightbox-info">
-      <span class="lightbox-title" id="lightboxTitle"></span>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <button class="btn btn-ghost btn-sm" onclick="startSlideshow()" title="Modo apresentação" style="font-size:16px;padding:6px 10px;">▶</button>
-        <button class="btn btn-accent btn-sm lightbox-download-btn" onclick="downloadCurrentLb()">⬇ Download</button>
-      </div>
+<div id="salaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
+  <div style="background:var(--surface);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.4);border:1px solid var(--border2);">
+    <div style="font-size:64px;">🎉</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);">Seleção enviada!</div>
+    <div style="font-size:15px;color:var(--muted);line-height:1.6;">
+      Suas <strong id="salaObrigadaN" style="color:var(--accent);">0</strong> fotos foram enviadas pelo WhatsApp.<br>
+      Entraremos em contato em breve para confirmar seu ensaio! 😊
     </div>
-    <div id="lbSwipeHint" class="lb-swipe-hint" style="display:none;">← deslize para navegar →</div>
-    <button id="lbBackBtn" onclick="closeLightbox()" style="margin-top:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;">← Voltar</button>
-  </div>
-  <button class="lightbox-nav" id="lbNext" onclick="lbNavigate(1)">›</button>
-</div>
-
-<!-- UPLOAD MODAL -->
-
-
-<!-- MOVE BULK MODAL -->
-<div id="moveBulkOverlay" onclick="if(event.target===this)closeMoveBulk()">
-  <div class="move-bulk-modal">
-    <div class="move-bulk-head">
-      <span class="move-bulk-title">↗ Mover para galeria</span>
-      <button class="btn btn-ghost btn-sm" onclick="closeMoveBulk()">✕</button>
+    <div style="background:var(--accent2);border:1px solid var(--accent);border-radius:14px;padding:14px 20px;font-size:13px;color:var(--text);line-height:1.5;">
+      ⚡ Em menos de <strong>24 horas</strong> você recebe seu ensaio completo!
     </div>
-    <div class="move-bulk-body">
-      <div class="move-bulk-info" id="moveBulkInfo">Mover fotos selecionadas para:</div>
-      <!-- Grade de categorias em ordem alfabética -->
-      <!-- Busca -->
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:10px;padding:8px 12px;transition:border-color .15s;" id="moveBulkSearchWrap">
-        <span style="font-size:14px;color:var(--muted);">🔍</span>
-        <input id="moveBulkSearch" type="text" placeholder="Buscar galeria..." autocomplete="off"
-          style="flex:1;border:none;background:transparent;font-size:13px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;"
-          oninput="filterMoveBulkCats(this.value)"
-          onfocus="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--accent)'"
-          onblur="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--border2)'">
-      </div>
-      <div class="move-bulk-cats-grid" id="moveBulkCatsGrid"></div>
-      <!-- Input oculto para guardar seleção -->
-      <input type="hidden" id="moveBulkSel" value="">
-      <div class="move-bulk-newcat" id="moveBulkNewCatRow" style="display:none;">
-        <input id="moveBulkNewCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key==='Enter')moveBulkAddCat()">
-        <button class="btn btn-accent btn-sm" onclick="moveBulkAddCat()">＋ Criar</button>
-      </div>
-      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova galeria</button>
-    </div>
-    <div class="move-bulk-footer">
-      <button class="btn btn-ghost" onclick="closeMoveBulk()">Cancelar</button>
-      <button class="btn btn-primary" onclick="confirmMoveBulk()">Mover →</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- CAT MANAGER MODAL -->
-<div id="catManagerOverlay" onclick="if(event.target===this)closeCatManager()" class="">
-  <div class="cat-manager-modal">
-    <div class="cat-manager-head">
-      <span class="cat-manager-title">Gerenciar Galerias</span>
-      <button class="btn btn-ghost btn-sm" onclick="closeCatManager()">✕ Fechar</button>
-    </div>
-    <div class="cat-manager-body">
-      <!-- Nova galeria -->
-      <div class="new-cat-form">
-        <input id="newCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key===&#39;Enter&#39;)addCat()">
-        <button class="btn btn-accent btn-sm" onclick="addCat()">＋ Criar</button>
-      </div>
-      <div class="cat-list-divider"></div>
-      <div class="cat-manager-list-title">Galerias existentes</div>
-      <div id="catManagerList">
-      <div class="cat-row" id="catrow-c1777586793106">
-        <input class="cat-row-name" type="text" value="Animais" oninput="showSaveBtn(&#39;c1777586793106&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777586793106&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">1 foto</span>
-        <button class="cat-row-save" id="save-c1777586793106" onclick="saveCatName(&#39;c1777586793106&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c1777586793106&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c5">
-        <input class="cat-row-name" type="text" value="Aniversário" oninput="showSaveBtn(&#39;c5&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c5&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">5 fotos</span>
-        <button class="cat-row-save" id="save-c5" onclick="saveCatName(&#39;c5&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c5&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c6">
-        <input class="cat-row-name" type="text" value="Casamento" oninput="showSaveBtn(&#39;c6&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c6&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">0 fotos</span>
-        <button class="cat-row-save" id="save-c6" onclick="saveCatName(&#39;c6&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c6&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c4">
-        <input class="cat-row-name" type="text" value="Cinemático" oninput="showSaveBtn(&#39;c4&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c4&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">0 fotos</span>
-        <button class="cat-row-save" id="save-c4" onclick="saveCatName(&#39;c4&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c4&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c1">
-        <input class="cat-row-name" type="text" value="Executivas Feminino" oninput="showSaveBtn(&#39;c1&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">18 fotos</span>
-        <button class="cat-row-save" id="save-c1" onclick="saveCatName(&#39;c1&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c1&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c2">
-        <input class="cat-row-name" type="text" value="Executivas Masculino" oninput="showSaveBtn(&#39;c2&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c2&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">34 fotos</span>
-        <button class="cat-row-save" id="save-c2" onclick="saveCatName(&#39;c2&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c2&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c1777515636960">
-        <input class="cat-row-name" type="text" value="Familia" oninput="showSaveBtn(&#39;c1777515636960&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777515636960&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">7 fotos</span>
-        <button class="cat-row-save" id="save-c1777515636960" onclick="saveCatName(&#39;c1777515636960&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c1777515636960&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c3">
-        <input class="cat-row-name" type="text" value="Fantasy" oninput="showSaveBtn(&#39;c3&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c3&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">0 fotos</span>
-        <button class="cat-row-save" id="save-c3" onclick="saveCatName(&#39;c3&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c3&#39;)" title="Excluir galeria">🗑</button>
-      </div>
-      <div class="cat-row" id="catrow-c7">
-        <input class="cat-row-name" type="text" value="Infantil" oninput="showSaveBtn(&#39;c7&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c7&#39;)" title="Clique para editar o nome">
-        <span class="cat-row-count">0 fotos</span>
-        <button class="cat-row-save" id="save-c7" onclick="saveCatName(&#39;c7&#39;)">Salvar</button>
-        <button class="cat-row-del" onclick="deleteCat(&#39;c7&#39;)" title="Excluir galeria">🗑</button>
-      </div></div>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">✓ Modo admin ativado!</div>
-
-<!-- MOVE PHOTO MODAL -->
-<div id="moveOverlay" onclick="if(event.target===this)closeMoveModal()">
-  <div class="move-modal">
-    <div class="move-modal-head">
-      <span class="move-modal-title">↗ Mover Foto</span>
-      <button class="btn btn-ghost btn-sm" onclick="closeMoveModal()">✕ Fechar</button>
-    </div>
-    <div class="move-modal-body">
-      <div class="move-preview-wrap">
-        <img id="movePreviewImg" src="./IA Foto Studio — Vitrine de Referências_files/IA Foto Studio — Vitrine de Referências.html" alt="">
-        <span class="move-preview-label" id="movePreviewLabel"></span>
-      </div>
-      <div>
-        <div class="field-label">Mover para a galeria</div>
-        <select id="moveCatSel" class="select-field"></select>
-      </div>
-    </div>
-    <div class="move-modal-footer">
-      <button class="btn btn-ghost" onclick="closeMoveModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="confirmMove()">↗ Mover</button>
-    </div>
-  </div>
-</div>
-
-<!-- PASTE OVERLAY -->
-<div id="pasteOverlay" onclick="if(event.target===this)closePasteOverlay()" class="">
-  <div class="paste-modal">
-    <div class="paste-modal-head">
-      <span class="paste-modal-title">📋 Colar Imagem</span>
-      <button class="btn btn-ghost btn-sm" onclick="closePasteOverlay()">✕ Fechar</button>
-    </div>
-    <div class="paste-modal-body">
-      <div class="paste-hint-bar" id="pasteHintBar">
-        <span class="paste-hint-icon">⌨</span>
-        <span>Pressione <kbd>Ctrl+V</kbd> para colar a imagem</span>
-      </div>
-      <div style="text-align:center;margin:8px 0 0;">
-        <button class="btn btn-ghost btn-sm" onclick="document.getElementById(&#39;pasteFileInput&#39;).click()" style="font-size:12px;gap:6px;">
-          📁 Selecionar arquivo (mobile)
-        </button>
-        <input type="file" id="pasteFileInput" accept="image/*" style="display:none" onchange="pasteFromFile(this.files[0]);this.value=&#39;&#39;">
-      </div>
-      <div class="paste-preview-wrap" id="pastePreviewWrap" style="display:none">
-        <img id="pastePreviewImg" src="https://rciannace.github.io/index.html/IafotoStudio.html" alt="Preview">
-        <button class="paste-clear-btn" onclick="clearPastePreview()" title="Remover">✕</button>
-      </div>
-      <div>
-        <div class="field-label">Galeria de destino</div>
-        <select id="pasteCatSel" class="select-field"><option value="">— Sem galeria —</option><option value="c1">Executivas Feminino</option><option value="c2">Executivas Masculino</option><option value="c3">Fantasy</option><option value="c4">Cinemático</option><option value="c5">Aniversário</option><option value="c6">Casamento</option><option value="c7">Infantil</option><option value="c1777515636960">Familia</option><option value="c1777586793106">Animais</option></select>
-      </div>
-    </div>
-    <div class="paste-modal-footer">
-      <button class="btn btn-ghost" onclick="closePasteOverlay()">Cancelar</button>
-      <button class="btn btn-primary" id="pasteConfirmBtn" onclick="confirmPaste()" disabled="">Salvar foto</button>
-    </div>
-  </div>
-</div>
-
-<!-- PASTE HOTKEY HINT (floating) -->
-<div class="paste-fab admin-only" id="pasteFab" onclick="openPasteOverlay()" title="Colar imagem (Ctrl+V)">
-  📋
-  <span class="paste-fab-label">Ctrl+V</span>
-</div>
-
-<!-- BULK SELECT BAR -->
-<div id="bulkBar">
-  <span id="bulkCount">0 fotos selecionadas</span>
-  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;" onclick="selectAll()">☑ Todas</button>
-  <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
-  <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
-  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
-</div>
-
-<!-- PAINEL DE PEDIDOS -->
-<div id="pedidosOverlay">
-  <div class="pedidos-box">
-    <div class="pedidos-head">
-      <div class="pedidos-title">📋 Pedidos</div>
-      <button onclick="fecharPedidos()" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
-    </div>
-    <div class="pedidos-list" id="pedidosList">
-      <div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- OBRIGADA MÚSICA -->
-<div id="salaObrigadaMusicaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
-  <div style="background:#1a1a1f;border:1px solid rgba(255,255,255,.1);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.5);">
-    <div style="font-size:64px;">🎵</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#e84400;">Pedido enviado!</div>
-    <div style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;">
-      Seu pedido foi enviado pelo WhatsApp.<br>Em breve entraremos em contato!
-    </div>
-    <button onclick="document.getElementById('salaObrigadaMusicaOverlay').style.display='none'" style="padding:14px 32px;background:#e84400;color:#fff;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;cursor:pointer;">
-      ✓ Fechar
+    <button onclick="fecharSalaObrigada()" style="width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
+      Fechar ✓
     </button>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════
      MODAL UPLOAD DE MÚSICA
      ══════════════════════════════════════════════════════ -->
 <style>
@@ -1039,9 +885,8 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
     </div>
   </div>
 </div>
-</body></html>
 
-<!-- Firebase -->
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
@@ -1058,46 +903,38 @@ body:not(.admin-mode) .musica-demo-add { display: none !important; }
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  window._fbDb     = db;
-  window._fbDoc    = doc;
-  window._fbGetDoc = getDoc;
-  window._fbSetDoc = setDoc;
+  // Expõe para o código global
+  window._fbDb      = db;
+  window._fbDoc     = doc;
+  window._fbGetDoc  = getDoc;
+  window._fbSetDoc  = setDoc;
+  window._fbReady   = true;
+  window.dispatchEvent(new Event('firebase-ready'));
 
-  try {
-    const snap = await getDoc(doc(db, 'vitrine', 'data'));
-    if (snap.exists()) {
-      const data = snap.data();
-      if (data.musicaDemos && data.musicaDemos.length) {
-        window._musicaDemosFromFb = data.musicaDemos;
-      }
-      if (data.pricing) {
-        localStorage.setItem('iafotostudio_pricing', JSON.stringify(data.pricing));
-      }
-    }
-  } catch(e) { console.warn('Firebase load error:', e); }
-
-  window._fbReady = true;
-  window.dispatchEvent(new CustomEvent('firebase-ready'));
+  // Chama initApp daqui — garante que Firebase já está pronto
+  // (módulos ES6 sempre executam após scripts normais)
+  if (typeof initApp === 'function') {
+    initApp();
+  } else {
+    window.addEventListener('DOMContentLoaded', () => initApp());
+  }
 </script>
 
 <script>
-// Carrega dados do Firebase quando estiver pronto
+const CLOUDINARY_CLOUD  = 'dftsx4wv0';
+const CLOUDINARY_PRESET = 'ia_foto_studio';
+const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
+
 window.addEventListener('firebase-ready', () => {
-  if (window._musicaDemosFromFb && window._musicaDemosFromFb.length) {
+  if (window._musicaDemosFromFb) {
     musicaDemos = window._musicaDemosFromFb;
     localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
     renderMusicaDemos();
   }
 });
 
-const CLOUDINARY_CLOUD  = 'dftsx4wv0';
-const CLOUDINARY_PRESET = 'ia_foto_studio';
-const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
-
-// ── ADMIN ──
 let adminMode = false;
 const ADMIN_PASSWORD = 'rciannace';
-
 function toggleAdmin() {
   if (adminMode) {
     adminMode = false;
@@ -1118,7 +955,6 @@ function toggleAdmin() {
   }
 }
 
-// ── TOAST ──
 let _toastTimer;
 function toast(msg, dur=3000) {
   const el = document.getElementById('toastEl');
@@ -1127,7 +963,6 @@ function toast(msg, dur=3000) {
   _toastTimer = setTimeout(() => el.style.display = 'none', dur);
 }
 
-// ── PERSIST FIREBASE ──
 async function persistBg() {
   if (!window._fbReady) return;
   try {
@@ -1148,6 +983,7 @@ function loadPricing() {
   return [];
 }
 
+// ══════════════════════════════════════
 //  MÚSICAS PERSONALIZADAS
 // ══════════════════════════════════════
 
@@ -1526,69 +1362,7 @@ function abrirSalaObrigadaMusica(nome) {
   document.getElementById('salaObrigadaOverlay').classList.add('open');
 }
 
-// ── Forçar sync dos adPairs no Firebase ──
-async function forceSyncAdPairs() {
-  const btn = document.getElementById('syncAdBtn');
-  if (btn) btn.textContent = '⏳ Salvando...';
-  
-  try {
-    const db = window._fbDb;
-    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
-    const current = snap.exists() ? snap.data() : {};
-    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
-      ...current,
-      adPairs: adPairs,
-      updatedAt: Date.now()
-    });
-    if (btn) btn.textContent = '✓ Salvo!';
-    toast('✓ Antes & Depois sincronizado! Agora aparece para todos.');
-    setTimeout(() => { if (btn) btn.textContent = '🔄 Sync A/D'; }, 3000);
-  } catch(e) {
-    if (btn) btn.textContent = '✗ Erro';
-    toast('⚠ Erro ao sincronizar: ' + e.message);
-  }
-}
 
-// ── URL param: ?sala=1 — com verificação de expiração ──
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('sala') !== '1') return;
-
-  // Verificar expiração do token
-  const token = params.get('t');
-  if (token) {
-    try {
-      const expiry = parseInt(atob(token));
-      if (Date.now() > expiry) {
-        // Link expirado — mostrar aviso
-        const _waitExp = setInterval(function() {
-          if (document.body) {
-            clearInterval(_waitExp);
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(5,5,10,.97);display:flex;align-items:center;justify-content:center;padding:28px;';
-            overlay.innerHTML = '<div style="background:#1a1a2e;border-radius:24px;padding:40px 32px;text-align:center;max-width:360px;border:1px solid rgba(255,255,255,.1);">' +
-              '<div style="font-size:48px;margin-bottom:16px;">⏰</div>' +
-              '<div style="font-family:Bebas Neue,sans-serif;font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:12px;">Link Expirado</div>' +
-              '<div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:24px;">Este link de seleção expirou.<br>Entre em contato para receber um novo link.</div>' +
-              '<a href="https://wa.me/5511926029852" target="_blank" style="display:block;padding:14px;background:#00c4ae;color:#fff;border-radius:12px;font-size:16px;text-decoration:none;font-weight:700;">💬 Solicitar novo link</a>' +
-              '</div>';
-            document.body.appendChild(overlay);
-          }
-        }, 100);
-        return;
-      }
-    } catch(e) {}
-  }
-
-  const _salaInterval = setInterval(function() {
-    if (typeof openSalaEntrada === 'function' &&
-        document.getElementById('salaEntradaOverlay')) {
-      clearInterval(_salaInterval);
-      openSalaEntrada();
-    }
-  }, 100);
-  setTimeout(function() { clearInterval(_salaInterval); }, 10000);
-})();
 </script>
 
 </body>
