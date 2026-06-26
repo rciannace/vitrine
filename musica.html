@@ -621,11 +621,154 @@ body:not(.admin-mode) .musica-demo-add {
   display: none !important;
 }
 
+
+/* ══ ADMIN LOCK BTN ══ */
+#adminLockBtn {
+  position: fixed; bottom: 20px; left: 20px; z-index: 9999;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.5); font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; outline: none;
+}
+#adminLockBtn:hover { background: rgba(255,255,255,.15); color: #fff; }
+#adminLockBtn.admin-active { background: rgba(232,68,0,.25); border-color: #e84400; color: #e84400; }
+
+/* ══ ADMIN MODAL ══ */
+#adminModal {
+  display: none; position: fixed; inset: 0; z-index: 9900;
+  background: rgba(5,5,10,.85); backdrop-filter: blur(14px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#adminModal.open { display: flex; }
+.admin-modal-box {
+  background: #1a1a1f; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 24px; width: min(440px, 96vw);
+  padding: 40px 32px 32px;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  display: flex; flex-direction: column; gap: 20px;
+  text-align: center; align-items: center;
+  animation: mpop .22s cubic-bezier(.34,1.46,.64,1) both;
+}
+.admin-modal-icon { font-size: 48px; line-height: 1; }
+.admin-modal-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  letter-spacing: 2px; color: #fff;
+}
+.admin-modal-subtitle { font-size: 13px; color: rgba(255,255,255,.45); margin-top: -10px; }
+.admin-pin-wrap { display: flex; justify-content: center; gap: 8px; width: 100%; }
+.admin-pin-wrap input {
+  flex: 1; min-width: 0; max-width: 48px; height: 58px;
+  text-align: center; font-family: 'DM Mono', monospace;
+  font-size: 22px; font-weight: 700;
+  border: 2px solid rgba(255,255,255,.15); border-radius: 12px;
+  background: rgba(255,255,255,.07); color: #fff; outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  -webkit-text-security: disc;
+}
+.admin-pin-wrap input:focus { border-color: #e84400; box-shadow: 0 0 0 3px rgba(232,68,0,.2); }
+.admin-pin-wrap input.error { border-color: #e03050; animation: pinShake .3s ease; }
+@keyframes pinShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+.admin-modal-cancel {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.5); border-radius: 10px; padding: 10px 24px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  transition: all .15s;
+}
+.admin-modal-cancel:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+/* ══ PLAYER DE MÚSICA MELHORADO ══ */
+.musica-demo-card {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px; padding: 20px 18px 14px; transition: all .2s; cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.musica-demo-card:hover {
+  background: rgba(232,68,0,.08); border-color: rgba(232,68,0,.3);
+}
+.musica-demo-card.playing {
+  background: rgba(232,68,0,.12); border-color: rgba(232,68,0,.5);
+  box-shadow: 0 0 0 1px rgba(232,68,0,.2), 0 8px 32px rgba(232,68,0,.15);
+}
+.musica-demo-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.musica-demo-play {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, #c40060, #e84400);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; transition: transform .15s;
+  box-shadow: 0 4px 16px rgba(232,68,0,.35);
+}
+.musica-demo-card:hover .musica-demo-play { transform: scale(1.08); }
+.musica-demo-card.playing .musica-demo-play { animation: playerPulse 2s ease-in-out infinite; }
+@keyframes playerPulse { 0%,100%{box-shadow:0 4px 16px rgba(232,68,0,.35)} 50%{box-shadow:0 4px 28px rgba(232,68,0,.6)} }
+.musica-demo-nome {
+  font-weight: 700; font-size: 15px; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.musica-demo-estilo { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 3px; }
+
+/* Barra de progresso arrastável */
+.musica-demo-progress-wrap {
+  margin-bottom: 10px; padding: 4px 0; cursor: pointer; position: relative;
+}
+.musica-demo-progress-bg {
+  height: 5px; background: rgba(255,255,255,.1); border-radius: 5px;
+  position: relative; overflow: hidden;
+}
+.musica-demo-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #c40060, #e84400);
+  border-radius: 5px; width: 0%; transition: width .3s linear;
+  pointer-events: none;
+}
+.musica-demo-progress-wrap:hover .musica-demo-progress-bg { height: 7px; }
+.musica-demo-progress-thumb {
+  position: absolute; top: 50%; right: -6px; transform: translateY(-50%);
+  width: 13px; height: 13px; border-radius: 50%;
+  background: #e84400; box-shadow: 0 0 8px rgba(232,68,0,.6);
+  opacity: 0; transition: opacity .15s;
+}
+.musica-demo-progress-wrap:hover .musica-demo-progress-thumb { opacity: 1; }
+.musica-demo-times {
+  display: flex; justify-content: space-between;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.3);
+  margin-top: 5px;
+}
+
+/* Onda animada */
+.musica-demo-wave { display: flex; align-items: center; gap: 2px; height: 28px; margin-top: 4px; }
+.musica-demo-wave-bar {
+  width: 3px; border-radius: 3px; background: rgba(232,68,0,.35); transition: background .2s;
+}
+.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.7); }
+.musica-demo-card.playing .musica-demo-wave-bar {
+  background: #e84400; animation: musicaBar .8s ease-in-out infinite;
+}
+@keyframes musicaBar { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.8)} }
+
 </style>
 </head>
 <body>
 
-<div id="adminBadge" onclick="toggleAdmin()" title="Admin">🔒</div>
+<button id="adminLockBtn" onclick="openAdminModal()" title="Acesso admin">🔒</button>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div id="adminModal" onclick="if(event.target===this)closeAdminModal()">
+  <div class="admin-modal-box">
+    <div class="admin-modal-icon" id="adminModalIcon">🔒</div>
+    <div class="admin-modal-title" id="adminModalTitle">Acesso Restrito</div>
+    <div class="admin-modal-subtitle" id="adminModalSubtitle">Digite a senha de administrador</div>
+    <div class="admin-pin-wrap" id="adminPinWrap">
+      <input type="password" maxlength="1" id="pin0" oninput="pinInput(0)" onkeydown="pinKey(event,0)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin1" oninput="pinInput(1)" onkeydown="pinKey(event,1)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin2" oninput="pinInput(2)" onkeydown="pinKey(event,2)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin3" oninput="pinInput(3)" onkeydown="pinKey(event,3)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin4" oninput="pinInput(4)" onkeydown="pinKey(event,4)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin5" oninput="pinInput(5)" onkeydown="pinKey(event,5)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin6" oninput="pinInput(6)" onkeydown="pinKey(event,6)" inputmode="text">
+    </div>
+    <button class="admin-modal-cancel" onclick="closeAdminModal()">Cancelar</button>
+  </div>
+</div>
 <div id="toastEl"></div>
 
 <section class="musica-section" id="musicaSection">
@@ -933,26 +1076,78 @@ window.addEventListener('firebase-ready', () => {
   }
 });
 
+// ── ADMIN PIN
+const ADMIN_PASS = '7dbe67753606f6ea3eb4ebb96043a0293d811ccf0a93361f93168f4b62e0f155';
 let adminMode = false;
-const ADMIN_PASSWORD = 'rciannace';
-function toggleAdmin() {
-  if (adminMode) {
-    adminMode = false;
-    document.body.classList.remove('admin-mode');
-    document.getElementById('adminBadge').textContent = '🔒';
-    toast('Modo admin desativado');
-  } else {
-    const pw = prompt('Senha admin:');
-    if (pw === ADMIN_PASSWORD) {
-      adminMode = true;
-      document.body.classList.add('admin-mode');
-      document.getElementById('adminBadge').textContent = '🔓';
-      toast('✓ Modo admin ativado');
-      renderMusicaDemos();
-    } else if (pw !== null) {
-      toast('❌ Senha incorreta');
-    }
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function openAdminModal() {
+  if (adminMode) { deactivateAdmin(); return; }
+  clearPinFields();
+  document.getElementById('adminModal').classList.add('open');
+  setTimeout(() => document.getElementById('pin0').focus(), 80);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('open');
+  clearPinFields();
+}
+
+function clearPinFields() {
+  for (let i = 0; i < 7; i++) {
+    const el = document.getElementById('pin' + i);
+    if (el) { el.value = ''; el.classList.remove('error'); }
   }
+}
+
+function pinInput(idx) {
+  const el = document.getElementById('pin' + idx);
+  el.classList.remove('error');
+  if (el.value.length === 1 && idx < 6) document.getElementById('pin' + (idx + 1)).focus();
+  if (idx === 6 && el.value.length === 1) checkAdminPin();
+}
+
+function pinKey(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('pin' + idx).value && idx > 0)
+    document.getElementById('pin' + (idx - 1)).focus();
+  if (e.key === 'Escape') closeAdminModal();
+}
+
+function checkAdminPin() {
+  let pin = '';
+  for (let i = 0; i < 7; i++) pin += document.getElementById('pin' + i).value;
+  sha256(pin).then(hash => {
+    if (hash === ADMIN_PASS) {
+      activateAdmin();
+    } else {
+      for (let i = 0; i < 7; i++) document.getElementById('pin' + i).classList.add('error');
+      toast('⛔ Senha incorreta');
+      setTimeout(() => { clearPinFields(); document.getElementById('pin0').focus(); }, 700);
+    }
+  });
+}
+
+function activateAdmin() {
+  adminMode = true;
+  document.body.classList.add('admin-mode');
+  const btn = document.getElementById('adminLockBtn');
+  btn.textContent = '🔓'; btn.classList.add('admin-active');
+  renderMusicaDemos();
+  closeAdminModal();
+  toast('✓ Modo admin ativado!');
+}
+
+function deactivateAdmin() {
+  adminMode = false;
+  document.body.classList.remove('admin-mode');
+  const btn = document.getElementById('adminLockBtn');
+  btn.textContent = '🔒'; btn.classList.remove('admin-active');
+  renderMusicaDemos();
+  toast('Modo admin desativado');
 }
 
 let _toastTimer;
@@ -1019,12 +1214,19 @@ function renderMusicaDemos() {
     ).join('');
     return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
       '<div class="musica-demo-top">' +
-        '<div class="musica-demo-play">▶</div>' +
+        '<div class="musica-demo-play" id="mdemo-play-' + i + '">▶</div>' +
         '<div class="musica-demo-info">' +
           '<div class="musica-demo-nome">' + d.nome + '</div>' +
-          '<div class="musica-demo-estilo">' + d.estilo + '</div>' +
+          '<div class="musica-demo-estilo">🎵 Música IA</div>' +
         '</div>' +
         (isAdmin ? '<button onclick="event.stopImmediatePropagation();deleteMusicaDemo(' + i + ')" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;z-index:10;position:relative;">✕</button>' : '') +
+      '</div>' +
+      '<div class="musica-demo-progress-wrap" id="mdemo-prog-' + i + '" onclick="event.stopPropagation();seekMusica(event,' + i + ')">' +
+        '<div class="musica-demo-progress-bg">' +
+          '<div class="musica-demo-progress-fill" id="mdemo-fill-' + i + '"></div>' +
+          '<div class="musica-demo-progress-thumb" id="mdemo-thumb-' + i + '"></div>' +
+        '</div>' +
+        '<div class="musica-demo-times"><span id="mdemo-cur-' + i + '">0:00</span><span id="mdemo-dur-' + i + '">0:00</span></div>' +
       '</div>' +
       '<div class="musica-demo-wave">' + bars + '</div>' +
     '</div>';
@@ -1063,6 +1265,21 @@ function musicaDemoCardClick(event, i) {
   toggleMusicaDemo(i);
 }
 
+function fmtTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec<10?'0':'') + sec;
+}
+
+function seekMusica(e, i) {
+  if (currentCard !== i || !currentAudio) return;
+  const wrap = document.getElementById('mdemo-prog-' + i);
+  const bg = wrap.querySelector('.musica-demo-progress-bg');
+  const rect = bg.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  currentAudio.currentTime = pct * currentAudio.duration;
+}
+
 function toggleMusicaDemo(i) {
   const demo = musicaDemos[i];
   if (!demo || !demo.url) return;
@@ -1074,6 +1291,8 @@ function toggleMusicaDemo(i) {
     currentAudio = null;
     currentCard = null;
     card.classList.remove('playing');
+    const playBtn = document.getElementById('mdemo-play-' + i);
+    if (playBtn) playBtn.textContent = '▶';
     card.querySelector('.musica-demo-play').textContent = '▶';
     return;
   }
@@ -1085,12 +1304,39 @@ function toggleMusicaDemo(i) {
   }
 
   const audio = new Audio(demo.url);
-  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir. Verifique o link.'));
-  audio.onended = () => { card.classList.remove('playing'); card.querySelector('.musica-demo-play').textContent = '▶'; currentAudio = null; currentCard = null; };
+  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir.'));
+
+  // Progresso em tempo real
+  audio.addEventListener('timeupdate', () => {
+    const fill  = document.getElementById('mdemo-fill-' + i);
+    const curEl = document.getElementById('mdemo-cur-' + i);
+    const durEl = document.getElementById('mdemo-dur-' + i);
+    if (fill && audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      fill.style.width = pct + '%';
+      const thumb = document.getElementById('mdemo-thumb-' + i);
+      if (thumb) { thumb.style.left = pct + '%'; thumb.style.right = 'auto'; }
+    }
+    if (curEl) curEl.textContent = fmtTime(audio.currentTime);
+    if (durEl && audio.duration) durEl.textContent = fmtTime(audio.duration);
+  });
+
+  audio.onended = () => {
+    card.classList.remove('playing');
+    const pb = document.getElementById('mdemo-play-' + i);
+    if (pb) pb.textContent = '▶';
+    const fill = document.getElementById('mdemo-fill-' + i);
+    if (fill) fill.style.width = '0%';
+    const curEl = document.getElementById('mdemo-cur-' + i);
+    if (curEl) curEl.textContent = '0:00';
+    currentAudio = null; currentCard = null;
+  };
+
   currentAudio = audio;
   currentCard = i;
   card.classList.add('playing');
-  card.querySelector('.musica-demo-play').textContent = '⏸';
+  const pb = document.getElementById('mdemo-play-' + i);
+  if (pb) pb.textContent = '⏸';
 }
 
 function adicionarMusicaDemo() {
