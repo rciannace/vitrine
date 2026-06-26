@@ -5533,10 +5533,12 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .musica-demo-progress-wrap:hover .musica-demo-progress-thumb { opacity: 1; }
 .musica-demo-times { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.3); margin-top: 5px; }
 /* Onda */
-.musica-demo-wave { display: flex; align-items: center; gap: 2px; height: 28px; margin-top: 4px; }
-.musica-demo-wave-bar { width: 3px; border-radius: 3px; background: rgba(232,68,0,.35); transition: background .2s; }
-.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.7); }
+.musica-demo-wave { display: flex; align-items: flex-end; gap: 3px; height: 48px; width: 100%; margin-top: 4px; }
+.musica-demo-wave-bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(232,68,0,.3); transition: background .2s, transform .2s; min-width: 3px; }
+.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.6); }
 .musica-demo-card.playing .musica-demo-wave-bar { background: #e84400; animation: musicaBar .8s ease-in-out infinite; }
+.musica-demo-card.playing .musica-demo-wave-bar:nth-child(odd) { animation-delay: .15s; }
+.musica-demo-card.playing .musica-demo-wave-bar:nth-child(3n) { animation-delay: .3s; }
 /* Admin: adicionar demo */
 .musica-demo-add {
   background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.15);
@@ -10197,10 +10199,11 @@ function renderMusicaDemos() {
   const isAdmin = document.body.classList.contains('admin-mode');
 
   const demosHtml = musicaDemos.map((d, i) => {
-    const heights = [18,32,24,40,28,36,20,44,30,26,38,22,42,16,34];
-    const bars = heights.map(h =>
-      '<div class="musica-demo-wave-bar" style="height:' + h + 'px;"></div>'
-    ).join('');
+    const seed = i * 7;
+    const bars = Array.from({length: 32}, (_, j) => {
+      const h = 25 + Math.round(Math.abs(Math.sin((j + seed) * 0.55) * 75));
+      return '<div class="musica-demo-wave-bar" style="height:' + h + '%;animation-delay:' + (j * 0.04).toFixed(2) + 's"></div>';
+    }).join('');
     return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
       '<div class="musica-demo-top">' +
         '<div class="musica-demo-play" id="mdemo-play-' + i + '">▶</div>' +
