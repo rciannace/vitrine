@@ -5501,51 +5501,42 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   gap: 12px; margin-bottom: 32px;
 }
 .musica-demo-card {
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 16px; padding: 18px 16px; transition: all .2s; cursor: pointer;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px; padding: 20px 18px 14px; transition: all .2s; cursor: pointer;
   position: relative; overflow: hidden;
 }
-.musica-demo-card:hover {
-  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.4); transform: translateY(-3px);
+.musica-demo-card:hover { background: rgba(232,68,0,.08); border-color: rgba(232,68,0,.3); }
+.musica-demo-card.playing {
+  background: rgba(232,68,0,.12); border-color: rgba(232,68,0,.5);
+  box-shadow: 0 0 0 1px rgba(232,68,0,.2), 0 8px 32px rgba(232,68,0,.15);
 }
-.musica-demo-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--musica-grad); opacity: 0; transition: opacity .2s;
-}
-.musica-demo-card:hover::before { opacity: .05; }
-.musica-demo-top {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-}
+.musica-demo-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .musica-demo-play {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--musica-grad);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, #c40060, #e84400);
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0; transition: transform .15s;
+  font-size: 16px; flex-shrink: 0; transition: transform .15s;
+  box-shadow: 0 4px 16px rgba(232,68,0,.35);
 }
-.musica-demo-card:hover .musica-demo-play { transform: scale(1.1); }
+.musica-demo-card:hover .musica-demo-play { transform: scale(1.08); }
+.musica-demo-card.playing .musica-demo-play { animation: playerPulse 2s ease-in-out infinite; }
+@keyframes playerPulse { 0%,100%{box-shadow:0 4px 16px rgba(232,68,0,.35)} 50%{box-shadow:0 4px 28px rgba(232,68,0,.6)} }
 .musica-demo-info { flex: 1; min-width: 0; }
-.musica-demo-nome {
-  font-weight: 700; font-size: 14px; color: #fff;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.musica-demo-estilo {
-  font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px;
-}
-/* Mini barras de onda */
-.musica-demo-wave {
-  display: flex; align-items: center; gap: 2px; height: 24px;
-}
-.musica-demo-wave-bar {
-  width: 3px; border-radius: 3px;
-  background: rgba(232,68,0,.4);
-  transition: background .2s;
-}
-.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.8); }
-.musica-demo-card.playing .musica-demo-wave-bar {
-  background: #e84400;
-  animation: musicaBar .8s ease-in-out infinite;
-}
-.musica-demo-card.playing .musica-demo-play { background: linear-gradient(135deg, #c40060, #e84400); }
+.musica-demo-nome { font-weight: 700; font-size: 15px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.musica-demo-estilo { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 3px; }
+/* Barra de progresso */
+.musica-demo-progress-wrap { margin-bottom: 10px; padding: 4px 0; cursor: pointer; position: relative; }
+.musica-demo-progress-bg { height: 5px; background: rgba(255,255,255,.1); border-radius: 5px; position: relative; overflow: hidden; }
+.musica-demo-progress-fill { height: 100%; background: linear-gradient(90deg, #c40060, #e84400); border-radius: 5px; width: 0%; transition: width .3s linear; pointer-events: none; }
+.musica-demo-progress-wrap:hover .musica-demo-progress-bg { height: 7px; }
+.musica-demo-progress-thumb { position: absolute; top: 50%; right: -6px; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; background: #e84400; box-shadow: 0 0 8px rgba(232,68,0,.6); opacity: 0; transition: opacity .15s; }
+.musica-demo-progress-wrap:hover .musica-demo-progress-thumb { opacity: 1; }
+.musica-demo-times { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.3); margin-top: 5px; }
+/* Onda */
+.musica-demo-wave { display: flex; align-items: center; gap: 2px; height: 28px; margin-top: 4px; }
+.musica-demo-wave-bar { width: 3px; border-radius: 3px; background: rgba(232,68,0,.35); transition: background .2s; }
+.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.7); }
+.musica-demo-card.playing .musica-demo-wave-bar { background: #e84400; animation: musicaBar .8s ease-in-out infinite; }
 /* Admin: adicionar demo */
 .musica-demo-add {
   background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.15);
@@ -10212,12 +10203,19 @@ function renderMusicaDemos() {
     ).join('');
     return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
       '<div class="musica-demo-top">' +
-        '<div class="musica-demo-play">▶</div>' +
+        '<div class="musica-demo-play" id="mdemo-play-' + i + '">▶</div>' +
         '<div class="musica-demo-info">' +
           '<div class="musica-demo-nome">' + d.nome + '</div>' +
-          '<div class="musica-demo-estilo">' + d.estilo + '</div>' +
+          '<div class="musica-demo-estilo">🎵 Música IA</div>' +
         '</div>' +
         (isAdmin ? '<button onclick="event.stopImmediatePropagation();deleteMusicaDemo(' + i + ')" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;z-index:10;position:relative;">✕</button>' : '') +
+      '</div>' +
+      '<div class="musica-demo-progress-wrap" id="mdemo-prog-' + i + '" onclick="event.stopPropagation();seekMusica(event,' + i + ')">' +
+        '<div class="musica-demo-progress-bg">' +
+          '<div class="musica-demo-progress-fill" id="mdemo-fill-' + i + '"></div>' +
+          '<div class="musica-demo-progress-thumb" id="mdemo-thumb-' + i + '"></div>' +
+        '</div>' +
+        '<div class="musica-demo-times"><span id="mdemo-cur-' + i + '">0:00</span><span id="mdemo-dur-' + i + '">0:00</span></div>' +
       '</div>' +
       '<div class="musica-demo-wave">' + bars + '</div>' +
     '</div>';
@@ -10256,6 +10254,20 @@ function musicaDemoCardClick(event, i) {
   toggleMusicaDemo(i);
 }
 
+function fmtTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec<10?'0':'') + sec;
+}
+
+function seekMusica(e, i) {
+  if (currentCard !== i || !currentAudio) return;
+  const bg = document.getElementById('mdemo-prog-' + i).querySelector('.musica-demo-progress-bg');
+  const rect = bg.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  currentAudio.currentTime = pct * currentAudio.duration;
+}
+
 function toggleMusicaDemo(i) {
   const demo = musicaDemos[i];
   if (!demo || !demo.url) return;
@@ -10278,12 +10290,35 @@ function toggleMusicaDemo(i) {
   }
 
   const audio = new Audio(demo.url);
-  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir. Verifique o link.'));
-  audio.onended = () => { card.classList.remove('playing'); card.querySelector('.musica-demo-play').textContent = '▶'; currentAudio = null; currentCard = null; };
+  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir.'));
+  audio.addEventListener('timeupdate', () => {
+    const fill = document.getElementById('mdemo-fill-' + i);
+    const curEl = document.getElementById('mdemo-cur-' + i);
+    const durEl = document.getElementById('mdemo-dur-' + i);
+    if (fill && audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      fill.style.width = pct + '%';
+      const thumb = document.getElementById('mdemo-thumb-' + i);
+      if (thumb) { thumb.style.left = pct + '%'; thumb.style.right = 'auto'; }
+    }
+    if (curEl) curEl.textContent = fmtTime(audio.currentTime);
+    if (durEl && audio.duration) durEl.textContent = fmtTime(audio.duration);
+  });
+  audio.onended = () => {
+    card.classList.remove('playing');
+    const pb = document.getElementById('mdemo-play-' + i);
+    if (pb) pb.textContent = '▶';
+    const fill = document.getElementById('mdemo-fill-' + i);
+    if (fill) fill.style.width = '0%';
+    const curEl = document.getElementById('mdemo-cur-' + i);
+    if (curEl) curEl.textContent = '0:00';
+    currentAudio = null; currentCard = null;
+  };
   currentAudio = audio;
   currentCard = i;
   card.classList.add('playing');
-  card.querySelector('.musica-demo-play').textContent = '⏸';
+  const pb = document.getElementById('mdemo-play-' + i);
+  if (pb) pb.textContent = '⏸';
 }
 
 function adicionarMusicaDemo() {
