@@ -5550,6 +5550,38 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 body:not(.admin-mode) .musica-demo-add { display: none !important; }
 
 /* CTA */
+
+/* ══ ADMIN EDIÇÃO INLINE MÚSICA ══ */
+body.admin-mode .editable-field { cursor: pointer; border-bottom: 1px dashed rgba(232,68,0,.4); }
+body.admin-mode .editable-field:hover { border-color: #e84400; }
+
+.musica-preco-add {
+  border: 2px dashed rgba(255,255,255,.15) !important;
+  background: rgba(255,255,255,.03) !important;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; min-height: 180px;
+  transition: all .2s;
+}
+.musica-preco-add:hover { border-color: rgba(232,68,0,.5) !important; color: #e84400; }
+.musica-preco-del {
+  display: none; position: absolute; top: 10px; right: 10px;
+  background: rgba(224,48,80,.15); border: 1px solid rgba(224,48,80,.3);
+  color: #e03050; border-radius: 6px; width: 26px; height: 26px;
+  font-size: 13px; cursor: pointer; align-items: center; justify-content: center;
+  transition: all .15s; z-index: 10;
+}
+body.admin-mode .musica-preco-del { display: flex; }
+.musica-preco-del:hover { background: rgba(224,48,80,.35); }
+.musica-preco-card { position: relative; }
+
+.musica-admin-edit-hint {
+  display: none; text-align: center; font-size: 11px;
+  color: rgba(232,68,0,.6); margin-bottom: 8px;
+  font-family: 'DM Mono', monospace; letter-spacing: 1px;
+}
+body.admin-mode .musica-admin-edit-hint { display: block; }
+
 .musica-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .musica-cta-btn {
   background: var(--musica-grad); color: #fff; border: none;
@@ -6460,29 +6492,8 @@ body:not(.admin-mode) .musica-demo-add {
     </div>
 
     <!-- Cards de preço com botão WhatsApp -->
-    <div class="musica-precos">
-      <div class="musica-preco-card" onclick="pedirMusica('Solo - R$49,90')">
-        <div class="musica-preco-icon">🎵</div>
-        <div class="musica-preco-nome">MÚSICA SOLO</div>
-        <div class="musica-preco-val"><sup>R$</sup>49<span>,90</span></div>
-        <div class="musica-preco-desc">1 música única com vocal e letra<br>no estilo que você escolher</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Solo - R$49,90')">💬 Pedir no WhatsApp</button>
-      </div>
-      <div class="musica-preco-card destaque" onclick="pedirMusica('Duo - R$89,90')">
-        <div class="musica-preco-icon">🎶</div>
-        <div class="musica-preco-nome">DUO</div>
-        <div class="musica-preco-val"><sup>R$</sup>89<span>,90</span></div>
-        <div class="musica-preco-desc">2 músicas únicas com vocal e letra<br>estilos diferentes para cada uma</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Duo - R$89,90')">💬 Pedir no WhatsApp</button>
-      </div>
-      <div class="musica-preco-card" onclick="pedirMusica('Premium - R$149,90')">
-        <div class="musica-preco-icon">👑</div>
-        <div class="musica-preco-nome">PREMIUM</div>
-        <div class="musica-preco-val"><sup>R$</sup>149<span>,90</span></div>
-        <div class="musica-preco-desc">3 músicas únicas com vocal e letra<br>cada uma com tema e estilo próprios</div>
-        <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('Premium - R$149,90')">💬 Pedir no WhatsApp</button>
-      </div>
-    </div>
+    <div class="musica-admin-edit-hint">✏️ MODO ADMIN — CLIQUE EM QUALQUER TEXTO PARA EDITAR</div>
+    <div class="musica-precos" id="musicaPrecosGrid"></div>
 
     <!-- Galeria de demos -->
     <div class="musica-demos-title">🎧 OUÇA EXEMPLOS</div>
@@ -10169,6 +10180,113 @@ function fecharSalaObrigada() {
 setTimeout(atualizarBadgePedidos, 500);
 
 
+
+// ══ PACOTES DE MÚSICA EDITÁVEIS ══
+const MUSICA_PACOTES_KEY = 'iafoto_musica_pacotes';
+const PACOTES_DEFAULT = [
+  { id:'solo',    icon:'🎵', nome:'MÚSICA SOLO',  preco:'49,90',  desc:'1 música única com vocal e letra<br>no estilo que você escolher',    destaque: false },
+  { id:'duo',     icon:'🎶', nome:'DUO',           preco:'89,90',  desc:'2 músicas únicas com vocal e letra<br>estilos diferentes para cada uma', destaque: true  },
+  { id:'premium', icon:'👑', nome:'PREMIUM',       preco:'149,90', desc:'3 músicas únicas com vocal e letra<br>cada uma com tema e estilo próprios', destaque: false },
+];
+let musicaPacotes = [];
+
+function loadMusicaPacotes() {
+  try { const r = localStorage.getItem(MUSICA_PACOTES_KEY); if (r) return JSON.parse(r); } catch(e) {}
+  return JSON.parse(JSON.stringify(PACOTES_DEFAULT));
+}
+function saveMusicaPacotes() {
+  localStorage.setItem(MUSICA_PACOTES_KEY, JSON.stringify(musicaPacotes));
+  persistMusicaPacotesIndex();
+}
+async function persistMusicaPacotesIndex() {
+  if (!window._fbReady) return;
+  try {
+    const snap = await _fbGetDoc(_fbDoc(_fbDb, 'vitrine', 'data'));
+    const current = snap.exists() ? snap.data() : {};
+    await _fbSetDoc(_fbDoc(_fbDb, 'vitrine', 'data'), { ...current, musicaPacotes, updatedAt: Date.now() });
+  } catch(e) {}
+}
+function renderMusicaPacotes() {
+  const grid = document.getElementById('musicaPrecosGrid');
+  if (!grid) return;
+  const addBtn = adminMode ? `
+    <div class="musica-preco-card musica-preco-add" onclick="adminAddPacote()">
+      <div style="font-size:32px;margin-bottom:8px;">＋</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);">Adicionar pacote</div>
+    </div>` : '';
+
+  grid.innerHTML = musicaPacotes.map((p, i) => `
+    <div class="musica-preco-card ${p.destaque ? 'destaque' : ''}" onclick="pedirMusica('${p.nome} - R$${p.preco}')">
+      ${adminMode ? `<button class="musica-preco-del" onclick="event.stopPropagation();adminDelPacote(${i})" title="Remover">✕</button>` : ''}
+      <div class="musica-preco-icon editable-field" onclick="adminEditMusicaField(event,${i},'icon')">${p.icon}</div>
+      <div class="musica-preco-nome editable-field" onclick="adminEditMusicaField(event,${i},'nome')">${p.nome}</div>
+      <div class="musica-preco-val"><sup>R$</sup><span class="editable-field" onclick="adminEditMusicaField(event,${i},'preco')">${p.preco}</span></div>
+      <div class="musica-preco-desc editable-field" onclick="adminEditMusicaField(event,${i},'desc')">${p.desc}</div>
+      <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('${p.nome} - R$${p.preco}')">💬 Pedir no WhatsApp</button>
+    </div>
+  `).join('') + addBtn;
+}
+function adminAddPacote() {
+  if (!adminMode) return;
+  const nome = prompt('Nome do pacote:', 'NOVO PACOTE');
+  if (!nome) return;
+  const preco = prompt('Preço (ex: 99,90):', '99,90');
+  if (!preco) return;
+  const desc = prompt('Descrição (\n = quebra de linha):', '1 música única personalizada');
+  const icon = prompt('Emoji do ícone:', '🎵');
+  musicaPacotes.push({ id: 'p' + Date.now(), icon: icon || '🎵', nome: nome.trim(), preco: preco.trim(), desc: (desc || '').replace(/\n/g, '<br>'), destaque: false });
+  saveMusicaPacotes();
+  renderMusicaPacotes();
+  toast('✅ Pacote adicionado!');
+}
+
+function adminDelPacote(i) {
+  if (!adminMode) return;
+  if (!confirm('Remover o pacote "' + musicaPacotes[i].nome + '"?')) return;
+  musicaPacotes.splice(i, 1);
+  saveMusicaPacotes();
+  renderMusicaPacotes();
+  toast('🗑 Pacote removido.');
+}
+
+function adminEditMusicaField(event, idx, field) {
+  if (!adminMode) return;
+  event.stopPropagation();
+  const p = musicaPacotes[idx];
+  const labels = { icon:'Emoji', nome:'Nome do pacote', preco:'Preço (ex: 49,90)', desc:'Descrição (\n = quebra de linha)' };
+  const current = field === 'desc' ? p[field].replace(/<br>/g, '\n') : p[field];
+  const novo = prompt(labels[field] + ':', current);
+  if (novo === null) return;
+  musicaPacotes[idx][field] = field === 'desc' ? novo.replace(/\n/g, '<br>') : novo.trim();
+  saveMusicaPacotes();
+  renderMusicaPacotes();
+  toast('✅ Pacote atualizado!');
+}
+function adminAddPacote() {
+  if (!adminMode) return;
+  const nome = prompt('Nome do pacote:', 'NOVO PACOTE');
+  if (!nome) return;
+  const preco = prompt('Preço (ex: 99,90):', '99,90');
+  if (!preco) return;
+  const desc = prompt('Descrição (\n = quebra de linha):', '1 música única personalizada');
+  const icon = prompt('Emoji do ícone:', '🎵');
+  musicaPacotes.push({ id: 'p' + Date.now(), icon: icon || '🎵', nome: nome.trim(), preco: preco.trim(), desc: (desc || '').replace(/\n/g, '<br>'), destaque: false });
+  saveMusicaPacotes();
+  renderMusicaPacotes();
+  toast('✅ Pacote adicionado!');
+}
+
+function adminDelPacote(i) {
+  if (!adminMode) return;
+  if (!confirm('Remover o pacote "' + musicaPacotes[i].nome + '"?')) return;
+  musicaPacotes.splice(i, 1);
+  saveMusicaPacotes();
+  renderMusicaPacotes();
+  toast('🗑 Pacote removido.');
+}
+
+musicaPacotes = loadMusicaPacotes();
+
 // ══════════════════════════════════════
 //  MÚSICAS PERSONALIZADAS
 // ══════════════════════════════════════
@@ -10451,7 +10569,11 @@ function deleteMusicaDemo(i) {
 }
 
 // Inicializar demos ao carregar
-document.addEventListener('DOMContentLoaded', renderMusicaDemos);
+document.addEventListener('DOMContentLoaded', () => {
+  musicaPacotes = loadMusicaPacotes();
+  renderMusicaPacotes();
+  renderMusicaDemos();
+});
 
 
 // ══════════════════════════════════════
