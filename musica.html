@@ -179,56 +179,103 @@ body.admin-mode #adminBadge { background: rgba(232,68,0,.25); border-color: #e84
   display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px; margin-bottom: 32px;
 }
-.musica-demo-card {
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 16px; padding: 18px 16px; transition: all .2s; cursor: pointer;
-  position: relative; overflow: hidden;
-}
-.musica-demo-card:hover {
-  background: rgba(232,68,0,.1); border-color: rgba(232,68,0,.4); transform: translateY(-3px);
-}
-.musica-demo-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--musica-grad); opacity: 0; transition: opacity .2s;
-}
-.musica-demo-card:hover::before { opacity: .05; }
-.musica-demo-top {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-}
-.musica-demo-play {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--musica-grad);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0; transition: transform .15s;
-}
-.musica-demo-card:hover .musica-demo-play { transform: scale(1.1); }
-.musica-demo-info { flex: 1; min-width: 0; }
-.musica-demo-nome {
-  font-weight: 700; font-size: 14px; color: #fff;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.musica-demo-estilo {
-  font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px;
-}
-/* Mini barras de onda */
-.musica-demo-wave {
-  display: flex; align-items: center; gap: 2px; height: 24px;
-}
-.musica-demo-wave-bar {
-  width: 3px; border-radius: 3px;
-  background: rgba(232,68,0,.4);
-  transition: background .2s;
-}
-.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.8); }
-.musica-demo-card.playing .musica-demo-wave-bar {
-  background: #e84400;
-  animation: musicaBar .8s ease-in-out infinite;
-}
-.musica-demo-card.playing .musica-demo-play { background: linear-gradient(135deg, #c40060, #e84400); }
+
 /* Admin: adicionar demo */
 .musica-demo-add {
   background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.15);
   border-radius: 16px; padding: 18px 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: rgba(255,255,255,.3); font-size: 13px; transition: all .2s;
+}
+.musica-demo-add:hover { border-color: rgba(232,68,0,.4); color: #e84400; }
+body:not(.admin-mode) .musica-demo-add { display: none !important; }
+
+
+/* ══ PLAYER DE MÚSICA — CARD GRANDE ══ */
+.musica-demo-card {
+  background: rgba(232,68,0,.08);
+  border: 1px solid rgba(232,68,0,.2);
+  border-radius: 20px;
+  padding: 20px 20px 16px;
+  transition: all .2s; cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.musica-demo-card:hover { background: rgba(232,68,0,.13); border-color: rgba(232,68,0,.4); }
+.musica-demo-card.playing {
+  background: rgba(232,68,0,.15);
+  border-color: rgba(232,68,0,.6);
+  box-shadow: 0 0 0 1px rgba(232,68,0,.25), 0 8px 32px rgba(232,68,0,.2);
+}
+.musica-demo-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.musica-demo-play {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #c40060, #e84400);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(232,68,0,.4);
+  transition: transform .15s, box-shadow .15s;
+}
+.musica-demo-card:hover .musica-demo-play { transform: scale(1.06); }
+.musica-demo-card.playing .musica-demo-play { animation: playerPulse 2s ease-in-out infinite; }
+@keyframes playerPulse {
+  0%,100%{box-shadow:0 4px 16px rgba(232,68,0,.4)}
+  50%{box-shadow:0 4px 32px rgba(232,68,0,.7)}
+}
+.musica-demo-info { flex: 1; min-width: 0; }
+.musica-demo-nome { font-weight: 700; font-size: 16px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.musica-demo-estilo { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 3px; }
+
+/* Barra de progresso */
+.musica-demo-progress-wrap {
+  margin: 0 0 12px; padding: 6px 0; cursor: pointer; position: relative;
+}
+.musica-demo-progress-bg {
+  height: 6px; background: rgba(255,255,255,.1); border-radius: 6px;
+  position: relative;
+}
+.musica-demo-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #c40060, #e84400);
+  border-radius: 6px; width: 0%; transition: width .25s linear;
+  pointer-events: none;
+}
+.musica-demo-progress-wrap:hover .musica-demo-progress-bg { height: 8px; }
+.musica-demo-progress-thumb {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 8px rgba(232,68,0,.8);
+  opacity: 0; transition: opacity .15s; left: 0;
+}
+.musica-demo-progress-wrap:hover .musica-demo-progress-thumb { opacity: 1; }
+.musica-demo-times {
+  display: flex; justify-content: space-between;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: rgba(255,255,255,.35); margin-top: 6px;
+}
+
+/* Onda animada — ocupa toda a largura */
+.musica-demo-wave {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: 48px; width: 100%; margin-top: 4px;
+}
+.musica-demo-wave-bar {
+  flex: 1; border-radius: 3px 3px 0 0;
+  background: rgba(232,68,0,.3);
+  transition: background .2s, transform .2s;
+  min-width: 3px;
+}
+.musica-demo-card:hover .musica-demo-wave-bar { background: rgba(232,68,0,.6); }
+.musica-demo-card.playing .musica-demo-wave-bar {
+  background: #e84400;
+  animation: musicaBar .8s ease-in-out infinite;
+}
+@keyframes musicaBar { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.8)} }
+.musica-demo-card.playing .musica-demo-wave-bar:nth-child(odd) { animation-delay: .15s; }
+.musica-demo-card.playing .musica-demo-wave-bar:nth-child(3n) { animation-delay: .3s; }
+
+/* Botão admin add */
+.musica-demo-add {
+  background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.15);
+  border-radius: 20px; padding: 20px 16px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   color: rgba(255,255,255,.3); font-size: 13px; transition: all .2s;
 }
@@ -774,7 +821,6 @@ body:not(.admin-mode) .musica-demo-add {
 <section class="musica-section" id="musicaSection">
   <div class="musica-inner">
 
-    <div class="musica-eyebrow">🎵 NOVO · EXCLUSIVO · IA FOTO STUDIO</div>
     <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
     <p class="musica-sub">Criamos uma música única com Inteligência Artificial — feita sob medida para o seu momento especial</p>
 
@@ -1208,10 +1254,12 @@ function renderMusicaDemos() {
   const isAdmin = document.body.classList.contains('admin-mode');
 
   const demosHtml = musicaDemos.map((d, i) => {
-    const heights = [18,32,24,40,28,36,20,44,30,26,38,22,42,16,34];
-    const bars = heights.map(h =>
-      '<div class="musica-demo-wave-bar" style="height:' + h + 'px;"></div>'
-    ).join('');
+    // 32 barras com alturas variadas para ocupar toda a largura
+    const seed = i * 7;
+    const bars = Array.from({length: 32}, (_, j) => {
+      const h = 25 + Math.round(Math.abs(Math.sin((j + seed) * 0.55) * 75));
+      return '<div class="musica-demo-wave-bar" style="height:' + h + '%;animation-delay:' + (j * 0.04).toFixed(2) + 's"></div>';
+    }).join('');
     return '<div class="musica-demo-card" id="mdemo-' + i + '">' +
       '<div class="musica-demo-top">' +
         '<div class="musica-demo-play" id="mdemo-play-' + i + '">▶</div>' +
