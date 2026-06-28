@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1782689691738",
+      "title": "X men",
+      "text": "{\n  \"prompt\": \"Retrato cinematográfico hiper-realista de um homem adulto com cabeça raspada, barba escura cheia e olhar frio/intenso, transformado em um super-herói mutante inspirado no estilo X-Men, com estética semelhante a um guerreiro com garras metálicas. Manter a identidade facial da pessoa da foto de referência, preservando traços do rosto, formato da cabeça, barba, olhos e tom de pele. O personagem deve ter corpo extremamente musculoso, braços fortes, veias evidentes e pele suada, com textura realista, brilho de suor, poros visíveis e detalhes naturais da pele. Ele usa um traje tático amarelo e preto, robusto, gasto, com textura de couro/armadura, marcas de batalha, sujeira e arranhões. Uma das mãos aparece em primeiro plano usando uma luva preta, com três garras metálicas longas, afiadas e reflexivas saindo entre os dedos. A pose deve transmitir força, ameaça e controle, com expressão séria e olhar frio diretamente para a câmera. Fundo escuro e dramático, com fumaça ao redor e atrás do personagem, partículas brilhantes no ar e iluminação quente alaranjada criando contraste cinematográfico. Usar profundidade de campo realista, lente 50mm, enquadramento de meio corpo, foco nítido no rosto e nas garras. Texturas ricas e detalhadas na pele, barba, suor, metal, luva e traje. Estilo hiper-realista, cinematográfico, épico, alta definição, qualidade 16k, iluminação dramática, alto contraste, atmosfera de cena de combate.\",\n  \"negative_prompt\": \"não alterar completamente o rosto, não deixar aparência artificial, não deformar mãos ou garras, não adicionar texto, não adicionar logotipo, não criar aparência de desenho animado, não deixar o rosto borrado, não exagerar expressões caricatas, não criar olhos desalinhados, não criar garras tortas ou deformadas\",\n  \"style\": \"hiper-realista cinematográfico\",\n  \"camera\": \"lente 50mm, retrato de meio corpo, profundidade de campo rasa\",\n  \"lighting\": \"iluminação quente, dramática, com reflexos alaranjados, fumaça e partículas no fundo\",\n  \"details\": {\n    \"personagem\": \"super-herói mutante inspirado em X-Men, com garras metálicas\",\n    \"expressao\": \"olhar frio, intenso e sério\",\n    \"corpo\": \"musculoso, suado, com veias evidentes\",\n    \"traje\": \"tático amarelo e preto, textura de armadura/couro, sujo e desgastado\",\n    \"ambiente\": \"fundo escuro, fumaça, atmosfera de combate, luz quente\"\n  },\n  \"aspect_ratio\": \"4:5\"\n}",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1782590804264",
       "title": "Fotos antigas",
       "text": "Esta é uma foto antiga e deteriorada. Por favor, restaure-a completamente:\n\n\n— Remova riscos, manchas, rasgos e sujeira\n\n— Corrija o desfoque e aumente a nitidez\n\n— Restaure as áreas danificadas com base no contexto ao redor\n\n— Melhore o contraste e o brilho de forma natural\n\n— Mantenha a atmosfera original e a identidade das pessoas\n\n— Preserve o período histórico da imagem\n\n\nO resultado deve parecer uma foto bem conservada, sem exageros digitais. Saída em alta resolução.\n\n\nColorização\n\nPrimeiro restaure qualquer dano visível (riscos, manchas, desfoque), depois colorize a imagem de forma realista:\n\n\n— Use cores naturais e coerentes com a época (décadas de XXXX)\n\n— Tom de pele natural, sem saturação excessiva\n\n— Cores de roupas e ambiente plausíveis para o período\n\n— Iluminação e sombras consistentes\n\n— Preserve a identidade e expressão de cada pessoa\n\n\nEntregue em alta resolução com visual fotográfico autêntico.\n\n\nResolução\n\nEsta foto está em baixa resolução e com falta de nitidez. Por favor:\n\n\n— Aumente a resolução mantendo proporções originais\n\n— Recupere detalhes finos: poros de pele, textura de tecidos, detalhes de fundo\n\n— Remova pixelização e ruído digital\n\n— Aplique nitidez seletiva sem criar artefatos\n\n— Não altere composição, enquadramento ou identidade das pessoas\n\n— Resultado final em alta definição, com aparência natural de fotografia real",
@@ -119,5 +128,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-06-27T20:06:46.287Z"
+  "savedAt": "2026-06-28T23:34:56.435Z"
 }
