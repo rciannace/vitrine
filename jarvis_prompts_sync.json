@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1782763201199",
+      "title": "Guerreiro",
+      "text": "Um guerreiro — com um rosto idêntico ao da imagem em anexo — que ostenta uma aparência intimidadora inspirada em Kratos, de \"God of War\". Ele possui um físico extremamente musculoso e definido, com pele clara que apresenta texturas realistas e marcas naturais. Sua cabeça é totalmente raspada e ele exibe uma barba longa, espessa e bem cuidada. Sua expressão é séria e determinada, com um olhar intenso e sombrio. Ele veste uma armadura de couro escuro e metal envelhecido, com detalhes entalhados em estilo nórdico, costuras aparentes, rebites metálicos e símbolos gravados. Usa uma ombreira robusta em um dos lados, braçadeiras grossas de couro e metal nos antebraços e um cinto largo com fivelas ornamentadas. Um tecido pesado e gasto cai de sua cintura, exibindo marcas de batalha e de uso prolongado.\nEle empunha um grande machado de lâmina dupla, com metal gasto e riscado e um cabo de madeira escura contendo entalhes rúnicos. A cena apresenta iluminação dramática de estúdio, fundo escuro neutro, alto contraste, foco nítido e baixa profundidade de campo. O estilo é de fotografia profissional — ultrarrealista, resolução 8K, com texturas extremamente detalhadas — assemelhando-se a um cosplay cinematográfico, com uma aparência humana autêntica e sem qualquer traço de ilustração ou computação gráfica (CGI).",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1782689691738",
       "title": "X men",
       "text": "{\n  \"prompt\": \"Retrato cinematográfico hiper-realista de um homem adulto com cabeça raspada, barba escura cheia e olhar frio/intenso, transformado em um super-herói mutante inspirado no estilo X-Men, com estética semelhante a um guerreiro com garras metálicas. Manter a identidade facial da pessoa da foto de referência, preservando traços do rosto, formato da cabeça, barba, olhos e tom de pele. O personagem deve ter corpo extremamente musculoso, braços fortes, veias evidentes e pele suada, com textura realista, brilho de suor, poros visíveis e detalhes naturais da pele. Ele usa um traje tático amarelo e preto, robusto, gasto, com textura de couro/armadura, marcas de batalha, sujeira e arranhões. Uma das mãos aparece em primeiro plano usando uma luva preta, com três garras metálicas longas, afiadas e reflexivas saindo entre os dedos. A pose deve transmitir força, ameaça e controle, com expressão séria e olhar frio diretamente para a câmera. Fundo escuro e dramático, com fumaça ao redor e atrás do personagem, partículas brilhantes no ar e iluminação quente alaranjada criando contraste cinematográfico. Usar profundidade de campo realista, lente 50mm, enquadramento de meio corpo, foco nítido no rosto e nas garras. Texturas ricas e detalhadas na pele, barba, suor, metal, luva e traje. Estilo hiper-realista, cinematográfico, épico, alta definição, qualidade 16k, iluminação dramática, alto contraste, atmosfera de cena de combate.\",\n  \"negative_prompt\": \"não alterar completamente o rosto, não deixar aparência artificial, não deformar mãos ou garras, não adicionar texto, não adicionar logotipo, não criar aparência de desenho animado, não deixar o rosto borrado, não exagerar expressões caricatas, não criar olhos desalinhados, não criar garras tortas ou deformadas\",\n  \"style\": \"hiper-realista cinematográfico\",\n  \"camera\": \"lente 50mm, retrato de meio corpo, profundidade de campo rasa\",\n  \"lighting\": \"iluminação quente, dramática, com reflexos alaranjados, fumaça e partículas no fundo\",\n  \"details\": {\n    \"personagem\": \"super-herói mutante inspirado em X-Men, com garras metálicas\",\n    \"expressao\": \"olhar frio, intenso e sério\",\n    \"corpo\": \"musculoso, suado, com veias evidentes\",\n    \"traje\": \"tático amarelo e preto, textura de armadura/couro, sujo e desgastado\",\n    \"ambiente\": \"fundo escuro, fumaça, atmosfera de combate, luz quente\"\n  },\n  \"aspect_ratio\": \"4:5\"\n}",
@@ -128,5 +137,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-06-28T23:34:56.435Z"
+  "savedAt": "2026-06-29T20:00:05.847Z"
 }
