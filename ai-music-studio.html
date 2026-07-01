@@ -3768,25 +3768,8 @@ function spUpdateUI(){
   });
   audio.addEventListener("ended",()=>{
     if(spQueue.length===0)return;
-    if(spRepeat==="one"){
-      audio.currentTime=0;audio.play();return;
-    }
-    // Calcula próxima respeitando shuffle
-    let next;
-    if(spShuffle){
-      do{next=Math.floor(Math.random()*spQueue.length);}while(spQueue.length>1&&next===spIndex);
-    } else {
-      next=spIndex+1;
-    }
-    if(next>=spQueue.length){
-      if(spRepeat==="all"){
-        next=spShuffle?Math.floor(Math.random()*spQueue.length):0;
-        setTimeout(()=>spPlay(next),300);
-      }
-      // se repeat=none para mesmo — comportamento correto
-    } else {
-      setTimeout(()=>spPlay(next),300);
-    }
+    // Sempre usa spNext() — ela já respeita manualQueue, shuffle e repeat
+    setTimeout(()=>spNext(),300);
   });
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
   audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
