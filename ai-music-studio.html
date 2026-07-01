@@ -3146,14 +3146,38 @@ function loadEntry(id){
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
 }
 function saveEditedEntry(){
-  if(!editingId)return;
-  const idx=history.findIndex(x=>x.id===editingId);
-  if(idx<0)return;
-  history[idx].sections=currentSections;
-  history[idx].song=currentSong;
+  if(editingId){
+    const idx=history.findIndex(x=>x.id===editingId);
+    if(idx>=0){
+      history[idx].sections=currentSections;
+      history[idx].song=currentSong;
+      saveHistory();
+      setTimeout(function(){renderVersionsBar();},50);
+      showToast("✅ Música salva!","ok");
+      return;
+    }
+  }
+  // Não está na biblioteca ainda — cria nova entrada
+  if(!currentSections||Object.keys(currentSections).length===0){showToast("Nada para salvar","err");return;}
+  var novaEntry={
+    id: Date.now(),
+    title: (currentSong&&currentSong.title)||"Música sem título",
+    genre: (currentSong&&currentSong.genre)||"pop",
+    mood: (currentSong&&currentSong.mood)||"romantico",
+    bpm: (currentSong&&currentSong.bpm)||90,
+    duration: (currentSong&&currentSong.duration)||"normal",
+    date: new Date().toLocaleDateString("pt-BR"),
+    sections: currentSections,
+    struct: Object.keys(currentSections),
+    song: currentSong||{},
+    fav: false, plays: 0, cover: null
+  };
+  history.unshift(novaEntry);
+  editingId=novaEntry.id;
+  editingFromLib=true;
   saveHistory();
   setTimeout(function(){renderVersionsBar();},50);
-  showToast("✅ Música salva!","ok");
+  showToast("✅ Salvo na biblioteca!","ok");
 }
 function saveHistory(){ghSave();}
 function editTitle(id){
@@ -3797,10 +3821,30 @@ function applyPasteLyrics(){
       history[idx].sections=currentSections;
       if(currentSong)history[idx].song=Object.assign(history[idx].song||{},{sections:currentSections});
       saveHistory();
-      showToast("Letra salva na nuvem!","ok");
+      showToast("✅ Letra salva!","ok");
     }
   } else {
-    showToast("Letra aplicada (abra pela Biblioteca para salvar)","ok");
+    // Música ainda não está na biblioteca — salva agora
+    var novaEntry={
+      id: Date.now(),
+      title: (currentSong&&currentSong.title)||"Música sem título",
+      genre: (currentSong&&currentSong.genre)||"pop",
+      mood: (currentSong&&currentSong.mood)||"romantico",
+      bpm: (currentSong&&currentSong.bpm)||90,
+      duration: (currentSong&&currentSong.duration)||"normal",
+      date: new Date().toLocaleDateString("pt-BR"),
+      sections: currentSections,
+      struct: newStruct,
+      song: currentSong||{},
+      fav: false,
+      plays: 0,
+      cover: null
+    };
+    history.unshift(novaEntry);
+    editingId=novaEntry.id;
+    editingFromLib=true;
+    saveHistory();
+    showToast("✅ Letra salva na biblioteca!","ok");
   }
   closePasteLyrics();
   renderResult(newStruct);
