@@ -3151,9 +3151,11 @@ function saveEditedEntry(){
     if(idx>=0){
       history[idx].sections=currentSections;
       history[idx].song=currentSong;
+      // força save no localStorage direto (não depende do GitHub)
+      try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch(e){}
       saveHistory();
       setTimeout(function(){renderVersionsBar();},50);
-      showToast("✅ Música salva!","ok");
+      showToast("✅ Salvo! ("+Object.keys(currentSections||{}).length+" seções)","ok");
       return;
     }
   }
@@ -3809,6 +3811,7 @@ function applyPasteLyrics(){
   });
   if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
   currentSections=newSecs;
+  currentStruct=newStruct;
   // try editingId first, then by title
   var saveId=editingId||null;
   if(!saveId&&currentSong&&currentSong.title){
