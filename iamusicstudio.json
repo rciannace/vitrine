@@ -421,42 +421,6 @@
     "plays": 19
   },
   {
-    "id": 1782057466922,
-    "title": "Meu Erro",
-    "genre": "Sertanejo",
-    "mood": "Romantico",
-    "bpm": 110,
-    "duration": "normal",
-    "date": "21/06/2026",
-    "song": {
-      "title": "Meu Erro",
-      "subtitle": "",
-      "key": "",
-      "chords": "",
-      "vibe": "",
-      "style_tags": [],
-      "sections": {
-        "Outro": "(Slow down, voice getting deeper and raspy)\nO erro que eu não canso de repetir...\nÉ insistir em quem já quis partir.\nTô aqui... bebendo por ti."
-      },
-      "suno_style": "",
-      "instruments": [],
-      "production_notes": "",
-      "bpm": 110,
-      "genre": "Sertanejo",
-      "mood": "Romantico",
-      "voice": "",
-      "duration": "normal"
-    },
-    "sections": {
-      "Outro": "(Slow down, voice getting deeper and raspy)\nO erro que eu não canso de repetir...\nÉ insistir em quem já quis partir.\nTô aqui... bebendo por ti."
-    },
-    "struct": [
-      "Outro"
-    ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782057518/wyyghnrxwuthdlqlejaj.mp3",
-    "plays": 10
-  },
-  {
     "id": 1781827468701,
     "title": "10 minutos",
     "genre": "Sertanejo",
