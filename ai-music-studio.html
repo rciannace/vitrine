@@ -354,9 +354,9 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
 /* GALERIA SPOTIFY */
 .gal-card{background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
-.gal-queue-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);border:none;border-radius:6px;color:#fff;font-size:11px;padding:3px 7px;cursor:pointer;z-index:2;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.gal-queue-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.65);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:600;padding:4px 8px;cursor:pointer;z-index:5;backdrop-filter:blur(6px);opacity:0;transition:opacity .2s;white-space:nowrap}
 .gal-card:hover .gal-queue-btn{opacity:1}
-@media(max-width:700px){.gal-queue-btn{opacity:1;font-size:10px;padding:2px 5px}}
+@media(max-width:700px){.gal-queue-btn{opacity:1;font-size:10px;padding:3px 7px}}
 #queue-panel{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:300px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden;flex-direction:column}
 #queue-panel.open{display:flex}
 #queue-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
@@ -430,6 +430,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   display:flex;align-items:center;justify-content:center;
   font-size:28px;flex-shrink:0;cursor:pointer;
   transition:transform .15s;box-shadow:0 2px 12px #0006;
+  overflow:hidden;
 }
 .sp-thumb:hover{transform:scale(1.04)}
 .sp-info{min-width:0}
@@ -945,7 +946,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <div class="sp-left">
         <div style="position:relative;display:inline-block">
           <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
-          <button onclick="toggleQueue()" title="Ver fila" style="display:none;position:absolute;top:-6px;right:-6px;background:#f97316;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;color:#fff;cursor:pointer;line-height:18px;text-align:center;padding:0" id="sp-queue-mobile">☰</button>
+          <button onclick="toggleQueue()" title="Ver fila" style="display:none;position:absolute;top:0;right:-20px;background:#f97316;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;color:#fff;cursor:pointer;line-height:18px;text-align:center;padding:0" id="sp-queue-mobile">☰</button>
         </div>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
@@ -3748,7 +3749,7 @@ function spUpdateUI(){
   const d4=['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
   const arr2=rom2?r4:(pm2[(e.genre||'').toLowerCase()]||d4);
   const pid2=arr2[h%4];
-  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display=\'none\'"/>';
+  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display=\'none\'"/>';
   thumb.style.background=genreColor(e.genre);
   btn.textContent=spPlaying?"⏸":"▶";
   // update main padding so player doesn't cover content
