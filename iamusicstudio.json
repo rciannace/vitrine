@@ -1,14 +1,134 @@
 [
   {
+    "id": 1782955091332,
+    "title": "OURO PERDIDO 2",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 110,
+    "duration": "normal",
+    "date": "01/07/2026",
+    "song": {
+      "title": "OURO PERDIDO 2",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+        "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+        "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+        "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+        "Verso 3": "Hoje eu volto pro mesmo boteco\nOnde a saudade já sabe o meu nome\nCada gole aumenta o meu erro\nCada lembrança, enfim, me consome",
+        "Verso 4": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+        "Solo de Guitarra: Estendido, melancólico e moderno, 100 BPM": "",
+        "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+        "Refrão Final": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+        "Outro: Guitarra em destaque, diminuindo aos poucos": "Quem não valoriza...\nChora a saudade de quem já não vem.",
+        "Final seco com acorde de guitarra e reverb": ""
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 110,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+      "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+      "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+      "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+      "Verso 3": "Hoje eu volto pro mesmo boteco\nOnde a saudade já sabe o meu nome\nCada gole aumenta o meu erro\nCada lembrança, enfim, me consome",
+      "Verso 4": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+      "Solo de Guitarra: Estendido, melancólico e moderno, 100 BPM": "",
+      "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+      "Refrão Final": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+      "Outro: Guitarra em destaque, diminuindo aos poucos": "Quem não valoriza...\nChora a saudade de quem já não vem.",
+      "Final seco com acorde de guitarra e reverb": ""
+    },
+    "struct": [
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM",
+      "Verso 1",
+      "Verso 2",
+      "Refrão",
+      "Verso 3",
+      "Verso 4",
+      "Solo de Guitarra: Estendido, melancólico e moderno, 100 BPM",
+      "Bridge: Batida sobe, baixo mais profundo",
+      "Refrão Final",
+      "Outro: Guitarra em destaque, diminuindo aos poucos",
+      "Final seco com acorde de guitarra e reverb"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782955089/qn48houjsnukwkbjteur.mp3"
+  },
+  {
+    "id": 1782953710389,
+    "title": "OURO PERDIDO",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 102,
+    "duration": "normal",
+    "date": "01/07/2026",
+    "song": {
+      "title": "OURO PERDIDO",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+        "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+        "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+        "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+        "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+        "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+        "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 102,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+      "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+      "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+      "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+      "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+      "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+      "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem."
+    },
+    "struct": [
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM",
+      "Verso 1",
+      "Verso 2",
+      "Refrão",
+      "Verso 3",
+      "Bridge: Batida sobe, baixo mais profundo",
+      "Refrão",
+      "Outro: Fade out com guitarra solo"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782953709/qwoihutzox9terthhuap.mp3",
+    "plays": 1
+  },
+  {
     "id": 1782930732978,
-    "title": "Meu Erro",
+    "title": "MEU ERRO",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "01/07/2026",
     "song": {
-      "title": "Meu Erro",
+      "title": "MEU ERRO",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -49,19 +169,18 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3",
-    "plays": 1
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3"
   },
   {
     "id": 1782927885852,
-    "title": "A Culpa é Minha",
+    "title": "A CULPA É MINHA",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "01/07/2026",
     "song": {
-      "title": "A Culpa é Minha",
+      "title": "A CULPA É MINHA",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -108,18 +227,18 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782927877/cgpkruhhdybm3uz3fo78.mp3",
-    "plays": 3
+    "plays": 1
   },
   {
     "id": 1782527636011,
-    "title": "O Gosto de Beijo",
+    "title": "O GOSTO DO BEIJO",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 120,
     "duration": "normal",
     "date": "26/06/2026",
     "song": {
-      "title": "O Gosto de Beijo",
+      "title": "O GOSTO DO BEIJO",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -160,69 +279,37 @@
       "duration": "normal"
     },
     "sections": {
-      "Tempo: 130 BPM": "",
-      "Instrumental: Solo de sanfona marcante, estilo sertanejo universitário, energia alta": "",
-      "Verse 1": "",
-      "Vocal: Grave, início contido": "Cheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada",
-      "Ritmo: Bateria entra gradualmente": "No meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou",
-      "Verse 2": "",
-      "Vocal: Ganha um pouco mais de intensidade": "Cintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso",
-      "Chorus": "",
-      "Vocal: Explosivo, potente, estilo sofrência/arrocha": "",
-      "Instrumental: Teclado/sanfona em destaque, batida forte": "O coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar",
-      "Verse 3": "",
-      "Vocal: Mais focado, ritmo constante": "Voltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal",
-      "Verse 4": "",
-      "Ritmo: Bateria marcada, crescente": "A música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo",
-      "Bridge": "",
-      "Vocal: Tensão máxima, quase um desabafo": "",
-      "Instrumental: Redução de instrumentos, foco na voz e sanfona": "Se ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver",
-      "Vocal: Potência máxima, refrão explosivo": "O coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar",
-      "Solo Instrumental": "",
-      "Instrumental: Solo de sanfona frenético e técnico, estilo Henrique & Juliano, 15 segundos": "",
-      "Outro": "",
-      "Vocal: Mais lento, descendo o tom": "A noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...",
-      "Outro: Fade out, sanfona fazendo o último riff": ""
+      "verso 1": "Cheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou",
+      "verso 2": "Cintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso",
+      "refrão": "O coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...",
+      "verso 3": "Voltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal",
+      "verso 4": "A música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo",
+      "ponte": "Se ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...",
+      "verso final": "A noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais..."
     },
     "struct": [
-      "Tempo: 130 BPM",
-      "Instrumental: Solo de sanfona marcante, estilo sertanejo universitário, energia alta",
-      "Verse 1",
-      "Vocal: Grave, início contido",
-      "Ritmo: Bateria entra gradualmente",
-      "Verse 2",
-      "Vocal: Ganha um pouco mais de intensidade",
-      "Chorus",
-      "Vocal: Explosivo, potente, estilo sofrência/arrocha",
-      "Instrumental: Teclado/sanfona em destaque, batida forte",
-      "Verse 3",
-      "Vocal: Mais focado, ritmo constante",
-      "Verse 4",
-      "Ritmo: Bateria marcada, crescente",
-      "Bridge",
-      "Vocal: Tensão máxima, quase um desabafo",
-      "Instrumental: Redução de instrumentos, foco na voz e sanfona",
-      "Chorus",
-      "Vocal: Potência máxima, refrão explosivo",
-      "Solo Instrumental",
-      "Instrumental: Solo de sanfona frenético e técnico, estilo Henrique & Juliano, 15 segundos",
-      "Outro",
-      "Vocal: Mais lento, descendo o tom",
-      "Outro: Fade out, sanfona fazendo o último riff"
+      "verso 1",
+      "verso 2",
+      "refrão",
+      "verso 3",
+      "verso 4",
+      "ponte",
+      "verso final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782527632/qeuvgbsfbhqzj7sgjybo.mp3",
-    "plays": 5
+    "plays": 5,
+    "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n"
   },
   {
     "id": 1782388274092,
-    "title": "Melhor Atriz",
+    "title": "MELHOR ATRIZ",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "25/06/2026",
     "song": {
-      "title": "Melhor Atriz",
+      "title": "MELHOR ATRIZ",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -271,18 +358,18 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782388272/bhmfjn1f0luvathn3tic.mp3",
-    "plays": 6
+    "plays": 4
   },
   {
     "id": 1782321557964,
-    "title": "Nosso Lugar",
+    "title": "NOSSO LUGAR",
     "genre": "Rock",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "24/06/2026",
     "song": {
-      "title": "Nosso Lugar",
+      "title": "NOSSO LUGAR",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -327,19 +414,19 @@
       "final chorus, powerful baritone vocals, anthemic"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782321580/ohpdtpvrpvmenukbsnk7.mp3",
-    "plays": 4,
+    "plays": 5,
     "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
   },
   {
     "id": 1782254118222,
-    "title": "O Vazio do Bar",
+    "title": "O VAZIO DO BAR",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "23/06/2026",
     "song": {
-      "title": "O Vazio do Bar",
+      "title": "O VAZIO DO BAR",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -364,18 +451,18 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782254116/wtmqdidf2idj58z4vwn7.mp3",
-    "plays": 6
+    "plays": 5
   },
   {
     "id": 1782173065596,
-    "title": "Último Brinde",
+    "title": "ÚLTIMO BRINDE",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 92,
     "duration": "normal",
     "date": "22/06/2026",
     "song": {
-      "title": "Último Brinde",
+      "title": "ÚLTIMO BRINDE",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -419,18 +506,18 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 24
+    "plays": 20
   },
   {
     "id": 1781827468701,
-    "title": "10 minutos",
+    "title": "10 MINUTOS",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 110,
     "duration": "normal",
     "date": "18/06/2026",
     "song": {
-      "title": "10 minutos",
+      "title": "10 MINUTOS",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -478,18 +565,18 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 11
+    "plays": 10
   },
   {
     "id": 1781825629388,
-    "title": "Abraço Dividido",
+    "title": "ABRAÇO DIVIDIDO",
     "genre": "Sertanejo universitário",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "18/06/2026",
     "song": {
-      "title": "Abraço Dividido",
+      "title": "ABRAÇO DIVIDIDO",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -514,19 +601,19 @@
       "intro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3",
-    "plays": 10,
+    "plays": 7,
     "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n"
   },
   {
     "id": 1781739849628,
-    "title": "Melhor Versão",
+    "title": "MELHOR VERSÃO",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 110,
     "duration": "normal",
     "date": "17/06/2026",
     "song": {
-      "title": "Melhor Versão",
+      "title": "MELHOR VERSÃO",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -555,14 +642,14 @@
   },
   {
     "id": 1781739144499,
-    "title": "Indiferença",
+    "title": "INDIFERENÇA",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 110,
     "duration": "normal",
     "date": "17/06/2026",
     "song": {
-      "title": "Indiferença",
+      "title": "INDIFERENÇA",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -587,18 +674,18 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3",
-    "plays": 9
+    "plays": 7
   },
   {
     "id": 1781566763204,
-    "title": "Ela Foi Embora",
+    "title": "ELA FOI EMBORA",
     "genre": "Rock",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "15/06/2026",
     "song": {
-      "title": "Ela Foi Embora",
+      "title": "ELA FOI EMBORA",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -641,18 +728,18 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
-    "plays": 11
+    "plays": 10
   },
   {
     "id": 1781535068368,
-    "title": "Farol Que Me Guia",
+    "title": "FAROL QUE ME GUIA",
     "genre": "Sertanejo",
     "mood": "Romântico ❤️",
     "bpm": 90,
     "duration": "normal",
     "date": "15/06/2026",
     "song": {
-      "title": "Farol Que Me Guia",
+      "title": "FAROL QUE ME GUIA",
       "subtitle": "O amor que volta pra casa",
       "key": "G Major",
       "chords": "G - D - Em - C",
@@ -703,18 +790,18 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
-    "plays": 7
+    "plays": 6
   },
   {
     "id": 1781388424432,
-    "title": "Ceu Florido",
+    "title": "CÉU FLORIDO",
     "genre": "Sertanejo",
     "mood": "Romântico",
     "bpm": 90,
     "duration": "normal",
     "date": "13/06/2026",
     "song": {
-      "title": "Ceu Florido",
+      "title": "CÉU FLORIDO",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -749,18 +836,18 @@
       "Verse"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
-    "plays": 5
+    "plays": 6
   },
   {
     "id": 1781316597462,
-    "title": "Meu amor voltou",
+    "title": "MEU AMOR VOLTOU",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
     "date": "12/06/2026",
     "song": {
-      "title": "Meu amor voltou",
+      "title": "MEU AMOR VOLTOU",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -804,14 +891,14 @@
   },
   {
     "id": 1781316490885,
-    "title": "Saudade no Lençol",
+    "title": "SAUDADE DO LENÇOL",
     "genre": "Rock",
     "mood": "Romântico",
     "bpm": 90,
     "duration": "normal",
     "date": "12/06/2026",
     "song": {
-      "title": "Saudade no Lençol",
+      "title": "SAUDADE DO LENÇOL",
       "subtitle": "",
       "key": "",
       "chords": "",
@@ -853,7 +940,7 @@
       "Final Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3",
-    "plays": 4
+    "plays": 2
   },
   {
     "genre": "Rock",
@@ -893,18 +980,18 @@
       },
       "vibe": "",
       "chords": "",
-      "title": "O Retorno do Meu Sol"
+      "title": "RETORNO DO MEU SOL"
     },
     "bpm": 90,
     "duration": "normal",
-    "title": "O Retorno do Meu Sol",
+    "title": "RETORNO DO MEU SOL",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
-    "plays": 6
+    "plays": 2
   },
   {
     "duration": "normal",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781049502/bx4jmubpi96zhkghpmki.mp3",
-    "title": "Coração Não Desiste",
+    "title": "CORAÇÃO NÃO DESISTE",
     "song": {
       "bpm": 90,
       "voice": "",
@@ -920,7 +1007,7 @@
         "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
       },
       "mood": "Romantico",
-      "title": "Coração Não Desiste",
+      "title": "CORAÇÃO NÃO DESISTE",
       "vibe": "",
       "chords": ""
     },
@@ -935,7 +1022,7 @@
     "sections": {
       "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
     },
-    "plays": 4
+    "plays": 3
   },
   {
     "duration": "normal",
@@ -997,7 +1084,7 @@
   },
   {
     "_editedText": "[ INTRO ]\nO céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n\n[ VERSE ]\nLembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n\n[ PRE-CHORUS ]\nE o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n[ VERSE 2 ]\nOs anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n\n[ BRIDGE ]\nE se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n",
-    "title": "Temporal de Faiscas",
+    "title": "TEMPORAL DE FAISCAS",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781042036/pnumldvkbhiu0blet9ac.mp3",
     "duration": "normal",
     "bpm": 90,
@@ -1021,7 +1108,7 @@
       },
       "mood": "Romantico",
       "suno_style": "",
-      "title": "Temporal de Faiscas",
+      "title": "TEMPORAL DE FAISCAS",
       "vibe": "",
       "chords": ""
     },
@@ -1045,11 +1132,11 @@
     "date": "09/06/2026",
     "mood": "Romantico",
     "genre": "Rock",
-    "plays": 4
+    "plays": 3
   },
   {
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
-    "title": "Manto de Prata",
+    "title": "MANTO DE PRATA",
     "duration": "normal",
     "date": "09/06/2026",
     "id": 1781026051290,
@@ -1075,7 +1162,7 @@
     "genre": "Sertanejo",
     "bpm": 90,
     "song": {
-      "title": "Manto de Prata",
+      "title": "MANTO DE PRATA",
       "vibe": "Sensual e Apaixonada",
       "chords": "G / C / D / Em",
       "suno_style": "sertanejo, romantic, male vocals, 90 BPM, acoustic guitar, sanfona, sensual, emotional, love, valentine's day",
@@ -1111,11 +1198,11 @@
       ],
       "genre": "Sertanejo"
     },
-    "plays": 5
+    "plays": 4
   },
   {
     "duration": "normal",
-    "title": "A Alma Cantou",
+    "title": "A ALMA CANTOU",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780969231/viqvmivy7js7piku1x55.mp3",
     "_editedText": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n\n[Pre-Chorus]\nPensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n\n[Chorus]\nA alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n\n[Verse 2]\nOs bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.\n\n[Bridge]\nE de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n\n[Chorus]\nA alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!",
     "mood": "Romântico ❤️",
@@ -1151,7 +1238,7 @@
       "suno_style": "rock ballad, romantic, male vocals, 90 BPM, electric guitar, heavy drums, bass",
       "vibe": "A hopeful, uplifting rock ballad about finding love after a period of darkness and despair.",
       "chords": "Am - G - C - F (Verse), G - C - Dm - Am (Pre-Chorus), C - G - Am - F (Chorus), Dm - Am - E7 - Am (Bridge)",
-      "title": "A Alma Cantou",
+      "title": "A ALMA CANTOU",
       "genre": "Rock",
       "voice": "Masculina",
       "instruments": [
@@ -1171,12 +1258,12 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 15
+    "plays": 14
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
     "duration": "normal",
-    "title": "Meu amor criou raiz",
+    "title": "MEU AMOR CRIOU RAIZ",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780966401/emrmacfbwpqvkio9vvoa.mp3",
     "song": {
       "key": "G",
@@ -1198,7 +1285,7 @@
       ],
       "vibe": "Profundo e duradouro, a celebração de um amor que evoluiu e se fortaleceu com os anos.",
       "chords": "G - D - Em - C",
-      "title": "Meu amor criou raiz",
+      "title": "MEU AMOR CRIOU RAIZ",
       "suno_style": "sertanejo, romantic, male vocals, 90 BPM, strong drums, emotional guitar, love story",
       "mood": "Romântico ❤️",
       "subtitle": "Daniele",
@@ -1272,7 +1359,7 @@
       },
       "subtitle": "",
       "mood": "Romantico",
-      "title": "Perfume de Jasmim",
+      "title": "PERFUME DE JASMIM",
       "chords": "",
       "vibe": "",
       "bpm": 90,
@@ -1285,9 +1372,8 @@
       "style_tags": []
     },
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
-    "title": "Perfume de Jasmim",
-    "duration": "normal",
-    "plays": 1
+    "title": "PERFUME DE JASMIM",
+    "duration": "normal"
   },
   {
     "struct": [
@@ -1316,14 +1402,14 @@
       "subtitle": "",
       "mood": "Romantico",
       "suno_style": "",
-      "title": "Fica mais um pouco",
+      "title": "FICA MAIS UM POUCO",
       "vibe": "",
       "chords": ""
     },
-    "title": "Fica mais um pouco",
+    "title": "FICA MAIS UM POUCO",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
     "duration": "normal",
-    "plays": 6
+    "plays": 5
   },
   {
     "date": "07/06/2026",
@@ -1364,7 +1450,7 @@
       "suno_style": "Brazilian viola caipira, romantic country, male vocals, 90 BPM, accordion, acoustic guitar, peaceful, rural, emotional",
       "chords": "E, B9, A9, C#m7, G#m",
       "vibe": "Serena, nostálgica, bucólica e profundamente apaixonada",
-      "title": "O Silêncio da Varanda",
+      "title": "O SILÊNCIO DA VARANDA",
       "genre": "Viola Caipira",
       "instruments": [
         "Viola Caipira 10 cordas",
@@ -1384,8 +1470,8 @@
       "key": "E Mayor (Mi Maior)"
     },
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780947220/mz4b6ufjasol3atcaqsn.mp3",
-    "title": "O Silêncio da Varanda",
+    "title": "O SILÊNCIO DA VARANDA",
     "duration": "normal",
-    "plays": 3
+    "plays": 2
   }
 ]
