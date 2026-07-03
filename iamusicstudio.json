@@ -54,61 +54,6 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783099682/vhso3oulj0olnayrikq8.mp3"
   },
   {
-    "id": 1782953710389,
-    "title": "OURO PERDIDO",
-    "genre": "Sertanejo",
-    "mood": "Romantico",
-    "bpm": 102,
-    "duration": "normal",
-    "date": "01/07/2026",
-    "song": {
-      "title": "OURO PERDIDO",
-      "subtitle": "",
-      "key": "",
-      "chords": "",
-      "vibe": "",
-      "style_tags": [],
-      "sections": {
-        "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
-        "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
-        "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
-        "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
-        "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
-        "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
-        "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem."
-      },
-      "suno_style": "",
-      "instruments": [],
-      "production_notes": "",
-      "bpm": 102,
-      "genre": "Sertanejo",
-      "mood": "Romantico",
-      "voice": "",
-      "duration": "normal"
-    },
-    "sections": {
-      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
-      "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
-      "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
-      "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
-      "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
-      "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
-      "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem."
-    },
-    "struct": [
-      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM",
-      "Verso 1",
-      "Verso 2",
-      "Refrão",
-      "Verso 3",
-      "Bridge: Batida sobe, baixo mais profundo",
-      "Refrão",
-      "Outro: Fade out com guitarra solo"
-    ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782953709/qwoihutzox9terthhuap.mp3",
-    "plays": 3
-  },
-  {
     "id": 1782930732978,
     "title": "MEU ERRO",
     "genre": "Sertanejo",
