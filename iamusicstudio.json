@@ -1,5 +1,59 @@
 [
   {
+    "id": 1783099683246,
+    "title": "Ouro Perdido",
+    "genre": "Pagode",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "03/07/2026",
+    "song": {
+      "title": "Ouro Perdido",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+        "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+        "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+        "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+        "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+        "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+        "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Pagode",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM": "",
+      "Verso 1": "Tive um amor de verdade\nQue o tempo não pode apagar\nCuidava dos meus defeitos\nFez do meu caos seu lugar",
+      "Verso 2": "Carinho que eu não reconheci\nJoia rara que eu tinha na mão\nSó percebi o que eu perdi\nQuando me restou a solidão",
+      "Refrão": "Eu tinha o ouro, mas não dei valor\nJoguei fora a luz que me aquecia\nHoje pago o preço da minha solidão\nPor esse amor que eu perdi na mão\nQuem não valoriza o amor que tem\nChora ao ver que perdeu pra alguém",
+      "Verso 3": "Ela seguiu, encontrou novo amor\nAlguém que cuida, alguém que a quer\nEu fui tempestade, ela era a paz\nPerdi o valor daquela mulher",
+      "Bridge: Batida sobe, baixo mais profundo": "Mudei, é verdade, curei a ferida\nMas hoje eu sei que é tarde demais!",
+      "Outro: Fade out com guitarra solo": "Quem não valoriza...\nChora a saudade de quem não vem"
+    },
+    "struct": [
+      "Intro: Riff de guitarra elétrica com efeito moderno, bateria marcada, 100 BPM",
+      "Verso 1",
+      "Verso 2",
+      "Refrão",
+      "Verso 3",
+      "Bridge: Batida sobe, baixo mais profundo",
+      "Refrão",
+      "Outro: Fade out com guitarra solo"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783099682/vhso3oulj0olnayrikq8.mp3"
+  },
+  {
     "id": 1782955091332,
     "title": "OURO PERDIDO 2",
     "genre": "Sertanejo",
@@ -170,8 +224,7 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3",
-    "plays": 1
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3"
   },
   {
     "id": 1782927885852,
@@ -229,7 +282,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782927877/cgpkruhhdybm3uz3fo78.mp3",
-    "plays": 1
+    "plays": 5
   },
   {
     "id": 1782527636011,
@@ -299,7 +352,7 @@
       "verso final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782527632/qeuvgbsfbhqzj7sgjybo.mp3",
-    "plays": 9,
+    "plays": 11,
     "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n"
   },
   {
@@ -416,7 +469,7 @@
       "final chorus, powerful baritone vocals, anthemic"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782321580/ohpdtpvrpvmenukbsnk7.mp3",
-    "plays": 8,
+    "plays": 5,
     "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
   },
   {
@@ -453,7 +506,7 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782254116/wtmqdidf2idj58z4vwn7.mp3",
-    "plays": 8
+    "plays": 5
   },
   {
     "id": 1782173065596,
@@ -508,7 +561,7 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 21
+    "plays": 23
   },
   {
     "id": 1781827468701,
@@ -567,7 +620,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 10
+    "plays": 12
   },
   {
     "id": 1781825629388,
@@ -792,7 +845,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
-    "plays": 6
+    "plays": 9
   },
   {
     "id": 1781388424432,
@@ -838,7 +891,7 @@
       "Verse"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
-    "plays": 6
+    "plays": 8
   },
   {
     "id": 1781316597462,
@@ -889,7 +942,7 @@
       "Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3",
-    "plays": 11
+    "plays": 13
   },
   {
     "id": 1781316490885,
@@ -942,7 +995,7 @@
       "Final Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3",
-    "plays": 3
+    "plays": 4
   },
   {
     "genre": "Rock",
@@ -988,7 +1041,8 @@
     "duration": "normal",
     "title": "RETORNO DO MEU SOL",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
-    "plays": 5
+    "plays": 4,
+    "fav": false
   },
   {
     "duration": "normal",
@@ -1024,7 +1078,7 @@
     "sections": {
       "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
     },
-    "plays": 5
+    "plays": 6
   },
   {
     "duration": "normal",
@@ -1134,7 +1188,7 @@
     "date": "09/06/2026",
     "mood": "Romantico",
     "genre": "Rock",
-    "plays": 4
+    "plays": 5
   },
   {
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
@@ -1200,7 +1254,7 @@
       ],
       "genre": "Sertanejo"
     },
-    "plays": 5
+    "plays": 6
   },
   {
     "duration": "normal",
@@ -1260,7 +1314,7 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 14
+    "plays": 17
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
@@ -1376,7 +1430,7 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 2
+    "plays": 1
   },
   {
     "struct": [
@@ -1412,7 +1466,7 @@
     "title": "FICA MAIS UM POUCO",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
     "duration": "normal",
-    "plays": 5
+    "plays": 7
   },
   {
     "date": "07/06/2026",
