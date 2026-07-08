@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1783541885721",
+      "title": "Fotografo",
+      "text": "edit this image — transform the photo into a high-end street-photography portrait of a traveler/photographer leaning casually on a lamp post in front of a historic tower. Keep the original pose and composition: standing with left leg bent and foot on the lamp base, right leg relaxed, left hand in jacket pocket, right hand holding a camera down by the thigh, shoulders slightly turned to camera, chin up and gaze off-frame. Preserve the camera, beard and textured jacket but enhance and stylize as follows:\n\nWardrobe & accessories: keep the dark parka/jacket but enrich fabric texture (subtle waxed canvas look), change inner hoodie to a soft charcoal knit, keep blue jeans but slightly deepened to rich indigo with natural creasing. Emphasize the high-top sneakers — boost contrast on black-and-white panels and add faint scuff details for realism. Add a small messenger bag strap across the chest and a compact leather wrist strap on the camera.\nLighting & color: cinematic cool-tone grade (soft blue shadows) with warm golden rim light hitting the left side of the face and shoulder (suggest late-afternoon sun). Slightly boost contrast and midtones to create punch without losing skin detail. Add subtle film grain and gentle vignette to focus on the subject.\nCamera & optics: emulate 35mm–50mm prime look, shallow DOF (f/1.8–2.8) so the tower and crowd become painterly bokeh while the subject remains razor-sharp. Slight perspective correction to emphasize the tower peek behind his shoulder. Enhance catchlight/reflection in the eyes (or sunglasses reflection if present) and sharpen camera details.\nBackground & atmosphere: keep the busy pedestrian scene but soften and desaturate it so the subject pops; raise clarity and texture on the stone tower so it reads as a strong architectural anchor. Add a few falling autumn leaves and a faint wet-pavement sheen to suggest recent rain (subtle reflections under shoes).\nFinal touches: natural skin retouching (preserve stubble and pores), boost micro-contrast on jacket and jeans, accentuate lens/glass reflections on the camera. Export as photorealistic, vertical 4K editorial crop with high detail.\nPosition (short): standing, left foot on lamp base, leaning against lamppost, camera in right hand, left hand in pocket, gaze off-frame.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1782763201199",
       "title": "Guerreiro",
       "text": "Um guerreiro — com um rosto idêntico ao da imagem em anexo — que ostenta uma aparência intimidadora inspirada em Kratos, de \"God of War\". Ele possui um físico extremamente musculoso e definido, com pele clara que apresenta texturas realistas e marcas naturais. Sua cabeça é totalmente raspada e ele exibe uma barba longa, espessa e bem cuidada. Sua expressão é séria e determinada, com um olhar intenso e sombrio. Ele veste uma armadura de couro escuro e metal envelhecido, com detalhes entalhados em estilo nórdico, costuras aparentes, rebites metálicos e símbolos gravados. Usa uma ombreira robusta em um dos lados, braçadeiras grossas de couro e metal nos antebraços e um cinto largo com fivelas ornamentadas. Um tecido pesado e gasto cai de sua cintura, exibindo marcas de batalha e de uso prolongado.\nEle empunha um grande machado de lâmina dupla, com metal gasto e riscado e um cabo de madeira escura contendo entalhes rúnicos. A cena apresenta iluminação dramática de estúdio, fundo escuro neutro, alto contraste, foco nítido e baixa profundidade de campo. O estilo é de fotografia profissional — ultrarrealista, resolução 8K, com texturas extremamente detalhadas — assemelhando-se a um cosplay cinematográfico, com uma aparência humana autêntica e sem qualquer traço de ilustração ou computação gráfica (CGI).",
@@ -137,5 +146,5 @@
     }
   ],
   "mpCats": [],
-  "savedAt": "2026-06-29T20:00:05.847Z"
+  "savedAt": "2026-07-08T20:18:10.578Z"
 }
