@@ -3265,7 +3265,9 @@ body{
   border-radius: 9px;
   overflow: hidden;
   flex-shrink: 0;
+  position: relative;
 }
+.mp-tile-zoom { display: none; }
 .mp-tile-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mp-tile-noimg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .mp-tile-noimg i { font-size: 18px; }
@@ -3623,6 +3625,21 @@ body{
   }
   .mp-tile-media { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 0; }
   .mp-tile-noimg i { font-size: 26px; }
+  .mp-tile-zoom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(2px);
+    font-size: 12px;
+    z-index: 2;
+  }
   .mp-tile-headinfo { padding: 8px 9px 9px; }
   .mp-tile-title {
     font-size: 11.5px;
@@ -3663,6 +3680,7 @@ body{
   #mpGrid.cols-3 .mp-tile-title { font-size: 10px; -webkit-line-clamp: 2; margin-bottom: 0; }
   #mpGrid.cols-3 .mp-tile-meta { display: none; }
   #mpGrid.cols-3 .mp-tile-star { font-size: 11px; padding: 4px; top: 4px; right: 4px; }
+  #mpGrid.cols-3 .mp-tile-zoom { width: 20px; height: 20px; font-size: 10px; bottom: 4px; left: 4px; }
   #mpGrid.cols-3 .mp-tile-arrow { display: none; }
   #mpGrid.cols-3 .mp-tile-noimg i { font-size: 20px; }
 
@@ -3671,6 +3689,7 @@ body{
   #mpGrid.cols-4 .mp-tile-title { font-size: 9px; -webkit-line-clamp: 1; margin-bottom: 0; }
   #mpGrid.cols-4 .mp-tile-meta { display: none; }
   #mpGrid.cols-4 .mp-tile-star { font-size: 9px; padding: 3px; top: 3px; right: 3px; }
+  #mpGrid.cols-4 .mp-tile-zoom { display: none; }
   #mpGrid.cols-4 .mp-tile-arrow { display: none; }
   #mpGrid.cols-4 .mp-tile-noimg i { font-size: 16px; }
   #mpGrid.cols-4 .mp-tile { border-radius: 8px; }
@@ -8474,7 +8493,8 @@ async function renderMpGrid() {
     const iconBg = iconBgs[catIndex];
     const tagsLine = p.tags?.length ? p.tags.slice(0,3).join(', ') : 'sem tags';
     const mediaHtml = imgs[i]
-      ? `<img class="mp-tile-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">`
+      ? `<img class="mp-tile-img" src="${imgs[i]}" alt="" onclick="mpMediaTap(event,'${p.id}')">
+         <span class="mp-tile-zoom" onclick="event.stopPropagation();mpViewImg('${p.id}')" title="Ver foto em tela cheia">🔍</span>`
       : `<div class="mp-tile-noimg" style="background:${iconBg}22;"><i class="${icon}" style="color:${iconBg};"></i></div>`;
     const bigImgHtml = imgs[i]
       ? `<img class="mp-tile-detail-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">`
@@ -8524,6 +8544,15 @@ function applyMpCols() {
 function setMpCols(n) {
   try { localStorage.setItem('mp_grid_cols', n); } catch (e) {}
   applyMpCols();
+}
+
+function mpMediaTap(event, id) {
+  event.stopPropagation();
+  if (window.innerWidth <= 768) {
+    mpToggleCard(id);
+  } else {
+    mpViewImg(id);
+  }
 }
 
 function mpToggleCard(id) {
