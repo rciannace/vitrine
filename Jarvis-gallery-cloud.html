@@ -1358,6 +1358,11 @@ body{
         <p class="mp-header-sub">Biblioteca pessoal de prompts — clique em <strong style="color:var(--cyan);">+ Novo Prompt</strong> para adicionar.</p>
       </div>
       <div class="mp-header-count" id="mpHeaderCount"></div>
+      <div class="mp-col-toggle" id="mpColToggle">
+        <button type="button" onclick="setMpCols(2)" data-cols="2" title="2 colunas">2</button>
+        <button type="button" onclick="setMpCols(3)" data-cols="3" title="3 colunas">3</button>
+        <button type="button" onclick="setMpCols(4)" data-cols="4" title="4 colunas">4</button>
+      </div>
     </div>
 
     <div class="mp-layout">
@@ -3212,6 +3217,27 @@ body{
   padding: 4px 12px;
   flex-shrink: 0;
 }
+.mp-col-toggle {
+  display: none;
+  gap: 3px;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.mp-col-toggle button {
+  width: 26px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 14px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+}
+.mp-col-toggle button.active { background: var(--cyan); color: #000; font-weight: 700; }
 
 /* ══ MEUS PROMPTS — tile cards (foto sempre visível + título) ══ */
 .mp-tile {
@@ -3565,8 +3591,12 @@ body{
   .mp-cat-item.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
   .mp-cat-item.active .mp-cat-count { background: rgba(0,0,0,.18); color: #000; }
 
-  /* Meus Prompts — grid de fotos quadradas (2 colunas) */
+  /* Meus Prompts — grid de fotos quadradas (densidade ajustável) */
+  .mp-col-toggle { display: flex; }
   #mpGrid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; align-items: start !important; }
+  #mpGrid.cols-2 { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  #mpGrid.cols-3 { grid-template-columns: repeat(3, 1fr) !important; gap: 7px !important; }
+  #mpGrid.cols-4 { grid-template-columns: repeat(4, 1fr) !important; gap: 6px !important; }
   .mp-tile {
     flex-direction: column;
     align-items: stretch;
@@ -3610,6 +3640,23 @@ body{
   .mp-act { flex: 1 1 40%; justify-content: center; padding: 8px 6px; font-size: 10px; }
   .mp-act.icon-only { flex: 0 0 auto; padding: 8px 10px; }
   .mp-act.del { margin-left: 0; }
+
+  /* 3 colunas — mais compacto, esconde metadados secundários */
+  #mpGrid.cols-3 .mp-tile-headinfo { padding: 6px 7px 7px; }
+  #mpGrid.cols-3 .mp-tile-title { font-size: 10px; -webkit-line-clamp: 2; margin-bottom: 0; }
+  #mpGrid.cols-3 .mp-tile-meta { display: none; }
+  #mpGrid.cols-3 .mp-tile-star { font-size: 11px; padding: 4px; top: 4px; right: 4px; }
+  #mpGrid.cols-3 .mp-tile-arrow { display: none; }
+  #mpGrid.cols-3 .mp-tile-noimg i { font-size: 20px; }
+
+  /* 4 colunas — máximo compacto */
+  #mpGrid.cols-4 .mp-tile-headinfo { padding: 4px 5px 5px; }
+  #mpGrid.cols-4 .mp-tile-title { font-size: 9px; -webkit-line-clamp: 1; margin-bottom: 0; }
+  #mpGrid.cols-4 .mp-tile-meta { display: none; }
+  #mpGrid.cols-4 .mp-tile-star { font-size: 9px; padding: 3px; top: 3px; right: 3px; }
+  #mpGrid.cols-4 .mp-tile-arrow { display: none; }
+  #mpGrid.cols-4 .mp-tile-noimg i { font-size: 16px; }
+  #mpGrid.cols-4 .mp-tile { border-radius: 8px; }
 
   .toast { bottom: 14px; right: 8px; left: 8px; font-size: 12px; }
 
@@ -8414,6 +8461,29 @@ async function renderMpGrid() {
       </div>
     </div>`;
   }).join('');
+  applyMpCols();
+}
+
+function getMpCols() {
+  const n = parseInt(localStorage.getItem('mp_grid_cols'), 10);
+  return (n === 2 || n === 3 || n === 4) ? n : 2;
+}
+
+function applyMpCols() {
+  const n = getMpCols();
+  const grid = document.getElementById('mpGrid');
+  if (grid) {
+    grid.classList.remove('cols-2', 'cols-3', 'cols-4');
+    grid.classList.add('cols-' + n);
+  }
+  document.querySelectorAll('#mpColToggle button').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.cols) === n);
+  });
+}
+
+function setMpCols(n) {
+  try { localStorage.setItem('mp_grid_cols', n); } catch (e) {}
+  applyMpCols();
 }
 
 function mpToggleCard(id) {
