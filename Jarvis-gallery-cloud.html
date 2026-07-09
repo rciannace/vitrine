@@ -20,6 +20,7 @@ window.addEventListener('unhandledrejection', function(e) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- v1.6 --><title>Jarvis Gallery v12 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css">
 <style>
 :root {
   --bg: #0c0c0e;
@@ -3212,33 +3213,32 @@ body{
   flex-shrink: 0;
 }
 
-/* ══ MEUS PROMPTS — accordion row cards (mobile-first) ══ */
-.mp-row {
+/* ══ MEUS PROMPTS — tile cards (foto sempre visível + título) ══ */
+.mp-tile {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   background: var(--s1);
   border: 1px solid var(--border);
   border-radius: 12px;
-  overflow: hidden;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: border-color .15s, box-shadow .15s;
+  transition: border-color .15s;
 }
-.mp-row:hover { border-color: rgba(0,229,204,.35); }
-.mp-row-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-}
-.mp-row-icon {
+.mp-tile:hover { border-color: rgba(0,229,204,.35); }
+.mp-tile-media {
   width: 38px; height: 38px;
   border-radius: 9px;
+  overflow: hidden;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.mp-row-icon i { font-size: 18px; }
-.mp-row-info { flex: 1; min-width: 0; }
-.mp-row-title {
+.mp-tile-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mp-tile-noimg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.mp-tile-noimg i { font-size: 18px; }
+.mp-tile-headinfo { flex: 1; min-width: 0; }
+.mp-tile-title {
   font-size: 13px;
   font-weight: 700;
   color: var(--text);
@@ -3247,14 +3247,14 @@ body{
   text-overflow: ellipsis;
   margin-bottom: 2px;
 }
-.mp-row-meta {
+.mp-tile-meta {
   font-size: 11px;
   color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mp-row-star {
+.mp-tile-star {
   font-size: 16px;
   color: rgba(255,255,255,.22);
   cursor: pointer;
@@ -3264,17 +3264,22 @@ body{
   margin: -6px;
   transition: transform .15s, color .15s;
 }
-.mp-row-star:active { transform: scale(1.2); }
-.mp-row-star.is-fav { color: var(--gold); }
-.mp-row-arrow {
+.mp-tile-star:active { transform: scale(1.2); }
+.mp-tile-star.is-fav { color: var(--gold); }
+.mp-tile-arrow {
   font-size: 16px;
   color: var(--muted);
   flex-shrink: 0;
   transition: transform .2s;
 }
-.mp-row-body { display: none; border-top: 1px solid var(--border); }
-.mp-row-img { width: 100%; max-height: 180px; object-fit: cover; display: block; cursor: pointer; }
-.mp-row-content { padding: 14px 16px; background: var(--s2); }
+.mp-tile-detail {
+  display: none;
+  flex-basis: 100%;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 12px;
+}
 .mp-row-text {
   font-size: 12px;
   font-family: 'DM Mono', monospace;
@@ -3288,7 +3293,7 @@ body{
   font-size: 10px;
   font-family: 'DM Mono', monospace;
   color: var(--muted);
-  background: var(--s1);
+  background: var(--s2);
   border: 1px solid var(--border);
   padding: 2px 8px;
   border-radius: 20px;
@@ -3297,9 +3302,7 @@ body{
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
-  padding: 10px 16px;
-  border-top: 1px solid var(--border);
-  background: var(--s2);
+  padding: 12px 0 0;
 }
 .mp-act {
   display: flex;
@@ -3562,19 +3565,50 @@ body{
   .mp-cat-item.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
   .mp-cat-item.active .mp-cat-count { background: rgba(0,0,0,.18); color: #000; }
 
-  /* Meus Prompts — cards em acordeão, mais toque-amigáveis */
-  #mpGrid { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .mp-row-head { padding: 12px 12px; gap: 10px; }
-  .mp-row-icon { width: 34px; height: 34px; border-radius: 8px; }
-  .mp-row-icon i { font-size: 15px; }
-  .mp-row-title { font-size: 12.5px; }
-  .mp-row-meta { font-size: 10.5px; }
-  .mp-row-star { font-size: 18px; }
-  .mp-row-content { padding: 12px; }
-  .mp-row-text { font-size: 11.5px; }
-  .mp-row-actions { padding: 9px 12px; gap: 6px; }
-  .mp-act { flex: 1 1 auto; justify-content: center; padding: 9px 6px; font-size: 10.5px; }
-  .mp-act.icon-only { flex: 0 0 auto; padding: 9px 12px; }
+  /* Meus Prompts — grid de fotos quadradas (2 colunas) */
+  #mpGrid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; align-items: start !important; }
+  .mp-tile {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .mp-tile-media { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 0; }
+  .mp-tile-noimg i { font-size: 26px; }
+  .mp-tile-headinfo { padding: 8px 9px 9px; }
+  .mp-tile-title {
+    font-size: 11.5px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+  .mp-tile-meta { font-size: 9px; }
+  .mp-tile-star {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(2px);
+    border-radius: 50%;
+    font-size: 13px;
+    padding: 5px;
+    margin: 0;
+    line-height: 1;
+    z-index: 2;
+  }
+  .mp-tile-arrow { position: absolute; bottom: 6px; right: 6px; font-size: 12px; z-index: 2; color: rgba(255,255,255,.6); }
+  .mp-tile-detail { padding: 0 9px 10px; margin-top: 2px; border-top: none; }
+  .mp-row-text { font-size: 11px; }
+  .mp-row-actions { padding: 8px 0 0; gap: 5px; }
+  .mp-act { flex: 1 1 40%; justify-content: center; padding: 8px 6px; font-size: 10px; }
+  .mp-act.icon-only { flex: 0 0 auto; padding: 8px 10px; }
   .mp-act.del { margin-left: 0; }
 
   .toast { bottom: 14px; right: 8px; left: 8px; font-size: 12px; }
@@ -8356,25 +8390,21 @@ async function renderMpGrid() {
     const icon = icons[catIndex];
     const iconBg = iconBgs[catIndex];
     const tagsLine = p.tags?.length ? p.tags.slice(0,3).join(', ') : 'sem tags';
+    const mediaHtml = imgs[i]
+      ? `<img class="mp-tile-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">`
+      : `<div class="mp-tile-noimg" style="background:${iconBg}22;"><i class="${icon}" style="color:${iconBg};"></i></div>`;
     return `
-    <div id="mpcard-${p.id}" class="mp-row" onclick="mpToggleCard('${p.id}')">
-      <div class="mp-row-head">
-        <div class="mp-row-icon" style="background:${iconBg}22;">
-          <i class="${icon}" style="color:${iconBg};"></i>
-        </div>
-        <div class="mp-row-info">
-          <div class="mp-row-title">${p.title}</div>
-          <div class="mp-row-meta">${catLabel || 'Sem categoria'} · ${tagsLine}</div>
-        </div>
-        <span class="mp-row-star${p.fav ? ' is-fav' : ''}" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav ? 'Favorito' : 'Favoritar'}">${p.fav ? '⭐' : '☆'}</span>
-        <i class="ti ti-chevron-down mp-row-arrow" id="arrow-${p.id}"></i>
+    <div id="mpcard-${p.id}" class="mp-tile" onclick="mpToggleCard('${p.id}')">
+      <div class="mp-tile-media">${mediaHtml}</div>
+      <div class="mp-tile-headinfo">
+        <div class="mp-tile-title">${p.title}</div>
+        <div class="mp-tile-meta">${catLabel || 'Sem categoria'} · ${tagsLine}</div>
       </div>
-      <div id="mpbody-${p.id}" class="mp-row-body">
-        ${imgs[i] ? `<img class="mp-row-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">` : ''}
-        <div class="mp-row-content">
-          <div class="mp-row-text">${p.text}</div>
-          ${p.tags?.length ? `<div class="mp-row-tags">${p.tags.map(t=>`<span class="mp-row-tag">${t}</span>`).join('')}</div>` : ''}
-        </div>
+      <span class="mp-tile-star${p.fav ? ' is-fav' : ''}" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav ? 'Favorito' : 'Favoritar'}">${p.fav ? '⭐' : '☆'}</span>
+      <i class="ti ti-chevron-down mp-tile-arrow" id="arrow-${p.id}"></i>
+      <div id="mpbody-${p.id}" class="mp-tile-detail">
+        <div class="mp-row-text">${p.text}</div>
+        ${p.tags?.length ? `<div class="mp-row-tags">${p.tags.map(t=>`<span class="mp-row-tag">${t}</span>`).join('')}</div>` : ''}
         <div class="mp-row-actions">
           <button class="mp-act copy" onclick="event.stopPropagation();copyMpPrompt('${p.id}')">📋 Copiar</button>
           <button class="mp-act" onclick="event.stopPropagation();editMyPrompt('${p.id}')">✏ Editar</button>
