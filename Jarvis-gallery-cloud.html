@@ -1454,6 +1454,12 @@ body{
   </div>
 </div>
 
+<!-- ══ OVERLAY: VISUALIZAR FOTO DO PROMPT ══ -->
+<div class="overlay" id="mpImgOverlay" onclick="if(event.target===this)closeMpImgViewer()" style="z-index:900;">
+  <button onclick="closeMpImgViewer()" style="position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;z-index:2;">✕</button>
+  <img id="mpImgOverlayPic" src="" alt="" style="max-width:100%;max-height:90vh;object-fit:contain;border-radius:10px;display:block;">
+</div>
+
 <!-- ══ MODAL: ADD MY PROMPT (v10) ══ -->
 <div class="overlay" id="addMpOverlay" onclick="if(event.target===this)closeAddMyPrompt()">
   <div class="modal" style="max-width:520px;">
@@ -3306,6 +3312,15 @@ body{
   margin-top: 8px;
   padding-top: 12px;
 }
+.mp-tile-detail-img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 12px;
+  cursor: zoom-in;
+}
 .mp-row-text {
   font-size: 12px;
   font-family: 'DM Mono', monospace;
@@ -3635,6 +3650,7 @@ body{
   }
   .mp-tile-arrow { position: absolute; bottom: 6px; right: 6px; font-size: 12px; z-index: 2; color: rgba(255,255,255,.6); }
   .mp-tile-detail { padding: 0 9px 10px; margin-top: 2px; border-top: none; }
+  .mp-tile-detail-img { max-height: 200px; margin-bottom: 8px; }
   .mp-row-text { font-size: 11px; }
   .mp-row-actions { padding: 8px 0 0; gap: 5px; }
   .mp-act { flex: 1 1 40%; justify-content: center; padding: 8px 6px; font-size: 10px; }
@@ -8457,8 +8473,11 @@ async function renderMpGrid() {
     const iconBg = iconBgs[catIndex];
     const tagsLine = p.tags?.length ? p.tags.slice(0,3).join(', ') : 'sem tags';
     const mediaHtml = imgs[i]
-      ? `<img class="mp-tile-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">`
+      ? `<img class="mp-tile-img" src="${imgs[i]}" alt="">`
       : `<div class="mp-tile-noimg" style="background:${iconBg}22;"><i class="${icon}" style="color:${iconBg};"></i></div>`;
+    const bigImgHtml = imgs[i]
+      ? `<img class="mp-tile-detail-img" src="${imgs[i]}" alt="" onclick="event.stopPropagation();mpViewImg('${p.id}')">`
+      : '';
     return `
     <div id="mpcard-${p.id}" class="mp-tile" onclick="mpToggleCard('${p.id}')">
       <div class="mp-tile-media">${mediaHtml}</div>
@@ -8469,6 +8488,7 @@ async function renderMpGrid() {
       <span class="mp-tile-star${p.fav ? ' is-fav' : ''}" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav ? 'Favorito' : 'Favoritar'}">${p.fav ? '⭐' : '☆'}</span>
       <i class="ti ti-chevron-down mp-tile-arrow" id="arrow-${p.id}"></i>
       <div id="mpbody-${p.id}" class="mp-tile-detail">
+        ${bigImgHtml}
         <div class="mp-row-text">${p.text}</div>
         ${p.tags?.length ? `<div class="mp-row-tags">${p.tags.map(t=>`<span class="mp-row-tag">${t}</span>`).join('')}</div>` : ''}
         <div class="mp-row-actions">
@@ -8538,20 +8558,16 @@ function mpToggleCard(id) {
 async function mpViewImg(id) {
   const dataUrl = await idbGet('mpimg_' + id);
   if (!dataUrl) return;
-  const w = window.open('', '_blank', 'width=900,height=700');
-  w.document.write(`<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;">
-
-  <!-- ☁ SYNC STATUS INDICATOR -->
-  <div id="syncStatusBar" style="position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;align-items:center;gap:6px;background:var(--s2,#1a1a1a);border:1px solid var(--border,#333);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted,#888);opacity:0;transition:opacity .3s;pointer-events:none;" aria-live="polite">
-    <span id="syncStatusDot" style="width:6px;height:6px;border-radius:50%;background:#888;transition:background .3s;"></span>
-    <span id="syncStatusText">sincronizado</span>
-  </div>
-  <!-- ☁ MOBILE SYNC BUTTON -->
-  <button id="mobileSyncBtn" onclick="openSyncModal();showSyncTab('cloud')"
-    style="display:none;position:fixed;bottom:70px;right:14px;z-index:9000;width:44px;height:44px;border-radius:50%;background:var(--cyan,#00bcd4);border:none;color:#000;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4);align-items:center;justify-content:center;"
-    title="Sync Nuvem" aria-label="Abrir sync nuvem">☁</button>
-  <style>@media(max-width:600px){#mobileSyncBtn{display:flex!important;}}</style>
-</body>`);
+  const pic = document.getElementById('mpImgOverlayPic');
+  const overlay = document.getElementById('mpImgOverlay');
+  if (pic && overlay) {
+    pic.src = dataUrl;
+    overlay.classList.add('open');
+  }
+}
+function closeMpImgViewer() {
+  const overlay = document.getElementById('mpImgOverlay');
+  if (overlay) overlay.classList.remove('open');
 }
 
 
