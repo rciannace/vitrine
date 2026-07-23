@@ -5352,6 +5352,82 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   border-color: rgba(255,255,255,.15) !important;
 }
 
+/* ══════════════════════════════════════
+   FUNDO ESCURO VERDE/ROXO — ÁREA PRINCIPAL
+══════════════════════════════════════ */
+.main {
+  background: linear-gradient(160deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
+  position: relative;
+}
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 64px 0 0 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 5% 30%, rgba(0,196,174,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 95% 60%, rgba(168,85,247,.07) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.sidebar {
+  background: rgba(10,10,20,.85) !important;
+  border-right-color: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(8px);
+}
+.content {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+/* ── Sidebar: textos visíveis ── */
+.sidebar-section-title { color: rgba(255,255,255,.4) !important; }
+.sidebar-header-studio { color: rgba(255,255,255,.55) !important; }
+.sidebar-header-title { color: #fff !important; }
+.sidebar-header-sub { color: rgba(255,255,255,.4) !important; }
+
+/* Botões de categoria no sidebar */
+.cat-btn { color: rgba(255,255,255,.85) !important; }
+.cat-btn:hover { background: rgba(255,255,255,.08) !important; }
+.cat-btn.active { background: rgba(0,196,174,.15) !important; border-left-color: #00c4ae !important; }
+.cat-btn-name { color: rgba(255,255,255,.85) !important; font-size: 13px; }
+.cat-btn.active .cat-btn-name { color: #00c4ae !important; }
+.cat-btn-count { color: rgba(255,255,255,.4) !important; background: rgba(255,255,255,.08) !important; }
+.cat-btn.active .cat-btn-count { color: #00c4ae !important; background: rgba(0,196,174,.15) !important; }
+
+/* Toolbar textos */
+.cat-title { color: #fff !important; }
+.cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
+.btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; }
+.btn-ghost:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
+
+/* Gallery cards */
+.gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
+.gallery-card:hover { border-color: rgba(0,196,174,.4) !important; background: rgba(0,196,174,.06) !important; }
+.gallery-card-name { color: #00c4ae !important; }
+.gallery-card-count { color: rgba(255,255,255,.45) !important; }
+
+/* Pricing textos */
+.pricing-section .pricing-qty { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-num { color: #fff !important; }
+.pricing-section .accent-price { color: #00c4ae !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.5) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.45) !important; }
+.pricing-section .pricing-btn-ghost {
+  border-color: rgba(255,255,255,.25) !important;
+  color: rgba(255,255,255,.7) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.1) !important;
+  color: #fff !important;
+}
+
+/* Textos gerais */
+.empty-state-title { color: rgba(255,255,255,.7) !important; }
+.empty-state-desc { color: rgba(255,255,255,.35) !important; }
+#backToGalleriesBtn { color: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.12) !important; }
+#backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
+
 
 </style>
 <!-- Firebase -->
@@ -9831,33 +9907,4 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
       <button onclick="confirmDeleteCat()" style="flex:1;padding:12px;background:#e03050;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">🗑 Excluir</button>
     </div>
   </div>
-</div>
-
-<div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
-  <div class="upload-modal">
-    <div class="upload-modal-head">
-      <span class="upload-modal-title">⬆ Upload de Fotos</span>
-      <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
-    </div>
-    <div class="upload-modal-body">
-      <div class="upload-inbox-hint">📂 As fotos serão salvas em <strong>Aniversário</strong>.</div>
-      <div>
-        <div class="field-label">Fotos</div>
-        <div class="drop-zone" id="dropZone" onclick="document.getElementById(&#39;fileInput&#39;).click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
-          <div class="drop-zone-icon">🖼</div>
-          <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" multiple="" style="display:none" onchange="filesSelected(this.files)">
-      </div>
-      <div class="upload-progress" id="uploadProgress" style="display: none;">
-        <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
-      </div>
-      <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
-    </div>
-    <div class="upload-modal-footer">
-      <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
-      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
-    </div>
-  </div>
-</div>
-</body></html>
+</div>>
