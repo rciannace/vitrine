@@ -354,9 +354,9 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
 /* GALERIA SPOTIFY */
 .gal-card{background:var(--card-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
-.gal-queue-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.65);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:600;padding:4px 8px;cursor:pointer;z-index:5;backdrop-filter:blur(6px);opacity:0;transition:opacity .2s;white-space:nowrap}
+.gal-queue-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);border:none;border-radius:6px;color:#fff;font-size:11px;padding:3px 7px;cursor:pointer;z-index:2;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
 .gal-card:hover .gal-queue-btn{opacity:1}
-@media(max-width:700px){.gal-queue-btn{opacity:1;font-size:10px;padding:3px 7px}}
+@media(max-width:700px){.gal-queue-btn{opacity:1;font-size:10px;padding:2px 5px}}
 #queue-panel{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:300px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden;flex-direction:column}
 #queue-panel.open{display:flex}
 #queue-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
@@ -372,11 +372,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .gal-card:active{transform:scale(.97)}
 .gal-card.playing{border-color:#f97316;box-shadow:0 0 0 2px #f9731630}
 .gal-thumb{width:100%;aspect-ratio:0.75;background:linear-gradient(135deg,#f97316,#ef4444);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
-.gal-play-icon{position:absolute;bottom:6px;right:6px;width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 8px #0003;transition:all .2s;opacity:0}
-.gal-card:hover .gal-play-icon{opacity:1}
-.gal-card.playing .gal-play-icon{opacity:1}
-@media(max-width:700px){.gal-play-icon{opacity:1;width:36px;height:36px;font-size:16px;bottom:8px;right:8px}
-.gal-card:not(.playing) .gal-play-icon{opacity:0}}
+.gal-play-icon{position:absolute;bottom:6px;right:6px;width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 8px #0003;transition:all .2s}
 .gal-card.playing .gal-play-icon{background:#ef4444}
 .gal-info{padding:5px 7px 8px;text-align:center}
 .gal-title{font-size:10px;font-weight:700;color:#1a1a1a;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;min-height:26px}
@@ -392,9 +388,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   padding:0;
   z-index:200;display:none;
   box-shadow:0 -2px 20px #000a;
-  height:94px;
-  overflow:visible;
-  padding-bottom:env(safe-area-inset-bottom, 0px);
+  height:90px;
 }
 @media(max-width:700px){.sp-player{height:auto}}
 .sp-player.active{display:block}
@@ -410,7 +404,6 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   padding:10px 24px 8px;
   gap:12px;
   box-sizing:border-box;
-  overflow:visible;
 }
 @media(max-width:700px){
   .sp-player-inner{grid-template-columns:auto 1fr;padding:10px 12px 8px;gap:6px}
@@ -426,14 +419,13 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 }
 
 /* coluna esq: capa + info */
-.sp-left{display:flex;align-items:center;gap:12px;min-width:0;overflow:visible}
+.sp-left{display:flex;align-items:center;gap:12px;min-width:0}
 .sp-thumb{
   width:56px;height:56px;border-radius:6px;
   background:linear-gradient(135deg,#f97316,#ef4444);
   display:flex;align-items:center;justify-content:center;
   font-size:28px;flex-shrink:0;cursor:pointer;
   transition:transform .15s;box-shadow:0 2px 12px #0006;
-  overflow:hidden;
 }
 .sp-thumb:hover{transform:scale(1.04)}
 .sp-info{min-width:0}
@@ -949,7 +941,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <div class="sp-left">
         <div style="position:relative;display:inline-block">
           <div class="sp-thumb" id="sp-thumb" onclick="openLyricsModal()" title="Ver letra">🎵</div>
-          <button onclick="toggleQueue()" title="Ver fila" style="display:none;position:absolute;top:0;right:-20px;background:#f97316;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;color:#fff;cursor:pointer;line-height:18px;text-align:center;padding:0" id="sp-queue-mobile">☰</button>
+          <button onclick="toggleQueue()" title="Ver fila" style="display:none;position:absolute;top:-6px;right:-6px;background:#f97316;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;color:#fff;cursor:pointer;line-height:18px;text-align:center;padding:0" id="sp-queue-mobile">☰</button>
         </div>
         <div class="sp-info">
           <div class="sp-title" id="sp-title">—</div>
@@ -1009,8 +1001,8 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
   </div>
   <!-- MODAL LETRA -->
   <div id="lyrics-overlay" style="display:none;position:fixed;inset:0;background:#0009;z-index:400" onclick="closeLyricsModal()"></div>
-  <div id="lyrics-modal" style="display:none;position:fixed;inset:0;z-index:401;flex-direction:column;align-items:center;background:#0a0a14">
-    <div style="width:100%;max-width:680px;height:100%;display:flex;flex-direction:column;">
+  <div id="lyrics-modal" style="display:none;position:fixed;inset:0;z-index:401;flex-direction:column">
+    <div style="width:100%;height:100%;background:#0a0a14;display:flex;flex-direction:column">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #1e1e2e;flex-shrink:0">
         <button onclick="closeLyricsModal()" class="btn-voltar" style="padding:6px 14px 6px 10px"><span class="bv-arrow">‹</span> Voltar</button>
         <div id="lyrics-modal-title" style="font-size:14px;font-weight:700;color:#fff;text-align:center;flex:1;padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
@@ -2104,8 +2096,7 @@ function renderResult(structs){
 
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
       <button onclick="editingFromLib?setPage('lib'):setPage('criar')" class="btn-voltar"><span class="bv-arrow">‹</span> Voltar</button>
-      <button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>
-      ${!editingFromLib?'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#3b82f6;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Rascunho</button>':''}
+      ${editingFromLib?'<button onclick="saveEditedEntry()" style="padding:8px 18px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">💾 Salvar</button>':'<button onclick="useCurrentSong()" style="padding:8px 16px;border-radius:20px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ Usar música</button><button onclick="saveCurrentAsDraft()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #6366f1;background:transparent;font-size:12px;color:#6366f1;cursor:pointer">📝 Guardar Rascunho</button>'}
     </div>
 
     <div class="song-header" style="border-top:4px solid ${genreAccent(s.genre)};background:linear-gradient(135deg,${genreAccent(s.genre)}15 0%,var(--card-bg) 60%)">
@@ -3151,40 +3142,14 @@ function loadEntry(id){
   renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
 }
 function saveEditedEntry(){
-  if(editingId){
-    const idx=history.findIndex(x=>x.id===editingId);
-    if(idx>=0){
-      history[idx].sections=currentSections;
-      history[idx].song=currentSong;
-      // força save no localStorage direto (não depende do GitHub)
-      try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch(e){}
-      saveHistory();
-      setTimeout(function(){renderVersionsBar();},50);
-      showToast("✅ Salvo! ("+Object.keys(currentSections||{}).length+" seções)","ok");
-      return;
-    }
-  }
-  // Não está na biblioteca ainda — cria nova entrada
-  if(!currentSections||Object.keys(currentSections).length===0){showToast("Nada para salvar","err");return;}
-  var novaEntry={
-    id: Date.now(),
-    title: (currentSong&&currentSong.title)||"Música sem título",
-    genre: (currentSong&&currentSong.genre)||"pop",
-    mood: (currentSong&&currentSong.mood)||"romantico",
-    bpm: (currentSong&&currentSong.bpm)||90,
-    duration: (currentSong&&currentSong.duration)||"normal",
-    date: new Date().toLocaleDateString("pt-BR"),
-    sections: currentSections,
-    struct: Object.keys(currentSections),
-    song: currentSong||{},
-    fav: false, plays: 0, cover: null
-  };
-  history.unshift(novaEntry);
-  editingId=novaEntry.id;
-  editingFromLib=true;
+  if(!editingId)return;
+  const idx=history.findIndex(x=>x.id===editingId);
+  if(idx<0)return;
+  history[idx].sections=currentSections;
+  history[idx].song=currentSong;
   saveHistory();
   setTimeout(function(){renderVersionsBar();},50);
-  showToast("✅ Salvo na biblioteca!","ok");
+  showToast("✅ Música salva!","ok");
 }
 function saveHistory(){ghSave();}
 function editTitle(id){
@@ -3458,6 +3423,7 @@ function genreColor(g){
 
 function spToggleShuffle(){
   spShuffle=!spShuffle;
+  window._shufflePool=null; // reset pool ao trocar modo
   const btn=document.getElementById("sp-shuffle-btn");
   if(btn)btn.className="sp-btn"+(spShuffle?" active-mode":"");
 }
@@ -3623,6 +3589,7 @@ function spVolMute(){
 function spPlay(i){
   if(!spQueue[i])return;
   spIndex=i;
+  window._shufflePool=null; // reset pool ao trocar música manualmente
   const e=spQueue[i];
   window._spCurrentId=e.id;
   const audio=document.getElementById("sp-audio");
@@ -3752,8 +3719,7 @@ function spUpdateUI(){
   const d4=['1500534314209-a25ddb2bd429','1507525428034-b723cf961d3e','1448375240586-882707db888b','1464822759023-fed622ff2c3b'];
   const arr2=rom2?r4:(pm2[(e.genre||'').toLowerCase()]||d4);
   const pid2=arr2[h%4];
-  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=center" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" onerror="this.style.display=\'none\'"/>';
-  thumb.style.position='relative';
+  thumb.innerHTML='<img src="https://images.unsplash.com/photo-'+pid2+'?w=200&q=70&fit=crop&crop=entropy" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display=\'none\'"/>';
   thumb.style.background=genreColor(e.genre);
   btn.textContent=spPlaying?"⏸":"▶";
   // update main padding so player doesn't cover content
@@ -3773,8 +3739,41 @@ function spUpdateUI(){
   });
   audio.addEventListener("ended",()=>{
     if(spQueue.length===0)return;
-    // Sempre usa spNext() — ela já respeita manualQueue, shuffle e repeat
-    setTimeout(()=>spNext(),300);
+    if(spRepeat==="one"){audio.currentTime=0;audio.play();return;}
+    // Fila manual tem prioridade
+    if(manualQueue.length>0){
+      const nextEntry=manualQueue.shift();
+      const idx=spQueue.findIndex(x=>x.id===nextEntry.id);
+      if(idx>=0){if(_queueOpen)renderQueue();setTimeout(()=>spPlay(idx),300);return;}
+    }
+    if(spShuffle){
+      // Shuffle correto: usa lista de índices não tocados
+      if(!window._shufflePool||window._shufflePool.length===0){
+        // Cria pool com todos os índices exceto o atual
+        window._shufflePool=spQueue.map((_,i)=>i).filter(i=>i!==spIndex);
+        // Embaralha (Fisher-Yates)
+        for(let i=window._shufflePool.length-1;i>0;i--){
+          const j=Math.floor(Math.random()*(i+1));
+          [window._shufflePool[i],window._shufflePool[j]]=[window._shufflePool[j],window._shufflePool[i]];
+        }
+      }
+      const next=window._shufflePool.shift();
+      if(next!==undefined){
+        setTimeout(()=>spPlay(next),300);
+      } else if(spRepeat==="all"){
+        // Tocou todas — recomeça
+        window._shufflePool=null;
+        const first=Math.floor(Math.random()*spQueue.length);
+        setTimeout(()=>spPlay(first),300);
+      }
+    } else {
+      const next=spIndex+1;
+      if(next<spQueue.length){
+        setTimeout(()=>spPlay(next),300);
+      } else if(spRepeat==="all"){
+        setTimeout(()=>spPlay(0),300);
+      }
+    }
   });
   audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
   audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
@@ -3800,7 +3799,6 @@ function applyPasteLyrics(){
   });
   if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
   currentSections=newSecs;
-  currentStruct=newStruct;
   // try editingId first, then by title
   var saveId=editingId||null;
   if(!saveId&&currentSong&&currentSong.title){
@@ -3813,30 +3811,10 @@ function applyPasteLyrics(){
       history[idx].sections=currentSections;
       if(currentSong)history[idx].song=Object.assign(history[idx].song||{},{sections:currentSections});
       saveHistory();
-      showToast("✅ Letra salva!","ok");
+      showToast("Letra salva na nuvem!","ok");
     }
   } else {
-    // Música ainda não está na biblioteca — salva agora
-    var novaEntry={
-      id: Date.now(),
-      title: (currentSong&&currentSong.title)||"Música sem título",
-      genre: (currentSong&&currentSong.genre)||"pop",
-      mood: (currentSong&&currentSong.mood)||"romantico",
-      bpm: (currentSong&&currentSong.bpm)||90,
-      duration: (currentSong&&currentSong.duration)||"normal",
-      date: new Date().toLocaleDateString("pt-BR"),
-      sections: currentSections,
-      struct: newStruct,
-      song: currentSong||{},
-      fav: false,
-      plays: 0,
-      cover: null
-    };
-    history.unshift(novaEntry);
-    editingId=novaEntry.id;
-    editingFromLib=true;
-    saveHistory();
-    showToast("✅ Letra salva na biblioteca!","ok");
+    showToast("Letra aplicada (abra pela Biblioteca para salvar)","ok");
   }
   closePasteLyrics();
   renderResult(newStruct);
