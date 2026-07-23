@@ -6222,7 +6222,6 @@ async function persist() {
       items: items,
       cats:  cats,
       pricing: loadPricing(),
-      musicaDemos: musicaDemos,
       adPairs: adPairs,
       updatedAt: Date.now()
     });
@@ -6322,10 +6321,7 @@ async function initApp() {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
       }
-      if (data.musicaDemos && data.musicaDemos.length) {
-        musicaDemos = data.musicaDemos;
-        renderMusicaDemos();
-      }
+
     } else {
       meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
       cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
@@ -7634,7 +7630,6 @@ function activateAdmin() {
   adminMode = true;
   document.body.classList.add('admin-mode');
   // Re-renderizar demos para mostrar botão de adicionar
-  if (typeof renderMusicaDemos === 'function') renderMusicaDemos();
   // Sincronizar adPairs com Firebase para novos visitantes verem
   if (adPairs.length > 0) persistBg();
   const btn = document.getElementById('adminLockBtn');
