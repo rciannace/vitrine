@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<!-- v20260603014322 -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -5349,9 +5351,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   color: rgba(255,255,255,.6) !important;
   border-color: rgba(255,255,255,.15) !important;
 }
+
+
 </style>
-
-
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
@@ -5846,4 +5848,4016 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 <!-- ══════════════════════════════════════
      MÚSICAS PERSONALIZADAS
 ══════════════════════════════════════ -->
+
+
+
+
+
+<!-- LIGHTBOX -->
+<div id="lightboxOverlay" onclick="if(event.target===this)closeLightbox()" ontouchstart="lbTouchStart(event)" ontouchmove="lbTouchMove(event)" ontouchend="lbTouchEnd(event)">
+  <button class="lightbox-nav" id="lbPrev" onclick="lbNavigate(-1)">‹</button>
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lb-views-info" id="lbViewsInfo">👁 0 views</div>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-info">
+      <span class="lightbox-title" id="lightboxTitle"></span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="btn btn-ghost btn-sm" onclick="startSlideshow()" title="Modo apresentação" style="font-size:16px;padding:6px 10px;">▶</button>
+        <button class="btn btn-accent btn-sm lightbox-download-btn" onclick="downloadCurrentLb()">⬇ Download</button>
+      </div>
+    </div>
+    <div id="lbSwipeHint" class="lb-swipe-hint" style="display:none;">← deslize para navegar →</div>
+    <button id="lbBackBtn" onclick="closeLightbox()" style="margin-top:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;">← Voltar</button>
+  </div>
+  <button class="lightbox-nav" id="lbNext" onclick="lbNavigate(1)">›</button>
+</div>
+
+<!-- UPLOAD MODAL -->
+
+
+<!-- MOVE BULK MODAL -->
+<div id="moveBulkOverlay" onclick="if(event.target===this)closeMoveBulk()">
+  <div class="move-bulk-modal">
+    <div class="move-bulk-head">
+      <span class="move-bulk-title">↗ Mover para galeria</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeMoveBulk()">✕</button>
+    </div>
+    <div class="move-bulk-body">
+      <div class="move-bulk-info" id="moveBulkInfo">Mover fotos selecionadas para:</div>
+      <!-- Grade de categorias em ordem alfabética -->
+      <!-- Busca -->
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:10px;padding:8px 12px;transition:border-color .15s;" id="moveBulkSearchWrap">
+        <span style="font-size:14px;color:var(--muted);">🔍</span>
+        <input id="moveBulkSearch" type="text" placeholder="Buscar galeria..." autocomplete="off"
+          style="flex:1;border:none;background:transparent;font-size:13px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;"
+          oninput="filterMoveBulkCats(this.value)"
+          onfocus="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--accent)'"
+          onblur="document.getElementById('moveBulkSearchWrap').style.borderColor='var(--border2)'">
+      </div>
+      <div class="move-bulk-cats-grid" id="moveBulkCatsGrid"></div>
+      <!-- Input oculto para guardar seleção -->
+      <input type="hidden" id="moveBulkSel" value="">
+      <div class="move-bulk-newcat" id="moveBulkNewCatRow" style="display:none;">
+        <input id="moveBulkNewCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key==='Enter')moveBulkAddCat()">
+        <button class="btn btn-accent btn-sm" onclick="moveBulkAddCat()">＋ Criar</button>
+      </div>
+      <button class="move-bulk-newcat-toggle" onclick="toggleMoveBulkNewCat()" id="moveBulkNewCatBtn">＋ Nova galeria</button>
+    </div>
+    <div class="move-bulk-footer">
+      <button class="btn btn-ghost" onclick="closeMoveBulk()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmMoveBulk()">Mover →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- CAT MANAGER MODAL -->
+<div id="catManagerOverlay" onclick="if(event.target===this)closeCatManager()" class="">
+  <div class="cat-manager-modal">
+    <div class="cat-manager-head">
+      <span class="cat-manager-title">Gerenciar Galerias</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeCatManager()">✕ Fechar</button>
+    </div>
+    <div class="cat-manager-body">
+      <!-- Nova galeria -->
+      <div class="new-cat-form">
+        <input id="newCatInput" class="input-field" type="text" placeholder="Nome da nova galeria…" onkeydown="if(event.key===&#39;Enter&#39;)addCat()">
+        <button class="btn btn-accent btn-sm" onclick="addCat()">＋ Criar</button>
+      </div>
+      <div class="cat-list-divider"></div>
+      <div class="cat-manager-list-title">Galerias existentes</div>
+      <div id="catManagerList">
+      <div class="cat-row" id="catrow-c1777586793106">
+        <input class="cat-row-name" type="text" value="Animais" oninput="showSaveBtn(&#39;c1777586793106&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777586793106&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">1 foto</span>
+        <button class="cat-row-save" id="save-c1777586793106" onclick="saveCatName(&#39;c1777586793106&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1777586793106&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c5">
+        <input class="cat-row-name" type="text" value="Aniversário" oninput="showSaveBtn(&#39;c5&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c5&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">5 fotos</span>
+        <button class="cat-row-save" id="save-c5" onclick="saveCatName(&#39;c5&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c5&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c6">
+        <input class="cat-row-name" type="text" value="Casamento" oninput="showSaveBtn(&#39;c6&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c6&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c6" onclick="saveCatName(&#39;c6&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c6&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c4">
+        <input class="cat-row-name" type="text" value="Cinemático" oninput="showSaveBtn(&#39;c4&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c4&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c4" onclick="saveCatName(&#39;c4&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c4&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c1">
+        <input class="cat-row-name" type="text" value="Executivas Feminino" oninput="showSaveBtn(&#39;c1&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">18 fotos</span>
+        <button class="cat-row-save" id="save-c1" onclick="saveCatName(&#39;c1&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c2">
+        <input class="cat-row-name" type="text" value="Executivas Masculino" oninput="showSaveBtn(&#39;c2&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c2&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">34 fotos</span>
+        <button class="cat-row-save" id="save-c2" onclick="saveCatName(&#39;c2&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c2&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c1777515636960">
+        <input class="cat-row-name" type="text" value="Familia" oninput="showSaveBtn(&#39;c1777515636960&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c1777515636960&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">7 fotos</span>
+        <button class="cat-row-save" id="save-c1777515636960" onclick="saveCatName(&#39;c1777515636960&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c1777515636960&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c3">
+        <input class="cat-row-name" type="text" value="Fantasy" oninput="showSaveBtn(&#39;c3&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c3&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c3" onclick="saveCatName(&#39;c3&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c3&#39;)" title="Excluir galeria">🗑</button>
+      </div>
+      <div class="cat-row" id="catrow-c7">
+        <input class="cat-row-name" type="text" value="Infantil" oninput="showSaveBtn(&#39;c7&#39;)" onkeydown="if(event.key===&#39;Enter&#39;)saveCatName(&#39;c7&#39;)" title="Clique para editar o nome">
+        <span class="cat-row-count">0 fotos</span>
+        <button class="cat-row-save" id="save-c7" onclick="saveCatName(&#39;c7&#39;)">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat(&#39;c7&#39;)" title="Excluir galeria">🗑</button>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ Modo admin ativado!</div>
+
+<!-- MOVE PHOTO MODAL -->
+<div id="moveOverlay" onclick="if(event.target===this)closeMoveModal()">
+  <div class="move-modal">
+    <div class="move-modal-head">
+      <span class="move-modal-title">↗ Mover Foto</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeMoveModal()">✕ Fechar</button>
+    </div>
+    <div class="move-modal-body">
+      <div class="move-preview-wrap">
+        <img id="movePreviewImg" src="./IA Foto Studio — Vitrine de Referências_files/IA Foto Studio — Vitrine de Referências.html" alt="">
+        <span class="move-preview-label" id="movePreviewLabel"></span>
+      </div>
+      <div>
+        <div class="field-label">Mover para a galeria</div>
+        <select id="moveCatSel" class="select-field"></select>
+      </div>
+    </div>
+    <div class="move-modal-footer">
+      <button class="btn btn-ghost" onclick="closeMoveModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmMove()">↗ Mover</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASTE OVERLAY -->
+<div id="pasteOverlay" onclick="if(event.target===this)closePasteOverlay()" class="">
+  <div class="paste-modal">
+    <div class="paste-modal-head">
+      <span class="paste-modal-title">📋 Colar Imagem</span>
+      <button class="btn btn-ghost btn-sm" onclick="closePasteOverlay()">✕ Fechar</button>
+    </div>
+    <div class="paste-modal-body">
+      <div class="paste-hint-bar" id="pasteHintBar">
+        <span class="paste-hint-icon">⌨</span>
+        <span>Pressione <kbd>Ctrl+V</kbd> para colar a imagem</span>
+      </div>
+      <div style="text-align:center;margin:8px 0 0;">
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById(&#39;pasteFileInput&#39;).click()" style="font-size:12px;gap:6px;">
+          📁 Selecionar arquivo (mobile)
+        </button>
+        <input type="file" id="pasteFileInput" accept="image/*" style="display:none" onchange="pasteFromFile(this.files[0]);this.value=&#39;&#39;">
+      </div>
+      <div class="paste-preview-wrap" id="pastePreviewWrap" style="display:none">
+        <img id="pastePreviewImg" src="https://rciannace.github.io/index.html/IafotoStudio.html" alt="Preview">
+        <button class="paste-clear-btn" onclick="clearPastePreview()" title="Remover">✕</button>
+      </div>
+      <div>
+        <div class="field-label">Galeria de destino</div>
+        <select id="pasteCatSel" class="select-field"><option value="">— Sem galeria —</option><option value="c1">Executivas Feminino</option><option value="c2">Executivas Masculino</option><option value="c3">Fantasy</option><option value="c4">Cinemático</option><option value="c5">Aniversário</option><option value="c6">Casamento</option><option value="c7">Infantil</option><option value="c1777515636960">Familia</option><option value="c1777586793106">Animais</option></select>
+      </div>
+    </div>
+    <div class="paste-modal-footer">
+      <button class="btn btn-ghost" onclick="closePasteOverlay()">Cancelar</button>
+      <button class="btn btn-primary" id="pasteConfirmBtn" onclick="confirmPaste()" disabled="">Salvar foto</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASTE HOTKEY HINT (floating) -->
+<div class="paste-fab admin-only" id="pasteFab" onclick="openPasteOverlay()" title="Colar imagem (Ctrl+V)">
+  📋
+  <span class="paste-fab-label">Ctrl+V</span>
+</div>
+
+<!-- BULK SELECT BAR -->
+<div id="bulkBar">
+  <span id="bulkCount">0 fotos selecionadas</span>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;" onclick="selectAll()">☑ Todas</button>
+  <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;" onclick="openMoveBulk()">↗ Mover</button>
+  <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;" onclick="deleteBulk()">🗑 Apagar</button>
+  <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);" onclick="cancelSelectMode()">✕ Cancelar</button>
+</div>
+
+<!-- PAINEL DE PEDIDOS -->
+<div id="pedidosOverlay">
+  <div class="pedidos-box">
+    <div class="pedidos-head">
+      <div class="pedidos-title">📋 Pedidos</div>
+      <button onclick="fecharPedidos()" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+    </div>
+    <div class="pedidos-list" id="pedidosList">
+      <div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TELA OBRIGADA -->
+<div id="salaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
+  <div style="background:var(--surface);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.4);border:1px solid var(--border2);">
+    <div style="font-size:64px;">🎉</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);">Seleção enviada!</div>
+    <div style="font-size:15px;color:var(--muted);line-height:1.6;">
+      Suas <strong id="salaObrigadaN" style="color:var(--accent);">0</strong> fotos foram enviadas pelo WhatsApp.<br>
+      Entraremos em contato em breve para confirmar seu ensaio! 😊
+    </div>
+    <div style="background:var(--accent2);border:1px solid var(--accent);border-radius:14px;padding:14px 20px;font-size:13px;color:var(--text);line-height:1.5;">
+      ⚡ Em menos de <strong>24 horas</strong> você recebe seu ensaio completo!
+    </div>
+    <button onclick="fecharSalaObrigada()" style="width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
+      Fechar ✓
+    </button>
+  </div>
+</div>
+
+<!-- PASTE FLASH BORDER -->
+<div class="paste-global-flash" id="pasteFlash"></div>
+
+<!-- ADMIN LOCK BUTTON -->
+<button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
+
+<!-- ADMIN BADGE -->
+<div id="adminBadge" class="">⚙ Admin</div>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div id="adminModal" onclick="if(event.target===this)closeAdminModal()" class="">
+  <div class="admin-modal-box">
+    <div class="admin-modal-icon" id="adminModalIcon">🔒</div>
+    <div class="admin-modal-title" id="adminModalTitle">Acesso Restrito</div>
+    <div class="admin-modal-subtitle" id="adminModalSubtitle">Digite a senha de administrador</div>
+    <div class="admin-pin-wrap" id="adminPinWrap">
+      <input type="password" maxlength="1" id="pin0" oninput="pinInput(0)" onkeydown="pinKey(event,0)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin1" oninput="pinInput(1)" onkeydown="pinKey(event,1)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin2" oninput="pinInput(2)" onkeydown="pinKey(event,2)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin3" oninput="pinInput(3)" onkeydown="pinKey(event,3)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin4" oninput="pinInput(4)" onkeydown="pinKey(event,4)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin5" oninput="pinInput(5)" onkeydown="pinKey(event,5)" inputmode="numeric">
+      <input type="password" maxlength="1" id="pin6" oninput="pinInput(6)" onkeydown="pinKey(event,6)" inputmode="text">
+    </div>
+    <div class="admin-modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeAdminModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let items = [];
+let cats  = [];
+let idb   = null;
+let currentCat = null; // null = all
+let currentView = []; // items currently shown
+let lbIndex = 0;
+let pendingFiles = [];
+
+// ── CLOUDINARY CONFIG ──
+const CLOUDINARY_CLOUD  = 'dftsx4wv0';
+const CLOUDINARY_PRESET = 'ia_foto_studio';
+
+// ── FIRESTORE PERSIST ──
+async function persist() {
+  if (!window._fbReady) return;
+  const db = window._fbDb;
+  try {
+    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+      items: items,
+      cats:  cats,
+      pricing: loadPricing(),
+      musicaDemos: musicaDemos,
+      adPairs: adPairs,
+      updatedAt: Date.now()
+    });
+  } catch(e) {
+    console.error('Firestore save error:', e);
+    localStorage.setItem('iafoto_items', JSON.stringify(items));
+    localStorage.setItem('iafoto_cats',  JSON.stringify(cats));
+  }
+}
+
+// Sempre em background — nunca bloqueia a UI
+function persistBg() {
+  persist().catch(e => console.error('persistBg error:', e));
+}
+
+// ── CLOUDINARY UPLOAD ──
+// ── COMPRESSÃO DE IMAGEM ANTES DO UPLOAD ──
+function compressImage(file, maxWidth = 1200, quality = 0.8) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => resolve(blob || file), 'image/jpeg', quality);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── THUMBNAIL URL DO CLOUDINARY (400px para galeria) ──
+function cloudThumb(url) {
+  if (!url || !url.includes('res.cloudinary.com')) return url;
+  return url.replace('/upload/', '/upload/w_400,c_fill,q_auto,f_auto/');
+}
+
+async function uploadToCloudinary(file, onProgress) {
+  const compressed = await compressImage(file);
+  const formData = new FormData();
+  formData.append('file', compressed);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`);
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total);
+    };
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        resolve(data.secure_url);
+      } else {
+        reject(new Error('Upload falhou: ' + xhr.status));
+      }
+    };
+    xhr.onerror = () => reject(new Error('Erro de rede'));
+    xhr.send(formData);
+  });
+}
+
+// ── INIT ──
+async function initApp() {
+  // Espera Firebase estar pronto — aguarda até _fbDoc estar disponível
+  await new Promise(resolve => {
+    if (window._fbReady && window._fbDoc) { resolve(); return; }
+    // Escuta o evento (caso ainda não tenha disparado)
+    window.addEventListener('firebase-ready', resolve, { once: true });
+    // Fallback polling: verifica a cada 50ms por até 8 segundos
+    const t = setInterval(() => {
+      if (window._fbReady && window._fbDoc) { clearInterval(t); resolve(); }
+    }, 50);
+    setTimeout(() => { clearInterval(t); resolve(); }, 8000);
+  });
+
+  let meta = [];
+  cats = [];
+
+  try {
+    const db   = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    if (snap.exists()) {
+      const data = snap.data();
+      meta = data.items || [];
+      cats = data.cats  || [];
+      // Carregar adPairs JUNTO com items e cats — antes do render()
+      // Carregar adPairs igual items e cats
+      adPairs = data.adPairs || [];
+      localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+      if (data.pricing && data.pricing.length) {
+        localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
+        renderPricing(); // sincroniza com o que veio do Firebase
+      }
+      if (data.musicaDemos && data.musicaDemos.length) {
+        musicaDemos = data.musicaDemos;
+        renderMusicaDemos();
+      }
+    } else {
+      meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
+      cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
+      if (meta.length || cats.length) {
+        toast('📦 Migrando dados locais para a nuvem...');
+        await persist();
+      }
+    }
+  } catch(e) {
+    console.error('Firestore load error:', e);
+    meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
+    cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
+  }
+
+  meta = meta.map(it => it.orient ? it : { ...it, orient: 'portrait' });
+  items = meta.map(it => ({ ...it })); // img vem da URL do Cloudinary (campo img = URL)
+
+  buildSidebar();
+  render();
+  updateHeroStats();
+
+  // Garantir que adPairs está salvo no documento principal
+  if (adPairs.length > 0) persistBg();
+
+}
+
+// ── SIDEBAR ──
+function buildSidebar() {
+  // Update header sub count
+  const subEl = document.getElementById('sidebarHeaderSub');
+  if (subEl) subEl.textContent = items.length + ' foto' + (items.length !== 1 ? 's' : '') + ' · ' + cats.length + ' galerias';
+  const list   = document.getElementById('catList');
+  const chips  = document.getElementById('catChips');
+  const selEl  = document.getElementById('uploadCatSel');
+
+  const allActive = currentCat === null;
+  const allCount  = items.length;
+  const INBOX = '__inbox__';
+  const inboxCount = items.filter(i => i.cat === INBOX).length;
+  const inboxActive = currentCat === INBOX;
+
+  let listHTML  = `
+    <button class="cat-btn ${allActive ? 'active' : ''}" onclick="selectCat(null)">
+      <div class="cat-btn-info">
+        <div class="cat-btn-name">Todas as fotos</div>
+        <div class="cat-btn-count">${allCount} foto${allCount !== 1 ? 's' : ''}</div>
+      </div>
+    </button>
+    <div class="sidebar-divider"></div>
+  `;
+
+  // Inbox button in sidebar (always show if has photos, or in admin)
+  if (inboxCount > 0 || adminMode) {
+    listHTML += `
+      <button class="cat-btn ${inboxActive ? 'active' : ''}" onclick="selectCat('${INBOX}')">
+        <div class="cat-btn-info">
+          <div class="cat-btn-name">📥 Sem categoria</div>
+          <div class="cat-btn-count">${inboxCount} foto${inboxCount !== 1 ? 's' : ''}</div>
+        </div>
+      </button>`;
+  }
+
+  let chipsHTML = `<div class="cat-chip ${allActive ? 'active' : ''}" onclick="selectCat(null)">Todas</div>`;
+  if (inboxCount > 0) {
+    chipsHTML += `<div class="cat-chip ${inboxActive ? 'active' : ''}" onclick="selectCat('${INBOX}')">📥 Sem cat.</div>`;
+  }
+
+  let selHTML = `<option value="${INBOX}">📥 Sem categoria</option>`;
+
+  [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt')).forEach(cat => {
+    const cnt    = items.filter(i => i.cat === cat.id).length;
+    const active = currentCat === cat.id;
+    listHTML += `
+      <button class="cat-btn ${active ? 'active' : ''}" onclick="selectCat('${cat.id}')">
+        <div class="cat-btn-info">
+          <div class="cat-btn-name">${cat.name}</div>
+          <div class="cat-btn-count">${cnt} foto${cnt !== 1 ? 's' : ''}</div>
+        </div>
+      </button>`;
+    chipsHTML += `<div class="cat-chip ${active ? 'active' : ''}" onclick="selectCat('${cat.id}')">${cat.name}</div>`;
+    selHTML   += `<option value="${cat.id}">${cat.name}</option>`;
+  });
+
+  list.innerHTML  = listHTML;
+  chips.innerHTML = chipsHTML;
+  if (selEl) selEl.innerHTML = selHTML;
+
+  // Drawer mobile - mesmo conteúdo da sidebar
+  const drawerBody = document.getElementById('mobileDrawerBody');
+  if (drawerBody) {
+    drawerBody.innerHTML = listHTML + `
+      <div style="padding:0 18px;margin-top:8px;" class="admin-only">
+        <button class="sidebar-add-btn" style="width:100%;margin:0;" onclick="openCatManager();closeDrawer()">
+          <span class="sidebar-add-btn-icon">＋</span> Gerenciar galerias
+        </button>
+      </div>`;
+    if (!document.body.classList.contains('admin-mode')) {
+      drawerBody.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+    }
+  }
+}
+
+function selectCat(catId) {
+  currentCat = catId;
+  cancelSelectMode();
+  buildSidebar();
+  render();
+  closeDrawer();
+  // Esconder seção de músicas quando uma galeria está aberta
+  const musicaSec = document.getElementById('musicaSection');
+  if (musicaSec) {
+    musicaSec.style.display = catId ? 'none' : '';
+  }
+}
+
+// ── MOBILE DRAWER ──
+function openDrawer() {
+  document.getElementById('mobileDrawer').classList.add('open');
+  document.getElementById('mobileDrawerOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('mobileDrawerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── RENDER ──
+function render(pool) {
+  const grid = document.getElementById('galleryGrid');
+  const title = document.getElementById('catTitle');
+  const badge = document.getElementById('catCountBadge');
+  const backBtn = document.getElementById('mobileBackBtn');
+  const drawerBtn = document.getElementById('drawerToggleBtn');
+  const reorderBtn = document.getElementById('reorderBtn');
+  const selectModeBtn = document.getElementById('selectModeBtn');
+  const backToGalBtn = document.getElementById('backToGalleriesBtn');
+
+  // HOME VIEW: mostra caixas de galerias quando currentCat === null e sem busca
+  const q = document.getElementById('globalSearch').value.trim().toLowerCase();
+
+  if (currentCat === null && !q) {
+    if (backBtn) backBtn.classList.remove('visible');
+    if (drawerBtn) drawerBtn.style.display = 'flex';
+    if (reorderBtn) reorderBtn.style.display = '';
+    if (selectModeBtn) selectModeBtn.style.display = 'none';
+    if (backToGalBtn) backToGalBtn.classList.remove('visible');
+    const tb = document.getElementById('mainToolbar');
+    if (tb) tb.classList.add('toolbar-home-state');
+    renderHomeGalleries(grid, title, badge);
+    return;
+  }
+
+  // Inside a gallery — show back button on mobile, hide drawer toggle
+  if (backBtn) backBtn.classList.add('visible');
+  if (drawerBtn) drawerBtn.style.display = 'none';
+  if (reorderBtn) reorderBtn.style.display = '';
+  if (selectModeBtn) selectModeBtn.style.display = '';
+  if (backToGalBtn) backToGalBtn.classList.add('visible');
+  const tb2 = document.getElementById('mainToolbar');
+  if (tb2) tb2.classList.remove('toolbar-home-state');
+
+  // Determine pool
+  if (!pool) {
+    if (currentCat === null) {
+      pool = [...items];
+    } else {
+      pool = items.filter(i => i.cat === currentCat);
+    }
+  }
+
+  // Apply global search
+  if (q) {
+    pool = pool.filter(it =>
+      (it.title || '').toLowerCase().includes(q) ||
+      (it.tags  || []).some(t => t.toLowerCase().includes(q))
+    );
+  }
+
+  currentView = pool;
+
+  // Update title
+  if (currentCat === null) {
+    title.textContent = `Busca: "${q}"`;
+  } else if (currentCat === '__inbox__') {
+    title.textContent = '📥 Sem categoria';
+    if (adminMode) {
+      badge.textContent = `${pool.length} foto${pool.length !== 1 ? 's' : ''} — selecione para mover`;
+    }
+  } else {
+    const cat = cats.find(c => c.id === currentCat);
+    title.textContent = cat ? cat.name : 'Galeria';
+  }
+  badge.textContent = `${pool.length} foto${pool.length !== 1 ? 's' : ''}`;
+
+  // Restore grid class
+  grid.className = 'gallery-grid';
+  grid.id = 'galleryGrid';
+
+  if (!pool.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">${q ? '🔍' : '📷'}</div>
+        <div class="empty-state-title">${q ? 'Nenhuma foto encontrada' : 'Galeria vazia'}</div>
+        <div class="empty-state-sub">${q ? `Sem resultados para "${q}"` : 'Adicione fotos usando o botão Upload.'}</div>
+        ${!q && currentCat && currentCat !== '__inbox__' && adminMode ? `<button class="btn btn-primary" style="margin-top:16px" onclick="openUploadInCat()">⬆ Upload nesta galeria</button>` : ''}
+      </div>`;
+    return;
+  }
+
+  const isInbox = currentCat === '__inbox__';
+  const selectable = adminMode && (isInbox || selectModeActive);
+
+  // ── PAGINAÇÃO ──
+  const PG_SIZE=40;
+  const totalPages=Math.ceil(pool.length/PG_SIZE);
+  if(typeof window._pgCurrentCat==='undefined')window._pgCurrentCat=null;
+  if(window._pgCurrentCat!==currentCat){window._pgCurrentCat=currentCat;window._pgPage=0;}
+  if(typeof window._pgPage==='undefined')window._pgPage=0;
+  window._pgPage=Math.min(window._pgPage,Math.max(0,totalPages-1));
+  const page=window._pgPage, start=page*PG_SIZE;
+  const pagePol=pool.slice(start,start+PG_SIZE);
+
+  grid.innerHTML = pagePol.map((it, localIdx) => {
+    const idx=start+localIdx;
+    return `
+    <div class="photo-card ${it.img ? '' : 'photo-card-empty'} ${selectable ? 'selectable' : ''}"
+         id="pcard-${it.id}"
+         onclick="${selectable ? `toggleSelect('${it.id}')` : `openLightbox(${idx})`}">
+      ${selectable ? `<div class="photo-select-check">✓</div>` : ''}
+      ${it.img
+        ? `<img src="${cloudThumb(it.img)}" loading="lazy" alt="${it.title || ''}">`
+        : `<span>⏳</span>`}
+      <div class="photo-card-num">${it.title || (idx + 1)}</div>
+      ${document.body.classList.contains('sala-mode') ? `
+        <div class="sala-check-badge">✓</div>
+        <div class="sala-order-badge">${(()=>{const s=salaSelecao.find(x=>x.id===it.id);return s?s.order:'';})()}</div>
+      ` : ''}
+      ${adminMode ? `<button class="photo-delete-btn" onclick="event.stopPropagation();deleteItem('${it.id}')" title="Apagar foto">✕</button>` : ''}
+      ${!selectable && adminMode ? `<button class="photo-move-btn" onclick="event.stopPropagation();openMoveModal('${it.id}')" title="Mover para outra galeria">↗</button>` : ''}
+      <div class="photo-views-badge">${getPhotoViews(it.id)>0?`👁 ${getPhotoViews(it.id)}`:''}</div>
+      ${adminMode&&currentCat&&currentCat!=='__inbox__'?`<button class="photo-fav-star ${isCatCover(currentCat,it.id)?'is-fav':''}" onclick="event.stopPropagation();setCatCover('${currentCat}','${it.id}')" title="Definir como capa">★</button>`:''}
+      ${it.img && !selectable ? `
+        <div class="photo-card-overlay">
+          <div class="photo-card-actions">
+            <button class="photo-action-btn" onclick="event.stopPropagation();openLightbox(${idx})">🔍 Ver</button>
+            <button class="photo-action-btn dl" onclick="event.stopPropagation();downloadItem(${idx})">⬇ Baixar</button>
+          </div>
+        </div>` : ''}
+    </div>
+  `}).join('');
+
+  document.querySelectorAll('.pagination-bar').forEach(b=>b.remove());
+  if(totalPages>1){
+    const bar=document.createElement('div');
+    bar.className='pagination-bar';
+    bar.innerHTML=renderPaginationHTML(page,totalPages,pool.length,start,pagePol.length);
+    grid.insertAdjacentElement('afterend',bar);
+  }
+
+  // Em sala-mode, restaura estado de seleção nos cards visíveis
+  if (document.body.classList.contains('sala-mode') && salaSelecao.length) {
+    salaSelecao.forEach(s => {
+      const card = document.getElementById('pcard-' + s.id);
+      if (card) {
+        card.classList.add('sala-selected');
+        const ob = card.querySelector('.sala-order-badge');
+        if (ob) ob.textContent = s.order;
+      }
+    });
+  }
+
+  // Botão de upload flutuante dentro da galeria (admin mode, categoria específica)
+  if (adminMode && currentCat && currentCat !== '__inbox__') {
+    const fab = document.createElement('button');
+    fab.className = 'gallery-upload-fab';
+    fab.innerHTML = '⬆ Upload';
+    fab.title = 'Adicionar fotos nesta galeria';
+    fab.onclick = openUploadInCat;
+    grid.appendChild(fab);
+  }
+}
+
+// ── HOME: mostra caixas de galerias ──
+function renderHomeGalleries(grid, title, badge) {
+  const INBOX = '__inbox__';
+  const inboxItems = items.filter(i => i.cat === INBOX);
+  const totalCards = cats.length + (inboxItems.length > 0 ? 1 : 0);
+
+  title.textContent = 'Galerias';
+  badge.textContent = `${totalCards} galeria${totalCards !== 1 ? 's' : ''}`;
+  currentView = [];
+
+  const backBtn = document.getElementById('mobileBackBtn');
+  if (backBtn) backBtn.classList.remove('visible');
+  const backToGalBtn2 = document.getElementById('backToGalleriesBtn');
+  if (backToGalBtn2) backToGalBtn2.classList.remove('visible');
+  const drawerBtn2 = document.getElementById('drawerToggleBtn');
+  if (drawerBtn2) drawerBtn2.style.display = 'flex';
+  const tb3 = document.getElementById('mainToolbar');
+  if (tb3) tb3.classList.add('toolbar-home-state');
+
+  grid.className = 'gallery-cards-grid';
+  grid.id = 'galleryGrid';
+
+  if (!cats.length && !inboxItems.length) {
+    grid.innerHTML = `
+      <div class="home-empty">
+        <div class="home-empty-icon">🗂</div>
+        <div class="home-empty-title">Nenhuma galeria ainda</div>
+        <div class="home-empty-sub">Crie uma galeria no painel lateral e faça upload de fotos para começar.</div>
+      </div>`;
+    return;
+  }
+
+  // Build inbox card if it has photos
+  let inboxHTML = '';
+  if (inboxItems.length > 0) {
+    const inboxThumb = inboxItems.find(i => i.img);
+    const inboxThumbHTML = inboxThumb
+      ? `<img src="${cloudThumb(inboxThumb.img)}" loading="lazy" alt="Sem categoria" style="filter:saturate(.7);">`
+      : `<div class="gallery-card-thumb-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25;color:var(--muted)"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
+    inboxHTML = `
+      <div class="gallery-card inbox-card" id="gcard-${INBOX}" onclick="selectCat('${INBOX}')">
+        <div class="gallery-card-thumb" style="border:2px dashed rgba(0,196,174,.35);">
+          ${inboxThumbHTML}
+
+        </div>
+        <div class="gallery-card-body">
+          <div class="gallery-card-info">
+            <div class="gallery-card-name">📥 Sem categoria</div>
+            <div class="gallery-card-sub">Clique para organizar nas galerias</div>
+          </div>
+          <span class="gallery-card-arrow">›</span>
+        </div>
+      </div>`;
+  }
+
+  const sortedCats = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+
+  const catsHTML = sortedCats.map(cat => {
+    const catItems = items.filter(i => i.cat === cat.id);
+    const cnt = catItems.length;
+    const coverId=getCatCover(cat.id);
+    const coverItem=coverId?catItems.find(i=>i.id===coverId):null;
+    const thumb=coverItem||catItems.find(i=>i.img);
+    const thumbHTML = thumb
+      ? `<img src="${cloudThumb(thumb.img)}" loading="lazy" alt="${cat.name}">`
+      : `<div class="gallery-card-thumb-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25;color:var(--muted)"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
+    return `
+      <div class="gallery-card" id="gcard-${cat.id}" onclick="galCardClick(event,'${cat.id}')">
+        <div class="gallery-card-thumb">
+          ${thumbHTML}
+          <div class="gallery-card-actions">
+            ${adminMode ? `<button class="gallery-card-action-btn edit-btn" onclick="event.stopPropagation();startRenameCard('${cat.id}')" title="Renomear galeria">✏️</button>` : ''}
+            ${adminMode ? `<button class="gallery-card-action-btn del-btn" onclick="event.stopPropagation();deleteCatFromCard('${cat.id}')" title="Excluir galeria">✕</button>` : ''}
+            <button class="gallery-card-action-btn" onclick="event.stopPropagation();shareGallery('${cat.id}','${cat.name}')" title="Compartilhar galeria" style="background:rgba(0,196,174,.2);color:var(--accent);">🔗</button>
+          </div>
+          ${coverId ? `<div class="gallery-card-cover-badge">★ Capa</div>` : ''}
+        </div>
+        <div class="gallery-card-body" id="gcardBody-${cat.id}">
+          <div class="gallery-card-info">
+            <div class="gallery-card-name" id="gcardName-${cat.id}">${cat.name}</div>
+            <div class="gallery-card-sub">${cnt} FOTO${cnt !== 1 ? 'S' : ''}</div>
+          </div>
+          <span class="gallery-card-arrow">›</span>
+        </div>
+      </div>`;
+  }).join('');
+
+  // ── HERO CARD ANTES & DEPOIS ──
+  const adCount = adPairs.length;
+  let adHeroHTML = '';
+
+  if (adCount > 0) {
+    // Usa o primeiro par como showcase
+    const p0 = adPairs[0];
+    const beforeSrc = cloudThumb(p0.before);
+    const afterSrc  = cloudThumb(p0.after);
+    adHeroHTML = `
+    <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()">
+      <div class="ad-hero-inner">
+        <!-- ANTES — esquerda -->
+        <div class="ad-hero-photo before">
+          <img src="${beforeSrc}" alt="Antes" loading="lazy">
+          <span class="ad-hero-badge b">Antes</span>
+          <div class="ad-hero-divider"></div>
+        </div>
+        <!-- DEPOIS — direita -->
+        <div class="ad-hero-photo after">
+          <img src="${afterSrc}" alt="Depois" loading="lazy">
+          <span class="ad-hero-badge a">Depois</span>
+        </div>
+      </div>
+      <!-- Overlay centralizado na base -->
+      <div class="ad-hero-overlay">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;pointer-events:auto;">
+          <div class="ad-hero-eyebrow">
+            <div class="ad-hero-eyebrow-dot"></div>
+            <span class="ad-hero-eyebrow-text">Resultados reais</span>
+          </div>
+          <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
+            <div class="ad-hero-count-pill">
+              <span class="ad-hero-count-num">${adCount}</span>
+              <span class="ad-hero-count-label">transformaç${adCount === 1 ? 'ão' : 'ões'}</span>
+            </div>
+            <div class="ad-hero-cta">Ver todas <span class="ad-hero-cta-arrow">→</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    // Skeleton animado enquanto Firebase carrega
+    const emptyMsg = adminMode ? 'Adicione transformações para exibir aqui' : '';
+    adHeroHTML = `
+    <div class="ad-hero-card" id="gcard-ad" onclick="openAntesDepois()">
+      <div class="ad-hero-skeleton">
+        <div class="ad-hero-skeleton-half"></div>
+        <div class="ad-hero-skeleton-half"></div>
+      </div>
+      <div class="ad-hero-overlay">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;pointer-events:auto;">
+          <div class="ad-hero-eyebrow">
+            <div class="ad-hero-eyebrow-dot"></div>
+            <span class="ad-hero-eyebrow-text">Resultados reais com IA</span>
+          </div>
+          <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
+          <div class="ad-hero-cta">Ver transformações <span class="ad-hero-cta-arrow">→</span></div>
+          ${emptyMsg ? `<div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;">${emptyMsg}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  grid.innerHTML = adHeroHTML + inboxHTML + catsHTML;
+
+
+
+  // No novo modelo imgs são URLs do Cloudinary — carregam direto pelo src
+}
+
+// ── SEARCH ──
+function onSearch(q) {
+  render();
+}
+
+// ── REORDER ──
+function autoReorder() {
+  const catId = currentCat;
+  const pool  = catId !== null ? items.filter(it => it.cat === catId) : [...items];
+  if (pool.length < 2) { toast('✓ Nada para reordenar!'); return; }
+
+  // Embaralha (Fisher-Yates), garantindo que a ordem seja diferente da atual
+  const shuffle = arr => {
+    const a = [...arr];
+    let attempts = 0;
+    do {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      attempts++;
+    } while (attempts < 10 && a.every((el, i) => el.id === arr[i].id));
+    return a;
+  };
+
+  const shuffled = shuffle(pool);
+
+  // Renumera sobre a nova ordem (Foto 1, Foto 2, ...)
+  shuffled.forEach((it, idx) => {
+    const m = items.find(i => i.id === it.id);
+    if (m) m.title = `Foto ${idx + 1}`;
+  });
+
+  // Reposiciona no array global mantendo as outras galerias no lugar
+  const poolIds  = new Set(pool.map(i => i.id));
+  const others   = items.filter(i => !poolIds.has(i.id));
+  const firstIdx = items.findIndex(i => poolIds.has(i.id));
+  const renamed  = shuffled.map(s => items.find(i => i.id === s.id));
+  items.splice(0, items.length, ...others.slice(0, firstIdx), ...renamed, ...others.slice(firstIdx));
+
+  persist();
+  const btn = document.getElementById('reorderBtn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Reordenado!'; btn.style.color = 'var(--accent)'; btn.style.borderColor = 'var(--accent)';
+  setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
+  render();
+  toast('✓ Fotos reordenadas e renumeradas!');
+}
+
+function selectAll() {
+  // Ativa modo seleção se não estiver ativo
+  if (!selectModeActive) {
+    selectModeActive = true;
+    const btn = document.getElementById('selectModeBtn');
+    if (btn) {
+      btn.style.background = 'var(--accent)';
+      btn.style.color = '#fff';
+      btn.style.borderColor = 'var(--accent)';
+      btn.textContent = '✕ Cancelar seleção';
+    }
+    render();
+  }
+  const visibleItems = currentView.length ? currentView : (window._gpFilteredItems || items);
+  visibleItems.forEach(it => {
+    selectedIds.add(it.id);
+    const card = document.getElementById('pcard-' + it.id);
+    if (card) card.classList.add('selected');
+  });
+  updateBulkBar();
+}
+
+function cleanGhostItems() {
+  const ghosts = items.filter(it => !it.img);
+  if (!ghosts.length) { toast('✓ Nenhum registro fantasma encontrado!'); return; }
+  if (!confirm(`Apagar ${ghosts.length} registro${ghosts.length !== 1 ? 's' : ''} sem imagem?`)) return;
+  items = items.filter(it => it.img);
+  persist(); buildSidebar(); render(); updateHeroStats();
+  toast(`🗑 ${ghosts.length} registro${ghosts.length !== 1 ? 's' : ''} fantasma${ghosts.length !== 1 ? 's' : ''} removido${ghosts.length !== 1 ? 's' : ''}!`);
+}
+
+// ── LIGHTBOX ──
+function openLightbox(idx) {
+  // Em modo sala, clique na foto seleciona em vez de abrir lightbox
+  if (document.body.classList.contains('sala-mode')) {
+    const it = currentView[idx];
+    if (it) salaToggleByItem(it);
+    return;
+  }
+  if (!currentView[idx]?.img) return;
+  lbIndex = idx;
+  updateLightbox();
+  const backBtn = document.getElementById('lbBackBtn');
+  if (backBtn) {
+    backBtn.textContent = `← Voltar`;
+  }
+  document.getElementById('lightboxOverlay').classList.add('open');
+  document.addEventListener('keydown', lbKeyDown);
+}
+
+
+function updateLightbox() {
+  const it = currentView[lbIndex];
+  if (!it) return;
+  const img=document.getElementById('lightboxImg');
+  img.style.opacity='0';
+  img.src=it.img||'';
+  img.onload=()=>{img.style.opacity='1';img.style.transition='opacity .3s';};
+  document.getElementById('lightboxTitle').textContent = it.title || `Foto ${lbIndex + 1}`;
+  document.getElementById('lbPrev').style.display = lbIndex > 0 ? 'flex' : 'none';
+  document.getElementById('lbNext').style.display = lbIndex < currentView.length - 1 ? 'flex' : 'none';
+  if(it.id&&!adminMode)trackPhotoView(it.id);
+  const v=getPhotoViews(it.id);
+  const vEl=document.getElementById('lbViewsInfo');
+  if(vEl)vEl.textContent=`👁 ${v} view${v!==1?'s':''}`;
+}
+// ── VIEWS ──
+const VIEWS_KEY='iafoto_views';
+function getViewsData(){try{return JSON.parse(localStorage.getItem(VIEWS_KEY)||'{}');}catch(e){return{};}}
+function getPhotoViews(id){return getViewsData()[id]||0;}
+function trackPhotoView(id){
+  const d=getViewsData();d[id]=(d[id]||0)+1;
+  localStorage.setItem(VIEWS_KEY,JSON.stringify(d));
+  const b=document.querySelector(`#pcard-${id} .photo-views-badge`);
+  if(b)b.textContent=`👁 ${d[id]}`;
+}
+
+function closeLightbox() {
+  document.getElementById('lightboxOverlay').classList.remove('open');
+  document.removeEventListener('keydown', lbKeyDown);
+}
+
+function lbNavigate(dir) {
+  const next = lbIndex + dir;
+  if (next < 0 || next >= currentView.length) return;
+  lbIndex = next;
+  // Skip items without image
+  while (lbIndex >= 0 && lbIndex < currentView.length && !currentView[lbIndex].img) {
+    lbIndex += dir;
+  }
+  if (lbIndex < 0 || lbIndex >= currentView.length) return;
+  updateLightbox();
+}
+
+function lbKeyDown(e) {
+  if (e.key === 'ArrowLeft')  lbNavigate(-1);
+  if (e.key === 'ArrowRight') lbNavigate(1);
+  if (e.key === 'Escape')     closeLightbox();
+}
+
+// ── SWIPE aprimorado ──
+let lbTouchStartX=0, lbTouchStartY=0, lbTouchActive=false, _lbSwipeHintShown=false;
+function lbTouchStart(e){
+  lbTouchStartX=e.changedTouches[0].clientX;
+  lbTouchStartY=e.changedTouches[0].clientY;
+  lbTouchActive=true;
+  if(!_lbSwipeHintShown && currentView.length>1){
+    _lbSwipeHintShown=true;
+    const h=document.getElementById('lbSwipeHint');
+    if(h){h.style.display='flex';setTimeout(()=>h.style.display='none',4000);}
+  }
+}
+function lbTouchMove(e){
+  if(!lbTouchActive)return;
+  const dx=e.changedTouches[0].clientX-lbTouchStartX;
+  const dy=e.changedTouches[0].clientY-lbTouchStartY;
+  if(Math.abs(dx)>Math.abs(dy))e.preventDefault();
+  const img=document.getElementById('lightboxImg');
+  if(img&&Math.abs(dx)>10)img.style.transform=`translateX(${dx*.15}px)`;
+}
+function lbTouchEnd(e){
+  if(!lbTouchActive)return;
+  lbTouchActive=false;
+  const img=document.getElementById('lightboxImg');
+  if(img)img.style.transform='';
+  const dx=e.changedTouches[0].clientX-lbTouchStartX;
+  const dy=e.changedTouches[0].clientY-lbTouchStartY;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)lbNavigate(dx<0?1:-1);
+}
+
+function downloadCurrentLb() {
+  downloadItem(lbIndex);
+}
+
+// ── DOWNLOAD ──
+async function downloadItem(idx) {
+  const it = currentView[idx];
+  if (!it?.img) return;
+  toast('⬇ Preparando download…');
+  try {
+    const url = it.img.includes('res.cloudinary.com')
+      ? it.img.replace(/\/upload\/w_\d+[^/]*\//, '/upload/')
+      : it.img;
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl; a.download = `${it.title || 'foto'}.jpg`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    toast('✓ Download iniciado!');
+  } catch(e) { window.open(it.img, '_blank'); }
+}
+
+async function downloadAll() {
+  const withImg = currentView.filter(it => it.img);
+  if (!withImg.length) { toast('⚠ Nenhuma foto para baixar'); return; }
+  toast(`⬇ Baixando ${withImg.length} fotos…`);
+  for (let i = 0; i < withImg.length; i++) {
+    const it = withImg[i];
+    try {
+      const url = it.img.includes('res.cloudinary.com')
+        ? it.img.replace(/\/upload\/w_\d+[^/]*\//, '/upload/')
+        : it.img;
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl; a.download = `${it.title || 'foto-' + (i+1)}.jpg`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    } catch(e) { window.open(it.img, '_blank'); }
+    await new Promise(r => setTimeout(r, 300));
+  }
+}
+
+// ── UPLOAD ──
+function openUpload() {
+  pendingFiles = [];
+  document.getElementById('uploadPreviewGrid').style.display = 'none';
+  document.getElementById('uploadPreviewGrid').innerHTML = '';
+  document.getElementById('uploadConfirmBtn').disabled = true;
+  document.getElementById('uploadProgress').style.display = 'none';
+  document.getElementById('uploadProgressBar').style.width = '0%';
+  // Reset hint para padrão
+  const hint = document.querySelector('.upload-inbox-hint');
+  if (hint) hint.innerHTML = `📥 As fotos serão salvas em <strong>Sem categoria</strong>. Depois você organiza nas galerias.`;
+  document.getElementById('uploadOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+
+function closeUpload() {
+  document.getElementById('uploadOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
+  pendingFiles = [];
+}
+
+function dzDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.add('dragover');
+}
+function dzDragLeave() {
+  document.getElementById('dropZone').classList.remove('dragover');
+}
+function dzDrop(e) {
+  e.preventDefault();
+  dzDragLeave();
+  filesSelected(e.dataTransfer.files);
+}
+
+function filesSelected(files) {
+  const arr = [...files].filter(f => f.type.startsWith('image/'));
+  if (!arr.length) return;
+  // Revogar URLs anteriores para liberar memória
+  pendingFiles.forEach(f => { if (f._objUrl) URL.revokeObjectURL(f._objUrl); });
+  pendingFiles = arr;
+  document.getElementById('uploadConfirmBtn').disabled = false;
+
+  const grid = document.getElementById('uploadPreviewGrid');
+  grid.style.display = 'grid';
+  grid.innerHTML = '';
+
+  // Contador de fotos selecionadas
+  let counter = grid.previousElementSibling;
+  if (!counter || !counter.classList.contains('upload-file-counter')) {
+    counter = document.createElement('div');
+    counter.className = 'upload-file-counter';
+    grid.parentNode.insertBefore(counter, grid);
+  }
+  counter.textContent = `${arr.length} foto${arr.length !== 1 ? 's' : ''} selecionada${arr.length !== 1 ? 's' : ''}`;
+
+  arr.forEach((file, i) => {
+    // createObjectURL é instantâneo — não precisa ler o arquivo inteiro
+    const url = URL.createObjectURL(file);
+    file._objUrl = url;
+    const div = document.createElement('div');
+    div.className = 'upload-preview-item';
+    div.innerHTML = `<img src="${url}">
+      <button class="upload-preview-remove" onclick="removePendingFile(${i})">✕</button>`;
+    grid.appendChild(div);
+  });
+}
+
+function removePendingFile(i) {
+  pendingFiles.splice(i, 1);
+  filesSelected(pendingFiles.length ? pendingFiles : []);
+  if (!pendingFiles.length) {
+    document.getElementById('uploadPreviewGrid').style.display = 'none';
+    document.getElementById('uploadConfirmBtn').disabled = true;
+  }
+}
+
+async function confirmUpload() {
+  if (!pendingFiles.length) return;
+
+  const INBOX = '__inbox__';
+  // Usa a galeria atual se estiver em uma (não inbox)
+  const targetCat = (currentCat && currentCat !== INBOX && currentCat !== null)
+    ? currentCat : INBOX;
+  const existingCount = items.filter(it => it.cat === targetCat).length;
+
+  const progressEl  = document.getElementById('uploadProgress');
+  const progressBar = document.getElementById('uploadProgressBar');
+  progressEl.style.display = 'block';
+  document.getElementById('uploadConfirmBtn').disabled = true;
+
+  const newItems = [];
+  const total = pendingFiles.length;
+  const CONCURRENCY = 4;
+  let completed = 0;
+
+  async function uploadOne(file, index) {
+    try {
+      const url = await uploadToCloudinary(file, () => {});
+      const id    = 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      const num   = existingCount + index + 1;
+      const title = `Foto ${num}`;
+      const meta  = { id, title, cat: targetCat, tags: [], orient: 'portrait', createdAt: Date.now(), img: url };
+      items.push({ ...meta });
+      newItems.push(meta);
+      completed++;
+      progressBar.style.width = Math.round((completed / total) * 100) + '%';
+    } catch(e) {
+      console.error('Erro no upload:', e);
+      toast('⚠ Erro ao enviar ' + file.name);
+    }
+  }
+
+  let idx = 0;
+  async function worker() {
+    while (idx < total) { const i = idx++; await uploadOne(pendingFiles[i], i); }
+  }
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, total) }, worker));
+
+  progressBar.style.width = '100%';
+
+  const catName = targetCat === INBOX ? 'Sem categoria' : (cats.find(c => c.id === targetCat)?.name || 'galeria');
+
+  // ── Fecha PRIMEIRO, salva em background ──
+  closeUpload();
+  buildSidebar();
+  render();
+  updateHeroStats();
+  toast(`✅ ${newItems.length} foto${newItems.length !== 1 ? 's' : ''} salva${newItems.length !== 1 ? 's' : ''} com sucesso em "${catName}"!`, 4000);
+  selectCat(targetCat === INBOX ? INBOX : targetCat);
+
+  // Persiste no Firebase em background (não bloqueia a UI)
+  persist().catch(e => {
+    console.error('Erro ao salvar:', e);
+    toast('⚠ Erro ao sincronizar com o servidor. Tente novamente.', 4000);
+  });
+}
+
+// ── HERO STATS ──
+function updateHeroStats() {
+  document.getElementById('heroFotos').textContent    = items.length;
+  document.getElementById('heroGalerias').textContent = cats.length;
+}
+
+// ── TOAST ──
+let toastTimer;
+function toast(msg, dur = 2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+
+// ── CAT MANAGER ──
+function openCatManager() {
+  buildCatManagerList();
+  document.getElementById('newCatInput').value = '';
+  document.getElementById('catManagerOverlay').classList.add('open');
+}
+
+function closeCatManager() {
+  document.getElementById('catManagerOverlay').classList.remove('open');
+}
+
+function buildCatManagerList() {
+  const list = document.getElementById('catManagerList');
+  const sorted = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+
+  if (!sorted.length) {
+    list.innerHTML = `<div style="text-align:center;padding:24px 0;color:var(--muted);font-size:13px;">Nenhuma galeria criada ainda.</div>`;
+    return;
+  }
+
+  list.innerHTML = sorted.map(cat => {
+    const cnt = items.filter(i => i.cat === cat.id).length;
+    return `
+      <div class="cat-row" id="catrow-${cat.id}">
+        <input
+          class="cat-row-name"
+          type="text"
+          value="${cat.name.replace(/"/g, '&quot;')}"
+          oninput="showSaveBtn('${cat.id}')"
+          onkeydown="if(event.key==='Enter')saveCatName('${cat.id}')"
+          title="Clique para editar o nome"
+        >
+        <span class="cat-row-count">${cnt} foto${cnt !== 1 ? 's' : ''}</span>
+        <button class="cat-row-save" id="save-${cat.id}" onclick="saveCatName('${cat.id}')">Salvar</button>
+        <button class="cat-row-del" onclick="deleteCat('${cat.id}')" title="Excluir galeria">🗑</button>
+      </div>`;
+  }).join('');
+}
+
+function showSaveBtn(catId) {
+  const btn = document.getElementById('save-' + catId);
+  if (btn) btn.style.display = 'inline-block';
+}
+
+function saveCatName(catId) {
+  const row = document.getElementById('catrow-' + catId);
+  if (!row) return;
+  const input = row.querySelector('.cat-row-name');
+  const newName = (input?.value || '').trim();
+  if (!newName) { toast('⚠ Nome não pode ser vazio'); input?.focus(); return; }
+
+  const cat = cats.find(c => c.id === catId);
+  if (!cat) return;
+  cat.name = newName;
+  persist();
+  buildSidebar();
+  render();
+  buildCatManagerList();
+  toast('✓ Galeria renomeada!');
+}
+
+function addCat() {
+  const input = document.getElementById('newCatInput');
+  const name = (input?.value || '').trim();
+  if (!name) { input?.focus(); return; }
+  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast('⚠ Já existe uma galeria com esse nome');
+    return;
+  }
+  const id = 'cat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  cats.push({ id, name, icon: '' });
+  persist();
+  buildSidebar();
+  updateHeroStats();
+  buildCatManagerList();
+  input.value = '';
+  input.focus();
+  toast(`✓ Galeria "${name}" criada!`);
+}
+
+let _deleteCatTargetId = null;
+
+function deleteCat(catId) {
+  const cat = cats.find(c => c.id === catId);
+  if (!cat) return;
+  _deleteCatTargetId = catId;
+  const cnt = items.filter(i => i.cat === catId).length;
+
+  // Usa modal bonito em vez de confirm()
+  document.getElementById('deleteCatModalTitle').textContent = `Excluir "${cat.name}"?`;
+  document.getElementById('deleteCatModalSub').textContent = cnt > 0
+    ? `As ${cnt} foto${cnt !== 1 ? 's' : ''} desta galeria serão movidas para "Sem categoria".`
+    : 'Esta galeria está vazia. Será removida permanentemente.';
+  document.getElementById('deleteCatOverlay').classList.add('open');
+}
+
+function confirmDeleteCat() {
+  const catId = _deleteCatTargetId;
+  if (!catId) return;
+  items.forEach(it => { if (it.cat === catId) it.cat = null; });
+  cats = cats.filter(c => c.id !== catId);
+  if (currentCat === catId) currentCat = null;
+  document.getElementById('deleteCatOverlay').classList.remove('open');
+  buildSidebar();
+  render();
+  updateHeroStats();
+  buildCatManagerList();
+  toast('✓ Galeria excluída!');
+  persistBg();
+  _deleteCatTargetId = null;
+}
+
+function deleteCatCurrent() {
+  if (currentCat && currentCat !== '__inbox__') deleteCat(currentCat);
+}
+
+// ── START ──
+// ── GALLERY CARD INLINE EDIT ──
+function galCardClick(event, catId) {
+  // If click came from inside the rename input/save button, ignore
+  if (event.target.closest('.gallery-card-rename-wrap')) return;
+  selectCat(catId);
+}
+
+function startRenameCard(catId) {
+  const body = document.getElementById('gcardBody-' + catId);
+  const cat  = cats.find(c => c.id === catId);
+  if (!body || !cat) return;
+
+  // Replace body content with rename form
+  body.innerHTML = `
+    <div class="gallery-card-rename-wrap" onclick="event.stopPropagation()">
+      <input
+        class="gallery-card-rename-input"
+        id="gcardInput-${catId}"
+        type="text"
+        value="${cat.name.replace(/"/g,'&quot;')}"
+        onkeydown="if(event.key==='Enter')saveRenameCard('${catId}');if(event.key==='Escape')cancelRenameCard('${catId}')"
+        onclick="event.stopPropagation()"
+      >
+      <button class="gallery-card-rename-save" onclick="event.stopPropagation();saveRenameCard('${catId}')">✓</button>
+    </div>`;
+
+  const inp = document.getElementById('gcardInput-' + catId);
+  inp?.focus();
+  inp?.select();
+
+  // prevent card click while editing
+  const card = document.getElementById('gcard-' + catId);
+  if (card) card.style.pointerEvents = 'none';
+  // But keep inner elements clickable
+  body.style.pointerEvents = 'auto';
+  body.querySelectorAll('input, button').forEach(el => el.style.pointerEvents = 'auto');
+}
+
+function saveRenameCard(catId) {
+  const inp = document.getElementById('gcardInput-' + catId);
+  const newName = (inp?.value || '').trim();
+  if (!newName) { toast('⚠ Nome não pode ser vazio'); inp?.focus(); return; }
+
+  const cat = cats.find(c => c.id === catId);
+  if (!cat) return;
+  cat.name = newName;
+  persist();
+  buildSidebar();
+  render();
+  toast('✓ Galeria renomeada!');
+}
+
+function cancelRenameCard(catId) {
+  render(); // just re-render to reset
+}
+
+function deleteCatFromCard(catId) {
+  deleteCat(catId);
+}
+
+// ── DELETE PHOTO ──
+let _deleteTargetId=null;
+function deleteItem(id){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  _deleteTargetId=id;
+  document.getElementById('confirmDeleteLabel').textContent=it.title||'Sem título';
+  const img=document.getElementById('confirmDeleteImg');
+  img.src=it.img?cloudThumb(it.img):'';
+  document.getElementById('confirmDeletePreview').style.display=it.img?'block':'none';
+  document.getElementById('confirmDeleteOverlay').classList.add('open');
+}
+function closeConfirmDelete(){
+  document.getElementById('confirmDeleteOverlay').classList.remove('open');
+  _deleteTargetId=null;
+}
+function executeDelete(){
+  if(!_deleteTargetId)return;
+  items=items.filter(i=>i.id!==_deleteTargetId);
+  closeConfirmDelete();
+  buildSidebar();render();updateHeroStats();
+  toast('🗑 Foto apagada.');
+  persistBg();
+}
+
+// ── MOVE PHOTO ──
+let moveTargetId = null;
+
+function openMoveModal(id) {
+  const it = items.find(i => i.id === id);
+  if (!it) return;
+  moveTargetId = id;
+
+  // Preview
+  document.getElementById('movePreviewImg').src = it.img || '';
+  document.getElementById('movePreviewLabel').textContent = it.title || 'Foto';
+
+  // Populate cat select — exclude current cat
+  const sel = document.getElementById('moveCatSel');
+  sel.innerHTML = `<option value="">— Sem galeria —</option>` +
+    cats.map(c => `<option value="${c.id}" ${c.id === it.cat ? 'selected' : ''}>${c.name}</option>`).join('');
+
+  document.getElementById('moveOverlay').classList.add('open');
+}
+
+function closeMoveModal() {
+  document.getElementById('moveOverlay').classList.remove('open');
+  moveTargetId = null;
+}
+
+function confirmMove() {
+  if (!moveTargetId) return;
+  const it = items.find(i => i.id === moveTargetId);
+  if (!it) return;
+
+  const newCatId = document.getElementById('moveCatSel').value || null;
+  const newCat = newCatId ? cats.find(c => c.id === newCatId) : null;
+
+  if (newCatId === (it.cat || '')) {
+    toast('⚠ A foto já está nessa galeria.');
+    return;
+  }
+
+  it.cat = newCatId;
+  persist();
+  buildSidebar();
+  render();
+  closeMoveModal();
+  toast(`✓ Foto movida para "${newCat ? newCat.name : 'Sem galeria'}"`);
+}
+
+// ── PASTE (Ctrl+V) ──
+let pasteDataUrl = null;
+
+// Fallback mobile: selecionar arquivo pelo file picker
+function pasteFromFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    pasteDataUrl = ev.target.result;
+    showPastePreview(pasteDataUrl);
+  };
+  reader.readAsDataURL(file);
+}
+
+// Upload direto na categoria atual
+function openUploadInCat() {
+  pendingFiles = [];
+  document.getElementById('uploadPreviewGrid').style.display = 'none';
+  document.getElementById('uploadPreviewGrid').innerHTML = '';
+  document.getElementById('uploadConfirmBtn').disabled = true;
+  document.getElementById('uploadProgress').style.display = 'none';
+  document.getElementById('uploadProgressBar').style.width = '0%';
+  // Atualiza hint com nome da galeria atual
+  const hint = document.querySelector('.upload-inbox-hint');
+  if (hint && currentCat && currentCat !== '__inbox__') {
+    const cat = cats.find(c => c.id === currentCat);
+    if (cat) hint.innerHTML = `📂 As fotos serão salvas em <strong>${cat.name}</strong>.`;
+  }
+  document.getElementById('uploadOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+
+// Global paste listener — works anywhere on the page
+document.addEventListener('paste', function(e) {
+  // Don't intercept when typing in a text input/textarea
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+  const items = e.clipboardData?.items;
+  if (!items) return;
+
+  let imgItem = null;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) { imgItem = item; break; }
+  }
+  if (!imgItem) return;
+
+  e.preventDefault();
+  const file = imgItem.getAsFile();
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    pasteDataUrl = ev.target.result;
+
+    // Flash border feedback
+    const flash = document.getElementById('pasteFlash');
+    if (flash) { flash.classList.add('show'); setTimeout(() => flash.classList.remove('show'), 500); }
+
+    // If overlay already open, update preview
+    if (document.getElementById('pasteOverlay').classList.contains('open')) {
+      showPastePreview(pasteDataUrl);
+    } else {
+      openPasteOverlay(pasteDataUrl);
+    }
+  };
+  reader.readAsDataURL(file);
+});
+
+function openPasteOverlay(dataUrl) {
+  // Populate cat select
+  const sel = document.getElementById('pasteCatSel');
+  sel.innerHTML = `<option value="">— Sem galeria —</option>` +
+    cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+  // Pre-select current cat if browsing one
+  if (currentCat) sel.value = currentCat;
+
+  document.getElementById('pastePreviewWrap').style.display = 'none';
+  document.getElementById('pasteHintBar').classList.remove('has-image');
+  document.getElementById('pasteConfirmBtn').disabled = true;
+  pasteDataUrl = null;
+
+  document.getElementById('pasteOverlay').classList.add('open');
+
+  if (dataUrl) {
+    pasteDataUrl = dataUrl;
+    showPastePreview(dataUrl);
+  }
+}
+
+function showPastePreview(dataUrl) {
+  const wrap = document.getElementById('pastePreviewWrap');
+  document.getElementById('pastePreviewImg').src = dataUrl;
+  wrap.style.display = 'flex';
+  document.getElementById('pasteHintBar').classList.add('has-image');
+  document.getElementById('pasteConfirmBtn').disabled = false;
+  toast('✓ Imagem colada! Escolha a galeria e salve.');
+}
+
+function clearPastePreview() {
+  pasteDataUrl = null;
+  document.getElementById('pastePreviewImg').src = '';
+  document.getElementById('pastePreviewWrap').style.display = 'none';
+  document.getElementById('pasteHintBar').classList.remove('has-image');
+  document.getElementById('pasteConfirmBtn').disabled = true;
+}
+
+function closePasteOverlay() {
+  document.getElementById('pasteOverlay').classList.remove('open');
+  clearPastePreview();
+}
+
+async function confirmPaste() {
+  if (!pasteDataUrl) return;
+  const catId = document.getElementById('pasteCatSel').value || null;
+  const cat   = catId ? cats.find(c => c.id === catId) : null;
+  const existingInCat = items.filter(it => it.cat === catId).length;
+  const prefix = cat ? cat.name : 'Foto';
+  const num    = existingInCat + 1;
+  const title  = `${prefix} ${num}`;
+
+  toast('⬆ Enviando para a nuvem...');
+
+  try {
+    // Converte dataUrl para File
+    const res  = await fetch(pasteDataUrl);
+    const blob = await res.blob();
+    const file = new File([blob], `paste_${Date.now()}.jpg`, { type: blob.type });
+    const url  = await uploadToCloudinary(file);
+
+    const id   = 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const meta = { id, title, cat: catId, tags: [], orient: 'portrait', createdAt: Date.now(), img: url };
+    items.push({ ...meta });
+
+    await persist();
+    buildSidebar();
+    render();
+    updateHeroStats();
+    closePasteOverlay();
+    toast(`✓ "${title}" adicionada!`);
+  } catch(e) {
+    console.error(e);
+    toast('⚠ Erro ao enviar imagem');
+  }
+}
+
+// ── TEMA ──
+function toggleTheme() {
+  const dark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('iafoto_theme', dark ? 'dark' : 'light');
+  document.getElementById('themeToggleBtn').textContent = dark ? '☀️' : '🌙';
+}
+// Aplicar tema salvo ao carregar
+(function() {
+  if (localStorage.getItem('iafoto_theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = '☀️';
+  }
+})();
+
+// ── ADMIN AUTH ──
+const ADMIN_PASS = '7dbe67753606f6ea3eb4ebb96043a0293d811ccf0a93361f93168f4b62e0f155'; // SHA-256
+let adminMode = false;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function openAdminModal() {
+  if (adminMode) {
+    // Already admin — clicking again logs out
+    deactivateAdmin();
+    return;
+  }
+  clearPinFields();
+  document.getElementById('adminModal').classList.add('open');
+  setTimeout(() => document.getElementById('pin0').focus(), 80);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('open');
+  clearPinFields();
+}
+
+function clearPinFields() {
+  for (let i = 0; i < 7; i++) {
+    const el = document.getElementById('pin' + i);
+    el.value = '';
+    el.classList.remove('error');
+  }
+}
+
+function pinInput(idx) {
+  const el = document.getElementById('pin' + idx);
+  el.classList.remove('error');
+  if (el.value.length === 1 && idx < 6) {
+    document.getElementById('pin' + (idx + 1)).focus();
+  }
+  if (idx === 6 && el.value.length === 1) {
+    checkAdminPin();
+  }
+}
+
+function pinKey(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('pin' + idx).value && idx > 0) {
+    document.getElementById('pin' + (idx - 1)).focus();
+  }
+  if (e.key === 'Escape') closeAdminModal();
+}
+
+function checkAdminPin() {
+  let pin = '';
+  for (let i = 0; i < 7; i++) pin += document.getElementById('pin' + i).value;
+  sha256(pin).then(hash => {
+    if (hash === ADMIN_PASS) {
+      activateAdmin();
+    } else {
+      for (let i = 0; i < 7; i++) document.getElementById('pin' + i).classList.add('error');
+      toast('⛔ Senha incorreta');
+      setTimeout(() => {
+        clearPinFields();
+        document.getElementById('pin0').focus();
+      }, 700);
+    }
+  });
+}
+
+function activateAdmin() {
+  adminMode = true;
+  document.body.classList.add('admin-mode');
+  // Re-renderizar demos para mostrar botão de adicionar
+  if (typeof renderMusicaDemos === 'function') renderMusicaDemos();
+  // Sincronizar adPairs com Firebase para novos visitantes verem
+  if (adPairs.length > 0) persistBg();
+  const btn = document.getElementById('adminLockBtn');
+  btn.textContent = '🔓';
+  btn.classList.add('admin-active');
+  btn.title = 'Modo admin ativo — clique para sair';
+  document.getElementById('adminBadge').classList.add('visible');
+  closeAdminModal();
+  toast('✓ Modo admin ativado!');
+  // Mostra FAB do A/D se estiver na view
+  const adFab = document.getElementById('adFab');
+  if (adFab && document.getElementById('viewAntesDepois').classList.contains('active')) adFab.style.display = 'flex';
+  if (typeof adRender === 'function' && document.getElementById('viewAntesDepois').classList.contains('active')) adRender();
+  updateSyncLabel();
+}
+
+function deactivateAdmin() {
+  adminMode = false;
+  document.body.classList.remove('admin-mode');
+  const btn = document.getElementById('adminLockBtn');
+  btn.textContent = '🔒';
+  btn.classList.remove('admin-active');
+  btn.title = 'Acesso admin';
+  document.getElementById('adminBadge').classList.remove('visible');
+  buildSidebar();
+  render();
+  toast('🔒 Modo admin desativado');
+}
+
+// ── SELECTION MODE (inbox) ──
+let selectedIds = new Set();
+
+function toggleSelect(id) {
+  if (selectedIds.has(id)) {
+    selectedIds.delete(id);
+  } else {
+    selectedIds.add(id);
+  }
+  const card = document.getElementById('pcard-' + id);
+  if (card) card.classList.toggle('selected', selectedIds.has(id));
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const count = selectedIds.size;
+  if (count > 0) {
+    document.getElementById('bulkCount').textContent = `${count} foto${count !== 1 ? 's' : ''} selecionada${count !== 1 ? 's' : ''}`;
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function clearSelection() {
+  selectedIds.clear();
+  document.querySelectorAll('.photo-card.selected').forEach(c => c.classList.remove('selected'));
+  updateBulkBar();
+}
+
+// ── SELECT MODE (ativar seleção em qualquer galeria) ──
+let selectModeActive = false;
+
+function cancelSelectMode() {
+  selectModeActive = false;
+  const btn = document.getElementById('selectModeBtn');
+  if (btn) { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; btn.textContent='☑ Selecionar'; }
+  clearSelection();
+  render();
+}
+
+function toggleSelectMode() {
+  selectModeActive = !selectModeActive;
+  const btn = document.getElementById('selectModeBtn');
+  if (selectModeActive) {
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.style.borderColor = 'var(--accent)';
+    btn.textContent = '✕ Cancelar seleção';
+  } else {
+    cancelSelectMode();
+  }
+  render();
+}
+
+function deleteBulk(){
+  if(!selectedIds.size)return;
+  const n=selectedIds.size, ids=[...selectedIds];
+  document.getElementById('confirmBulkTitle').textContent=`Apagar ${n} foto${n!==1?'s':''}?`;
+  const g=document.getElementById('confirmBulkGrid');
+  g.innerHTML=ids.slice(0,8).map(id=>{const it=items.find(i=>i.id===id);return it?.img?`<img src="${cloudThumb(it.img)}" style="width:100%;aspect-ratio:1;object-fit:cover;">`:''}).join('')+(n>8?`<div style="background:var(--surface2);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);font-weight:600;">+${n-8}</div>`:'');
+  document.getElementById('confirmDeleteBulkOverlay').style.display='flex';
+}
+function closeConfirmDeleteBulk(){document.getElementById('confirmDeleteBulkOverlay').style.display='none';}
+function executeDeleteBulk(){
+  const n=selectedIds.size;
+  items=items.filter(it=>!selectedIds.has(it.id));
+  closeConfirmDeleteBulk();
+  cancelSelectMode();
+  buildSidebar();
+  render();
+  updateHeroStats();
+  toast(`🗑 ${n} foto${n!==1?'s':''} apagada${n!==1?'s':''}!`);
+  persistBg();
+}
+
+function openMoveBulk() {
+  if (!selectedIds.size) return;
+  if (!cats.length) { toast('⚠ Crie uma galeria primeiro!'); return; }
+  renderMoveBulkCats();
+  const searchEl = document.getElementById('moveBulkSearch');
+  if (searchEl) searchEl.value = '';
+  document.getElementById('moveBulkInfo').innerHTML =
+    `Mover <strong>${selectedIds.size} foto${selectedIds.size !== 1 ? 's' : ''}</strong> para:`;
+  document.getElementById('moveBulkOverlay').classList.add('open');
+}
+
+function renderMoveBulkCats(selectedId) {
+  const sorted = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+  const grid = document.getElementById('moveBulkCatsGrid');
+  const selInput = document.getElementById('moveBulkSel');
+  const first = selectedId || (sorted[0]?.id || '');
+  if (!selectedId) selInput.value = first;
+
+  grid.innerHTML = sorted.map(c => {
+    const cnt = items.filter(i => i.cat === c.id).length;
+    const isSel = (selectedId || first) === c.id;
+    return `<button class="move-bulk-cat-item ${isSel ? 'selected' : ''}"
+      onclick="selectMoveBulkCat('${c.id}')">
+      <div class="move-bulk-cat-initial">${c.name.charAt(0).toUpperCase()}</div>
+      <span class="move-bulk-cat-name">${c.name}</span>
+      <span class="move-bulk-cat-count">${cnt} foto${cnt !== 1 ? 's' : ''}</span>
+      <div class="move-bulk-cat-check">✓</div>
+    </button>`;
+  }).join('');
+}
+
+function filterMoveBulkCats(query) {
+  const q = query.toLowerCase().trim();
+  const sorted = [...cats].sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+  const filtered = q ? sorted.filter(c => c.name.toLowerCase().includes(q)) : sorted;
+  const selId = document.getElementById('moveBulkSel').value;
+  const grid = document.getElementById('moveBulkCatsGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:var(--muted);">Nenhuma galeria encontrada</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(c => {
+    const cnt = items.filter(i => i.cat === c.id).length;
+    const isSel = selId === c.id;
+    return `<button class="move-bulk-cat-item ${isSel ? 'selected' : ''}" onclick="selectMoveBulkCat('${c.id}')">
+      <div class="move-bulk-cat-initial">${c.name.charAt(0).toUpperCase()}</div>
+      <span class="move-bulk-cat-name">${c.name}</span>
+      <span class="move-bulk-cat-count">${cnt} foto${cnt !== 1 ? 's' : ''}</span>
+      <div class="move-bulk-cat-check">✓</div>
+    </button>`;
+  }).join('');
+}
+
+function selectMoveBulkCat(catId) {
+  document.getElementById('moveBulkSel').value = catId;
+  document.querySelectorAll('.move-bulk-cat-item').forEach(el => el.classList.remove('selected'));
+  const btn = document.querySelector(`.move-bulk-cat-item[onclick*="${catId}"]`);
+  if (btn) btn.classList.add('selected');
+}
+
+function closeMoveBulk() {
+  document.getElementById('moveBulkOverlay').classList.remove('open');
+  // Fechar campo de nova cat se aberto
+  const row = document.getElementById('moveBulkNewCatRow');
+  if (row) { row.style.display = 'none'; }
+  const btn = document.getElementById('moveBulkNewCatBtn');
+  if (btn) { btn.textContent = '＋ Nova categoria'; }
+}
+
+function toggleMoveBulkNewCat() {
+  const row = document.getElementById('moveBulkNewCatRow');
+  const btn = document.getElementById('moveBulkNewCatBtn');
+  const input = document.getElementById('moveBulkNewCatInput');
+  if (row.style.display === 'none') {
+    row.style.display = 'flex';
+    btn.textContent = '✕ Cancelar';
+    input.value = '';
+    input.focus();
+  } else {
+    row.style.display = 'none';
+    btn.textContent = '＋ Nova categoria';
+  }
+}
+
+function moveBulkAddCat() {
+  const input = document.getElementById('moveBulkNewCatInput');
+  const name = (input?.value || '').trim();
+  if (!name) { input?.focus(); return; }
+  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast('⚠ Já existe uma galeria com esse nome');
+    return;
+  }
+  const id = 'cat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  cats.push({ id, name, icon: '' });
+  // NÃO persiste aqui — o confirmMoveBulk vai salvar tudo junto
+  buildSidebar();
+  updateHeroStats();
+  // Atualiza o select e seleciona a nova categoria
+  renderMoveBulkCats();
+  const selEl = document.getElementById('moveBulkSel');
+  if (selEl) selEl.value = id;
+  // Fecha o campo
+  document.getElementById('moveBulkNewCatRow').style.display = 'none';
+  document.getElementById('moveBulkNewCatBtn').textContent = '＋ Nova categoria';
+  input.value = '';
+  toast(`✓ Galeria "${name}" criada! Clique em Mover para confirmar.`);
+}
+
+function confirmMoveBulk() {
+  const catId = document.getElementById('moveBulkSel').value;
+  if (!catId) { toast('⚠ Selecione uma galeria!'); return; }
+  if (!catId) return;
+  const cat = cats.find(c => c.id === catId);
+  let moved = 0;
+  selectedIds.forEach(id => {
+    const it = items.find(i => i.id === id);
+    if (it) { it.cat = catId; moved++; }
+  });
+  persist();
+  clearSelection();
+  closeMoveBulk();
+  buildSidebar();
+  render();
+  updateHeroStats();
+  toast(`✓ ${moved} foto${moved !== 1 ? 's' : ''} movida${moved !== 1 ? 's' : ''} para "${cat ? cat.name : ''}"!`);
+}
+
+// ── SYNC ──
+function getLastSyncTs() {
+  return parseInt(localStorage.getItem('iafoto_last_sync') || '0');
+}
+function setLastSyncTs(ts) {
+  localStorage.setItem('iafoto_last_sync', String(ts));
+  updateSyncLabel();
+}
+
+function updateSyncLabel() {
+  const ts = getLastSyncTs();
+  const label = document.getElementById('syncSendLabel');
+  const count = document.getElementById('syncSendCount');
+  const mobileLabel = document.getElementById('mobileSyncLabel');
+
+  const novas = items.filter(it => {
+    const raw = (it.id || '').replace(/^img_/, '').split('_')[0];
+    const t = parseInt(raw);
+    return !ts || t > lastTs;
+  });
+
+  // fix: use ts not lastTs
+  const novasFiltradas = items.filter(it => {
+    const raw = (it.id || '').replace(/^img_/, '').split('_')[0];
+    const t = parseInt(raw);
+    return !ts || t > ts;
+  });
+
+  const totalAlteracoes = novasFiltradas.length;
+  const txt = totalAlteracoes > 0 ? `Enviar Alterações (${totalAlteracoes})` : 'Enviar Alterações';
+
+  if (label) label.textContent = 'Enviar Alterações';
+  if (mobileLabel) mobileLabel.textContent = txt;
+  if (count) {
+    count.textContent = totalAlteracoes;
+    count.style.display = totalAlteracoes > 0 ? 'inline' : 'none';
+  }
+}
+
+async function exportNovas() {
+  const lastTs = getLastSyncTs();
+  const agora = Date.now();
+
+  const novas = items.filter(it => {
+    const raw = (it.id || '').replace(/^img_/, '').split('_')[0];
+    const t = parseInt(raw);
+    return !lastTs || t > lastTs;
+  });
+
+  if (!novas.length) {
+    toast('✓ Nenhuma novidade desde o último envio!');
+    return;
+  }
+
+  // No novo modelo, img já é URL do Cloudinary — exporta direto
+  const payload = {
+    items: novas,
+    cats,
+    v: 2,
+    tipo: 'novidades',
+    desde: lastTs || 0,
+    at: new Date().toISOString()
+  };
+
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `iafoto-novidades-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+
+  setLastSyncTs(agora);
+  toast(`✓ ${novas.length} foto(s) exportada(s) — ${sizeMB}MB`);
+}
+
+async function exportBackup() {
+  toast('⏳ Preparando backup completo…');
+  // imgs já são URLs do Cloudinary
+  const payload = { items, cats, v: 2, tipo: 'completo', at: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `iafoto-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast(`✓ Backup completo: ${items.length} foto(s)`);
+}
+
+function importSync(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+
+  toast('⏳ Lendo arquivo…');
+  const r = new FileReader();
+  r.onload = async ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (!d.items || !d.cats) throw new Error('formato inválido');
+
+      const withImg = d.items.filter(i => i.img).length;
+      const total = d.items.length;
+      const isNovas = d.tipo === 'novidades';
+
+      let doMerge = true;
+      if (!isNovas) {
+        doMerge = confirm(
+          `Backup completo: ${total} foto(s), ${withImg} com imagem.\n\nOK = Mesclar (não apaga nada)\nCancelar = Substituir tudo`
+        );
+      }
+
+      // No novo modelo, imgs são URLs do Cloudinary — não precisa salvar no IDB
+      const itemsReady = d.items.map(it => ({ ...it }));
+
+      if (doMerge) {
+        let added = 0;
+        itemsReady.forEach(ni => {
+          if (!items.find(x => x.id === ni.id)) { items.unshift(ni); added++; }
+        });
+        d.cats.forEach(nc => {
+          if (!cats.find(x => x.id === nc.id)) cats.push(nc);
+        });
+        persist(); buildSidebar(); render(); updateHeroStats();
+        toast(`✓ ${added} foto(s) importada(s)${withImg ? ` — ${withImg} com imagem` : ''}!`);
+      } else {
+        if (!confirm('Isso apagará todos os dados atuais. Confirmar?')) return;
+        items = itemsReady;
+        cats = d.cats;
+        persist(); buildSidebar(); render(); updateHeroStats();
+        toast(`✓ ${items.length} foto(s) importada(s)!`);
+      }
+
+      updateSyncLabel();
+    } catch(err) {
+      toast('⚠ Arquivo inválido ou corrompido');
+      console.error(err);
+    }
+  };
+  r.readAsText(file);
+}
+
+// ── PRICING ──
+const PRICING_STORAGE_KEY = 'iafoto_pricing_v1';
+const DEFAULT_PRICING = [
+  { id:'p1', qty:5,  total:49.90,  desc:'Ideal para experimentar e ver como fica', featured:false },
+  { id:'p2', qty:10, total:89.90,  desc:'Variedade de looks e cenários', featured:false },
+  { id:'p3', qty:15, total:129.90, desc:'Melhor custo-benefício do catálogo', featured:true },
+  { id:'p4', qty:20, total:159.90, desc:'Ensaio completo, máxima diversidade', featured:false },
+];
+
+function loadPricing() {
+  try {
+    const raw = localStorage.getItem(PRICING_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_PRICING));
+}
+
+async function savePricing(data) {
+  localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data));
+  if (window._fbReady) {
+    try {
+      const db = window._fbDb;
+      const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+      const current = snap.exists() ? snap.data() : {};
+      await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), { ...current, pricing: data, updatedAt: Date.now() });
+    } catch(e) { console.error('Pricing Firebase save error:', e); }
+  }
+}
+
+async function sortPricingByValue() {
+  const data = loadPricing();
+  data.sort((a, b) => a.total - b.total);
+  await savePricing(data);
+  renderPricing();
+  toast('✓ Pacotes ordenados do menor ao maior valor!');
+}
+
+async function togglePricingFeatured(pid) {
+  const data = loadPricing();
+  // Remove featured de todos e coloca só neste
+  const isAlreadyFeatured = data.find(p => p.id === pid)?.featured;
+  data.forEach(p => p.featured = false);
+  if (!isAlreadyFeatured) {
+    const pkg = data.find(p => p.id === pid);
+    if (pkg) pkg.featured = true;
+  }
+  await savePricing(data);
+  renderPricing();
+  toast(isAlreadyFeatured ? '☆ Destaque removido.' : '⭐ Pacote marcado como POPULAR!');
+}
+
+async function savePricingPackage(pid) {
+  const data = loadPricing();
+  const pkg = data.find(p => p.id === pid);
+  if (!pkg) return;
+  const card = document.querySelector(`.pricing-card[data-pid="${pid}"]`);
+  if (!card) return;
+  const qtyVal = parseFloat(card.querySelector('[data-field="qty"]').value);
+  const totalVal = parseFloat(card.querySelector('[data-field="total"]').value);
+  const descVal = card.querySelector('[data-field="desc"]').value.trim();
+  if (isNaN(qtyVal) || qtyVal < 1) { toast('⚠ Número de fotos inválido'); return; }
+  if (isNaN(totalVal) || totalVal < 0) { toast('⚠ Valor inválido'); return; }
+  pkg.qty = qtyVal; pkg.total = totalVal; pkg.desc = descVal || pkg.desc;
+  // featured não muda ao salvar — só muda pelo toggle
+  await savePricing(data);
+  renderPricing();
+  toast('✓ Pacote atualizado!');
+}
+
+async function deletePricingPackage(pid) {
+  const data = loadPricing();
+  if (data.length <= 1) { toast('⚠ Precisa ter ao menos 1 pacote'); return; }
+  const idx = data.findIndex(p => p.id === pid);
+  if (idx === -1) return;
+  data.splice(idx, 1);
+  await savePricing(data);
+  renderPricing();
+  toast('✓ Pacote removido');
+}
+
+async function addPricingPackage() {
+  const data = loadPricing();
+  const newId = 'p' + Date.now();
+  data.push({ id: newId, qty: 10, total: 99.90, desc: 'Novo pacote', featured: false });
+  await savePricing(data);
+  renderPricing();
+  toast('✓ Pacote adicionado — edite os valores e salve!');
+}
+
+function formatBRL(value) {
+  const n = parseFloat(value);
+  if (isNaN(n)) return { int:'0', cents:',00' };
+  const parts = n.toFixed(2).split('.');
+  return { int: parts[0], cents: ',' + parts[1] };
+}
+
+function renderPricing() {
+  const data = loadPricing();
+  const grid = document.getElementById('pricingGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  data.forEach(pkg => {
+    const perPhoto = pkg.qty > 0 ? (pkg.total / pkg.qty) : 0;
+    const { int, cents } = formatBRL(pkg.total);
+    const accentStyle = pkg.featured ? 'color:var(--accent)' : '';
+    const waText = encodeURIComponent(`Olá! Quero o pacote de ${pkg.qty} fotos por R$${pkg.total.toFixed(2).replace('.',',')}`);
+    const btnClass = pkg.featured ? 'pricing-btn-accent' : 'pricing-btn-ghost';
+    const card = document.createElement('div');
+    card.className = 'pricing-card' + (pkg.featured ? ' featured' : '');
+    card.dataset.pid = pkg.id;
+    card.innerHTML = `
+      <button class="admin-del-btn" onclick="deletePricingPackage('${pkg.id}')" title="Excluir pacote">✕</button>
+      <div class="pricing-qty">${pkg.qty} fotos</div>
+      <div class="pricing-num${pkg.featured ? ' accent-price' : ''}">
+        <span class="currency" style="${accentStyle}">R$</span>${int}<span class="cents" style="${accentStyle}">${cents}</span>
+      </div>
+      <div class="pricing-per">R$ ${perPhoto.toFixed(2).replace('.',',')} <strong>por foto</strong></div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-detail">${pkg.desc}</div>
+      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}">Pedir agora</button>
+      <div class="admin-edit-row">
+        <label>Nº de fotos</label>
+        <input type="number" min="1" value="${pkg.qty}" data-field="qty" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','qty',this.value)">
+        <label>Valor total (R$)</label>
+        <input type="number" step="0.01" min="0" value="${pkg.total}" data-field="total" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','total',this.value)">
+        <label>Descrição</label>
+        <input type="text" value="${pkg.desc}" data-field="desc" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','desc',this.value)">
+        <button class="pricing-featured-toggle ${pkg.featured ? 'is-featured' : ''}" id="ft-${pkg.id}" onclick="togglePricingFeatured('${pkg.id}')">
+          <span class="ft-star">${pkg.featured ? '⭐' : '☆'}</span>
+          <span id="ft-label-${pkg.id}">${pkg.featured ? 'Pacote POPULAR (clique para remover)' : 'Marcar como POPULAR'}</span>
+        </button>
+        <button class="admin-save-btn" onclick="savePricingPackage('${pkg.id}')">✓ Salvar</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function pricingFieldChange(pid, field, value) {
+  // live update displayed price-per-photo as user types
+  if (field === 'total' || field === 'qty') {
+    const card = document.querySelector(`.pricing-card[data-pid="${pid}"]`);
+    if (!card) return;
+    const qtyEl = card.querySelector('[data-field="qty"]');
+    const totalEl = card.querySelector('[data-field="total"]');
+    const qty = parseFloat(qtyEl?.value) || 0;
+    const total = parseFloat(totalEl?.value) || 0;
+    const perEl = card.querySelector('.pricing-per');
+    if (perEl && qty > 0) {
+      perEl.innerHTML = `R$ ${(total/qty).toFixed(2).replace('.',',')} <strong>por foto</strong>`;
+    }
+  }
+}
+
+// initApp() agora é chamado pelo módulo Firebase (após Firebase estar pronto)
+renderPricing();
+
+// Copy logo src from hidden topbar brand to hero
+(function() {
+  const src = document.querySelector('.brand-icon img')?.src;
+  if (src) document.getElementById('heroLogo').src = src;
+})();
+</script>
+
+
+
+
+
+<!-- ══════════════════════════════════════
+     ANTES & DEPOIS — VIEW
+     ══════════════════════════════════════ -->
+<div id="viewAntesDepois">
+
+  <!-- Toolbar -->
+  <div class="ad-toolbar">
+    <div style="display:flex;align-items:center;gap:10px;flex:1;">
+      <button class="btn btn-ghost btn-sm" onclick="closeAntesDepois()" style="font-size:12px;">← Voltar</button>
+      <span class="ad-toolbar-title">✦ Antes &amp; Depois</span>
+      <span class="ad-count" id="adCount">0 pares</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-accent btn-sm admin-only" onclick="openAdUpload()">+ Adicionar par</button>
+    </div>
+  </div>
+
+  <!-- Intro strip — chamativa -->
+  <div style="margin:16px 16px 0;position:relative;overflow:hidden;border-radius:14px;background:linear-gradient(110deg,#0c1f1c 0%,#0a0a0f 55%,#071a17 100%);border:1px solid rgba(0,196,174,.25);padding:14px 16px;">
+    <!-- brilho decorativo -->
+    <div style="position:absolute;top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.12) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-30px;right:60px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,174,.07) 0%,transparent 70%);pointer-events:none;"></div>
+    <!-- conteúdo -->
+    <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:adPulseDot 1.8s ease-in-out infinite;"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">Resultados reais com IA</span>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4vw,32px);letter-spacing:2px;color:#fff;line-height:1;">VEJA A TRANSFORMAÇÃO <em style="color:var(--accent);font-style:normal;">DOS NOSSOS CLIENTES</em></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;font-family:'DM Sans',sans-serif;">Clique em qualquer par para ampliar. Deslize para navegar entre as transformações.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div style="text-align:center;background:rgba(0,196,174,.08);border:1px solid rgba(0,196,174,.2);border-radius:12px;padding:12px 20px;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);line-height:1;" id="adIntroCount">—</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:2px;">transformações</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="ad-grid" id="adGrid">
+    <div class="ad-empty">
+      <div class="ad-empty-icon">✦</div>
+      <div class="ad-empty-title">Nenhum par ainda</div>
+      <div class="ad-empty-sub">Adicione pares Antes &amp; Depois para mostrar resultados aos clientes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL A/D -->
+<div id="adUploadOverlay" onclick="if(event.target===this)closeAdUpload()">
+  <div class="ad-upload-modal">
+    <div class="ad-upload-head">
+      <span class="ad-upload-title">+ Novo Par Antes &amp; Depois</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeAdUpload()">✕</button>
+    </div>
+    <div class="ad-upload-body">
+      <div>
+        <div class="field-label" style="margin-bottom:4px;">Título do par <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--muted);">(opcional)</span></div>
+        <input id="adPairTitle" class="input-field" type="text" placeholder="Ex: Maria — Transformação Executiva" autocomplete="off">
+      </div>
+      <div class="ad-pair-grid">
+        <div>
+          <div class="ad-zone-col-label" style="margin-bottom:8px;">ANTES</div>
+          <div class="ad-zone" id="adZoneBefore" onclick="adZoneClick('before')">
+            <span class="ad-zone-label before">Antes</span>
+            <span class="ad-zone-icon">📷</span>
+            <span class="ad-zone-hint">Clique para escolher</span>
+            <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('before')" title="Remover">✕</button>
+          </div>
+          <input type="file" id="adFileBefore" accept="image/*" style="display:none" onchange="adFileSelected(event,'before')">
+        </div>
+        <div>
+          <div class="ad-zone-col-label" style="margin-bottom:8px;">DEPOIS</div>
+          <div class="ad-zone" id="adZoneAfter" onclick="adZoneClick('after')">
+            <span class="ad-zone-label after">Depois</span>
+            <span class="ad-zone-icon">✨</span>
+            <span class="ad-zone-hint">Clique para escolher</span>
+            <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('after')" title="Remover">✕</button>
+          </div>
+          <input type="file" id="adFileAfter" accept="image/*" style="display:none" onchange="adFileSelected(event,'after')">
+        </div>
+      </div>
+      <div class="ad-upload-progress" id="adProgress">
+        <div class="ad-upload-progress-bar" id="adProgressBar"></div>
+      </div>
+    </div>
+    <div class="ad-upload-foot">
+      <button class="btn btn-ghost" onclick="closeAdUpload()">Cancelar</button>
+      <button class="btn btn-accent" id="adConfirmBtn" onclick="confirmAdUpload()" disabled>✦ Salvar par</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX A/D — LADO A LADO -->
+<div id="adLightboxOverlay" ontouchstart="adLbTouchStart(event)" ontouchend="adLbTouchEnd(event)">
+  <button class="ad-lb-close" onclick="closeAdLightbox()">✕</button>
+  <button class="ad-lb-nav" id="adLbPrev" onclick="adLbNavigate(-1)">‹</button>
+  <button class="ad-lb-nav" id="adLbNext" onclick="adLbNavigate(1)">›</button>
+
+  <div class="ad-lb-inner">
+    <div class="ad-lb-photos" id="adLbPhotos">
+      <!-- ANTES — esquerda -->
+      <div class="ad-lb-photo-wrap">
+        <img id="adLbBefore" src="" alt="Antes">
+        <span class="ad-lb-badge before">Antes</span>
+      </div>
+      <!-- DEPOIS — direita -->
+      <div class="ad-lb-photo-wrap">
+        <img id="adLbAfter" src="" alt="Depois">
+        <span class="ad-lb-badge after">Depois</span>
+      </div>
+    </div>
+    <!-- Linha divisória sobre as fotos -->
+    <div class="ad-lb-split" style="position:absolute;top:60px;bottom:80px;left:50%;width:2px;background:rgba(255,255,255,.2);pointer-events:none;z-index:10;"></div>
+  </div>
+
+  <!-- Footer com título, voltar e contador -->
+  <div class="ad-lb-footer">
+    <button onclick="closeAdLightbox()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);padding:7px 16px;border-radius:8px;font-size:13px;cursor:pointer;flex-shrink:0;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">← Voltar</button>
+    <div class="ad-lb-title" id="adLbTitle">Transformação</div>
+    <div class="ad-lb-counter" id="adLbInfo">1 / 1</div>
+  </div>
+</div>
+
+<!-- FAB Upload A/D (admin only) -->
+<button class="ad-upload-fab" id="adFab" onclick="openAdUpload()" style="display:none;">
+  + Par A/D
+</button>
+
+
+<script>
+// ══════════════════════════════════════════════
+//  ANTES & DEPOIS — Estado e funções principais
+// ══════════════════════════════════════════════
+
+let adPairs    = [];   // [{id, title, before, after, createdAt}]
+let adLbIndex  = 0;
+let adPending  = { before: null, after: null };
+
+// Carregar do cache imediatamente — sem esperar Firebase
+try { adPairs = JSON.parse(localStorage.getItem('iafoto_ad_pairs') || '[]'); } catch(e) { adPairs = []; }
+
+// ── Carregar/salvar ──
+function adLoad() {
+  try { adPairs = JSON.parse(localStorage.getItem('iafoto_ad_pairs') || '[]'); } catch(e) { adPairs = []; }
+}
+
+async function adSave() {
+  localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+  // Salva via persist() principal — mesmo jeito que items e cats
+  if (window._fbReady) persistBg();
+}
+
+// Carrega pares do Firebase junto com o initApp
+const _origInitApp = typeof initApp === 'function' ? initApp : null;
+// adPairs é carregado diretamente no initApp — igual items e cats
+
+// ── Abrir/fechar view ──
+function openAntesDepois() {
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) document.querySelector('.main').style.display = 'none';
+  document.getElementById('viewAntesDepois').classList.add('active');
+  document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
+  // Fecha drawer mobile se estiver aberto
+  if (typeof closeDrawer === 'function') closeDrawer();
+  adRender();
+}
+
+function closeAntesDepois() {
+  document.querySelector('.main').style.display = '';
+  document.getElementById('viewAntesDepois').classList.remove('active');
+  document.querySelectorAll('.ad-special').forEach(b => b.classList.remove('active'));
+  const fab = document.getElementById('adFab');
+  if (fab) fab.style.display = 'none';
+}
+
+// Atualiza contagem na sidebar
+function adUpdateSidebar() {
+  const el = document.getElementById('adSidebarCount');
+  if (el) el.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
+}
+
+// ── Render grid ──
+function adRender() {
+  const grid = document.getElementById('adGrid');
+  const countEl = document.getElementById('adCount');
+  if (!grid) return;
+  if (countEl) countEl.textContent = adPairs.length + (adPairs.length === 1 ? ' par' : ' pares');
+  const introCount = document.getElementById('adIntroCount');
+  if (introCount) introCount.textContent = adPairs.length;
+  adUpdateSidebar();
+
+  if (!adPairs.length) {
+    grid.innerHTML = `
+      <div class="ad-empty">
+        <div class="ad-empty-icon">✦</div>
+        <div class="ad-empty-title">Nenhum par ainda</div>
+        <div class="ad-empty-sub">Clique em "+ Adicionar par" para mostrar transformações aos seus clientes.</div>
+        ${document.body.classList.contains('admin-mode') ? '<button class="btn btn-accent" style="margin-top:16px" onclick="openAdUpload()">+ Adicionar par</button>' : ''}
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = adPairs.map((pair, idx) => `
+    <div class="ad-card" id="adcard-${pair.id}">
+      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:4/5;">
+        <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
+        <div class="ad-slider-after" id="sliderAfter-${pair.id}">
+          <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="ad-slider-handle" id="sliderHandle-${pair.id}">
+          <div class="ad-slider-btn">↔</div>
+        </div>
+        <span class="ad-slider-label antes">ANTES</span>
+        <span class="ad-slider-label depois">DEPOIS</span>
+      </div>
+      <div class="ad-card-body">
+        <span class="ad-card-label">${pair.title || ''}</span>
+        <div class="ad-card-actions">
+          <button class="ad-card-btn expand" title="Ver ampliado" onclick="openAdLightbox(${idx})">⤢</button>
+          ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Inicializar sliders após render
+  setTimeout(() => adPairs.forEach(pair => initAdSlider(pair.id)), 50);
+}
+
+function initAdSlider(id) {
+  const wrap = document.getElementById('slider-' + id);
+  const after = document.getElementById('sliderAfter-' + id);
+  const handle = document.getElementById('sliderHandle-' + id);
+  if (!wrap || !after || !handle) return;
+
+  let dragging = false;
+
+  function setPos(x) {
+    const rect = wrap.getBoundingClientRect();
+    let pct = Math.max(0, Math.min(100, (x - rect.left) / rect.width * 100));
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    handle.style.left = pct + '%';
+  }
+
+  wrap.addEventListener('mousedown', e => { dragging = true; setPos(e.clientX); });
+  wrap.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
+  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mouseup', () => dragging = false);
+  window.addEventListener('touchend', () => dragging = false);
+}
+
+
+
+// ── Lightbox ──
+function openAdLightbox(idx) {
+  adLbIndex = idx;
+  adLbUpdate();
+  document.getElementById('adLightboxOverlay').classList.add('open');
+  document.addEventListener('keydown', adLbKeyDown);
+}
+
+function closeAdLightbox() {
+  document.getElementById('adLightboxOverlay').classList.remove('open');
+  document.removeEventListener('keydown', adLbKeyDown);
+}
+
+function adLbUpdate() {
+  const pair = adPairs[adLbIndex];
+  if (!pair) return;
+  // Antes — esquerda (posição correta)
+  const beforeImg = document.getElementById('adLbBefore');
+  const afterImg  = document.getElementById('adLbAfter');
+  if (beforeImg) { beforeImg.style.opacity='0'; beforeImg.src=pair.before; beforeImg.onload=()=>{beforeImg.style.opacity='1';beforeImg.style.transition='opacity .3s';} }
+  if (afterImg)  { afterImg.style.opacity='0';  afterImg.src=pair.after;   afterImg.onload=()=>{afterImg.style.opacity='1'; afterImg.style.transition='opacity .3s';} }
+  const title = document.getElementById('adLbTitle');
+  const info  = document.getElementById('adLbInfo');
+  if (title) title.textContent = pair.title || '';
+  if (info)  info.textContent  = `${adLbIndex + 1} / ${adPairs.length}`;
+  document.getElementById('adLbPrev').style.display = adLbIndex > 0 ? 'flex' : 'none';
+  document.getElementById('adLbNext').style.display = adLbIndex < adPairs.length - 1 ? 'flex' : 'none';
+}
+
+function adLbNavigate(dir) {
+  const next = adLbIndex + dir;
+  if (next < 0 || next >= adPairs.length) return;
+  adLbIndex = next;
+  adLbUpdate();
+}
+
+function adLbKeyDown(e) {
+  if (e.key === 'Escape')      closeAdLightbox();
+  if (e.key === 'ArrowLeft')   adLbNavigate(-1);
+  if (e.key === 'ArrowRight')  adLbNavigate(1);
+}
+
+// ── Swipe no lightbox A/D para navegar entre pares ──
+let _adLbTouchX = 0;
+function adLbTouchStart(e) { _adLbTouchX = e.changedTouches[0].clientX; }
+function adLbTouchEnd(e) {
+  const dx = e.changedTouches[0].clientX - _adLbTouchX;
+  if (Math.abs(dx) > 60) adLbNavigate(dx < 0 ? 1 : -1);
+}
+
+// ── Upload modal ──
+function openAdUpload() {
+  adPending = { before: null, after: null };
+  document.getElementById('adPairTitle').value = '';
+  adZoneReset('before');
+  adZoneReset('after');
+  document.getElementById('adConfirmBtn').disabled = true;
+  document.getElementById('adProgress').style.display = 'none';
+  document.getElementById('adProgressBar').style.width = '0%';
+  document.getElementById('adUploadOverlay').classList.add('open');
+}
+
+function closeAdUpload() {
+  document.getElementById('adUploadOverlay').classList.remove('open');
+  adPending = { before: null, after: null };
+}
+
+function adZoneClick(side) {
+  document.getElementById('adFile' + (side === 'before' ? 'Before' : 'After')).click();
+}
+
+function adZoneReset(side) {
+  const zone = document.getElementById('adZone' + (side === 'before' ? 'Before' : 'After'));
+  if (!zone) return;
+  zone.classList.remove('has-img');
+  // Restore placeholder content
+  const label = side === 'before'
+    ? '<span class="ad-zone-label before">Antes</span>'
+    : '<span class="ad-zone-label after">Depois</span>';
+  const icon  = side === 'before' ? '📷' : '✨';
+  zone.innerHTML = `
+    ${label}
+    <span class="ad-zone-icon">${icon}</span>
+    <span class="ad-zone-hint">Clique para escolher</span>
+    <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('${side}')" title="Remover">✕</button>`;
+  zone.onclick = () => adZoneClick(side);
+}
+
+function adZoneClear(side) {
+  adPending[side] = null;
+  adZoneReset(side);
+  adCheckConfirmBtn();
+}
+
+function adFileSelected(e, side) {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    adPending[side] = { file, dataUrl: ev.target.result };
+    const zone = document.getElementById('adZone' + (side === 'before' ? 'Before' : 'After'));
+    if (zone) {
+      zone.classList.add('has-img');
+      zone.innerHTML = `
+        <img src="${ev.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <button class="ad-zone-clear" onclick="event.stopPropagation();adZoneClear('${side}')" title="Remover">✕</button>`;
+      zone.onclick = null; // image is there, don't re-trigger file picker on body click
+    }
+    adCheckConfirmBtn();
+  };
+  reader.readAsDataURL(file);
+}
+
+function adCheckConfirmBtn() {
+  const btn = document.getElementById('adConfirmBtn');
+  if (btn) btn.disabled = !(adPending.before && adPending.after);
+}
+
+async function confirmAdUpload() {
+  if (!adPending.before || !adPending.after) return;
+
+  const btn = document.getElementById('adConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  document.getElementById('adProgress').style.display = 'block';
+  const bar = document.getElementById('adProgressBar');
+
+  try {
+    bar.style.width = '10%';
+    const beforeUrl = await uploadToCloudinary(adPending.before.file, p => { bar.style.width = (10 + p * 40) + '%'; });
+    bar.style.width = '55%';
+    const afterUrl  = await uploadToCloudinary(adPending.after.file,  p => { bar.style.width = (55 + p * 40) + '%'; });
+    bar.style.width = '100%';
+
+    const title = document.getElementById('adPairTitle').value.trim();
+    const pair = {
+      id:        'ad_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      title:     title || '',
+      before:    beforeUrl,
+      after:     afterUrl,
+      createdAt: Date.now()
+    };
+    adPairs.unshift(pair);
+    await adSave();
+    adRender();
+    closeAdUpload();
+    toast('✓ Par Antes & Depois salvo!');
+  } catch(e) {
+    console.error(e);
+    toast('⚠ Erro ao enviar imagens');
+    btn.disabled = false;
+    btn.textContent = '✦ Salvar par';
+  }
+}
+
+async function deleteAdPair(id) {
+  if (!confirm('Apagar este par Antes & Depois?')) return;
+  adPairs = adPairs.filter(p => p.id !== id);
+  await adSave();
+  adRender();
+  toast('🗑 Par removido.');
+}
+
+// adPairs já carregado do cache na declaração
+adUpdateSidebar();
+</script>
+
+
+<!-- ── SLIDESHOW ── -->
+<div id="slideshowOverlay">
+  <button class="ss-close" onclick="stopSlideshow()">✕</button>
+  <div class="ss-photo fade-in" id="ssPhoto"><img id="ssImg" src="" alt=""></div>
+  <div class="ss-title" id="ssTitle"></div>
+  <div class="ss-progress" id="ssProgress"></div>
+  <div class="ss-controls">
+    <button class="ss-btn" onclick="ssNavigate(-1)">‹</button>
+    <button class="ss-btn ss-play" id="ssPlayBtn" onclick="ssTogglePlay()">⏸</button>
+    <button class="ss-btn" onclick="ssNavigate(1)">›</button>
+    <span class="ss-counter" id="ssCounter">1 / 1</span>
+    <button class="ss-speed-btn active" id="ssSpeed3" onclick="ssSetSpeed(3000)">3s</button>
+    <button class="ss-speed-btn" id="ssSpeed5" onclick="ssSetSpeed(5000)">5s</button>
+    <button class="ss-speed-btn" id="ssSpeed8" onclick="ssSetSpeed(8000)">8s</button>
+  </div>
+</div>
+
+<!-- ── SHARE TOAST ── -->
+<div class="share-toast" id="shareToast">
+  <span style="font-size:16px;">🔗</span>
+  <span class="share-toast-url" id="shareToastUrl"></span>
+  <button class="share-toast-copy" onclick="copyShareLink()">Copiar</button>
+  <button onclick="closeShareToast()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0 2px;">✕</button>
+</div>
+
+<!-- ── CONFIRM DELETE ── -->
+<div id="confirmDeleteOverlay">
+  <div class="confirm-delete-modal">
+    <div class="confirm-delete-header">
+      <div class="confirm-delete-icon">🗑</div>
+      <div class="confirm-delete-title">Apagar foto?</div>
+      <div class="confirm-delete-sub" id="confirmDeleteSub">Essa ação é permanente e não pode ser desfeita.</div>
+    </div>
+    <div class="confirm-delete-preview-label" id="confirmDeleteLabel"></div>
+    <div class="confirm-delete-preview" id="confirmDeletePreview"><img id="confirmDeleteImg" src="" alt=""></div>
+    <div class="confirm-delete-footer">
+      <button class="btn btn-ghost" onclick="closeConfirmDelete()">Cancelar</button>
+      <button class="btn btn-danger" onclick="executeDelete()">🗑 Apagar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM DELETE BULK ── -->
+<div id="confirmDeleteBulkOverlay" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(10,10,12,.75);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;">
+  <div class="confirm-delete-modal">
+    <div class="confirm-delete-header">
+      <div class="confirm-delete-icon">🗑</div>
+      <div class="confirm-delete-title" id="confirmBulkTitle">Apagar fotos?</div>
+      <div class="confirm-delete-sub">Ação permanente — <strong>não pode ser desfeita.</strong></div>
+    </div>
+    <div style="padding:16px 28px;"><div id="confirmBulkGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;border-radius:10px;overflow:hidden;max-height:140px;"></div></div>
+    <div class="confirm-delete-footer">
+      <button class="btn btn-ghost" onclick="closeConfirmDeleteBulk()">Cancelar</button>
+      <button class="btn btn-danger" onclick="executeDeleteBulk()">🗑 Apagar tudo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PAGINAÇÃO ──
+function renderPaginationHTML(page,totalPages,total,start,count){
+  const end=start+count;
+  const makeBtn=(i)=>`<button class="pg-btn ${i===page?'active':''}" onclick="goToPage(${i})">${i+1}</button>`;
+  const ellipsis=`<span class="pg-ellipsis">…</span>`;
+  let pages='';
+  if(totalPages<=7){for(let i=0;i<totalPages;i++)pages+=makeBtn(i);}
+  else{
+    pages+=makeBtn(0);
+    if(page>3)pages+=ellipsis;
+    const lo=Math.max(1,page-2),hi=Math.min(totalPages-2,page+2);
+    for(let i=lo;i<=hi;i++)pages+=makeBtn(i);
+    if(page<totalPages-4)pages+=ellipsis;
+    pages+=makeBtn(totalPages-1);
+  }
+  return `<div class="pg-info">Mostrando ${start+1}–${end} de ${total} fotos</div>
+    <button class="pg-btn" onclick="goToPage(${page-1})" ${page===0?'disabled':''}>‹</button>
+    ${pages}
+    <button class="pg-btn" onclick="goToPage(${page+1})" ${page===totalPages-1?'disabled':''}>›</button>`;
+}
+function goToPage(p){
+  window._pgPage=p;render();
+  const g=document.getElementById('galleryGrid');
+  if(g)g.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── FOTO FAVORITA (CAPA) ──
+const COVERS_KEY='iafoto_covers';
+function getCoversData(){try{return JSON.parse(localStorage.getItem(COVERS_KEY)||'{}');}catch(e){return{};}}
+function getCatCover(catId){return getCoversData()[catId]||null;}
+function isCatCover(catId,itemId){return getCatCover(catId)===itemId;}
+function setCatCover(catId,itemId){
+  const d=getCoversData();
+  if(d[catId]===itemId){delete d[catId];toast('Capa removida.');}
+  else{d[catId]=itemId;toast('★ Foto definida como capa!');}
+  localStorage.setItem(COVERS_KEY,JSON.stringify(d));render();
+}
+
+// ── COMPARTILHAR GALERIA ──
+let _shareUrl='';
+function shareGallery(catId,catName){
+  const base=window.location.href.split('?')[0].split('#')[0];
+  _shareUrl=base+'?galeria='+encodeURIComponent(catId);
+  document.getElementById('shareToastUrl').textContent=_shareUrl;
+  const t=document.getElementById('shareToast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),8000);
+}
+function closeShareToast(){document.getElementById('shareToast').classList.remove('show');}
+function copyShareLink(){
+  navigator.clipboard.writeText(_shareUrl).then(()=>{
+    const b=document.querySelector('.share-toast-copy');
+    b.textContent='✓ Copiado!';
+    setTimeout(()=>{b.textContent='Copiar';closeShareToast();},2000);
+  }).catch(()=>{
+    const inp=document.createElement('input');inp.value=_shareUrl;
+    document.body.appendChild(inp);inp.select();document.execCommand('copy');inp.remove();
+    toast('🔗 Link copiado!');closeShareToast();
+  });
+}
+(function(){
+  const p=new URLSearchParams(window.location.search),gal=p.get('galeria');
+  if(gal)window.addEventListener('iafoto-ready',()=>{if(cats.find(c=>c.id===gal))selectCat(gal);},{once:true});
+})();
+
+// ── SLIDESHOW ──
+let ssIndex=0,ssPlaying=true,ssTimer=null,ssSpeed=3000,ssPool=[];
+function startSlideshow(pool){
+  ssPool=pool||(currentView||[]).filter(it=>it.img);
+  if(!ssPool.length){toast('⚠ Sem fotos para apresentar.');return;}
+  ssIndex=typeof lbIndex!=='undefined'?Math.min(lbIndex,ssPool.length-1):0;
+  ssPlaying=true;
+  document.getElementById('slideshowOverlay').classList.add('open');
+  document.addEventListener('keydown',ssKeyDown);
+  ssShow(ssIndex);ssScheduleNext();
+}
+function stopSlideshow(){
+  clearTimeout(ssTimer);
+  document.getElementById('slideshowOverlay').classList.remove('open');
+  document.removeEventListener('keydown',ssKeyDown);
+}
+function ssShow(idx){
+  ssIndex=((idx%ssPool.length)+ssPool.length)%ssPool.length;
+  const it=ssPool[ssIndex],ph=document.getElementById('ssPhoto');
+  ph.classList.remove('fade-in');ph.classList.add('fade-out');
+  setTimeout(()=>{
+    document.getElementById('ssImg').src=it.img;
+    document.getElementById('ssTitle').textContent=it.title||'';
+    document.getElementById('ssCounter').textContent=(ssIndex+1)+' / '+ssPool.length;
+    ph.classList.remove('fade-out');ph.classList.add('fade-in');
+  },280);
+  const bar=document.getElementById('ssProgress');
+  bar.style.transition='none';bar.style.width='0%';
+  if(ssPlaying)requestAnimationFrame(()=>{bar.style.transition='width '+ssSpeed+'ms linear';bar.style.width='100%';});
+}
+function ssScheduleNext(){
+  clearTimeout(ssTimer);
+  if(!ssPlaying)return;
+  ssTimer=setTimeout(()=>{ssShow(ssIndex+1);ssScheduleNext();},ssSpeed);
+}
+function ssNavigate(dir){clearTimeout(ssTimer);ssShow(ssIndex+dir);if(ssPlaying)ssScheduleNext();}
+function ssTogglePlay(){
+  ssPlaying=!ssPlaying;
+  document.getElementById('ssPlayBtn').textContent=ssPlaying?'⏸':'▶';
+  const bar=document.getElementById('ssProgress');
+  if(ssPlaying){ssScheduleNext();bar.style.transition='width '+ssSpeed+'ms linear';bar.style.width='100%';}
+  else{clearTimeout(ssTimer);bar.style.transition='none';bar.style.width='0%';}
+}
+function ssSetSpeed(ms){
+  ssSpeed=ms;
+  [3,5,8].forEach(s=>{const b=document.getElementById('ssSpeed'+s);if(b)b.classList.toggle('active',s*1000===ms);});
+  if(ssPlaying){clearTimeout(ssTimer);ssScheduleNext();}
+}
+function ssKeyDown(e){
+  if(e.key==='Escape')stopSlideshow();
+  if(e.key==='ArrowLeft')ssNavigate(-1);
+  if(e.key==='ArrowRight')ssNavigate(1);
+  if(e.key===' '){e.preventDefault();ssTogglePlay();}
+}
+
+// Dispara evento quando app está pronto
+const _oia=window.initApp;
+if(typeof _oia==='function'){
+  window.initApp=async function(){await _oia();window.dispatchEvent(new Event('iafoto-ready'));};
+}
+</script>
+
+<!-- ══════════════════════════════════════════════════════
+     SALA DE SELEÇÃO — TELA DE ENTRADA
+     ══════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════════════════
+     SALA — TELA DE BOAS-VINDAS / PASSO A PASSO
+     ══════════════════════════════════════════════════════ -->
+<div id="salaWelcomeOverlay">
+  <div class="sala-welcome-box">
+
+    <!-- Marca -->
+    <div>
+      <div class="sala-welcome-brand">
+        <span class="sala-welcome-logo">✦</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">IA Foto Studio</span>
+      </div>
+      <div class="sala-welcome-title" style="margin-top:10px;">COMO<br>FUNCIONA?</div>
+      <div class="sala-welcome-subtitle">Em menos de 24h você recebe seu ensaio completo 🎉</div>
+    </div>
+
+    <!-- Passos -->
+    <div class="sala-welcome-steps">
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">1</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">📸 Explore as galerias</div>
+          <div class="sala-welcome-step-desc">Veja todos os estilos disponíveis e inspire-se para o seu ensaio</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">2</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">❤️ Escolha suas fotos favoritas</div>
+          <div class="sala-welcome-step-desc">Toque nas fotos que mais gostou — você escolhe a quantidade do seu pacote</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">3</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">💬 Envie sua seleção pelo WhatsApp</div>
+          <div class="sala-welcome-step-desc">Sua lista vai direto para nós — sem complicação!</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">4</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">🤳 Nos envie suas fotos de referência</div>
+          <div class="sala-welcome-step-desc">Algumas fotos do rosto e corpo inteiro — bem iluminadas e naturais</div>
+        </div>
+      </div>
+      <div class="sala-welcome-step">
+        <div class="sala-welcome-step-num">5</div>
+        <div class="sala-welcome-step-content">
+          <div class="sala-welcome-step-title">🎉 Receba seu ensaio!</div>
+          <div class="sala-welcome-step-desc">Fotos únicas criadas com IA, prontas em menos de 24 horas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badge de prazo -->
+    <div class="sala-welcome-badge">
+      <span class="sala-welcome-badge-icon">⚡</span>
+      <div class="sala-welcome-badge-text">
+        Entrega em <span>MENOS DE 24H</span> após suas fotos
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="sala-welcome-btn" onclick="fecharSalaWelcome()">
+        Entendido — vamos começar! →
+      </button>
+      <button onclick="fecharTudoSala()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:6px;text-align:center;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+        ← Voltar à galeria
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="salaEntradaOverlay">
+  <div class="sala-entrada-box">
+
+    <!-- Marca + título -->
+    <div style="text-align:center;">
+      <div class="sala-entrada-brand" style="justify-content:center;margin-bottom:10px;">
+        <div class="sala-entrada-brand-dot"></div>
+        <span class="sala-entrada-eyebrow">IA Foto Studio</span>
+      </div>
+      <div class="sala-entrada-title">SALA DE<br><em>SELEÇÃO</em></div>
+    </div>
+
+    <!-- Como funciona — 3 steps visuais -->
+    <div class="sala-entrada-steps">
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">👤</span>
+        <span class="sala-entrada-step-text"><strong>Digite seu nome</strong> para identificar sua seleção</span>
+      </div>
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">📸</span>
+        <span class="sala-entrada-step-text"><strong>Escolha quantas fotos</strong> deseja do seu ensaio</span>
+      </div>
+      <div class="sala-entrada-step">
+        <span class="sala-entrada-step-icon">💬</span>
+        <span class="sala-entrada-step-text"><strong>Envie sua lista</strong> direto pelo WhatsApp — simples assim!</span>
+      </div>
+    </div>
+
+    <!-- Campo nome -->
+    <div class="sala-entrada-field">
+      <label class="sala-entrada-label">✦ Seu nome</label>
+      <input class="sala-entrada-input" id="salaClienteNome" type="text"
+        placeholder="Ex: Maria Silva" autocomplete="off" maxlength="50">
+    </div>
+
+    <!-- Quantidade -->
+    <div class="sala-entrada-field">
+      <label class="sala-entrada-label">✦ Quantas fotos você quer?</label>
+      <div class="sala-entrada-qty-row" id="salaQtyRow">
+        <!-- Preenchido dinamicamente -->
+      </div>
+      <!-- Campo livre -->
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.4;">
+        Quer uma quantidade diferente? <strong style="color:var(--text);">Digite abaixo e veja o valor na hora!</strong>
+      </div>
+      <div class="sala-entrada-custom-wrap" style="margin-top:4px;">
+        <span style="font-size:12px;color:var(--muted);white-space:nowrap;font-family:'DM Mono',monospace;">outro:</span>
+        <input id="salaEntradaCustomQty" type="number" min="5" max="999" placeholder="Mínimo 5 fotos — digite aqui"
+          onfocus="document.querySelectorAll('.sala-qty-btn').forEach(b=>b.classList.remove('active'))"
+          oninput="salaEntradaCustomInput(this.value)"
+          onkeydown="if(event.key==='Enter')document.getElementById('salaBtnEntrar').click()">
+        <button class="sala-entrada-custom-ok" onclick="if(document.getElementById('salaEntradaCustomQty').value)document.getElementById('salaBtnEntrar').click()">OK</button>
+      </div>
+    </div>
+
+    <!-- Preço em destaque -->
+    <div class="sala-entrada-preco-box" id="salaEntradaPreco">
+      <div class="sala-entrada-preco-val">—</div>
+      <div class="sala-entrada-preco-sub">Selecione a quantidade para ver o valor</div>
+    </div>
+
+    <!-- Botões -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button id="salaBtnEntrar" class="sala-entrada-btn" onclick="iniciarSala()">
+        Entrar e escolher minhas fotos →
+      </button>
+      <button onclick="fecharSalaEntrada()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:6px;text-align:center;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+        ← Voltar ao passo a passo
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SALA DE SELEÇÃO — BARRA FLUTUANTE (salaModeBar)
+     ══════════════════════════════════════════════════════ -->
+<div id="salaModeBar">
+  <span class="sala-bar-brand">✦ SALA</span>
+  <span class="sala-bar-cliente">Olá, <strong id="salaBarCliente">—</strong></span>
+  <div class="sala-bar-pill" id="salaBarPill">
+    <div class="sala-bar-nums"><span id="salaCountSel2">0</span>/<span id="salaCountMax2">10</span></div>
+    <div class="sala-bar-label">fotos</div>
+  </div>
+  <button class="sala-bar-send" id="salaBarSendBtn" onclick="abrirSalaConfirm()" disabled>✓ Enviar</button>
+  <button class="sala-bar-exit" onclick="fecharSala()" title="Sair da Sala">✕</button>
+</div>
+
+<!-- Banner dica -->
+<div id="salaModeHint">
+  <strong>Toque nas fotos</strong> para selecionar. Escolha suas favoritas e clique em "Enviar seleção".
+</div>
+
+<!-- Barra de progresso fina no topo -->
+<div id="salaModeProgress">
+  <div id="salaModeProgressFill" style="width:0%"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SALA DE SELEÇÃO — VIEW PRINCIPAL
+     ══════════════════════════════════════════════════════ -->
+<div id="viewSala">
+  <!-- Topbar da Sala -->
+  <div class="sala-topbar">
+    <span class="sala-topbar-brand">✦ SALA</span>
+    <span class="sala-topbar-cliente">Olá, <strong id="salaClienteLabel">—</strong></span>
+    <div class="sala-counter-pill" id="salaCounterPill">
+      <div>
+        <div class="sala-counter-nums"><span id="salaCountSel">0</span>/<span id="salaCountMax">10</span></div>
+        <div class="sala-counter-label">selecionadas</div>
+      </div>
+    </div>
+    <button class="sala-enviar-btn" id="salaEnviarBtn" onclick="abrirSalaConfirm()" disabled>
+      ✓ Enviar seleção
+    </button>
+    <button onclick="fecharSala()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .12s;" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background='none'" title="Sair da Sala">✕</button>
+  </div>
+
+  <!-- Barra de progresso -->
+  <div class="sala-progress-bar">
+    <div class="sala-progress-fill" id="salaProgressFill" style="width:0%"></div>
+  </div>
+
+  <!-- Banner instrução -->
+  <div class="sala-instrucao">
+    <div class="sala-instrucao-icon">👆</div>
+    <div class="sala-instrucao-text">
+      <strong>Toque nas fotos para selecionar.</strong> Escolha exatamente <strong id="salaInstrMax">10</strong> fotos e depois clique em "Enviar seleção" — sua lista vai direto para o nosso WhatsApp!
+    </div>
+  </div>
+
+  <!-- Filtro de categorias -->
+  <div class="sala-cats" id="salaCats"></div>
+
+  <!-- Grade de fotos -->
+  <div class="sala-grid-wrap">
+    <div class="sala-grid" id="salaGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SALA — MODAL DE CONFIRMAÇÃO
+     ══════════════════════════════════════════════════════ -->
+<div id="salaConfirmOverlay">
+  <div class="sala-confirm-box">
+    <div class="sala-confirm-head">
+      <div class="sala-confirm-icon">🎉</div>
+      <div class="sala-confirm-title">Sua seleção está pronta!</div>
+      <div class="sala-confirm-sub" id="salaConfirmSub">Confira as fotos escolhidas e envie pelo WhatsApp.</div>
+    </div>
+    <div class="sala-confirm-grid" id="salaConfirmGrid"></div>
+    <div class="sala-confirm-foot">
+      <button class="btn btn-ghost" onclick="fecharSalaConfirm()">← Voltar</button>
+      <button class="sala-confirm-wa" onclick="enviarParaWhatsApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+        Enviar pelo WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ══════════════════════════════════════════════════════
+//  SALA DE SELEÇÃO — LÓGICA COMPLETA
+// ══════════════════════════════════════════════════════
+
+let salaClienteNome = '';
+let salaMaxFotos    = 5;
+let salaSelecao     = []; // array de {id, img, title, catName, order}
+let salaCatFilter   = null;
+
+// ── Abrir tela de entrada ──
+function openSalaEntrada(qtdPresel) {
+  if (qtdPresel) window._salaQtdPresel = qtdPresel;
+  const el = document.getElementById('salaWelcomeOverlay');
+  if (el) {
+    el.classList.add('open');
+    el.style.display = 'flex';
+  }
+}
+
+function fecharSalaWelcome() {
+  const w = document.getElementById('salaWelcomeOverlay');
+  w.classList.remove('open');
+  w.style.display = 'none';
+  abrirSalaEntradaDireta();
+}
+
+function abrirSalaEntradaDireta() {
+  salaRenderQtyBtns();
+  document.getElementById('salaEntradaOverlay').classList.add('open');
+  // Pré-selecionar quantidade se veio do pricing
+  if (window._salaQtdPresel) {
+    setTimeout(() => {
+      const btn = document.querySelector('#salaQtyRow button[data-qty="' + window._salaQtdPresel + '"]');
+      if (btn) { salaSelectQty(btn); }
+      window._salaQtdPresel = null;
+    }, 100);
+  }
+  setTimeout(() => document.getElementById('salaClienteNome').focus(), 300);
+}
+
+function fecharSalaEntrada() {
+  document.getElementById('salaEntradaOverlay').classList.remove('open');
+  document.getElementById('salaWelcomeOverlay').classList.add('open');
+}
+
+function fecharTudoSala() {
+  const w = document.getElementById('salaWelcomeOverlay');
+  const e = document.getElementById('salaEntradaOverlay');
+  if (w) { w.classList.remove('open'); w.style.display = ''; }
+  if (e) { e.classList.remove('open'); e.style.display = ''; }
+}
+
+// Qty selector
+function salaSelectQty(btn) {
+  document.querySelectorAll('.sala-qty-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  salaMaxFotos = parseInt(btn.dataset.qty);
+  const customEl = document.getElementById('salaEntradaCustomQty');
+  if (customEl) { customEl.value = ''; customEl.style.borderColor = 'var(--border2)'; }
+  salaUpdateEntradaPreco();
+}
+
+function salaEntradaCustomInput(val) {
+  const n = parseInt(val);
+  const inp = document.getElementById('salaEntradaCustomQty');
+  if (!n || n < 5) {
+    salaMaxFotos = 5;
+    if (inp && val.length > 0) inp.style.borderColor = 'var(--red)';
+    document.getElementById('salaEntradaPreco').innerHTML =
+      '<span style="font-size:11px;color:var(--red);">Mínimo de 5 fotos</span>';
+    return;
+  }
+  if (inp) inp.style.borderColor = 'var(--accent)';
+  document.querySelectorAll('.sala-qty-btn').forEach(b => b.classList.remove('active'));
+  salaMaxFotos = n;
+  salaUpdateEntradaPreco();
+}
+
+function salaRenderQtyBtns() {
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  const qtds = pricing.length > 0
+    ? pricing.map(p => p.qty)
+    : [5, 10, 15, 20, 30];
+
+  const row = document.getElementById('salaQtyRow');
+  if (!row) return;
+
+  row.innerHTML = qtds.map((q, i) => {
+    const p = pricing.find(x => x.qty === q);
+    const preco = p ? formatBRLStr(p.total) : '';
+    const isFirst = i === 0;
+    return `<button class="sala-qty-btn ${isFirst ? 'active' : ''}"
+      data-qty="${q}" onclick="salaSelectQty(this)">
+      <span class="sala-qty-btn-num">${q}</span>
+      ${preco ? `<span class="sala-qty-btn-price">${preco}</span>` : ''}
+    </button>`;
+  }).join('');
+
+  // Seleciona o primeiro por padrão
+  salaMaxFotos = qtds[0] || 5;
+  salaUpdateEntradaPreco();
+}
+
+function salaUpdateEntradaPreco() {
+  const el = document.getElementById('salaEntradaPreco');
+  if (!el) return;
+  const p = calcularPreco(salaMaxFotos);
+  if (!p) { el.innerHTML = ''; return; }
+  const pf = formatBRLStr(p.porFoto);
+  el.innerHTML = `
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--accent);">${formatBRLStr(p.total)}</span>
+    <span style="font-size:11px;color:var(--muted);margin-left:6px;font-family:'DM Mono',monospace;">${pf} por foto</span>`;
+}
+
+// ── Iniciar Sala ──
+function iniciarSala() {
+  const nome = document.getElementById('salaClienteNome').value.trim();
+  if (!nome) {
+    document.getElementById('salaClienteNome').focus();
+    document.getElementById('salaClienteNome').style.borderColor = 'var(--red)';
+    setTimeout(() => document.getElementById('salaClienteNome').style.borderColor = '', 1500);
+    return;
+  }
+  if (salaMaxFotos < 5) { salaMaxFotos = 5; }
+  salaClienteNome = nome;
+  salaSelecao = [];
+  salaCatFilter = null;
+  const entradaEl = document.getElementById('salaEntradaOverlay');
+  entradaEl.classList.remove('open');
+  entradaEl.style.display = 'none';
+
+  // Ativa modo sala no body — CSS cuida do resto
+  document.body.classList.add('sala-mode');
+
+  // Mostra barra flutuante da sala
+  document.getElementById('salaModeBar').style.display = 'flex';
+  document.getElementById('salaBarCliente').textContent = salaClienteNome;
+  document.getElementById('salaCountMax').textContent = salaMaxFotos;
+  document.getElementById('salaCountMax2').textContent = salaMaxFotos;
+  document.getElementById('salaInstrMax').textContent = salaMaxFotos;
+  document.getElementById('salaCountSel').textContent = '0';
+
+  // Garante que o .main está visível (desktop e mobile)
+  const mainEl = document.querySelector(".main");
+  if (mainEl) mainEl.style.display = "";
+
+  // Garante que viewSala está oculto (não é usado no fluxo principal)
+  const viewSala = document.getElementById("viewSala");
+  if (viewSala) viewSala.classList.remove("active");
+
+  // Vai para home (tela de galerias) — igual ao desktop
+  currentCat = null;
+  render();
+  window.scrollTo(0, 0);
+  salaUpdateCounter();
+}
+
+// ── Fechar Sala ──
+function fecharSala() {
+  if (salaSelecao.length > 0) {
+    if (!confirm('Tem certeza? Sua seleção será perdida.')) return;
+  }
+  document.body.classList.remove('sala-mode');
+  document.getElementById('salaModeBar').style.display = 'none';
+  const viewSala = document.getElementById('viewSala');
+  if (viewSala) viewSala.classList.remove('active');
+  const mainEl = document.querySelector('.main');
+  if (mainEl) mainEl.style.display = '';
+  salaSelecao = [];
+  salaUpdateCounter();
+  render();
+}
+
+// ── Render categorias ──
+function salaRenderCats() {
+  const container = document.getElementById('salaCats');
+  const usedCatIds = [...new Set(items.filter(i => i.img && i.cat && i.cat !== '__inbox__').map(i => i.cat))];
+  const visibleCats = cats.filter(c => usedCatIds.includes(c.id))
+                          .sort((a,b) => a.name.localeCompare(b.name, 'pt'));
+
+  let html = `<button class="sala-cat-chip ${salaCatFilter === null ? 'active' : ''}" onclick="salaSetCat(null)">✦ Todas</button>`;
+  visibleCats.forEach(cat => {
+    const cnt = items.filter(i => i.cat === cat.id && i.img).length;
+    html += `<button class="sala-cat-chip ${salaCatFilter === cat.id ? 'active' : ''}" onclick="salaSetCat('${cat.id}')">${cat.name} <span style="opacity:.5;font-size:10px;">${cnt}</span></button>`;
+  });
+  container.innerHTML = html;
+}
+
+function salaSetCat(catId) {
+  salaCatFilter = catId;
+  salaRenderCats();
+  salaRender();
+}
+
+// ── Render grade de fotos ──
+function salaRender() {
+  const grid = document.getElementById('salaGrid');
+  const pool = items.filter(i => i.img && i.cat !== '__inbox__' &&
+    (salaCatFilter === null || i.cat === salaCatFilter));
+
+  if (!pool.length) {
+    grid.innerHTML = `<div class="sala-empty"><div class="sala-empty-icon">📷</div><div class="sala-empty-text">Nenhuma foto nesta galeria</div></div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Se "Todas", agrupa por categoria com título
+  if (salaCatFilter === null) {
+    const usedCatIds = [...new Set(pool.map(i => i.cat))];
+    const orderedCats = cats.filter(c => usedCatIds.includes(c.id))
+                            .sort((a,b) => a.name.localeCompare(b.name,'pt'));
+    orderedCats.forEach(cat => {
+      const catItems = pool.filter(i => i.cat === cat.id);
+      html += `<div class="sala-cat-title">${cat.name}</div>`;
+      html += catItems.map(it => salaCardHTML(it)).join('');
+    });
+  } else {
+    html = pool.map(it => salaCardHTML(it)).join('');
+  }
+
+  grid.innerHTML = html;
+}
+
+function salaCardHTML(it) {
+  const sel = salaSelecao.find(s => s.id === it.id);
+  const isSel = !!sel;
+  const order = sel ? sel.order : '';
+  return `
+    <div class="sala-photo-card ${isSel ? 'selected' : ''}"
+         id="spcard-${it.id}" onclick="salaToggle('${it.id}')">
+      <img src="${cloudThumb(it.img)}" loading="lazy" alt="${it.title || ''}">
+      <div class="sala-select-overlay"></div>
+      <div class="sala-check">✓</div>
+      <div class="sala-order-num">${order}</div>
+    </div>`;
+}
+
+// ── Toggle por item (usado pelo site normal no sala-mode) ──
+function salaToggleByItem(it) {
+  const existing = salaSelecao.findIndex(s => s.id === it.id);
+  if (existing !== -1) {
+    salaSelecao.splice(existing, 1);
+    salaSelecao.forEach((s, i) => s.order = i + 1);
+  } else {
+    if (salaSelecao.length >= salaMaxFotos) {
+      abrirSalaLimiteModal();
+      return;
+    }
+    const cat = cats.find(c => c.id === it.cat);
+    salaSelecao.push({ id: it.id, img: it.img, title: it.title || '', catName: cat?.name || '', order: salaSelecao.length + 1 });
+    // Avisa quando atingir o limite exato
+    if (salaSelecao.length === salaMaxFotos) {
+      salaUpdateCounter();
+      setTimeout(() => {
+        try { abrirSalaLimiteAtingido(); }
+        catch(e) { console.error('Limite modal error:', e); }
+      }, 400);
+    }
+  }
+  salaUpdateCounter();
+  // Atualiza apenas o card clicado — sem rerenderizar tudo
+  const card = document.getElementById('pcard-' + it.id);
+  if (card) {
+    const isSel = salaSelecao.find(s => s.id === it.id);
+    card.classList.toggle('sala-selected', !!isSel);
+    const orderBadge = card.querySelector('.sala-order-badge');
+    if (orderBadge) orderBadge.textContent = isSel ? isSel.order : '';
+    // Atualiza números de todos (após reordenação)
+    salaSelecao.forEach(s => {
+      const c = document.getElementById('pcard-' + s.id);
+      if (c) { const b = c.querySelector('.sala-order-badge'); if (b) b.textContent = s.order; }
+    });
+  }
+}
+
+// ── Toggle seleção ──
+function salaToggle(id) {
+  const existing = salaSelecao.findIndex(s => s.id === id);
+  if (existing !== -1) {
+    // Deseleciona
+    salaSelecao.splice(existing, 1);
+    // Reordena os números
+    salaSelecao.forEach((s, i) => s.order = i + 1);
+  } else {
+    if (salaSelecao.length >= salaMaxFotos) {
+      // Mostra modal para aumentar quantidade
+      abrirSalaLimiteModal();
+      return;
+    }
+    const it = items.find(i => i.id === id);
+    if (!it) return;
+    const cat = cats.find(c => c.id === it.cat);
+    salaSelecao.push({ id: it.id, img: it.img, title: it.title || '', catName: cat?.name || '', order: salaSelecao.length + 1 });
+    // Avisa quando atingir o limite exato
+    if (salaSelecao.length === salaMaxFotos) {
+      salaUpdateCounter();
+      salaRender();
+      setTimeout(() => {
+        try { abrirSalaLimiteAtingido(); }
+        catch(e) { console.error('Limite modal error:', e); }
+      }, 400);
+      return;
+    }
+  }
+  salaUpdateCounter();
+  salaRender();
+}
+
+// ── Atualiza contador ──
+function salaUpdateCounter() {
+  const n = salaSelecao.length;
+  const max = salaMaxFotos;
+
+  // Barra flutuante (sala-mode no site normal)
+  const selEls = document.querySelectorAll('#salaCountSel, #salaCountSel2');
+  const maxEls = document.querySelectorAll('#salaCountMax, #salaCountMax2');
+  selEls.forEach(el => el.textContent = n);
+  maxEls.forEach(el => el.textContent = max);
+
+  const barPill = document.getElementById('salaBarPill');
+  if (barPill) barPill.classList.toggle('full', n >= max);
+
+  const barBtn = document.getElementById('salaBarSendBtn');
+  if (barBtn) {
+    barBtn.disabled = n === 0;
+    barBtn.textContent = n > 0 ? `✓ Enviar ${n}` : '✓ Enviar';
+  }
+
+  // Progresso
+  const pct = (n / max) * 100;
+  const pFill = document.getElementById('salaModeProgressFill');
+  if (pFill) pFill.style.width = pct + '%';
+  const pFill2 = document.getElementById('salaProgressFill');
+  if (pFill2) pFill2.style.width = pct + '%';
+
+  // Pill antiga (viewSala)
+  const pill = document.getElementById('salaCounterPill');
+  if (pill) pill.classList.toggle('full', n >= max);
+  const btn = document.getElementById('salaEnviarBtn');
+  if (btn) {
+    btn.disabled = n === 0;
+    btn.textContent = n > 0 ? `✓ Enviar ${n} foto${n !== 1 ? 's' : ''}` : '✓ Enviar seleção';
+  }
+
+  // (aviso de limite é disparado direto no salaToggle, após o render)
+}
+
+// ── Modal de confirmação ──
+function abrirSalaConfirm() {
+  if (!salaSelecao.length) return;
+  const sub = document.getElementById('salaConfirmSub');
+  sub.textContent = `${salaClienteNome}, você escolheu ${salaSelecao.length} foto${salaSelecao.length !== 1 ? 's' : ''}. Confira abaixo e envie!`;
+
+  const grid = document.getElementById('salaConfirmGrid');
+  grid.innerHTML = salaSelecao.map(s => `
+    <div class="sala-confirm-thumb">
+      <img src="${cloudThumb(s.img)}" alt="${s.title}">
+      <div class="sala-confirm-thumb-num">${s.order}</div>
+    </div>`).join('');
+
+  document.getElementById('salaConfirmOverlay').classList.add('open');
+}
+
+function fecharSalaConfirm() {
+  document.getElementById('salaConfirmOverlay').classList.remove('open');
+}
+
+// ── Enviar para WhatsApp ──
+function enviarParaWhatsApp() {
+  // Evitar envio duplicado — verifica por nome+quantidade
+  const jaEnviou = sessionStorage.getItem('sala_enviado');
+  if (jaEnviou) {
+    const d = JSON.parse(jaEnviou);
+    toast('⚠️ Você já enviou uma seleção de ' + d.n + ' fotos. Recarregue a página para fazer uma nova.');
+    return;
+  }
+  const n = salaSelecao.length;
+  const preco = calcularPreco(n);
+  const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
+
+  const header = '🎉 *' + salaClienteNome + '* escolheu ' + n + ' foto' + (n !== 1 ? 's' : '') + precoStr + '!\n';
+
+  const linhas = salaSelecao.map((s, i) => {
+    const gal = s.catName ? '[' + s.catName + '] ' : '';
+    const titulo = s.title || ('Foto ' + s.order);
+    return (i+1) + '. ' + gal + titulo + '\n   🔗 ' + s.img;
+  });
+
+  const footer = '\n_Aguardando confirmação! 😊_';
+  const msg = header + '\n' + linhas.join('\n\n') + footer;
+
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  // Registrar pedido no painel
+  const precoForPedido = preco ? formatBRLStr(preco.total) : 'N/A';
+  adicionarPedido(salaClienteNome, n, precoForPedido);
+  sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
+  fecharSalaConfirm();
+  abrirSalaObrigada(n);
+}
+
+// ── PAINEL DE PEDIDOS ──
+function abrirPedidos() {
+  renderPedidos();
+  document.getElementById('pedidosOverlay').classList.add('open');
+}
+function fecharPedidos() {
+  document.getElementById('pedidosOverlay').classList.remove('open');
+}
+function getPedidos() {
+  try { return JSON.parse(localStorage.getItem('iafoto_pedidos') || '[]'); } catch(e) { return []; }
+}
+function savePedidos(p) {
+  localStorage.setItem('iafoto_pedidos', JSON.stringify(p));
+  atualizarBadgePedidos();
+}
+function atualizarBadgePedidos() {
+  const badge = document.getElementById('pedidosBadge');
+  if (!badge) return;
+  const novos = getPedidos().filter(p => p.status === 'aguardando').length;
+  if (novos > 0) {
+    badge.textContent = novos;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+function adicionarPedido(nome, nFotos, preco) {
+  const pedidos = getPedidos();
+  pedidos.unshift({
+    id: Date.now(),
+    nome, nFotos, preco,
+    status: 'aguardando',
+    data: new Date().toLocaleDateString('pt-BR')
+  });
+  savePedidos(pedidos);
+}
+function atualizarStatusPedido(id, status) {
+  const pedidos = getPedidos().map(p => p.id == id ? {...p, status} : p);
+  savePedidos(pedidos);
+  renderPedidos();
+}
+function deletarPedido(id) {
+  const pedidos = getPedidos().filter(p => p.id != id);
+  savePedidos(pedidos);
+  renderPedidos();
+}
+function renderPedidos() {
+  const list = document.getElementById('pedidosList');
+  const pedidos = getPedidos();
+  if (!pedidos.length) {
+    list.innerHTML = '<div class="pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando clientes enviam a seleção.</div>';
+    return;
+  }
+  const statusLabel = { aguardando:'Aguardando', recebido:'Recebido', produzindo:'Produzindo', entregue:'Entregue ✓' };
+  list.innerHTML = pedidos.map(p => {
+    const opts = Object.entries(statusLabel).map(([v,l]) =>
+      '<option value="' + v + '"' + (p.status===v?' selected':'') + '>' + l + '</option>'
+    ).join('');
+    return '<div class="pedido-item">' +
+      '<div class="pedido-status-dot ' + p.status + '"></div>' +
+      '<div class="pedido-info">' +
+        '<div class="pedido-nome">' + p.nome + '</div>' +
+        '<div class="pedido-detalhe">' + p.nFotos + ' fotos · ' + p.preco + ' · ' + p.data + '</div>' +
+      '</div>' +
+      '<select class="pedido-status-select" onchange="atualizarStatusPedido(' + p.id + ', this.value)">' + opts + '</select>' +
+      '<button class="pedido-del" onclick="deletarPedido(' + p.id + ')" title="Remover">🗑</button>' +
+      '</div>';
+  }).join('');
+}
+
+function abrirSalaObrigada(n) {
+  document.getElementById('salaObrigadaOverlay').classList.add('open');
+  document.getElementById('salaObrigadaN').textContent = n;
+}
+
+function fecharSalaObrigada() {
+  document.getElementById('salaObrigadaOverlay').classList.remove('open');
+}
+
+// Inicializar badge de pedidos
+setTimeout(atualizarBadgePedidos, 500);
+
+
+
+</script>
+
+
+<!-- ── SALA — PAINEL ADMIN ── -->
+<div id="salaAdminPanel">
+  <div class="sala-admin-panel-box">
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="sala-admin-panel-title">🎯 Sala de Seleção</div>
+        <button onclick="document.getElementById('salaAdminPanel').classList.remove('open')" style="background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+      </div>
+      <div class="sala-admin-panel-desc">Envie este link para o cliente escolher as fotos. Ele não tem acesso ao painel admin.</div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;">Link do cliente</div>
+      <div class="sala-link-box">
+        <span class="sala-link-url" id="salaLinkUrl"></span>
+        <button class="sala-link-copy" onclick="copiarLinkSala()">Copiar</button>
+      </div>
+    </div>
+
+    <div class="sala-admin-steps">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;">Como funciona</div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">1</div>
+        <span>Copie o link acima e envie para o cliente pelo WhatsApp</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">2</div>
+        <span>O cliente abre o link, digita o nome e escolhe quantas fotos quer</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">3</div>
+        <span>Ele navega pelas galerias e toca nas fotos que quer</span>
+      </div>
+      <div class="sala-admin-step">
+        <div class="sala-admin-step-num">4</div>
+        <span>Ao finalizar, clica em "Enviar" e o WhatsApp abre com a lista completa para você</span>
+      </div>
+    </div>
+
+    <div class="sala-admin-panel-foot">
+      <button class="btn btn-ghost" style="flex:1;" onclick="document.getElementById('salaAdminPanel').classList.remove('open')">Fechar</button>
+      <button class="btn btn-accent" style="flex:1;justify-content:center;" onclick="compartilharLinkSala()">
+        📤 Compartilhar no WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SALA — PAINEL ADMIN ──
+function openSalaAdminPanel() {
+  const base = window.location.href.split('?')[0].split('#')[0];
+  const link = base + '?sala=1';
+  document.getElementById('salaLinkUrl').textContent = link;
+  document.getElementById('salaAdminPanel').classList.add('open');
+}
+
+function copiarLinkSala() {
+  const url = document.getElementById('salaLinkUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('#salaAdminPanel .sala-link-copy');
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  }).catch(() => {
+    const inp = document.createElement('input');
+    inp.value = url; document.body.appendChild(inp); inp.select();
+    document.execCommand('copy'); inp.remove();
+    toast('🔗 Link copiado!');
+  });
+}
+
+function compartilharLinkSala() {
+  const url = document.getElementById('salaLinkUrl').textContent;
+  const msg = '✨ Suas fotos estão te esperando!\n\n👆 Clique no link, escolha suas favoritas e me manda a lista — é super fácil e rápido!\n\n🔗 ' + url + '\n\n📸 IA Foto Studio — respondemos rapidinho! 😊';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
+
+<!-- ── SALA — MODAL LIMITE ATINGIDO ── -->
+<div id="salaLimiteOverlay">
+  <div class="sala-limite-box">
+    <div class="sala-limite-icon">🎯</div>
+    <div class="sala-limite-title">Você atingiu o limite!</div>
+    <div class="sala-limite-desc">Você já escolheu <strong id="salaLimiteAtual">0</strong> fotos. Quer aumentar a quantidade para escolher mais?</div>
+    <div class="sala-limite-qtds" id="salaLimiteQtds"></div>
+    <!-- Campo livre para qualquer quantidade -->
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:11px;color:var(--muted);white-space:nowrap;">ou digite outro número</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input id="salaLimiteCustom" type="number" min="1" max="999" placeholder="Ex: 35"
+        style="flex:1;padding:10px 14px;border:2px solid var(--border2);border-radius:10px;font-size:16px;font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--text);outline:none;text-align:center;"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"
+        oninput="salaCustomQtyInput()"
+        onkeydown="if(event.key==='Enter')confirmarSalaLimiteCustom()">
+      <button onclick="confirmarSalaLimiteCustom()" style="padding:10px 16px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:background .15s;" onmouseover="this.style.background='#00a896'" onmouseout="this.style.background='var(--accent)'">OK</button>
+    </div>
+    <div id="salaLimitePrecoCustom" style="font-size:12px;color:var(--muted);text-align:center;min-height:16px;font-family:'DM Mono',monospace;"></div>
+    <div class="sala-limite-foot">
+      <button class="btn btn-ghost" onclick="fecharSalaLimiteModal()">Cancelar</button>
+      <button class="btn btn-accent" onclick="abrirSalaConfirm();fecharSalaLimiteModal()">
+        ✓ Enviar as <span id="salaLimiteEnviarN">0</span> selecionadas
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── MODAL LIMITE — com preços ──
+
+// Calcula preço para N fotos interpolando a tabela de pacotes
+function calcularPreco(qty) {
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  if (!pricing.length) return null;
+  // Pacote exato
+  const exato = pricing.find(p => p.qty === qty);
+  if (exato) return { total: exato.total, porFoto: exato.total / exato.qty, exato: true, desc: exato.desc };
+  // Menor e maior
+  const menor = [...pricing].reverse().find(p => p.qty < qty);
+  const maior = pricing.find(p => p.qty > qty);
+  if (!menor && maior) {
+    // Abaixo do menor pacote — usa preço por foto do menor
+    const pf = maior.total / maior.qty;
+    return { total: pf * qty, porFoto: pf, exato: false };
+  }
+  if (menor && !maior) {
+    // Acima do maior pacote — usa preço por foto do maior (com desconto progressivo)
+    const pf = menor.total / menor.qty;
+    return { total: pf * qty, porFoto: pf, exato: false };
+  }
+  // Interpolação linear entre os dois pacotes vizinhos
+  const ratio = (qty - menor.qty) / (maior.qty - menor.qty);
+  const total = menor.total + ratio * (maior.total - menor.total);
+  const pf = total / qty;
+  return { total, porFoto: pf, exato: false };
+}
+
+function formatBRLStr(v) {
+  return 'R$ ' + parseFloat(v).toFixed(2).replace('.', ',');
+}
+
+function abrirSalaLimiteAtingido() {
+  try {
+    const n = salaSelecao.length;
+    const overlay = document.getElementById('salaLimiteOverlay');
+    if (!overlay) return;
+
+    // Textos de celebração
+    const icon  = overlay.querySelector('.sala-limite-icon');
+    const title = overlay.querySelector('.sala-limite-title');
+    const desc  = overlay.querySelector('.sala-limite-desc');
+    if (icon)  icon.textContent = '🎉';
+    if (title) title.textContent = 'Seleção completa!';
+    if (desc)  desc.innerHTML = `Você escolheu <strong>${n} foto${n!==1?'s':''}</strong>! Quer enviar agora ou adicionar mais?`;
+
+    const atualEl = document.getElementById('salaLimiteAtual');
+    const enviarEl = document.getElementById('salaLimiteEnviarN');
+    const customEl = document.getElementById('salaLimiteCustom');
+    const precoEl  = document.getElementById('salaLimitePrecoCustom');
+    if (atualEl)  atualEl.textContent = n;
+    if (enviarEl) enviarEl.textContent = n;
+    if (customEl) customEl.value = '';
+    if (precoEl)  precoEl.textContent = '';
+
+    // Opções de quantidade acima do atual
+    const qtdsEl = document.getElementById('salaLimiteQtds');
+    if (qtdsEl) {
+      const base = [5,10,15,20,25,30,40,50].filter(q => q > salaMaxFotos);
+      if (!base.length) base.push(salaMaxFotos+10, salaMaxFotos+20);
+      qtdsEl.innerHTML = base.slice(0,5).map(q => {
+        const pr = calcularPreco ? calcularPreco(q) : null;
+        return `<button class="sala-limite-qty-btn" onclick="aumentarSalaQty(${q})">
+          <span class="sala-limite-qty-num">${q}</span>
+          <span class="sala-limite-qty-preco">${pr ? formatBRLStr(pr.total) : ''}</span>
+        </button>`;
+      }).join('');
+    }
+
+    overlay.classList.add('open');
+  } catch(e) {
+    console.error('abrirSalaLimiteAtingido error:', e);
+    // Fallback: abre o modal normal mesmo assim
+    const overlay = document.getElementById('salaLimiteOverlay');
+    if (overlay) overlay.classList.add('open');
+  }
+}
+
+function abrirSalaLimiteModal() {
+  const n = salaSelecao.length;
+  // Reset para tom normal (não celebração)
+  const title = document.querySelector('#salaLimiteOverlay .sala-limite-title');
+  const desc  = document.querySelector('#salaLimiteOverlay .sala-limite-desc');
+  const icon  = document.querySelector('#salaLimiteOverlay .sala-limite-icon');
+  if (icon)  icon.textContent  = '🎯';
+  if (title) title.textContent = 'Você atingiu o limite!';
+  if (desc)  desc.innerHTML    = `Você já escolheu <strong>${n}</strong> fotos. Quer aumentar a quantidade para escolher mais?`;
+  document.getElementById('salaLimiteAtual').textContent = n;
+  document.getElementById('salaLimiteEnviarN').textContent = n;
+  document.getElementById('salaLimiteCustom').value = '';
+  document.getElementById('salaLimitePrecoCustom').textContent = '';
+
+  // Pacotes disponíveis acima do atual
+  const pricing = loadPricing().sort((a, b) => a.qty - b.qty);
+  const pacotesAcima = pricing.filter(p => p.qty > salaMaxFotos);
+  
+  // Se não há pacotes acima, sugere +10 e +20 calculados
+  const extras = pacotesAcima.length === 0
+    ? [salaMaxFotos + 10, salaMaxFotos + 20].map(q => {
+        const p = calcularPreco(q);
+        return { qty: q, total: p?.total, porFoto: p?.porFoto, desc: '', featured: false };
+      })
+    : [];
+  const opcoes = [...pacotesAcima, ...extras];
+
+  const qtdsEl = document.getElementById('salaLimiteQtds');
+  qtdsEl.innerHTML = opcoes.slice(0, 6).map(p => {
+    const preco = calcularPreco(p.qty);
+    return `<button class="sala-limite-qty-btn ${p.featured ? 'pacote-destaque' : ''}"
+      onclick="aumentarSalaQty(${p.qty})">
+      <span class="sala-limite-qty-num">${p.qty}</span>
+      <span class="sala-limite-qty-preco">${preco ? formatBRLStr(preco.total) : ''}</span>
+      <span class="sala-limite-qty-desc">${p.featured ? '⭐ Popular' : (p.desc ? p.desc.slice(0,20) : '')}</span>
+    </button>`;
+  }).join('');
+
+  document.getElementById('salaLimiteOverlay').classList.add('open');
+}
+
+function fecharSalaLimiteModal() {
+  document.getElementById('salaLimiteOverlay').classList.remove('open');
+}
+
+// Atualiza preço em tempo real no campo livre
+function salaCustomQtyInput() {
+  const val = parseInt(document.getElementById('salaLimiteCustom').value);
+  const el = document.getElementById('salaLimitePrecoCustom');
+  if (!val || val < 1) { el.textContent = ''; return; }
+  const p = calcularPreco(val);
+  if (p) {
+    el.textContent = formatBRLStr(p.total) + ' · ' + formatBRLStr(p.porFoto) + ' por foto' + (p.exato ? ' ✓ pacote disponível' : ' (estimado)');
+    el.style.color = p.exato ? 'var(--accent)' : 'var(--muted)';
+  }
+}
+
+function confirmarSalaLimiteCustom() {
+  const val = parseInt(document.getElementById('salaLimiteCustom').value);
+  if (!val || val <= salaMaxFotos) {
+    const inp = document.getElementById('salaLimiteCustom');
+    inp.style.borderColor = 'var(--red)';
+    inp.placeholder = 'Digite um número maior que ' + salaMaxFotos;
+    setTimeout(() => { inp.style.borderColor = 'var(--border2)'; inp.placeholder = 'Ex: 35'; }, 2000);
+    return;
+  }
+  aumentarSalaQty(val);
+}
+
+function aumentarSalaQty(novaQty) {
+  salaMaxFotos = novaQty;
+  document.getElementById('salaInstrMax').textContent = novaQty;
+  salaUpdateCounter();
+  fecharSalaLimiteModal();
+  const p = calcularPreco(novaQty);
+  const msg = p
+    ? '✓ Até ' + novaQty + ' fotos · ' + formatBRLStr(p.total)
+    : '✓ Agora você pode escolher até ' + novaQty + ' fotos!';
+  toast(msg);
+}
+</script>
+<script>
+// ── LINK FIXO SIDEBAR ──
+function initSalaLinkSidebar() {
+  const base = window.location.href.split('?')[0].split('#')[0];
+  const link = base + '?sala=1';
+  const el = document.getElementById('salaLinkSidebar');
+  if (el) el.textContent = link;
+}
+
+function copiarLinkSalaSidebar() {
+  const base = window.location.href.split('?')[0].split('#')[0];
+  const link = base + '?sala=1';
+  navigator.clipboard.writeText(link).then(() => {
+    toast('🔗 Link copiado! Cole no WhatsApp ou resposta automática.');
+  }).catch(() => {
+    const inp = document.createElement('input');
+    inp.value = link; document.body.appendChild(inp); inp.select();
+    document.execCommand('copy'); inp.remove();
+    toast('🔗 Link copiado!');
+  });
+}
+
+function compartilharSalaSidebar() {
+  const base = window.location.href.split('?')[0].split('#')[0];
+  const link = base + '?sala=1';
+  const msg = '✨ Suas fotos estão te esperando!\n\n👆 Clique no link, escolha suas favoritas e me manda a lista — é super fácil e rápido!\n\n🔗 ' + link + '\n\n📸 IA Foto Studio — respondemos rapidinho! 😊';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// Popula ao carregar
+document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+//  PROTEÇÃO DE IMAGENS — clientes não-admin
+// ══════════════════════════════════════════════
+(function() {
+  function isAdmin() { return document.body.classList.contains('admin-mode'); }
+
+  // 1. Bloqueia menu de contexto (botão direito)
+  document.addEventListener('contextmenu', function(e) {
+    if (isAdmin()) return;
+    e.preventDefault();
+    showProtectionToast();
+    return false;
+  });
+
+  // 2. Bloqueia arrastar imagens
+  document.addEventListener('dragstart', function(e) {
+    if (isAdmin()) return;
+    if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
+  });
+
+  // 3. Bloqueia atalhos de teclado perigosos
+  document.addEventListener('keydown', function(e) {
+    if (isAdmin()) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && (e.key === 's' || e.key === 'S')) { e.preventDefault(); showProtectionToast(); return; }
+    if (ctrl && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return; }
+    if (ctrl && e.shiftKey && ['i','I','j','J','c','C','k','K'].includes(e.key)) { e.preventDefault(); return; }
+    if (e.key === 'F12') { e.preventDefault(); return; }
+  });
+
+  // 4. CSS de proteção
+  const style = document.createElement('style');
+  style.textContent = `
+    body:not(.admin-mode) img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    body:not(.admin-mode) .photo-card,
+    body:not(.admin-mode) .gallery-card,
+    body:not(.admin-mode) .ad-hero-card,
+    body:not(.admin-mode) .ad-card,
+    body:not(.admin-mode) .photo-card-overlay,
+    body:not(.admin-mode) .photo-card-actions,
+    body:not(.admin-mode) button,
+    body:not(.admin-mode) a { pointer-events: auto; }
+    body:not(.admin-mode) #lightboxImg { pointer-events: none; }
+  `;
+  document.head.appendChild(style);
+
+  // 5. Toast de aviso
+  let _lastToast = 0;
+  function showProtectionToast() {
+    const now = Date.now();
+    if (now - _lastToast < 10000) return;
+    _lastToast = now;
+    if (typeof toast === 'function') {
+      toast('🔒 As fotos são protegidas por direitos autorais.');
+    } else {
+      const t = document.createElement('div');
+      t.textContent = '🔒 As fotos são protegidas por direitos autorais.';
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,22,.92);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:9999;pointer-events:none;backdrop-filter:blur(8px);';
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+  }
+})();
+</script>
+
+
+<!-- ── MODAL EXCLUIR GALERIA ── -->
+<div id="deleteCatOverlay" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(10,10,12,.8);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)document.getElementById('deleteCatOverlay').classList.remove('open')">
+  <div style="background:var(--surface);border-radius:20px;width:min(380px,96vw);padding:28px 24px 22px;box-shadow:0 24px 60px rgba(0,0,0,.25);border:1px solid var(--border2);text-align:center;animation:mpop .22s cubic-bezier(.34,1.46,.64,1) both;">
+    <div style="width:52px;height:52px;background:rgba(220,50,70,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">🗑</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--text);margin-bottom:8px;" id="deleteCatModalTitle">Excluir galeria?</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px;" id="deleteCatModalSub"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="document.getElementById('deleteCatOverlay').classList.remove('open')" class="btn btn-ghost" style="flex:1;justify-content:center;padding:12px;">Cancelar</button>
+      <button onclick="confirmDeleteCat()" style="flex:1;padding:12px;background:#e03050;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">🗑 Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
+  <div class="upload-modal">
+    <div class="upload-modal-head">
+      <span class="upload-modal-title">⬆ Upload de Fotos</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
+    </div>
+    <div class="upload-modal-body">
+      <div class="upload-inbox-hint">📂 As fotos serão salvas em <strong>Aniversário</strong>.</div>
+      <div>
+        <div class="field-label">Fotos</div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById(&#39;fileInput&#39;).click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
+          <div class="drop-zone-icon">🖼</div>
+          <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple="" style="display:none" onchange="filesSelected(this.files)">
+      </div>
+      <div class="upload-progress" id="uploadProgress" style="display: none;">
+        <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
+      </div>
+      <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
+    </div>
+    <div class="upload-modal-footer">
+      <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
+      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
+    </div>
+  </div>
+</div>
 </body></html>
