@@ -6216,6 +6216,11 @@ const CLOUDINARY_PRESET = 'ia_foto_studio';
 // ── FIRESTORE PERSIST ──
 async function persist() {
   if (!window._fbReady) return;
+  // Proteção: nunca salvar se cats E items estão vazios (evita apagar dados)
+  if (cats.length === 0 && items.length === 0) {
+    console.warn('persist() bloqueado — cats e items vazios');
+    return;
+  }
   const db = window._fbDb;
   try {
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
@@ -6312,9 +6317,14 @@ async function initApp() {
     if (snap.exists()) {
       const data = snap.data();
       meta = data.items || [];
-      cats = data.cats  || [];
+      // Se Firebase retornar cats vazio mas localStorage tem, usa o cache
+      const fbCats = data.cats || [];
+      const cachedCats = JSON.parse(localStorage.getItem('iafoto_cats') || '[]');
+      cats = fbCats.length > 0 ? fbCats : cachedCats;
+      // Salva cats no localStorage como backup (evita sumiço ao recarregar)
+      if (cats.length > 0) localStorage.setItem('iafoto_cats', JSON.stringify(cats));
+      if (meta.length > 0) localStorage.setItem('iafoto_items', JSON.stringify(meta));
       // Carregar adPairs JUNTO com items e cats — antes do render()
-      // Carregar adPairs igual items e cats
       adPairs = data.adPairs || [];
       localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
       if (data.pricing && data.pricing.length) {
@@ -6323,10 +6333,13 @@ async function initApp() {
       }
 
     } else {
-      meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
-      cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
-      if (meta.length || cats.length) {
-        toast('📦 Migrando dados locais para a nuvem...');
+      // Firebase sem dados — tenta localStorage como fallback
+      const localCats = JSON.parse(localStorage.getItem('iafoto_cats') || '[]');
+      const localItems = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
+      meta = localItems;
+      cats = localCats;
+      if (localCats.length || localItems.length) {
+        toast('📦 Restaurando dados do cache local...');
         await persist();
       }
     }
@@ -9902,4 +9915,32 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
       <button onclick="confirmDeleteCat()" style="flex:1;padding:12px;background:#e03050;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">🗑 Excluir</button>
     </div>
   </div>
-</div>>
+</div>
+<div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
+  <div class="upload-modal">
+    <div class="upload-modal-head">
+      <span class="upload-modal-title">⬆ Upload de Fotos</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
+    </div>
+    <div class="upload-modal-body">
+      <div class="upload-inbox-hint">📂 As fotos serão salvas na galeria selecionada.</div>
+      <div>
+        <div class="field-label">Fotos</div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
+          <div class="drop-zone-icon">🖼</div>
+          <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="filesSelected(this.files)">
+      </div>
+      <div class="upload-progress" id="uploadProgress" style="display:none;">
+        <div class="upload-progress-bar" id="uploadProgressBar" style="width:0%;"></div>
+      </div>
+      <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
+    </div>
+    <div class="upload-modal-footer">
+      <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
+      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled>Salvar fotos</button>
+    </div>
+  </div>
+</div>
+</body></html>
