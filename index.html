@@ -2645,17 +2645,23 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
 
 /* Body abaixo do card */
 .ad-card-body {
-  padding: 11px 14px;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 10px 12px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  border-top: 1px solid var(--border);
+  background: linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 55%, rgba(0,0,0,0) 100%);
+  z-index: 6;
+  pointer-events: none;
 }
+.ad-card-body > * { pointer-events: auto; }
 .ad-card-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
