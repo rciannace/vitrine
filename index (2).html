@@ -5337,10 +5337,15 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .pricing-section .pricing-per strong { color: rgba(255,255,255,.55); }
 .pricing-section .pricing-detail { color: rgba(255,255,255,.35); }
 .pricing-section .pricing-divider { background: rgba(255,255,255,.1); }
-.pricing-section .pricing-btn-ghost {
+.pricing-section .pricing-btn-ghost,
+.pricing-section .pricing-btn-ghost * {
   border-color: rgba(255,255,255,.3) !important;
   color: #fff !important;
   background: rgba(255,255,255,.1) !important;
+}
+.pricing-card .pricing-btn-ghost,
+.pricing-card .pricing-btn-ghost * {
+  color: #fff !important;
 }
 .pricing-section .pricing-btn-ghost:hover {
   background: rgba(255,255,255,.2) !important;
@@ -8118,7 +8123,7 @@ function renderPricing() {
       <div class="pricing-per">R$ ${perPhoto.toFixed(2).replace('.',',')} <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">${pkg.desc}</div>
-      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}">Pedir agora</button>
+      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}" style="color:${pkg.featured ? '#fff' : '#fff'} !important;">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="${pkg.qty}" data-field="qty" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','qty',this.value)">
