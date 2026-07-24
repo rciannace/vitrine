@@ -5337,19 +5337,12 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .pricing-section .pricing-per strong { color: rgba(255,255,255,.55); }
 .pricing-section .pricing-detail { color: rgba(255,255,255,.35); }
 .pricing-section .pricing-divider { background: rgba(255,255,255,.1); }
-.pricing-section .pricing-btn-ghost,
-.pricing-section .pricing-btn-ghost * {
-  border-color: rgba(255,255,255,.3) !important;
-  color: #fff !important;
-  background: rgba(255,255,255,.1) !important;
-}
-.pricing-card .pricing-btn-ghost,
-.pricing-card .pricing-btn-ghost * {
-  color: #fff !important;
+.pricing-section .pricing-btn-ghost {
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.6) !important;
 }
 .pricing-section .pricing-btn-ghost:hover {
-  background: rgba(255,255,255,.2) !important;
-  color: #fff !important;
+  background: rgba(255,255,255,.08) !important;
 }
 .pricing-section .pricing-footer-note { color: rgba(255,255,255,.35); }
 .pricing-section .pricing-footer-note a { color: #00c4ae; }
@@ -5404,10 +5397,8 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 /* Toolbar textos */
 .cat-title { color: #fff !important; }
 .cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
-.btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; background: rgba(255,255,255,.06) !important; }
-.btn-ghost:hover { background: rgba(255,255,255,.12) !important; color: #fff !important; }
-.btn-primary { background: var(--accent) !important; color: #fff !important; }
-.btn-primary:hover { background: #00a896 !important; }
+.btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; }
+.btn-ghost:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
 
 /* Gallery cards */
 .gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
@@ -5422,7 +5413,14 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .pricing-section .pricing-per { color: rgba(255,255,255,.5) !important; }
 .pricing-section .pricing-per strong { color: rgba(255,255,255,.6) !important; }
 .pricing-section .pricing-detail { color: rgba(255,255,255,.45) !important; }
-
+.pricing-section .pricing-btn-ghost {
+  border-color: rgba(255,255,255,.25) !important;
+  color: rgba(255,255,255,.7) !important;
+}
+.pricing-section .pricing-btn-ghost:hover {
+  background: rgba(255,255,255,.1) !important;
+  color: #fff !important;
+}
 
 /* Textos gerais */
 .empty-state-title { color: rgba(255,255,255,.7) !important; }
@@ -6218,6 +6216,11 @@ const CLOUDINARY_PRESET = 'ia_foto_studio';
 // ── FIRESTORE PERSIST ──
 async function persist() {
   if (!window._fbReady) return;
+  // Proteção: nunca salvar se cats E items estão vazios (evita apagar dados)
+  if (cats.length === 0 && items.length === 0) {
+    console.warn('persist() bloqueado — cats e items vazios');
+    return;
+  }
   const db = window._fbDb;
   try {
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
@@ -6323,6 +6326,7 @@ async function initApp() {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
       }
+
     } else {
       meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
       cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
@@ -8123,7 +8127,7 @@ function renderPricing() {
       <div class="pricing-per">R$ ${perPhoto.toFixed(2).replace('.',',')} <strong>por foto</strong></div>
       <div class="pricing-divider"></div>
       <div class="pricing-detail">${pkg.desc}</div>
-      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}" style="color:${pkg.featured ? '#fff' : '#fff'} !important;">Pedir agora</button>
+      <button onclick="openSalaEntrada(${pkg.qty})" class="pricing-btn ${btnClass}">Pedir agora</button>
       <div class="admin-edit-row">
         <label>Nº de fotos</label>
         <input type="number" min="1" value="${pkg.qty}" data-field="qty" data-pid="${pkg.id}" oninput="pricingFieldChange('${pkg.id}','qty',this.value)">
@@ -9512,6 +9516,7 @@ function fecharSalaObrigada() {
 setTimeout(atualizarBadgePedidos, 500);
 
 
+
 </script>
 
 
@@ -9903,7 +9908,6 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
     </div>
   </div>
 </div>
-
 <div id="uploadOverlay" onclick="if(event.target===this)closeUpload()">
   <div class="upload-modal">
     <div class="upload-modal-head">
@@ -9911,23 +9915,23 @@ document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
       <button class="btn btn-ghost btn-sm" onclick="closeUpload()">✕ Fechar</button>
     </div>
     <div class="upload-modal-body">
-      <div class="upload-inbox-hint">📂 As fotos serão salvas em <strong>Aniversário</strong>.</div>
+      <div class="upload-inbox-hint">📂 As fotos serão salvas na galeria selecionada.</div>
       <div>
         <div class="field-label">Fotos</div>
-        <div class="drop-zone" id="dropZone" onclick="document.getElementById(&#39;fileInput&#39;).click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)">
           <div class="drop-zone-icon">🖼</div>
           <div class="drop-zone-text">Arraste fotos aqui ou <strong>clique para selecionar</strong><br><small style="opacity:.6;font-size:11px;">JPG, PNG, WEBP — múltiplos arquivos</small></div>
         </div>
-        <input type="file" id="fileInput" accept="image/*" multiple="" style="display:none" onchange="filesSelected(this.files)">
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="filesSelected(this.files)">
       </div>
-      <div class="upload-progress" id="uploadProgress" style="display: none;">
-        <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
+      <div class="upload-progress" id="uploadProgress" style="display:none;">
+        <div class="upload-progress-bar" id="uploadProgressBar" style="width:0%;"></div>
       </div>
       <div id="uploadPreviewGrid" class="upload-preview-grid" style="display:none;"></div>
     </div>
     <div class="upload-modal-footer">
       <button class="btn btn-ghost" onclick="closeUpload()">Cancelar</button>
-      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled="">Salvar fotos</button>
+      <button class="btn btn-primary" id="uploadConfirmBtn" onclick="confirmUpload()" disabled>Salvar fotos</button>
     </div>
   </div>
 </div>
