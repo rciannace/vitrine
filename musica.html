@@ -1136,14 +1136,6 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
   window._fbSetDoc  = setDoc;
   window._fbReady   = true;
   window.dispatchEvent(new Event('firebase-ready'));
-
-  // Chama initApp daqui — garante que Firebase já está pronto
-  // (módulos ES6 sempre executam após scripts normais)
-  if (typeof initApp === 'function') {
-    initApp();
-  } else {
-    window.addEventListener('DOMContentLoaded', () => initApp());
-  }
 </script>
 
 <script>
@@ -1151,7 +1143,18 @@ const CLOUDINARY_CLOUD  = 'dftsx4wv0';
 const CLOUDINARY_PRESET = 'ia_foto_studio';
 const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
 
-window.addEventListener('firebase-ready', () => {
+window.addEventListener('firebase-ready', async () => {
+  // Busca os dados reais do Firestore (antes isso nunca acontecia,
+  // por isso os exemplos só apareciam no aparelho onde foram adicionados)
+  try {
+    const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.musicaDemos) window._musicaDemosFromFb = data.musicaDemos;
+      if (data.musicaPacotes) window._musicaPacotesFromFb = data.musicaPacotes;
+    }
+  } catch(e) { console.error('Erro ao carregar dados do Firebase:', e); }
+
   if (window._musicaDemosFromFb) {
     musicaDemos = window._musicaDemosFromFb;
     localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
