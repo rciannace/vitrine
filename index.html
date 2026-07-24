@@ -879,9 +879,10 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
 .ad-slider-wrap {
   position: relative; overflow: hidden; border-radius: 16px;
   cursor: ew-resize; user-select: none; touch-action: none;
+  background: #0a0a12;
 }
 .ad-slider-wrap img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  width: 100%; height: 100%; object-fit: cover; object-position: center center;
   display: block; pointer-events: none;
 }
 .ad-slider-after {
@@ -2887,7 +2888,7 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center center;
   display: block;
   transition: opacity .35s;
 }
@@ -3343,7 +3344,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-lb-title { font-size: 15px; }
   .ad-grid { grid-template-columns: 1fr; gap: 14px; padding: 14px 12px 60px; }
   .ad-sidebyside { aspect-ratio: 2/1.8; }
-  .ad-slider-wrap { aspect-ratio: 4/5 !important; height: auto !important; max-height: none !important; }
+  .ad-slider-wrap { height: auto !important; max-height: none !important; }
   .ad-card { overflow: hidden; }
 }
 
@@ -8257,6 +8258,17 @@ renderPricing();
         <div class="field-label" style="margin-bottom:4px;">Título do par <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--muted);">(opcional)</span></div>
         <input id="adPairTitle" class="input-field" type="text" placeholder="Ex: Maria — Transformação Executiva" autocomplete="off">
       </div>
+      <div>
+        <div class="field-label" style="margin-bottom:4px;">Formato das fotos</div>
+        <div style="display:flex;gap:8px;">
+          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border:1.5px solid var(--border2);border-radius:9px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;" id="adOrientPortraitLabel">
+            <input type="radio" name="adOrient" value="portrait" checked onchange="adOrientChanged()" style="accent-color:var(--accent);"> ↕ Retrato
+          </label>
+          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border:1.5px solid var(--border2);border-radius:9px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;" id="adOrientLandscapeLabel">
+            <input type="radio" name="adOrient" value="landscape" onchange="adOrientChanged()" style="accent-color:var(--accent);"> ↔ Paisagem
+          </label>
+        </div>
+      </div>
       <div class="ad-pair-grid">
         <div>
           <div class="ad-zone-col-label" style="margin-bottom:8px;">ANTES</div>
@@ -8402,7 +8414,7 @@ function adRender() {
 
   grid.innerHTML = adPairs.map((pair, idx) => `
     <div class="ad-card" id="adcard-${pair.id}">
-      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:4/5;">
+      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:${pair.orient === 'landscape' ? '3/2' : '4/5'};">
         <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
         <div class="ad-slider-after" id="sliderAfter-${pair.id}">
           <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes" style="width:100%;height:100%;object-fit:cover;">
@@ -8417,6 +8429,7 @@ function adRender() {
         <span class="ad-card-label">${pair.title || ''}</span>
         <div class="ad-card-actions">
           <button class="ad-card-btn expand" title="Ver ampliado" onclick="openAdLightbox(${idx})">⤢</button>
+          ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Alternar formato (retrato/paisagem)" onclick="event.stopPropagation();toggleAdOrient('${pair.id}')">${pair.orient === 'landscape' ? '↔' : '↕'}</button>` : ''}
           ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
         </div>
       </div>
@@ -8468,6 +8481,8 @@ function closeAdLightbox() {
 function adLbUpdate() {
   const pair = adPairs[adLbIndex];
   if (!pair) return;
+  const photosEl = document.getElementById('adLbPhotos');
+  if (photosEl) photosEl.style.aspectRatio = (pair.orient === 'landscape') ? '3/1' : '8/5';
   // Antes — esquerda (posição correta)
   const beforeImg = document.getElementById('adLbBefore');
   const afterImg  = document.getElementById('adLbAfter');
@@ -8508,10 +8523,20 @@ function openAdUpload() {
   document.getElementById('adPairTitle').value = '';
   adZoneReset('before');
   adZoneReset('after');
+  document.querySelector('input[name="adOrient"][value="portrait"]').checked = true;
+  adOrientChanged();
   document.getElementById('adConfirmBtn').disabled = true;
   document.getElementById('adProgress').style.display = 'none';
   document.getElementById('adProgressBar').style.width = '0%';
   document.getElementById('adUploadOverlay').classList.add('open');
+}
+
+function adOrientChanged() {
+  const val = document.querySelector('input[name="adOrient"]:checked')?.value || 'portrait';
+  const pLabel = document.getElementById('adOrientPortraitLabel');
+  const lLabel = document.getElementById('adOrientLandscapeLabel');
+  if (pLabel) pLabel.style.borderColor = val === 'portrait'  ? 'var(--accent)' : 'var(--border2)';
+  if (lLabel) lLabel.style.borderColor = val === 'landscape' ? 'var(--accent)' : 'var(--border2)';
 }
 
 function closeAdUpload() {
@@ -8588,11 +8613,13 @@ async function confirmAdUpload() {
     bar.style.width = '100%';
 
     const title = document.getElementById('adPairTitle').value.trim();
+    const orient = document.querySelector('input[name="adOrient"]:checked')?.value || 'portrait';
     const pair = {
       id:        'ad_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
       title:     title || '',
       before:    beforeUrl,
       after:     afterUrl,
+      orient:    orient,
       createdAt: Date.now()
     };
     adPairs.unshift(pair);
@@ -8606,6 +8633,15 @@ async function confirmAdUpload() {
     btn.disabled = false;
     btn.textContent = '✦ Salvar par';
   }
+}
+
+function toggleAdOrient(id) {
+  const pair = adPairs.find(p => p.id === id);
+  if (!pair) return;
+  pair.orient = pair.orient === 'landscape' ? 'portrait' : 'landscape';
+  adSave();
+  adRender();
+  toast(pair.orient === 'landscape' ? '↔ Formato: paisagem' : '↕ Formato: retrato');
 }
 
 async function deleteAdPair(id) {
