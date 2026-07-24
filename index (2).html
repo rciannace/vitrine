@@ -6317,9 +6317,14 @@ async function initApp() {
     if (snap.exists()) {
       const data = snap.data();
       meta = data.items || [];
-      cats = data.cats  || [];
+      // Se Firebase retornar cats vazio mas localStorage tem, usa o cache
+      const fbCats = data.cats || [];
+      const cachedCats = JSON.parse(localStorage.getItem('iafoto_cats') || '[]');
+      cats = fbCats.length > 0 ? fbCats : cachedCats;
+      // Salva cats no localStorage como backup (evita sumiço ao recarregar)
+      if (cats.length > 0) localStorage.setItem('iafoto_cats', JSON.stringify(cats));
+      if (meta.length > 0) localStorage.setItem('iafoto_items', JSON.stringify(meta));
       // Carregar adPairs JUNTO com items e cats — antes do render()
-      // Carregar adPairs igual items e cats
       adPairs = data.adPairs || [];
       localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
       if (data.pricing && data.pricing.length) {
@@ -6328,10 +6333,13 @@ async function initApp() {
       }
 
     } else {
-      meta = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
-      cats = JSON.parse(localStorage.getItem('iafoto_cats')  || '[]');
-      if (meta.length || cats.length) {
-        toast('📦 Migrando dados locais para a nuvem...');
+      // Firebase sem dados — tenta localStorage como fallback
+      const localCats = JSON.parse(localStorage.getItem('iafoto_cats') || '[]');
+      const localItems = JSON.parse(localStorage.getItem('iafoto_items') || '[]');
+      meta = localItems;
+      cats = localCats;
+      if (localCats.length || localItems.length) {
+        toast('📦 Restaurando dados do cache local...');
         await persist();
       }
     }
