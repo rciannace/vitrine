@@ -8208,6 +8208,7 @@ renderPricing();
       <span class="ad-count" id="adCount">0 pares</span>
     </div>
     <div style="display:flex;gap:8px;">
+      <button class="btn btn-accent btn-sm admin-only" id="adSaveBtn" style="display:none;background:#00c4ae;" onclick="saveAdChanges()">💾 Salvar alterações</button>
       <button class="btn btn-accent btn-sm admin-only" onclick="openAdUpload()">+ Adicionar par</button>
     </div>
   </div>
@@ -8374,10 +8375,13 @@ function openAntesDepois() {
   document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
   // Fecha drawer mobile se estiver aberto
   if (typeof closeDrawer === 'function') closeDrawer();
+  adHasUnsavedChanges = false;
+  updateAdSaveBtn();
   adRender();
 }
 
 function closeAntesDepois() {
+  if (adHasUnsavedChanges && !confirm('Você tem alterações de formato não salvas. Sair mesmo assim?')) return;
   document.querySelector('.main').style.display = '';
   document.getElementById('viewAntesDepois').classList.remove('active');
   document.querySelectorAll('.ad-special').forEach(b => b.classList.remove('active'));
@@ -8635,13 +8639,30 @@ async function confirmAdUpload() {
   }
 }
 
+let adHasUnsavedChanges = false;
+
 function toggleAdOrient(id) {
   const pair = adPairs.find(p => p.id === id);
   if (!pair) return;
   pair.orient = pair.orient === 'landscape' ? 'portrait' : 'landscape';
-  adSave();
+  adHasUnsavedChanges = true;
   adRender();
-  toast(pair.orient === 'landscape' ? '↔ Formato: paisagem' : '↕ Formato: retrato');
+  updateAdSaveBtn();
+}
+
+function updateAdSaveBtn() {
+  const btn = document.getElementById('adSaveBtn');
+  if (!btn) return;
+  btn.style.display = adHasUnsavedChanges ? 'inline-flex' : 'none';
+}
+
+async function saveAdChanges() {
+  const btn = document.getElementById('adSaveBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Salvando...'; }
+  await adSave();
+  adHasUnsavedChanges = false;
+  if (btn) { btn.disabled = false; btn.textContent = '💾 Salvar alterações'; btn.style.display = 'none'; }
+  toast('✓ Alterações salvas!');
 }
 
 async function deleteAdPair(id) {
