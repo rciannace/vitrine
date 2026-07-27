@@ -4821,19 +4821,27 @@ body.admin-mode .sala-admin-btn { display: flex; }
 }
 .sala-bar-send:not(:disabled):hover { background: #00b89a; }
 .sala-bar-exit {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.4);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: all .12s;
+}
+.sala-bar-exit:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+body.sala-enviada .sala-bar-exit {
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.15);
   color: rgba(255,255,255,.75);
   font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
   padding: 7px 14px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  white-space: nowrap;
-  transition: all .12s;
 }
-.sala-bar-exit:hover { color: #fff; background: rgba(255,255,255,.16); }
+body.sala-enviada .sala-bar-exit:hover { color: #fff; background: rgba(255,255,255,.16); }
 
 /* Empurra o conteúdo para baixo da barra */
 body.sala-mode .topbar { margin-top: 56px; }
@@ -7247,8 +7255,10 @@ async function confirmUpload() {
 
 // ── HERO STATS ──
 function updateHeroStats() {
-  document.getElementById('heroFotos').textContent    = items.length;
-  document.getElementById('heroGalerias').textContent = cats.length;
+  const elFotos = document.getElementById('heroFotos');
+  const elGalerias = document.getElementById('heroGalerias');
+  if (elFotos) elFotos.textContent = items.length;
+  if (elGalerias) elGalerias.textContent = cats.length;
 }
 
 // ── TOAST ──
@@ -9120,7 +9130,7 @@ if(typeof _oia==='function'){
     <div class="sala-bar-label">fotos</div>
   </div>
   <button class="sala-bar-send" id="salaBarSendBtn" onclick="abrirSalaConfirm()" disabled>✓ Enviar</button>
-  <button class="sala-bar-exit" onclick="fecharSala()" title="Fechar">Fechar</button>
+  <button class="sala-bar-exit" id="salaBarExitBtn" onclick="fecharSala()" title="Sair da Sala">✕</button>
 </div>
 
 <!-- Banner dica -->
@@ -9579,35 +9589,40 @@ function fecharSalaConfirm() {
 
 // ── Enviar para WhatsApp ──
 function enviarParaWhatsApp() {
-  // Evitar envio duplicado — verifica por nome+quantidade
-  const jaEnviou = sessionStorage.getItem('sala_enviado');
-  if (jaEnviou) {
-    const d = JSON.parse(jaEnviou);
-    toast('⚠️ Você já enviou uma seleção de ' + d.n + ' fotos. Recarregue a página para fazer uma nova.');
-    return;
+  try {
+    // Evitar envio duplicado — verifica por nome+quantidade
+    const jaEnviou = sessionStorage.getItem('sala_enviado');
+    if (jaEnviou) {
+      const d = JSON.parse(jaEnviou);
+      toast('⚠️ Você já enviou uma seleção de ' + d.n + ' fotos. Recarregue a página para fazer uma nova.');
+      return;
+    }
+    const n = salaSelecao.length;
+    const preco = calcularPreco(n);
+    const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
+
+    const header = '🎉 *' + salaClienteNome + '* escolheu ' + n + ' foto' + (n !== 1 ? 's' : '') + precoStr + '!\n';
+
+    const linhas = salaSelecao.map((s, i) => {
+      const gal = s.catName ? '[' + s.catName + '] ' : '';
+      const titulo = s.title || ('Foto ' + s.order);
+      return (i+1) + '. ' + gal + titulo + '\n   🔗 ' + s.img;
+    });
+
+    const footer = '\n_Aguardando confirmação! 😊_';
+    const msg = header + '\n' + linhas.join('\n\n') + footer;
+
+    window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+    // Registrar pedido no painel
+    const precoForPedido = preco ? formatBRLStr(preco.total) : 'N/A';
+    adicionarPedido(salaClienteNome, n, precoForPedido, salaSelecao);
+    sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
+    fecharSalaConfirm();
+    abrirSalaObrigada(n);
+  } catch(e) {
+    console.error('Erro ao enviar seleção:', e);
+    toast('⚠️ Algo deu errado ao enviar. Tente novamente ou avise o fotógrafo.');
   }
-  const n = salaSelecao.length;
-  const preco = calcularPreco(n);
-  const precoStr = preco ? ' · ' + formatBRLStr(preco.total) : '';
-
-  const header = '🎉 *' + salaClienteNome + '* escolheu ' + n + ' foto' + (n !== 1 ? 's' : '') + precoStr + '!\n';
-
-  const linhas = salaSelecao.map((s, i) => {
-    const gal = s.catName ? '[' + s.catName + '] ' : '';
-    const titulo = s.title || ('Foto ' + s.order);
-    return (i+1) + '. ' + gal + titulo + '\n   🔗 ' + s.img;
-  });
-
-  const footer = '\n_Aguardando confirmação! 😊_';
-  const msg = header + '\n' + linhas.join('\n\n') + footer;
-
-  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
-  // Registrar pedido no painel
-  const precoForPedido = preco ? formatBRLStr(preco.total) : 'N/A';
-  adicionarPedido(salaClienteNome, n, precoForPedido, salaSelecao);
-  sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
-  fecharSalaConfirm();
-  abrirSalaObrigada(n);
 }
 
 // ── PAINEL DE PEDIDOS ──
@@ -9721,6 +9736,8 @@ function bloquearSalaEnviada() {
     btn.classList.add('sala-btn-enviado');
   });
   document.body.classList.add('sala-enviada');
+  const exitBtn = document.getElementById('salaBarExitBtn');
+  if (exitBtn) { exitBtn.textContent = 'Fechar'; exitBtn.title = 'Fechar'; }
   const hint = document.getElementById('salaModeHint');
   if (hint) hint.innerHTML = '<strong>✓ Seleção já enviada!</strong> Quer escolher outras fotos? <a href="#" onclick="event.preventDefault();novoPedidoSala()" style="color:var(--accent);text-decoration:underline;">Fazer novo pedido</a>';
 }
@@ -9729,6 +9746,10 @@ function novoPedidoSala() {
   sessionStorage.removeItem('sala_enviado');
   salaSelecao = [];
   document.body.classList.remove('sala-enviada');
+  const exitBtn = document.getElementById('salaBarExitBtn');
+  if (exitBtn) { exitBtn.textContent = '✕'; exitBtn.title = 'Sair da Sala'; }
+  const hint = document.getElementById('salaModeHint');
+  if (hint) hint.innerHTML = '<strong>Toque nas fotos</strong> para selecionar. Escolha suas favoritas e clique em "Enviar seleção".';
   ['salaBarSendBtn', 'salaEnviarBtn'].forEach(id => {
     const btn = document.getElementById(id);
     if (!btn) return;
