@@ -1511,15 +1511,6 @@ function adminDelPacote(i) {
 musicaPacotes = loadMusicaPacotes();
 document.addEventListener('DOMContentLoaded', renderMusicaPacotes);
 
-// Sincroniza do Firebase quando pronto
-window.addEventListener('firebase-ready', () => {
-  if (window._musicaPacotesFromFb) {
-    musicaPacotes = window._musicaPacotesFromFb;
-    localStorage.setItem(MUSICA_PACOTES_KEY, JSON.stringify(musicaPacotes));
-    renderMusicaPacotes();
-  }
-});
-
 // ══════════════════════════════════════
 //  MÚSICAS PERSONALIZADAS
 // ══════════════════════════════════════
@@ -2012,7 +2003,7 @@ function toggleMusicaTag(btn, tipo) {
   }
 }
 
-async function enviarPedidoMusica() {
+function enviarPedidoMusica() {
   const nome = document.getElementById('musicaNome').value.trim();
   const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
   const qtd = parseInt(document.getElementById('musicaPedidoOverlay').dataset.qtd) || 1;
@@ -2023,38 +2014,38 @@ async function enviarPedidoMusica() {
     return;
   }
 
-  try {
-    let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
-      '👤 Nome: ' + nome + '\n' +
-      '📦 Pacote: ' + pacote + '\n\n';
-    let resumo = '📦 ' + pacote + '\n';
+  let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
+    '👤 Nome: ' + nome + '\n' +
+    '📦 Pacote: ' + pacote + '\n\n';
+  let resumo = '📦 ' + pacote + '\n';
 
-    for (let i = 1; i <= qtd; i++) {
-      const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
-      const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
-      const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
-      const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
-      const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
+  for (let i = 1; i <= qtd; i++) {
+    const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
+    const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+    const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
+    const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
+    const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
 
-      if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
-      msg += '🎸 Estilo: ' + estilo + '\n';
-      msg += '✨ Clima: ' + tipos + '\n';
-      if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
-      msg += '\n';
-      resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
-    }
-
-    msg += '_Aguardo retorno! 😊_';
-
-    await salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() });
-
-    window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
-    fecharMusicaPedido();
-    abrirSalaObrigadaMusica(nome);
-  } catch(e) {
-    console.error('Erro ao enviar pedido de música:', e);
-    toast('⚠️ Algo deu errado ao enviar. Tente novamente ou avise o fotógrafo.');
+    if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
+    msg += '🎸 Estilo: ' + estilo + '\n';
+    msg += '✨ Clima: ' + tipos + '\n';
+    if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
+    msg += '\n';
+    resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
   }
+
+  msg += '_Aguardo retorno! 😊_';
+
+  // Abre o WhatsApp e mostra a confirmação IMEDIATAMENTE — precisa acontecer
+  // de forma síncrona, direto no clique, senão o celular bloqueia o pop-up
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+  fecharMusicaPedido();
+  abrirSalaObrigadaMusica(nome);
+
+  // Salva o pedido no painel do admin em segundo plano (não trava a tela do cliente)
+  salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() }).catch(e => {
+    console.error('Erro ao salvar pedido de música:', e);
+  });
 }
 
 function abrirSalaObrigadaMusica(nome) {
