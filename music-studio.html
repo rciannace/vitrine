@@ -1140,18 +1140,18 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
   </div>
 </div>
 
-<div id="salaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
-  <div style="background:var(--surface);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.4);border:1px solid var(--border2);">
+<div id="musicaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
+  <div style="background:#14141a;border:1px solid rgba(255,255,255,.1);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.5);">
     <div style="font-size:64px;">🎉</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);">Seleção enviada!</div>
-    <div style="font-size:15px;color:var(--muted);line-height:1.6;">
-      Suas <strong id="salaObrigadaN" style="color:var(--accent);">0</strong> fotos foram enviadas pelo WhatsApp.<br>
-      Entraremos em contato em breve para confirmar seu ensaio! 😊
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#fff;">Pedido enviado!</div>
+    <div style="font-size:15px;color:rgba(255,255,255,.55);line-height:1.6;">
+      Valeu, <strong id="musicaObrigadaNome" style="color:#ff6622;">você</strong>! Seu pedido de música foi enviado com sucesso pelo WhatsApp.<br>
+      Vamos confirmar os detalhes e começar a criar sua música! 🎵
     </div>
-    <div style="background:var(--accent2);border:1px solid var(--accent);border-radius:14px;padding:14px 20px;font-size:13px;color:var(--text);line-height:1.5;">
-      ⚡ Em menos de <strong>24 horas</strong> você recebe seu ensaio completo!
+    <div style="background:rgba(232,68,0,.15);border:1px solid #e84400;border-radius:14px;padding:14px 20px;font-size:13px;color:#fff;line-height:1.5;">
+      🎧 Em até <strong>24 horas</strong> sua música exclusiva estará pronta!
     </div>
-    <button onclick="fecharSalaObrigada()" style="width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
+    <button onclick="fecharMusicaObrigada()" style="width:100%;padding:16px;background:var(--musica-grad);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
       Fechar ✓
     </button>
   </div>
@@ -2058,11 +2058,12 @@ async function enviarPedidoMusica() {
 }
 
 function abrirSalaObrigadaMusica(nome) {
-  // Reutiliza a tela de obrigada existente adaptada
-  const overlay = document.getElementById('salaObrigadaOverlay');
-  if (!overlay) return;
-  const title = overlay.querySelector('div[style*="Bebas"]') || overlay.querySelector('div:nth-child(3)');
-  document.getElementById('salaObrigadaOverlay').classList.add('open');
+  const el = document.getElementById('musicaObrigadaNome');
+  if (el) el.textContent = nome || 'você';
+  document.getElementById('musicaObrigadaOverlay').style.display = 'flex';
+}
+function fecharMusicaObrigada() {
+  document.getElementById('musicaObrigadaOverlay').style.display = 'none';
 }
 
 
