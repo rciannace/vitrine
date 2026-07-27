@@ -4138,6 +4138,16 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   white-space: nowrap;
 }
 .sala-enviar-btn:hover { background: #00b89a; transform: translateY(-1px); }
+.sala-btn-enviado, .sala-btn-enviado:hover {
+  background: #4ade80 !important;
+  transform: none !important;
+  cursor: default !important;
+  opacity: .85;
+}
+body.sala-enviada .sala-counter-pill,
+body.sala-enviada .sala-bar-pill {
+  opacity: .4;
+}
 .sala-enviar-btn:disabled {
   background: rgba(255,255,255,.08);
   color: rgba(255,255,255,.3);
@@ -6240,6 +6250,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
     </div>
     <button onclick="fecharSalaObrigada()" style="width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
       Fechar ✓
+    </button>
+    <button onclick="novoPedidoSala()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;padding:2px;">
+      Quero escolher mais fotos / fazer outro pedido
     </button>
   </div>
 </div>
@@ -9329,6 +9342,11 @@ function iniciarSala() {
   render();
   window.scrollTo(0, 0);
   salaUpdateCounter();
+
+  // Se essa sessão já enviou uma seleção (ex: recarregou a página), trava a tela
+  if (sessionStorage.getItem('sala_enviado')) {
+    bloquearSalaEnviada();
+  }
 }
 
 // ── Fechar Sala ──
@@ -9452,6 +9470,10 @@ function salaToggleByItem(it) {
 
 // ── Toggle seleção ──
 function salaToggle(id) {
+  if (sessionStorage.getItem('sala_enviado')) {
+    toast('✓ Sua seleção já foi enviada! Aguarde nosso contato pelo WhatsApp.');
+    return;
+  }
   const existing = salaSelecao.findIndex(s => s.id === id);
   if (existing !== -1) {
     // Deseleciona
@@ -9672,6 +9694,36 @@ function renderPedidos() {
 function abrirSalaObrigada(n) {
   document.getElementById('salaObrigadaOverlay').classList.add('open');
   document.getElementById('salaObrigadaN').textContent = n;
+  bloquearSalaEnviada();
+}
+
+function bloquearSalaEnviada() {
+  ['salaBarSendBtn', 'salaEnviarBtn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.disabled = true;
+    btn.textContent = '✓ Pedido enviado!';
+    btn.classList.add('sala-btn-enviado');
+  });
+  document.body.classList.add('sala-enviada');
+  const hint = document.getElementById('salaModeHint');
+  if (hint) hint.innerHTML = '<strong>✓ Seleção já enviada!</strong> Quer escolher outras fotos? <a href="#" onclick="event.preventDefault();novoPedidoSala()" style="color:var(--accent);text-decoration:underline;">Fazer novo pedido</a>';
+}
+
+function novoPedidoSala() {
+  sessionStorage.removeItem('sala_enviado');
+  salaSelecao = [];
+  document.body.classList.remove('sala-enviada');
+  ['salaBarSendBtn', 'salaEnviarBtn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.classList.remove('sala-btn-enviado');
+  });
+  fecharSalaObrigada();
+  salaUpdateCounter();
+  render();
+  window.scrollTo(0, 0);
+  toast('🔄 Pode escolher suas novas fotos!');
 }
 
 function fecharSalaObrigada() {
