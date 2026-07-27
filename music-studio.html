@@ -772,7 +772,8 @@ body.admin-mode #musicaPedidosBtn { display: flex; }
   border-radius: 12px; padding: 12px 14px;
 }
 .musica-pedido-item.entregue { opacity: .5; }
-.musica-pedido-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.musica-pedido-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; cursor: pointer; }
+.musica-pedido-ver { font-size: 10px; font-weight: 600; color: #ff6622; margin-left: 6px; }
 .musica-pedido-nome { font-weight: 700; color: #fff; font-size: 14px; }
 .musica-pedido-data { font-size: 11px; color: rgba(255,255,255,.35); }
 .musica-pedido-detalhe { font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5; white-space: pre-line; margin: 6px 0; }
@@ -1578,25 +1579,34 @@ function fecharMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.remove('open');
 }
 
+let musicaPedidoExpandidoId = null;
+function toggleMusicaPedidoDetalhe(id) {
+  musicaPedidoExpandidoId = (musicaPedidoExpandidoId === id) ? null : id;
+  renderMusicaPedidosList();
+}
+
 function renderMusicaPedidosList() {
   const list = document.getElementById('musicaPedidosList');
   if (!musicaPedidos.length) {
     list.innerHTML = '<div class="musica-pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando alguém enviar o formulário.</div>';
     return;
   }
-  list.innerHTML = musicaPedidos.map(p => `
+  list.innerHTML = musicaPedidos.map(p => {
+    const expandido = musicaPedidoExpandidoId === p.id;
+    return `
     <div class="musica-pedido-item ${p.status === 'entregue' ? 'entregue' : ''}">
-      <div class="musica-pedido-top">
-        <span class="musica-pedido-nome">${p.nome || 'Sem nome'}</span>
+      <div class="musica-pedido-top" onclick="toggleMusicaPedidoDetalhe(${p.id})" title="Clique para ver os detalhes do pedido">
+        <span class="musica-pedido-nome">${p.nome || 'Sem nome'} <span class="musica-pedido-ver">${expandido ? '▲ ocultar' : '▼ ver detalhes'}</span></span>
         <span class="musica-pedido-data">${p.dataFmt || ''}</span>
       </div>
-      <div class="musica-pedido-detalhe">${(p.resumo || '').replace(/</g,'&lt;')}</div>
+      ${expandido ? `<div class="musica-pedido-detalhe">${(p.resumo || '').replace(/</g,'&lt;')}</div>` : ''}
       <div class="musica-pedido-actions">
         <button class="done" onclick="toggleMusicaPedidoStatus(${p.id})">${p.status === 'entregue' ? '↺ Reabrir' : '✓ Marcar entregue'}</button>
         <button class="del" onclick="deletarMusicaPedido(${p.id})">🗑 Apagar</button>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function toggleMusicaPedidoStatus(id) {
