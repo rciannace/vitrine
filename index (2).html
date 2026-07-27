@@ -4,6 +4,13 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>IA Foto Studio — Vitrine de Referências</title>
+<meta property="og:title" content="IA Foto Studio">
+<meta property="og:description" content="Fotos únicas, geradas com IA, que realmente parecem com você. Sem estúdio, sem deslocamento.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IA Foto Studio">
+<meta name="twitter:description" content="Fotos únicas, geradas com IA, que realmente parecem com você. Sem estúdio, sem deslocamento.">
+
 <!-- v5.1 -->
 <link href="./IA Foto Studio — Vitrine de Referências_files/css2" rel="stylesheet">
 <style>
@@ -872,9 +879,10 @@ body.admin-mode .pricing-card .admin-save-btn { display: block; }
 .ad-slider-wrap {
   position: relative; overflow: hidden; border-radius: 16px;
   cursor: ew-resize; user-select: none; touch-action: none;
+  background: #0a0a12;
 }
 .ad-slider-wrap img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  width: 100%; height: 100%; object-fit: cover; object-position: center center;
   display: block; pointer-events: none;
 }
 .ad-slider-after {
@@ -2198,6 +2206,46 @@ kbd {
   box-shadow: 0 0 0 3px rgba(0,196,174,.18);
 }
 
+/* ── BOTÃO FLUTUANTE DE PEDIDOS (grande, visível em qualquer tela) ── */
+#pedidosFloatBtn {
+  display: none;
+  position: fixed;
+  bottom: 18px;
+  left: 62px;
+  z-index: 300;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,196,174,.45);
+  transition: transform .15s, box-shadow .15s;
+}
+body.admin-mode #pedidosFloatBtn { display: flex; }
+#pedidosFloatBtn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,196,174,.6); }
+#pedidosFloatBadge {
+  position: absolute;
+  top: -5px; right: -5px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 50%;
+  width: 21px; height: 21px;
+  font-size: 11px;
+  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+@media (max-width: 640px) {
+  #pedidosFloatBtn { bottom: 16px; left: 58px; width: 50px; height: 50px; font-size: 20px; }
+}
+
 /* ── ADMIN PASSWORD MODAL ── */
 #adminModal {
   display: none;
@@ -2542,6 +2590,7 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
   padding: 24px 28px 80px;
+  align-items: start;
 }
 
 /* Card Antes/Depois */
@@ -2636,17 +2685,23 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
 
 /* Body abaixo do card */
 .ad-card-body {
-  padding: 11px 14px;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 10px 12px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  border-top: 1px solid var(--border);
+  background: linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 55%, rgba(0,0,0,0) 100%);
+  z-index: 6;
+  pointer-events: none;
 }
+.ad-card-body > * { pointer-events: auto; }
 .ad-card-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2880,7 +2935,7 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center center;
   display: block;
   transition: opacity .35s;
 }
@@ -3206,11 +3261,12 @@ body.admin-mode .ad-upload-fab { display: flex; }
 }
 .sync-btn.send .sync-count { display: inline; }
 .sync-backup-link {
-  font-size: 10px;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--subtle);
   text-align: center;
   cursor: pointer;
-  padding: 2px 0;
+  padding: 6px 0;
   transition: color .15s;
 }
 .sync-backup-link:hover { color: var(--muted); }
@@ -3335,7 +3391,7 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
   .ad-lb-title { font-size: 15px; }
   .ad-grid { grid-template-columns: 1fr; gap: 14px; padding: 14px 12px 60px; }
   .ad-sidebyside { aspect-ratio: 2/1.8; }
-  .ad-slider-wrap { aspect-ratio: 4/5 !important; height: auto !important; max-height: none !important; }
+  .ad-slider-wrap { height: auto !important; max-height: none !important; }
   .ad-card { overflow: hidden; }
 }
 
@@ -5222,7 +5278,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .move-bulk-cat-name {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: .8px;
   flex: 1;
@@ -5316,7 +5372,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 
 .pricing-section .pricing-eyebrow { color: #00c4ae; }
 .pricing-section .pricing-title { color: #fff; }
-.pricing-section .pricing-subtitle { color: rgba(255,255,255,.45); }
+.pricing-section .pricing-subtitle { color: rgba(255,255,255,.7); }
 .pricing-section .pricing-card {
   background: rgba(255,255,255,.06) !important;
   border-color: rgba(255,255,255,.12) !important;
@@ -5331,20 +5387,21 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   border-color: rgba(0,196,174,.6) !important;
   border-width: 2px !important;
 }
-.pricing-section .pricing-qty { color: rgba(255,255,255,.45); }
+.pricing-section .pricing-qty { color: rgba(255,255,255,.75); }
 .pricing-section .pricing-num { color: #fff; }
-.pricing-section .pricing-per { color: rgba(255,255,255,.45); }
-.pricing-section .pricing-per strong { color: rgba(255,255,255,.55); }
-.pricing-section .pricing-detail { color: rgba(255,255,255,.35); }
+.pricing-section .pricing-per { color: rgba(255,255,255,.75); }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.85); }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.7); }
 .pricing-section .pricing-divider { background: rgba(255,255,255,.1); }
 .pricing-section .pricing-btn-ghost {
+  background: rgba(255,255,255,.08) !important;
   border-color: rgba(255,255,255,.2) !important;
   color: rgba(255,255,255,.6) !important;
 }
 .pricing-section .pricing-btn-ghost:hover {
-  background: rgba(255,255,255,.08) !important;
+  background: rgba(255,255,255,.16) !important;
 }
-.pricing-section .pricing-footer-note { color: rgba(255,255,255,.35); }
+.pricing-section .pricing-footer-note { color: rgba(255,255,255,.6); }
 .pricing-section .pricing-footer-note a { color: #00c4ae; }
 .pricing-section .pricing-add-btn {
   background: rgba(255,255,255,.08) !important;
@@ -5380,10 +5437,10 @@ body.admin-mode .sala-link-sidebar { display: flex; }
   z-index: 1;
 }
 /* ── Sidebar: textos visíveis ── */
-.sidebar-section-title { color: rgba(255,255,255,.4) !important; }
-.sidebar-header-studio { color: rgba(255,255,255,.55) !important; }
+.sidebar-section-title { color: rgba(255,255,255,.65) !important; }
+.sidebar-header-studio { color: rgba(255,255,255,.7) !important; }
 .sidebar-header-title { color: #fff !important; }
-.sidebar-header-sub { color: rgba(255,255,255,.4) !important; }
+.sidebar-header-sub { color: rgba(255,255,255,.6) !important; }
 
 /* Botões de categoria no sidebar */
 .cat-btn { color: rgba(255,255,255,.85) !important; }
@@ -5391,12 +5448,12 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .cat-btn.active { background: rgba(0,196,174,.15) !important; border-left-color: #00c4ae !important; }
 .cat-btn-name { color: rgba(255,255,255,.85) !important; font-size: 13px; }
 .cat-btn.active .cat-btn-name { color: #00c4ae !important; }
-.cat-btn-count { color: rgba(255,255,255,.4) !important; background: rgba(255,255,255,.08) !important; }
+.cat-btn-count { color: rgba(255,255,255,.65) !important; background: rgba(255,255,255,.08) !important; }
 .cat-btn.active .cat-btn-count { color: #00c4ae !important; background: rgba(0,196,174,.15) !important; }
 
 /* Toolbar textos */
 .cat-title { color: #fff !important; }
-.cat-count-badge { color: rgba(255,255,255,.5) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
+.cat-count-badge { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.12) !important; background: rgba(255,255,255,.06) !important; }
 .btn-ghost { color: rgba(255,255,255,.7) !important; border-color: rgba(255,255,255,.18) !important; }
 .btn-ghost:hover { background: rgba(255,255,255,.08) !important; color: #fff !important; }
 
@@ -5404,29 +5461,30 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .gallery-card { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.1) !important; }
 .gallery-card:hover { border-color: rgba(0,196,174,.4) !important; background: rgba(0,196,174,.06) !important; }
 .gallery-card-name { color: #00c4ae !important; }
-.gallery-card-count { color: rgba(255,255,255,.45) !important; }
+.gallery-card-count { color: rgba(255,255,255,.65) !important; }
 
 /* Pricing textos */
-.pricing-section .pricing-qty { color: rgba(255,255,255,.6) !important; }
+.pricing-section .pricing-qty { color: rgba(255,255,255,.8) !important; }
 .pricing-section .pricing-num { color: #fff !important; }
 .pricing-section .accent-price { color: #00c4ae !important; }
-.pricing-section .pricing-per { color: rgba(255,255,255,.5) !important; }
-.pricing-section .pricing-per strong { color: rgba(255,255,255,.6) !important; }
-.pricing-section .pricing-detail { color: rgba(255,255,255,.45) !important; }
+.pricing-section .pricing-per { color: rgba(255,255,255,.75) !important; }
+.pricing-section .pricing-per strong { color: rgba(255,255,255,.85) !important; }
+.pricing-section .pricing-detail { color: rgba(255,255,255,.75) !important; }
 .pricing-section .pricing-btn-ghost {
+  background: rgba(255,255,255,.08) !important;
   border-color: rgba(255,255,255,.25) !important;
-  color: rgba(255,255,255,.7) !important;
+  color: rgba(255,255,255,.85) !important;
 }
 .pricing-section .pricing-btn-ghost:hover {
-  background: rgba(255,255,255,.1) !important;
+  background: rgba(255,255,255,.18) !important;
   color: #fff !important;
 }
 
 /* Textos gerais */
 .empty-state-title { color: rgba(255,255,255,.7) !important; }
-.empty-state-desc { color: rgba(255,255,255,.35) !important; }
-#backToGalleriesBtn { color: rgba(255,255,255,.55) !important; border-color: rgba(255,255,255,.12) !important; }
-#backToGalleriesBtn:hover { background: rgba(255,255,255,.07) !important; }
+.empty-state-desc { color: rgba(255,255,255,.6) !important; }
+#backToGalleriesBtn { background: rgba(255,255,255,.06) !important; color: rgba(255,255,255,.75) !important; border-color: rgba(255,255,255,.18) !important; }
+#backToGalleriesBtn:hover { background: rgba(255,255,255,.12) !important; }
 
 
 </style>
@@ -5488,9 +5546,6 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       🎯 Sala de Seleção
     </button>
 
-    <button class="btn btn-sm admin-only" onclick="abrirPedidos()" style="background:var(--surface2);border:1px solid var(--border2);" title="Ver pedidos">
-      📋 <span id="pedidosBadge" style="display:none;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;align-items:center;justify-content:center;margin-left:2px;"></span>
-    </button>
     <button class="btn btn-sm admin-only" onclick="forceSyncAdPairs()" 
       style="background:rgba(255,165,0,.2);border:1px solid orange;color:orange;" 
       id="syncAdBtn" title="Sincronizar Antes & Depois">
@@ -6174,6 +6229,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 
 <!-- ADMIN LOCK BUTTON -->
 <button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
+<button id="pedidosFloatBtn" onclick="abrirPedidos()" title="Ver pedidos">
+  📋<span id="pedidosFloatBadge"></span>
+</button>
 
 <!-- ADMIN BADGE -->
 <div id="adminBadge" class="">⚙ Admin</div>
@@ -6764,7 +6822,7 @@ function renderHomeGalleries(grid, title, badge) {
           </div>
           <div class="ad-hero-title">ANTES <em>&amp;</em> DEPOIS</div>
           <div class="ad-hero-cta">Ver transformações <span class="ad-hero-cta-arrow">→</span></div>
-          ${emptyMsg ? `<div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;">${emptyMsg}</div>` : ''}
+          ${emptyMsg ? `<div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">${emptyMsg}</div>` : ''}
         </div>
       </div>
     </div>`;
@@ -8197,6 +8255,7 @@ renderPricing();
       <span class="ad-count" id="adCount">0 pares</span>
     </div>
     <div style="display:flex;gap:8px;">
+      <button class="btn btn-accent btn-sm admin-only" id="adSaveBtn" style="display:none;background:#00c4ae;" onclick="saveAdChanges()">💾 Salvar alterações</button>
       <button class="btn btn-accent btn-sm admin-only" onclick="openAdUpload()">+ Adicionar par</button>
     </div>
   </div>
@@ -8214,7 +8273,7 @@ renderPricing();
           <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;">Resultados reais com IA</span>
         </div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4vw,32px);letter-spacing:2px;color:#fff;line-height:1;">VEJA A TRANSFORMAÇÃO <em style="color:var(--accent);font-style:normal;">DOS NOSSOS CLIENTES</em></div>
-        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;font-family:'DM Sans',sans-serif;">Clique em qualquer par para ampliar. Deslize para navegar entre as transformações.</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;font-family:'DM Sans',sans-serif;">Clique em qualquer par para ampliar. Deslize para navegar entre as transformações.</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
         <div style="text-align:center;background:rgba(0,196,174,.08);border:1px solid rgba(0,196,174,.2);border-radius:12px;padding:12px 20px;">
@@ -8246,6 +8305,17 @@ renderPricing();
       <div>
         <div class="field-label" style="margin-bottom:4px;">Título do par <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--muted);">(opcional)</span></div>
         <input id="adPairTitle" class="input-field" type="text" placeholder="Ex: Maria — Transformação Executiva" autocomplete="off">
+      </div>
+      <div>
+        <div class="field-label" style="margin-bottom:4px;">Formato das fotos</div>
+        <div style="display:flex;gap:8px;">
+          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border:1.5px solid var(--border2);border-radius:9px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;" id="adOrientPortraitLabel">
+            <input type="radio" name="adOrient" value="portrait" checked onchange="adOrientChanged()" style="accent-color:var(--accent);"> ↕ Retrato
+          </label>
+          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border:1.5px solid var(--border2);border-radius:9px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;" id="adOrientLandscapeLabel">
+            <input type="radio" name="adOrient" value="landscape" onchange="adOrientChanged()" style="accent-color:var(--accent);"> ↔ Paisagem
+          </label>
+        </div>
       </div>
       <div class="ad-pair-grid">
         <div>
@@ -8352,10 +8422,13 @@ function openAntesDepois() {
   document.querySelectorAll('.ad-special').forEach(b => b.classList.add('active'));
   // Fecha drawer mobile se estiver aberto
   if (typeof closeDrawer === 'function') closeDrawer();
+  adHasUnsavedChanges = false;
+  updateAdSaveBtn();
   adRender();
 }
 
 function closeAntesDepois() {
+  if (adHasUnsavedChanges && !confirm('Você tem alterações de formato não salvas. Sair mesmo assim?')) return;
   document.querySelector('.main').style.display = '';
   document.getElementById('viewAntesDepois').classList.remove('active');
   document.querySelectorAll('.ad-special').forEach(b => b.classList.remove('active'));
@@ -8392,7 +8465,7 @@ function adRender() {
 
   grid.innerHTML = adPairs.map((pair, idx) => `
     <div class="ad-card" id="adcard-${pair.id}">
-      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:4/5;">
+      <div class="ad-slider-wrap" id="slider-${pair.id}" style="aspect-ratio:${pair.orient === 'landscape' ? '3/2' : '4/5'};">
         <img src="${cloudThumb(pair.after)}" loading="lazy" alt="Depois">
         <div class="ad-slider-after" id="sliderAfter-${pair.id}">
           <img src="${cloudThumb(pair.before)}" loading="lazy" alt="Antes" style="width:100%;height:100%;object-fit:cover;">
@@ -8407,6 +8480,7 @@ function adRender() {
         <span class="ad-card-label">${pair.title || ''}</span>
         <div class="ad-card-actions">
           <button class="ad-card-btn expand" title="Ver ampliado" onclick="openAdLightbox(${idx})">⤢</button>
+          ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Alternar formato (retrato/paisagem)" onclick="event.stopPropagation();toggleAdOrient('${pair.id}')">${pair.orient === 'landscape' ? '↔' : '↕'}</button>` : ''}
           ${document.body.classList.contains('admin-mode') ? `<button class="ad-card-btn" title="Apagar par" onclick="event.stopPropagation();deleteAdPair('${pair.id}')">🗑</button>` : ''}
         </div>
       </div>
@@ -8458,6 +8532,8 @@ function closeAdLightbox() {
 function adLbUpdate() {
   const pair = adPairs[adLbIndex];
   if (!pair) return;
+  const photosEl = document.getElementById('adLbPhotos');
+  if (photosEl) photosEl.style.aspectRatio = (pair.orient === 'landscape') ? '3/1' : '8/5';
   // Antes — esquerda (posição correta)
   const beforeImg = document.getElementById('adLbBefore');
   const afterImg  = document.getElementById('adLbAfter');
@@ -8498,10 +8574,20 @@ function openAdUpload() {
   document.getElementById('adPairTitle').value = '';
   adZoneReset('before');
   adZoneReset('after');
+  document.querySelector('input[name="adOrient"][value="portrait"]').checked = true;
+  adOrientChanged();
   document.getElementById('adConfirmBtn').disabled = true;
   document.getElementById('adProgress').style.display = 'none';
   document.getElementById('adProgressBar').style.width = '0%';
   document.getElementById('adUploadOverlay').classList.add('open');
+}
+
+function adOrientChanged() {
+  const val = document.querySelector('input[name="adOrient"]:checked')?.value || 'portrait';
+  const pLabel = document.getElementById('adOrientPortraitLabel');
+  const lLabel = document.getElementById('adOrientLandscapeLabel');
+  if (pLabel) pLabel.style.borderColor = val === 'portrait'  ? 'var(--accent)' : 'var(--border2)';
+  if (lLabel) lLabel.style.borderColor = val === 'landscape' ? 'var(--accent)' : 'var(--border2)';
 }
 
 function closeAdUpload() {
@@ -8578,11 +8664,13 @@ async function confirmAdUpload() {
     bar.style.width = '100%';
 
     const title = document.getElementById('adPairTitle').value.trim();
+    const orient = document.querySelector('input[name="adOrient"]:checked')?.value || 'portrait';
     const pair = {
       id:        'ad_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
       title:     title || '',
       before:    beforeUrl,
       after:     afterUrl,
+      orient:    orient,
       createdAt: Date.now()
     };
     adPairs.unshift(pair);
@@ -8596,6 +8684,32 @@ async function confirmAdUpload() {
     btn.disabled = false;
     btn.textContent = '✦ Salvar par';
   }
+}
+
+let adHasUnsavedChanges = false;
+
+function toggleAdOrient(id) {
+  const pair = adPairs.find(p => p.id === id);
+  if (!pair) return;
+  pair.orient = pair.orient === 'landscape' ? 'portrait' : 'landscape';
+  adHasUnsavedChanges = true;
+  adRender();
+  updateAdSaveBtn();
+}
+
+function updateAdSaveBtn() {
+  const btn = document.getElementById('adSaveBtn');
+  if (!btn) return;
+  btn.style.display = adHasUnsavedChanges ? 'inline-flex' : 'none';
+}
+
+async function saveAdChanges() {
+  const btn = document.getElementById('adSaveBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Salvando...'; }
+  await adSave();
+  adHasUnsavedChanges = false;
+  if (btn) { btn.disabled = false; btn.textContent = '💾 Salvar alterações'; btn.style.display = 'none'; }
+  toast('✓ Alterações salvas!');
 }
 
 async function deleteAdPair(id) {
@@ -9457,12 +9571,12 @@ function savePedidos(p) {
   atualizarBadgePedidos();
 }
 function atualizarBadgePedidos() {
-  const badge = document.getElementById('pedidosBadge');
+  const badge = document.getElementById('pedidosFloatBadge');
   if (!badge) return;
   const novos = getPedidos().filter(p => p.status === 'aguardando').length;
   if (novos > 0) {
     badge.textContent = novos;
-    badge.style.display = 'inline-flex';
+    badge.style.display = 'flex';
   } else {
     badge.style.display = 'none';
   }
@@ -9829,6 +9943,7 @@ function compartilharSalaSidebar() {
 
 // Popula ao carregar
 document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
+document.addEventListener('DOMContentLoaded', atualizarBadgePedidos);
 </script>
 
 <script>
