@@ -2206,6 +2206,46 @@ kbd {
   box-shadow: 0 0 0 3px rgba(0,196,174,.18);
 }
 
+/* ── BOTÃO FLUTUANTE DE PEDIDOS (grande, visível em qualquer tela) ── */
+#pedidosFloatBtn {
+  display: none;
+  position: fixed;
+  bottom: 18px;
+  left: 62px;
+  z-index: 300;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,196,174,.45);
+  transition: transform .15s, box-shadow .15s;
+}
+body.admin-mode #pedidosFloatBtn { display: flex; }
+#pedidosFloatBtn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,196,174,.6); }
+#pedidosFloatBadge {
+  position: absolute;
+  top: -5px; right: -5px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 50%;
+  width: 21px; height: 21px;
+  font-size: 11px;
+  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+@media (max-width: 640px) {
+  #pedidosFloatBtn { bottom: 16px; left: 58px; width: 50px; height: 50px; font-size: 20px; }
+}
+
 /* ── ADMIN PASSWORD MODAL ── */
 #adminModal {
   display: none;
@@ -5161,9 +5201,10 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .pedidos-list { overflow-y: auto; flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .pedido-item {
   background: var(--surface2); border-radius: 14px;
-  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
 }
+.pedido-item-row { display: flex; align-items: center; gap: 12px; }
 .pedido-status-dot {
   width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
 }
@@ -5171,8 +5212,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 .pedido-status-dot.recebido { background: #3b82f6; }
 .pedido-status-dot.produzindo { background: #a855f7; }
 .pedido-status-dot.entregue { background: #22c55e; }
-.pedido-info { flex: 1; min-width: 0; }
+.pedido-info { flex: 1; min-width: 0; cursor: pointer; }
 .pedido-nome { font-weight: 700; font-size: 14px; }
+.pedido-ver-fotos { font-weight: 500; font-size: 11px; color: var(--accent); margin-left: 6px; }
 .pedido-detalhe { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .pedido-status-select {
   background: var(--surface); border: 1px solid var(--border2);
@@ -5181,6 +5223,24 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 }
 .pedido-del { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 4px; }
 .pedidos-empty { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+.pedido-fotos-list {
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px; max-height: 320px; overflow-y: auto;
+}
+.pedido-foto-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 6px; overflow: hidden;
+}
+.pedido-foto-item img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.pedido-foto-placeholder {
+  width: 40px; height: 40px; border-radius: 6px; flex-shrink: 0;
+  background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.pedido-foto-info { min-width: 0; }
+.pedido-foto-titulo { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pedido-foto-cat { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
 @media (max-width: 768px) {
   .pedidos-box { width: 100%; max-height: 90vh; border-radius: 20px; }
 }
@@ -5506,9 +5566,6 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       🎯 Sala de Seleção
     </button>
 
-    <button class="btn btn-sm admin-only" onclick="abrirPedidos()" style="background:var(--surface2);border:1px solid var(--border2);" title="Ver pedidos">
-      📋 <span id="pedidosBadge" style="display:none;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;align-items:center;justify-content:center;margin-left:2px;"></span>
-    </button>
     <button class="btn btn-sm admin-only" onclick="forceSyncAdPairs()" 
       style="background:rgba(255,165,0,.2);border:1px solid orange;color:orange;" 
       id="syncAdBtn" title="Sincronizar Antes & Depois">
@@ -6192,6 +6249,9 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 
 <!-- ADMIN LOCK BUTTON -->
 <button id="adminLockBtn" onclick="openAdminModal()" title="Entrar como admin">🔒</button>
+<button id="pedidosFloatBtn" onclick="abrirPedidos()" title="Ver pedidos">
+  📋<span id="pedidosFloatBadge"></span>
+</button>
 
 <!-- ADMIN BADGE -->
 <div id="adminBadge" class="">⚙ Admin</div>
@@ -9509,7 +9569,7 @@ function enviarParaWhatsApp() {
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   // Registrar pedido no painel
   const precoForPedido = preco ? formatBRLStr(preco.total) : 'N/A';
-  adicionarPedido(salaClienteNome, n, precoForPedido);
+  adicionarPedido(salaClienteNome, n, precoForPedido, salaSelecao);
   sessionStorage.setItem('sala_enviado', JSON.stringify({n, nome: salaClienteNome}));
   fecharSalaConfirm();
   abrirSalaObrigada(n);
@@ -9531,25 +9591,31 @@ function savePedidos(p) {
   atualizarBadgePedidos();
 }
 function atualizarBadgePedidos() {
-  const badge = document.getElementById('pedidosBadge');
+  const badge = document.getElementById('pedidosFloatBadge');
   if (!badge) return;
   const novos = getPedidos().filter(p => p.status === 'aguardando').length;
   if (novos > 0) {
     badge.textContent = novos;
-    badge.style.display = 'inline-flex';
+    badge.style.display = 'flex';
   } else {
     badge.style.display = 'none';
   }
 }
-function adicionarPedido(nome, nFotos, preco) {
+function adicionarPedido(nome, nFotos, preco, fotos) {
   const pedidos = getPedidos();
   pedidos.unshift({
     id: Date.now(),
     nome, nFotos, preco,
     status: 'aguardando',
-    data: new Date().toLocaleDateString('pt-BR')
+    data: new Date().toLocaleDateString('pt-BR'),
+    fotos: (fotos || []).map(s => ({ catName: s.catName || '', title: s.title || '', img: s.img || '' }))
   });
   savePedidos(pedidos);
+}
+let pedidoExpandidoId = null;
+function togglePedidoDetalhe(id) {
+  pedidoExpandidoId = (pedidoExpandidoId === id) ? null : id;
+  renderPedidos();
 }
 function atualizarStatusPedido(id, status) {
   const pedidos = getPedidos().map(p => p.id == id ? {...p, status} : p);
@@ -9573,14 +9639,32 @@ function renderPedidos() {
     const opts = Object.entries(statusLabel).map(([v,l]) =>
       '<option value="' + v + '"' + (p.status===v?' selected':'') + '>' + l + '</option>'
     ).join('');
-    return '<div class="pedido-item">' +
+    const expandido = pedidoExpandidoId === p.id;
+    const temFotos = p.fotos && p.fotos.length > 0;
+    const fotosHtml = expandido && temFotos ? (
+      '<div class="pedido-fotos-list">' +
+      p.fotos.map(f =>
+        '<div class="pedido-foto-item">' +
+          (f.img ? '<img src="' + f.img + '" loading="lazy">' : '<div class="pedido-foto-placeholder">🖼</div>') +
+          '<div class="pedido-foto-info">' +
+            '<div class="pedido-foto-titulo">' + (f.title || 'Sem título') + '</div>' +
+            (f.catName ? '<div class="pedido-foto-cat">' + f.catName + '</div>' : '') +
+          '</div>' +
+        '</div>'
+      ).join('') +
+      '</div>'
+    ) : '';
+    return '<div class="pedido-item ' + (expandido ? 'expanded' : '') + '">' +
+      '<div class="pedido-item-row">' +
       '<div class="pedido-status-dot ' + p.status + '"></div>' +
-      '<div class="pedido-info">' +
-        '<div class="pedido-nome">' + p.nome + '</div>' +
+      '<div class="pedido-info" onclick="togglePedidoDetalhe(' + p.id + ')" title="Clique para ver as fotos escolhidas">' +
+        '<div class="pedido-nome">' + p.nome + (temFotos ? ' <span class="pedido-ver-fotos">' + (expandido ? '▲ ocultar fotos' : '▼ ver fotos') + '</span>' : '') + '</div>' +
         '<div class="pedido-detalhe">' + p.nFotos + ' fotos · ' + p.preco + ' · ' + p.data + '</div>' +
       '</div>' +
       '<select class="pedido-status-select" onchange="atualizarStatusPedido(' + p.id + ', this.value)">' + opts + '</select>' +
       '<button class="pedido-del" onclick="deletarPedido(' + p.id + ')" title="Remover">🗑</button>' +
+      '</div>' +
+      fotosHtml +
       '</div>';
   }).join('');
 }
@@ -9903,6 +9987,7 @@ function compartilharSalaSidebar() {
 
 // Popula ao carregar
 document.addEventListener('DOMContentLoaded', initSalaLinkSidebar);
+document.addEventListener('DOMContentLoaded', atualizarBadgePedidos);
 </script>
 
 <script>
