@@ -1552,14 +1552,14 @@ async function persistMusicaPedidos() {
   } catch(e) { console.error('Erro ao salvar pedido de música:', e); }
 }
 
-function salvarPedidoMusica(pedido) {
+async function salvarPedidoMusica(pedido) {
   musicaPedidos.unshift({
     id: Date.now(),
     status: 'aguardando',
     dataFmt: new Date().toLocaleDateString('pt-BR'),
     ...pedido
   });
-  persistMusicaPedidos();
+  await persistMusicaPedidos();
   atualizarBadgeMusicaPedidos();
 }
 
@@ -1571,9 +1571,24 @@ function atualizarBadgeMusicaPedidos() {
   else { badge.style.display = 'none'; }
 }
 
-function abrirMusicaPedidos() {
-  renderMusicaPedidosList();
+async function abrirMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.add('open');
+  renderMusicaPedidosList(); // mostra o que já tem em cache, na hora
+  // Busca os dados mais recentes direto do banco (evita mostrar lista desatualizada)
+  if (window._fbReady) {
+    try {
+      const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.musicaPedidos) {
+          musicaPedidos = data.musicaPedidos;
+          localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
+          renderMusicaPedidosList();
+          atualizarBadgeMusicaPedidos();
+        }
+      }
+    } catch(e) { console.error('Erro ao buscar pedidos:', e); }
+  }
 }
 function fecharMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.remove('open');
@@ -1997,7 +2012,7 @@ function toggleMusicaTag(btn, tipo) {
   }
 }
 
-function enviarPedidoMusica() {
+async function enviarPedidoMusica() {
   const nome = document.getElementById('musicaNome').value.trim();
   const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
   const qtd = parseInt(document.getElementById('musicaPedidoOverlay').dataset.qtd) || 1;
@@ -2008,33 +2023,38 @@ function enviarPedidoMusica() {
     return;
   }
 
-  let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
-    '👤 Nome: ' + nome + '\n' +
-    '📦 Pacote: ' + pacote + '\n\n';
-  let resumo = '📦 ' + pacote + '\n';
+  try {
+    let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
+      '👤 Nome: ' + nome + '\n' +
+      '📦 Pacote: ' + pacote + '\n\n';
+    let resumo = '📦 ' + pacote + '\n';
 
-  for (let i = 1; i <= qtd; i++) {
-    const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
-    const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
-    const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
-    const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
-    const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
+    for (let i = 1; i <= qtd; i++) {
+      const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
+      const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+      const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
+      const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
+      const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
 
-    if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
-    msg += '🎸 Estilo: ' + estilo + '\n';
-    msg += '✨ Clima: ' + tipos + '\n';
-    if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
-    msg += '\n';
-    resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
+      if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
+      msg += '🎸 Estilo: ' + estilo + '\n';
+      msg += '✨ Clima: ' + tipos + '\n';
+      if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
+      msg += '\n';
+      resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
+    }
+
+    msg += '_Aguardo retorno! 😊_';
+
+    await salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() });
+
+    window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
+    fecharMusicaPedido();
+    abrirSalaObrigadaMusica(nome);
+  } catch(e) {
+    console.error('Erro ao enviar pedido de música:', e);
+    toast('⚠️ Algo deu errado ao enviar. Tente novamente ou avise o fotógrafo.');
   }
-
-  msg += '_Aguardo retorno! 😊_';
-
-  salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() });
-
-  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
-  fecharMusicaPedido();
-  abrirSalaObrigadaMusica(nome);
 }
 
 function abrirSalaObrigadaMusica(nome) {
