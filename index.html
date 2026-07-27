@@ -2227,6 +2227,10 @@ kbd {
   transition: transform .15s, box-shadow .15s;
 }
 body.admin-mode #pedidosFloatBtn { display: flex; }
+body.drawer-open #adminLockBtn,
+body.drawer-open #pedidosFloatBtn {
+  display: none !important;
+}
 #pedidosFloatBtn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,196,174,.6); }
 #pedidosFloatBadge {
   position: absolute;
@@ -3186,8 +3190,14 @@ body.admin-mode .ad-upload-fab { display: flex; }
 .mobile-drawer-body {
   flex: 1;
   overflow-y: auto;
-  padding: 10px 0;
+  padding: 10px 0 90px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
 }
+.mobile-drawer-body::-webkit-scrollbar { width: 6px; }
+.mobile-drawer-body::-webkit-scrollbar-track { background: transparent; }
+.mobile-drawer-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.mobile-drawer-body::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
 /* Botão hambúrguer para abrir drawer */
 #drawerToggleBtn {
@@ -6565,11 +6575,13 @@ function openDrawer() {
   document.getElementById('mobileDrawer').classList.add('open');
   document.getElementById('mobileDrawerOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  document.body.classList.add('drawer-open');
 }
 function closeDrawer() {
   document.getElementById('mobileDrawer').classList.remove('open');
   document.getElementById('mobileDrawerOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  document.body.classList.remove('drawer-open');
 }
 
 // ── RENDER ──
