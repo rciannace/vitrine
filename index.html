@@ -6296,6 +6296,7 @@ body.admin-mode .sala-link-sidebar { display: flex; }
 // ── STATE ──
 let items = [];
 let cats  = [];
+let pedidos = JSON.parse(localStorage.getItem('iafoto_pedidos') || '[]');
 let idb   = null;
 let currentCat = null; // null = all
 let currentView = []; // items currently shown
@@ -6316,13 +6317,15 @@ async function persist() {
   }
   const db = window._fbDb;
   try {
+    // merge:true — nunca apaga campos de outras páginas (ex: dados do music-studio)
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
       items: items,
       cats:  cats,
       pricing: loadPricing(),
       adPairs: adPairs,
+      pedidos: pedidos,
       updatedAt: Date.now()
-    });
+    }, { merge: true });
   } catch(e) {
     console.error('Firestore save error:', e);
     localStorage.setItem('iafoto_items', JSON.stringify(items));
@@ -6420,6 +6423,11 @@ async function initApp() {
       // Carregar adPairs JUNTO com items e cats — antes do render()
       adPairs = data.adPairs || [];
       localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+      // Carregar pedidos — antes só ficavam presos no aparelho de quem os criou
+      if (data.pedidos) {
+        pedidos = data.pedidos;
+        localStorage.setItem('iafoto_pedidos', JSON.stringify(pedidos));
+      }
       if (data.pricing && data.pricing.length) {
         localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(data.pricing));
         renderPricing(); // sincroniza com o que veio do Firebase
@@ -6448,6 +6456,7 @@ async function initApp() {
   buildSidebar();
   render();
   updateHeroStats();
+  atualizarBadgePedidos();
 
   // Garantir que adPairs está salvo no documento principal
   if (adPairs.length > 0) persistBg();
@@ -9610,10 +9619,12 @@ function fecharPedidos() {
   document.getElementById('pedidosOverlay').classList.remove('open');
 }
 function getPedidos() {
-  try { return JSON.parse(localStorage.getItem('iafoto_pedidos') || '[]'); } catch(e) { return []; }
+  return pedidos;
 }
 function savePedidos(p) {
-  localStorage.setItem('iafoto_pedidos', JSON.stringify(p));
+  pedidos = p;
+  localStorage.setItem('iafoto_pedidos', JSON.stringify(pedidos));
+  persistBg();
   atualizarBadgePedidos();
 }
 function atualizarBadgePedidos() {
