@@ -127,6 +127,36 @@ body.admin-mode #adminBadge { background: rgba(232,68,0,.25); border-color: #e84
 .musica-estilo-btn:hover,.musica-estilo-btn.ativo {
   background: rgba(232,68,0,.2); border-color: #e84400; color: #ff6622; transform: translateY(-2px);
 }
+/* Como funciona */
+.musica-como-title {
+  text-align: center; font-size: 10px; letter-spacing: 3px;
+  color: rgba(255,255,255,.3); font-family: 'DM Mono', monospace;
+  margin-bottom: 14px; text-transform: uppercase;
+}
+.musica-como-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 14px; margin-bottom: 36px;
+}
+.musica-como-step {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px; padding: 22px 16px; text-align: center; position: relative;
+}
+.musica-como-num {
+  position: absolute; top: 12px; left: 14px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--musica-grad); color: #fff;
+  font-size: 11px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+}
+.musica-como-icon { font-size: 26px; margin-bottom: 10px; }
+.musica-como-label {
+  font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px;
+  color: #fff; margin-bottom: 6px;
+}
+.musica-como-desc { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.5; }
+@media (max-width: 640px) {
+  .musica-como-grid { grid-template-columns: 1fr; }
+}
 /* Cards de preço */
 .musica-precos {
   display: grid; grid-template-columns: repeat(3,1fr);
@@ -688,6 +718,74 @@ body:not(.admin-mode) .musica-demo-add {
 #adminLockBtn:hover { background: rgba(255,255,255,.15); color: #fff; }
 #adminLockBtn.admin-active { background: rgba(232,68,0,.25); border-color: #e84400; color: #e84400; }
 
+/* ══ PEDIDOS BTN (admin) ══ */
+#musicaPedidosBtn {
+  display: none;
+  position: fixed; bottom: 20px; left: 78px; z-index: 9999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--musica-grad); border: none;
+  color: #fff; font-size: 24px; cursor: pointer;
+  align-items: center; justify-content: center;
+  box-shadow: 0 4px 18px rgba(232,68,0,.5);
+  transition: all .15s; outline: none;
+}
+body.admin-mode #musicaPedidosBtn { display: flex; }
+#musicaPedidosBtn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(232,68,0,.65); }
+#musicaPedidosBadge {
+  position: absolute; top: -5px; right: -5px;
+  background: #fff; color: #e84400; border-radius: 50%;
+  width: 22px; height: 22px; font-size: 12px; font-weight: 800;
+  display: none; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+@media (max-width: 640px) {
+  #musicaPedidosBtn { bottom: 16px; left: 74px; width: 52px; height: 52px; font-size: 22px; }
+  #adminLockBtn { bottom: 16px; left: 16px; }
+}
+#musicaPedidosOverlay {
+  display: none; position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#musicaPedidosOverlay.open { display: flex; }
+.musica-pedidos-box {
+  background: #14141a; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; width: 100%; max-width: 520px; max-height: 80vh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.musica-pedidos-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.musica-pedidos-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; color: #fff;
+}
+.musica-pedidos-close {
+  background: rgba(255,255,255,.08); border: none; color: rgba(255,255,255,.6);
+  width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 14px;
+}
+.musica-pedidos-close:hover { background: rgba(255,255,255,.15); color: #fff; }
+.musica-pedidos-list { overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.musica-pedido-item {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px; padding: 12px 14px;
+}
+.musica-pedido-item.entregue { opacity: .5; }
+.musica-pedido-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.musica-pedido-nome { font-weight: 700; color: #fff; font-size: 14px; }
+.musica-pedido-data { font-size: 11px; color: rgba(255,255,255,.35); }
+.musica-pedido-detalhe { font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5; white-space: pre-line; margin: 6px 0; }
+.musica-pedido-actions { display: flex; gap: 6px; margin-top: 8px; }
+.musica-pedido-actions button {
+  flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05); color: rgba(255,255,255,.7); font-size: 11px; cursor: pointer;
+}
+.musica-pedido-actions button:hover { background: rgba(255,255,255,.1); color: #fff; }
+.musica-pedido-actions button.done { color: #4ade80; border-color: rgba(74,222,128,.3); }
+.musica-pedido-actions button.del:hover { color: #f87171; border-color: rgba(248,113,113,.4); }
+.musica-pedidos-empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,.35); font-size: 13px; }
+
 /* ══ ADMIN MODAL ══ */
 #adminModal {
   display: none; position: fixed; inset: 0; z-index: 9900;
@@ -855,6 +953,19 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 <body>
 
 <button id="adminLockBtn" onclick="openAdminModal()" title="Acesso admin">🔒</button>
+<button id="musicaPedidosBtn" onclick="abrirMusicaPedidos()" title="Ver pedidos">
+  📋<span id="musicaPedidosBadge"></span>
+</button>
+
+<div id="musicaPedidosOverlay" onclick="if(event.target===this)fecharMusicaPedidos()">
+  <div class="musica-pedidos-box">
+    <div class="musica-pedidos-head">
+      <span class="musica-pedidos-title">📋 Pedidos de música</span>
+      <button class="musica-pedidos-close" onclick="fecharMusicaPedidos()">✕</button>
+    </div>
+    <div class="musica-pedidos-list" id="musicaPedidosList"></div>
+  </div>
+</div>
 
 <!-- ADMIN PASSWORD MODAL -->
 <div id="adminModal" onclick="if(event.target===this)closeAdminModal()">
@@ -902,6 +1013,29 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🔥 R&amp;B</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
+    </div>
+
+    <!-- Como funciona -->
+    <div class="musica-como-title">como funciona</div>
+    <div class="musica-como-grid">
+      <div class="musica-como-step">
+        <div class="musica-como-num">1</div>
+        <div class="musica-como-icon">🎸</div>
+        <div class="musica-como-label">Escolha o estilo</div>
+        <div class="musica-como-desc">Pop, sertanejo, romântico... escolha o clima que combina com o momento</div>
+      </div>
+      <div class="musica-como-step">
+        <div class="musica-como-num">2</div>
+        <div class="musica-como-icon">💭</div>
+        <div class="musica-como-label">Conte sua história</div>
+        <div class="musica-como-desc">Nomes, datas, momentos especiais — quanto mais detalhes, mais única fica a letra</div>
+      </div>
+      <div class="musica-como-step">
+        <div class="musica-como-num">3</div>
+        <div class="musica-como-icon">🎧</div>
+        <div class="musica-como-label">Receba em até 24h</div>
+        <div class="musica-como-desc">Sua música pronta, exclusiva, enviada direto no WhatsApp</div>
+      </div>
     </div>
 
     <!-- Cards de preço com botão WhatsApp -->
@@ -1152,6 +1286,7 @@ window.addEventListener('firebase-ready', async () => {
       const data = snap.data();
       if (data.musicaDemos) window._musicaDemosFromFb = data.musicaDemos;
       if (data.musicaPacotes) window._musicaPacotesFromFb = data.musicaPacotes;
+      if (data.musicaPedidos) window._musicaPedidosFromFb = data.musicaPedidos;
     }
   } catch(e) { console.error('Erro ao carregar dados do Firebase:', e); }
 
@@ -1164,6 +1299,10 @@ window.addEventListener('firebase-ready', async () => {
     musicaPacotes = window._musicaPacotesFromFb;
     localStorage.setItem(MUSICA_PACOTES_KEY, JSON.stringify(musicaPacotes));
     renderMusicaPacotes();
+  }
+  if (window._musicaPedidosFromFb) {
+    musicaPedidos = window._musicaPedidosFromFb;
+    atualizarBadgeMusicaPedidos();
   }
 });
 
@@ -1395,6 +1534,85 @@ function pedirMusica(pacote) {
 
 // ── Galeria de demos ──
 let musicaDemos = JSON.parse(localStorage.getItem('iafoto_music_demos') || '[]');
+
+// ── PEDIDOS DE MÚSICA (admin) ──
+let musicaPedidos = JSON.parse(localStorage.getItem('iafoto_music_pedidos') || '[]');
+
+async function persistMusicaPedidos() {
+  localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
+  if (!window._fbReady) return;
+  try {
+    const db = window._fbDb;
+    const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
+    const current = snap.exists() ? snap.data() : {};
+    await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
+      ...current, musicaPedidos, updatedAt: Date.now()
+    });
+  } catch(e) { console.error('Erro ao salvar pedido de música:', e); }
+}
+
+function salvarPedidoMusica(pedido) {
+  musicaPedidos.unshift({
+    id: Date.now(),
+    status: 'aguardando',
+    dataFmt: new Date().toLocaleDateString('pt-BR'),
+    ...pedido
+  });
+  persistMusicaPedidos();
+  atualizarBadgeMusicaPedidos();
+}
+
+function atualizarBadgeMusicaPedidos() {
+  const badge = document.getElementById('musicaPedidosBadge');
+  if (!badge) return;
+  const novos = musicaPedidos.filter(p => p.status === 'aguardando').length;
+  if (novos > 0) { badge.textContent = novos; badge.style.display = 'flex'; }
+  else { badge.style.display = 'none'; }
+}
+
+function abrirMusicaPedidos() {
+  renderMusicaPedidosList();
+  document.getElementById('musicaPedidosOverlay').classList.add('open');
+}
+function fecharMusicaPedidos() {
+  document.getElementById('musicaPedidosOverlay').classList.remove('open');
+}
+
+function renderMusicaPedidosList() {
+  const list = document.getElementById('musicaPedidosList');
+  if (!musicaPedidos.length) {
+    list.innerHTML = '<div class="musica-pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando alguém enviar o formulário.</div>';
+    return;
+  }
+  list.innerHTML = musicaPedidos.map(p => `
+    <div class="musica-pedido-item ${p.status === 'entregue' ? 'entregue' : ''}">
+      <div class="musica-pedido-top">
+        <span class="musica-pedido-nome">${p.nome || 'Sem nome'}</span>
+        <span class="musica-pedido-data">${p.dataFmt || ''}</span>
+      </div>
+      <div class="musica-pedido-detalhe">${(p.resumo || '').replace(/</g,'&lt;')}</div>
+      <div class="musica-pedido-actions">
+        <button class="done" onclick="toggleMusicaPedidoStatus(${p.id})">${p.status === 'entregue' ? '↺ Reabrir' : '✓ Marcar entregue'}</button>
+        <button class="del" onclick="deletarMusicaPedido(${p.id})">🗑 Apagar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleMusicaPedidoStatus(id) {
+  musicaPedidos = musicaPedidos.map(p => p.id === id ? {...p, status: p.status === 'entregue' ? 'aguardando' : 'entregue'} : p);
+  persistMusicaPedidos();
+  renderMusicaPedidosList();
+  atualizarBadgeMusicaPedidos();
+}
+
+function deletarMusicaPedido(id) {
+  if (!confirm('Apagar este pedido?')) return;
+  musicaPedidos = musicaPedidos.filter(p => p.id !== id);
+  persistMusicaPedidos();
+  renderMusicaPedidosList();
+  atualizarBadgeMusicaPedidos();
+}
 let currentAudio = null;
 let currentCard = null;
 
@@ -1671,6 +1889,7 @@ function deleteMusicaDemo(i) {
 
 // Inicializar demos ao carregar
 document.addEventListener('DOMContentLoaded', renderMusicaDemos);
+document.addEventListener('DOMContentLoaded', atualizarBadgeMusicaPedidos);
 
 
 // ══════════════════════════════════════
@@ -1782,6 +2001,7 @@ function enviarPedidoMusica() {
   let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
     '👤 Nome: ' + nome + '\n' +
     '📦 Pacote: ' + pacote + '\n\n';
+  let resumo = '📦 ' + pacote + '\n';
 
   for (let i = 1; i <= qtd; i++) {
     const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
@@ -1790,14 +2010,17 @@ function enviarPedidoMusica() {
     const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
     const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
 
-    if (qtd > 1) msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n';
+    if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
     msg += '🎸 Estilo: ' + estilo + '\n';
     msg += '✨ Clima: ' + tipos + '\n';
     if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
     msg += '\n';
+    resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
   }
 
   msg += '_Aguardo retorno! 😊_';
+
+  salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() });
 
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
   fecharMusicaPedido();
