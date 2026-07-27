@@ -4821,17 +4821,19 @@ body.admin-mode .sala-admin-btn { display: flex; }
 }
 .sala-bar-send:not(:disabled):hover { background: #00b89a; }
 .sala-bar-exit {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,.3);
-  font-size: 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.75);
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
   flex-shrink: 0;
+  white-space: nowrap;
   transition: all .12s;
 }
-.sala-bar-exit:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+.sala-bar-exit:hover { color: #fff; background: rgba(255,255,255,.16); }
 
 /* Empurra o conteúdo para baixo da barra */
 body.sala-mode .topbar { margin-top: 56px; }
@@ -9109,7 +9111,7 @@ if(typeof _oia==='function'){
     <div class="sala-bar-label">fotos</div>
   </div>
   <button class="sala-bar-send" id="salaBarSendBtn" onclick="abrirSalaConfirm()" disabled>✓ Enviar</button>
-  <button class="sala-bar-exit" onclick="fecharSala()" title="Sair da Sala">✕</button>
+  <button class="sala-bar-exit" onclick="fecharSala()" title="Fechar">Fechar</button>
 </div>
 
 <!-- Banner dica -->
@@ -9351,10 +9353,12 @@ function iniciarSala() {
 
 // ── Fechar Sala ──
 function fecharSala() {
-  if (salaSelecao.length > 0) {
+  const jaEnviou = sessionStorage.getItem('sala_enviado');
+  if (salaSelecao.length > 0 && !jaEnviou) {
     if (!confirm('Tem certeza? Sua seleção será perdida.')) return;
   }
   document.body.classList.remove('sala-mode');
+  document.body.classList.remove('sala-enviada');
   document.getElementById('salaModeBar').style.display = 'none';
   const viewSala = document.getElementById('viewSala');
   if (viewSala) viewSala.classList.remove('active');
