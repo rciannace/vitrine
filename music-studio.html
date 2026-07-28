@@ -1389,8 +1389,22 @@ function toast(msg, dur=3000) {
   _toastTimer = setTimeout(() => el.style.display = 'none', dur);
 }
 
+// Espera o Firebase ficar pronto (até 8s) em vez de desistir na hora —
+// evita perder alterações em navegadores mais lentos pra conectar (ex: Samsung Internet)
+function waitForFirebase(timeoutMs = 8000) {
+  return new Promise(resolve => {
+    if (window._fbReady) return resolve(true);
+    const start = Date.now();
+    const check = setInterval(() => {
+      if (window._fbReady) { clearInterval(check); resolve(true); }
+      else if (Date.now() - start > timeoutMs) { clearInterval(check); resolve(false); }
+    }, 200);
+  });
+}
+
 async function persistBg() {
-  if (!window._fbReady) return;
+  const ok = await waitForFirebase();
+  if (!ok) { console.error('Firebase não conectou a tempo — alteração NÃO foi salva na nuvem.'); return; }
   try {
     const db = window._fbDb;
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
@@ -1438,7 +1452,12 @@ function saveMusicaPacotes() {
 }
 
 async function persistMusicaPacotes() {
-  if (!window._fbReady) return;
+  const ok = await waitForFirebase();
+  if (!ok) {
+    toast('⚠️ Não consegui salvar na nuvem — o preço só vai valer NESTE navegador. Tente de novo com internet melhor.');
+    console.error('Firebase não conectou a tempo — pacotes NÃO foram salvos na nuvem.');
+    return;
+  }
   try {
     const db = window._fbDb;
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
@@ -1532,7 +1551,11 @@ let musicaPedidos = JSON.parse(localStorage.getItem('iafoto_music_pedidos') || '
 
 async function persistMusicaPedidos() {
   localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
-  if (!window._fbReady) return;
+  const ok = await waitForFirebase();
+  if (!ok) {
+    console.error('Firebase não conectou a tempo — pedido NÃO foi salvo na nuvem, só neste navegador.');
+    return;
+  }
   try {
     const db = window._fbDb;
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
