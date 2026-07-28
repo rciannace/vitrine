@@ -1929,6 +1929,18 @@ function deleteMusicaDemo(i) {
 // Inicializar demos ao carregar
 document.addEventListener('DOMContentLoaded', renderMusicaDemos);
 document.addEventListener('DOMContentLoaded', atualizarBadgeMusicaPedidos);
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const registro = sessionStorage.getItem('musica_pedido_enviado');
+    if (!registro) return;
+    const { nome, ts } = JSON.parse(registro);
+    // Só mostra de novo se foi enviado há pouco tempo (10 min) — evita reaparecer em visitas futuras
+    if (Date.now() - ts < 10 * 60 * 1000) {
+      abrirSalaObrigadaMusica(nome);
+    }
+    sessionStorage.removeItem('musica_pedido_enviado');
+  } catch(e) {}
+});
 
 
 // ══════════════════════════════════════
@@ -2059,16 +2071,21 @@ function enviarPedidoMusica() {
 
   msg += '_Aguardo retorno! 😊_';
 
-  // Abre o WhatsApp e mostra a confirmação IMEDIATAMENTE — precisa acontecer
-  // de forma síncrona, direto no clique, senão o celular bloqueia o pop-up
-  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
-  fecharMusicaPedido();
-  abrirSalaObrigadaMusica(nome);
+  // Guarda um registro local do envio — assim, se o navegador recarregar a aba
+  // ao voltar do WhatsApp (comum no celular), ainda mostramos a confirmação
+  sessionStorage.setItem('musica_pedido_enviado', JSON.stringify({ nome, ts: Date.now() }));
 
-  // Salva o pedido no painel do admin em segundo plano (não trava a tela do cliente)
+  // Inicia o salvamento do pedido ANTES de abrir o WhatsApp — dá a melhor
+  // chance da gravação começar antes da aba ir pra segundo plano
   salvarPedidoMusica({ nome, pacote, resumo: resumo.trim() }).catch(e => {
     console.error('Erro ao salvar pedido de música:', e);
   });
+
+  // Mostra a confirmação e fecha o formulário — precisa ser síncrono, direto
+  // no clique, senão o celular bloqueia a abertura do WhatsApp
+  fecharMusicaPedido();
+  abrirSalaObrigadaMusica(nome);
+  window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function abrirSalaObrigadaMusica(nome) {
