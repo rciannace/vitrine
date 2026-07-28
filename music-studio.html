@@ -1588,21 +1588,26 @@ function atualizarBadgeMusicaPedidos() {
 async function abrirMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.add('open');
   renderMusicaPedidosList(); // mostra o que já tem em cache, na hora
-  // Busca os dados mais recentes direto do banco (evita mostrar lista desatualizada)
-  if (window._fbReady) {
-    try {
-      const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
-      if (snap.exists()) {
-        const data = snap.data();
-        if (data.musicaPedidos) {
-          musicaPedidos = data.musicaPedidos;
-          localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
-          renderMusicaPedidosList();
-          atualizarBadgeMusicaPedidos();
-        }
-      }
-    } catch(e) { console.error('Erro ao buscar pedidos:', e); }
+  // Busca os dados mais recentes direto do banco (evita mostrar lista desatualizada
+  // ou vazia em navegadores mais lentos pra conectar, como o Samsung Internet)
+  const ok = await waitForFirebase();
+  if (!ok) {
+    console.error('Firebase não conectou a tempo — mostrando só o que já estava salvo neste navegador.');
+    toast('⚠️ Sem conexão com a nuvem no momento — lista pode estar desatualizada.');
+    return;
   }
+  try {
+    const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.musicaPedidos) {
+        musicaPedidos = data.musicaPedidos;
+        localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
+        renderMusicaPedidosList();
+        atualizarBadgeMusicaPedidos();
+      }
+    }
+  } catch(e) { console.error('Erro ao buscar pedidos:', e); }
 }
 function fecharMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.remove('open');
