@@ -1011,7 +1011,6 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎸 MPB</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">✝️ Gospel</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎹 Instrumental</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🔥 R&amp;B</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
     </div>
@@ -1096,7 +1095,6 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎸 MPB</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">✝️ Gospel</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎹 Instrumental</button>
-        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🔥 R&amp;B</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🪗 Forró</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🥁 Pagode</button>
         </div>
@@ -1967,13 +1965,23 @@ function gerarBlocoMusica(idx) {
   const cor = 'rgba(255,255,255,.04)';
   const borda = 'rgba(255,255,255,.1)';
   const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
-  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🔥 R&B','🪗 Forró','🥁 Pagode'];
+  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🪗 Forró','🥁 Pagode'];
   const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
+  const vozes = ['🎤 Feminina','🎸 Masculina'];
+  const tons  = ['🔺 Aguda','🔻 Grave','➖ Neutra'];
   return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:'+cor+';border:1px solid '+borda+';border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
     '<div style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">'+titulo+'</div>'+
     '<div><div class="musica-pedido-label">🎸 Estilo musical</div>'+
     '<div class="musica-pedido-estilos" id="estilos'+idx+'">'+
     estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+e+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">🎙️ Voz</div>'+
+    '<div class="musica-pedido-estilos" id="voz'+idx+'">'+
+    vozes.map(v => '<button class="musica-pedido-estilo" onclick="toggleVozMusica(this,'+idx+')">'+v+'</button>').join('')+
+    '</div></div>'+
+    '<div><div class="musica-pedido-label">🎵 Tom da voz</div>'+
+    '<div class="musica-pedido-estilos" id="tom'+idx+'">'+
+    tons.map(t => '<button class="musica-pedido-estilo" onclick="toggleTomMusica(this,'+idx+')">'+t+'</button>').join('')+
     '</div></div>'+
     '<div><div class="musica-pedido-label">✨ Tipo / clima</div>'+
     '<div class="musica-pedido-tipos" id="tipos'+idx+'">'+
@@ -2030,6 +2038,16 @@ function toggleEstiloMusica(btn, idx) {
   btn.classList.add('sel');
 }
 
+function toggleVozMusica(btn, idx) {
+  document.querySelectorAll('#voz'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function toggleTomMusica(btn, idx) {
+  document.querySelectorAll('#tom'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
 function toggleTipoMusica(btn, idx) {
   btn.classList.toggle('sel');
 }
@@ -2054,6 +2072,22 @@ function enviarPedidoMusica() {
     return;
   }
 
+  // Voz e Tom são obrigatórios — confere antes de montar a mensagem
+  for (let i = 1; i <= qtd; i++) {
+    const vozBtn = document.querySelector('#voz'+i+' .musica-pedido-estilo.sel');
+    const tomBtn = document.querySelector('#tom'+i+' .musica-pedido-estilo.sel');
+    if (!vozBtn) {
+      document.getElementById('voz'+i)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      toast('⚠️ Escolha a voz' + (qtd > 1 ? ' da música ' + i : '') + ' para continuar!');
+      return;
+    }
+    if (!tomBtn) {
+      document.getElementById('tom'+i)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      toast('⚠️ Escolha o tom da voz' + (qtd > 1 ? ' da música ' + i : '') + ' para continuar!');
+      return;
+    }
+  }
+
   let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
     '👤 Nome: ' + nome + '\n' +
     '📦 Pacote: ' + pacote + '\n\n';
@@ -2062,16 +2096,19 @@ function enviarPedidoMusica() {
   for (let i = 1; i <= qtd; i++) {
     const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
     const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
+    const voz = document.querySelector('#voz'+i+' .musica-pedido-estilo.sel').textContent.trim();
+    const tom = document.querySelector('#tom'+i+' .musica-pedido-estilo.sel').textContent.trim();
     const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
     const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
     const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
 
     if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
     msg += '🎸 Estilo: ' + estilo + '\n';
+    msg += '🎙️ Voz: ' + voz + ' (' + tom + ')\n';
     msg += '✨ Clima: ' + tipos + '\n';
     if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
     msg += '\n';
-    resumo += '🎸 ' + estilo + ' · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
+    resumo += '🎸 ' + estilo + ' · 🎙️ ' + voz + ' (' + tom + ') · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
   }
 
   msg += '_Aguardo retorno! 😊_';
