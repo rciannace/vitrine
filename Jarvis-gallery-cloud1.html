@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v3.2 - JSON de análise fica salvo por foto - 2026-08-09 -->
+<!-- Jarvis Gallery Cloud v3.3 - Erro real da OpenRouter exposto na análise IA - 2026-08-09 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -7451,14 +7451,19 @@ const IMAGE_ANALYSIS_MODELS = [
 ];
 
 // Roda a análise de imagem via OpenRouter, tentando os modelos de IMAGE_ANALYSIS_MODELS
-// em sequência até um funcionar. Retorna o objeto JSON já parseado, ou null se todos falharem.
+// em sequência até um funcionar. Retorna { result, lastError }: result é o JSON já
+// parseado (ou null se todos falharem), lastError é a mensagem real do último erro
+// (HTTP status + corpo da resposta da OpenRouter), útil pra diagnosticar (ex: sem
+// crédito, chave sem acesso ao modelo, rate limit) em vez de um erro genérico.
 // onStatus(msg) é opcional, chamado a cada tentativa de modelo pra atualizar a UI.
 async function runImageAnalysisAPI(base64, mime, onStatus) {
   const apiKey = localStorage.getItem('pg_api_key');
-  if (!apiKey) return null;
+  if (!apiKey) return { result: null, lastError: 'API Key não configurada.' };
+  let lastError = null;
   for (const model of IMAGE_ANALYSIS_MODELS) {
+    const shortName = model.split('/')[1];
     try {
-      if (onStatus) onStatus(`⏳ Tentando modelo ${model.split('/')[1]}…`);
+      if (onStatus) onStatus(`⏳ Tentando modelo ${shortName}…`);
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
@@ -7474,13 +7479,29 @@ async function runImageAnalysisAPI(base64, mime, onStatus) {
           }]
         })
       });
-      if (!res.ok) continue;
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const errBody = await res.json();
+          detail = errBody?.error?.message || JSON.stringify(errBody).slice(0, 200);
+        } catch(parseErr) { /* corpo não era JSON, ignora */ }
+        lastError = `${shortName}: HTTP ${res.status}${detail ? ' — ' + detail : ''}`;
+        continue;
+      }
       const data = await res.json();
       const raw = (data.choices?.[0]?.message?.content || '').replace(/```json|```/g,'').trim();
-      return JSON.parse(raw);
-    } catch(e) { continue; }
+      try {
+        return { result: JSON.parse(raw), lastError: null };
+      } catch(parseErr) {
+        lastError = `${shortName}: resposta não veio em JSON válido`;
+        continue;
+      }
+    } catch(e) {
+      lastError = `${shortName}: ${e.message || 'erro de rede'}`;
+      continue;
+    }
   }
-  return null;
+  return { result: null, lastError };
 }
 
 async function analyzeImageForPrompt() {
@@ -7513,7 +7534,7 @@ async function analyzeImageForPrompt() {
   const mimeMatch = tempImg.match(/^data:(image\/[^;]+);/);
   const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
 
-  const result = await runImageAnalysisAPI(base64, mime, (msg) => { status.textContent = msg; });
+  const { result, lastError } = await runImageAnalysisAPI(base64, mime, (msg) => { status.textContent = msg; });
 
   spinner.style.display = 'none';
   label.textContent = '✦ Analisar com IA';
@@ -7522,7 +7543,7 @@ async function analyzeImageForPrompt() {
 
   if (!result) {
     status.style.color = 'var(--red)';
-    status.textContent = '✗ Não foi possível analisar. Verifique sua API Key e tente novamente.';
+    status.textContent = '✗ Não foi possível analisar' + (lastError ? ': ' + lastError : '. Verifique sua API Key e tente novamente.');
     return;
   }
 
@@ -7602,7 +7623,7 @@ async function analyzeDetailImage() {
 
   try {
     const { base64, mime } = await urlToBase64(it.img);
-    const result = await runImageAnalysisAPI(base64, mime, (msg) => { status.textContent = msg; });
+    const { result, lastError } = await runImageAnalysisAPI(base64, mime, (msg) => { status.textContent = msg; });
 
     spinner.style.display = 'none';
     label.textContent = '✦ Analisar com IA';
@@ -7611,7 +7632,7 @@ async function analyzeDetailImage() {
 
     if (!result) {
       status.style.color = 'var(--red)';
-      status.textContent = '✗ Não foi possível analisar. Verifique sua API Key e tente novamente.';
+      status.textContent = '✗ Não foi possível analisar' + (lastError ? ': ' + lastError : '. Verifique sua API Key e tente novamente.');
       return;
     }
 
