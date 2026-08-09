@@ -1,5 +1,237 @@
 [
   {
+    "id": 1786050183257,
+    "title": "PAI... MEU HEROI",
+    "genre": "Pop",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "06/08/2026",
+    "song": {
+      "title": "PAI... MEU HEROI",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "Eu lembro bem do teu abraço,\nDo teu olhar que me guiava o caminhar.\nSegurava firme o meu passo,\nQuando o mundo parecia me assustar.\nO tempo passa, os anos voam,\nMas o teu amor é o que me faz ficar.",
+        "Pre-Chorus": "Você é a voz que acalma o meu medo,\nO mapa certo pra eu me encontrar.\nNão preciso de muitos segredos,\nSó de ouvir teu riso pra me confortar.",
+        "Chorus": "Pai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.",
+        "Verse 2": "Na mesa posta, a tua calma,\nA força mansa que me ensinou a ser.\nCom um jeito simples, tocou minha alma,\nMe deu motivos pra sempre vencer.\nA tua vida espelhada na minha,\nÉ o presente que eu ganhei pra viver.",
+        "Bridge": "E se o mundo girar, vou estar por perto,\nCuidando de ti como cuidou de mim.\nÉ o amor mais puro, o caminho certo,\nQue não tem começo e não tem fim.",
+        "Chorus Final": "Pai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.",
+        "Outro": "Meu herói, meu pai...\n(Piano suave desvanecendo)"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Pop",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "Eu lembro bem do teu abraço,\nDo teu olhar que me guiava o caminhar.\nSegurava firme o meu passo,\nQuando o mundo parecia me assustar.\nO tempo passa, os anos voam,\nMas o teu amor é o que me faz ficar.",
+      "Pre-Chorus": "Você é a voz que acalma o meu medo,\nO mapa certo pra eu me encontrar.\nNão preciso de muitos segredos,\nSó de ouvir teu riso pra me confortar.",
+      "Chorus": "Pai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.",
+      "Verse 2": "Na mesa posta, a tua calma,\nA força mansa que me ensinou a ser.\nCom um jeito simples, tocou minha alma,\nMe deu motivos pra sempre vencer.\nA tua vida espelhada na minha,\nÉ o presente que eu ganhei pra viver.",
+      "Bridge": "E se o mundo girar, vou estar por perto,\nCuidando de ti como cuidou de mim.\nÉ o amor mais puro, o caminho certo,\nQue não tem começo e não tem fim.",
+      "Chorus Final": "Pai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.",
+      "Outro": "Meu herói, meu pai...\n(Piano suave desvanecendo)"
+    },
+    "struct": [
+      "Verse 1",
+      "Pre-Chorus",
+      "Chorus",
+      "Verse 2",
+      "Chorus",
+      "Bridge",
+      "Chorus Final",
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1786050181/p9qpbxcmmjrb9xctponx.mp3"
+  },
+  {
+    "id": 1785977700686,
+    "title": "SAUDADE NO COPO",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "05/08/2026",
+    "song": {
+      "title": "SAUDADE NO COPO",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "Teu nome ainda mora aqui,\nNa mesa, no quarto, no sofá.\nTem tua xícara na pia,\nE eu finjo que você vai voltar...\nNo espelho, o reflexo reluz,\nA falta do que a gente foi.\nTeu cheiro que a saudade conduz,\nÉ o golpe que me derruba de vez, meu amor!",
+        "Pre-Chorus": "Eu tentei esconder, disfarçar,\nMas não dá mais pra fugir.\nQuando a saudade vem apertar,\nEu já sei aonde ir...",
+        "Chorus - O Chiclete": "Volta pra mim, me tira do chão!\nVolta pra mim, domina o coração!\nTe amo ainda, a dor é demais,\nVolta pra mim, ou leva a minha paz!\nVolta pra mim, meu doce amor,\nVolta pra mim, traz meu calor!\nTe amo ainda, não sei fingir,\nVolta pra mim, ou me tira daqui!",
+        "Verse 2": "Tirei teu número do celular,\nMas da memória não dá para apagar!\nCada esquina que eu cruzo sozinha,\nPergunta o motivo de não ser mais minha.\nNo copo do bar, eu bebo a saudade,\nChorando o vazio dessa cidade!",
+        "Bridge": "Se for pra lembrar, que seja do bem,\nDo beijo na boca que não tem pra ninguém!\nMas se for pra ficar sem teu toque, sem ti,\nMe abraça de vez ou me tira daqui!",
+        "Guitar Solo - Sanfona chorada e expressiva": "",
+        "Chorus Final - Explosão máxima": "Volta pra mim, me tira do chão!\nVolta pra mim, domina o coração!\nTe amo ainda, a dor é demais,\nVolta pra mim, ou leva a minha paz!\nVolta pra mim, meu doce amor,\nVolta pra mim, traz meu calor!\nTe amo ainda, não sei fingir,\nVolta pra mim, ou me tira daqui!",
+        "Outro": "Volta pra mim...\n(Acorde final longo, a sanfona fecha baixinho)"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "Teu nome ainda mora aqui,\nNa mesa, no quarto, no sofá.\nTem tua xícara na pia,\nE eu finjo que você vai voltar...\nNo espelho, o reflexo reluz,\nA falta do que a gente foi.\nTeu cheiro que a saudade conduz,\nÉ o golpe que me derruba de vez, meu amor!",
+      "Pre-Chorus": "Eu tentei esconder, disfarçar,\nMas não dá mais pra fugir.\nQuando a saudade vem apertar,\nEu já sei aonde ir...",
+      "Chorus - O Chiclete": "Volta pra mim, me tira do chão!\nVolta pra mim, domina o coração!\nTe amo ainda, a dor é demais,\nVolta pra mim, ou leva a minha paz!\nVolta pra mim, meu doce amor,\nVolta pra mim, traz meu calor!\nTe amo ainda, não sei fingir,\nVolta pra mim, ou me tira daqui!",
+      "Verse 2": "Tirei teu número do celular,\nMas da memória não dá para apagar!\nCada esquina que eu cruzo sozinha,\nPergunta o motivo de não ser mais minha.\nNo copo do bar, eu bebo a saudade,\nChorando o vazio dessa cidade!",
+      "Bridge": "Se for pra lembrar, que seja do bem,\nDo beijo na boca que não tem pra ninguém!\nMas se for pra ficar sem teu toque, sem ti,\nMe abraça de vez ou me tira daqui!",
+      "Guitar Solo - Sanfona chorada e expressiva": "",
+      "Chorus Final - Explosão máxima": "Volta pra mim, me tira do chão!\nVolta pra mim, domina o coração!\nTe amo ainda, a dor é demais,\nVolta pra mim, ou leva a minha paz!\nVolta pra mim, meu doce amor,\nVolta pra mim, traz meu calor!\nTe amo ainda, não sei fingir,\nVolta pra mim, ou me tira daqui!",
+      "Outro": "Volta pra mim...\n(Acorde final longo, a sanfona fecha baixinho)"
+    },
+    "struct": [
+      "Verse 1",
+      "Pre-Chorus",
+      "Chorus - O Chiclete",
+      "Verse 2",
+      "Pre-Chorus",
+      "Chorus - O Chiclete",
+      "Bridge",
+      "Guitar Solo - Sanfona chorada e expressiva",
+      "Chorus Final - Explosão máxima",
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785977689/zssxxxtisyiz3b9thizb.mp3"
+  },
+  {
+    "id": 1785977579523,
+    "title": "DONA DO MEU CORAÇÃO",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "05/08/2026",
+    "song": {
+      "title": "DONA DO MEU CORAÇÃO",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "Coração bateu, o peito disparou\nFoi só te ver passar e o mundo parou\nTentei disfarçar, mas não deu pra esconder\nO meu ponto fraco tem nome e é você!",
+        "Verso 2": "Você passou por mim mexendo com o meu juízo\nDeixou o meu dia mais feliz com um sorriso\nEu tô na sua mão, não adianta negar\nCaiu na rede, agora vai ter que amar!",
+        "Pré-Refrão": "O tempo vai passando e a vontade só cresce\nÉ um fogo que arde e a gente não esquece\nSe o destino marcou, não adianta fugir\nEu tô colado em você até o fim!",
+        "Refrão: Explosão chiclete, refrão curto, melodia viciante e sanfona comendo solta": "Vem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!\nBateu a saudade, apertou a paixão\nCê virou a dona do meu coração!\nVem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!",
+        "Verso 3": "Ligo o rádio do carro e só toca a gente\nEsse amor pegou, mexeu com a minha mente\nNão tem vacina, não tem remédio pra isso\nTe amar virou o meu maior compromisso!",
+        "Verso 4": "Cada minuto longe é um ano perdido\nEu quero ser o seu porto e seu abrigo\nPode apostar, eu não vou vacilar\nO nosso lance veio pra ficar!",
+        "Solo: Sanfona rápida, bem dançante e pra cima, seguida de guitarra romântica": "",
+        "Bridge: Pausa estratégica, só o bumbo e a voz, crescendo devagar": "Diz que me quer...\nDiz que sou teu...\nO que é de verdade nunca se perdeu!\n(Acelera tudo de novo!)",
+        "Refrão Final: Energia total, vozes dobradas, coro contagiante": "Vem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!\nBateu a saudade, apertou a paixão\nCê virou a dona do meu coração!\nVem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!",
+        "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme": "Cê virou a dona...\nDo meu coração!\n(Fim seco e marcante)"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "Coração bateu, o peito disparou\nFoi só te ver passar e o mundo parou\nTentei disfarçar, mas não deu pra esconder\nO meu ponto fraco tem nome e é você!",
+      "Verso 2": "Você passou por mim mexendo com o meu juízo\nDeixou o meu dia mais feliz com um sorriso\nEu tô na sua mão, não adianta negar\nCaiu na rede, agora vai ter que amar!",
+      "Pré-Refrão": "O tempo vai passando e a vontade só cresce\nÉ um fogo que arde e a gente não esquece\nSe o destino marcou, não adianta fugir\nEu tô colado em você até o fim!",
+      "Refrão: Explosão chiclete, refrão curto, melodia viciante e sanfona comendo solta": "Vem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!\nBateu a saudade, apertou a paixão\nCê virou a dona do meu coração!\nVem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!",
+      "Verso 3": "Ligo o rádio do carro e só toca a gente\nEsse amor pegou, mexeu com a minha mente\nNão tem vacina, não tem remédio pra isso\nTe amar virou o meu maior compromisso!",
+      "Verso 4": "Cada minuto longe é um ano perdido\nEu quero ser o seu porto e seu abrigo\nPode apostar, eu não vou vacilar\nO nosso lance veio pra ficar!",
+      "Solo: Sanfona rápida, bem dançante e pra cima, seguida de guitarra romântica": "",
+      "Bridge: Pausa estratégica, só o bumbo e a voz, crescendo devagar": "Diz que me quer...\nDiz que sou teu...\nO que é de verdade nunca se perdeu!\n(Acelera tudo de novo!)",
+      "Refrão Final: Energia total, vozes dobradas, coro contagiante": "Vem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!\nBateu a saudade, apertou a paixão\nCê virou a dona do meu coração!\nVem, me beija, me abraça, não faz assim!\nVocê é todinha feita pra mim!",
+      "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme": "Cê virou a dona...\nDo meu coração!\n(Fim seco e marcante)"
+    },
+    "struct": [
+      "Verso 1",
+      "Verso 2",
+      "Pré-Refrão",
+      "Refrão: Explosão chiclete, refrão curto, melodia viciante e sanfona comendo solta",
+      "Verso 3",
+      "Verso 4",
+      "Solo: Sanfona rápida, bem dançante e pra cima, seguida de guitarra romântica",
+      "Bridge: Pausa estratégica, só o bumbo e a voz, crescendo devagar",
+      "Refrão Final: Energia total, vozes dobradas, coro contagiante",
+      "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785977577/wagrx2zzelmkqgpsmll4.mp3"
+  },
+  {
+    "id": 1785711899163,
+    "title": "O PREÇO DA INCERTEZA",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 98,
+    "duration": "normal",
+    "date": "02/08/2026",
+    "song": {
+      "title": "O PREÇO DA INCERTEZA",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "Levei anos pra construir o nosso amor\nE segundos pra ver tudo desabar\nFui trocar a certeza por um falso calor\nE esqueci que o meu mundo era o teu amor...",
+        "Pre-Chorus": "Quem é que troca a calmaria por ilusão?\nUm final feliz por uma traição?\nEu fui fraco, errei, paguei para ver\nE o castigo agora é chorar por você!",
+        "Chorus - O Chiclete": "Que loucura foi essa que deu na cabeça?\nTrocar o futuro por uma incerteza!\nBrincar com a sorte, perder o que é meu\nO erro foi grande, o castigo sou eu!\nPéssimo negócio, que bobeira eu fiz\nTinha o céu nas mãos e quis ser infeliz!",
+        "Verse 2": "Tentei procurar desculpa na mesa do bar\nMais copo nenhum consegue te apagar\nO celular mudo sem a tua voz\nE o vazio pesando no meio de nós...",
+        "Bridge": "Ela virou as costas e decidiu partir\nNão sobrou um rastro teu aqui...\nAgora dorme com essa culpa na cabeça,\nTentando achar um jeito para ver se te esquece!",
+        "Guitar Solo - Solo melódico e expressivo": "",
+        "Chorus Final - Explosão máxima": "Que loucura foi essa que deu na cabeça?\nTrocar o futuro por uma incerteza!\nBrincar com a sorte, perder o que é meu\nO erro foi grande, o castigo sou eu!\nPéssimo negócio, que bobeira eu fiz\nTinha o céu nas mãos e quis ser infeliz!",
+        "Outro": "O preço da incerteza...\nEu perdi você.\n(Fim seco e marcante)"
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 98,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "Levei anos pra construir o nosso amor\nE segundos pra ver tudo desabar\nFui trocar a certeza por um falso calor\nE esqueci que o meu mundo era o teu amor...",
+      "Pre-Chorus": "Quem é que troca a calmaria por ilusão?\nUm final feliz por uma traição?\nEu fui fraco, errei, paguei para ver\nE o castigo agora é chorar por você!",
+      "Chorus - O Chiclete": "Que loucura foi essa que deu na cabeça?\nTrocar o futuro por uma incerteza!\nBrincar com a sorte, perder o que é meu\nO erro foi grande, o castigo sou eu!\nPéssimo negócio, que bobeira eu fiz\nTinha o céu nas mãos e quis ser infeliz!",
+      "Verse 2": "Tentei procurar desculpa na mesa do bar\nMais copo nenhum consegue te apagar\nO celular mudo sem a tua voz\nE o vazio pesando no meio de nós...",
+      "Bridge": "Ela virou as costas e decidiu partir\nNão sobrou um rastro teu aqui...\nAgora dorme com essa culpa na cabeça,\nTentando achar um jeito para ver se te esquece!",
+      "Guitar Solo - Solo melódico e expressivo": "",
+      "Chorus Final - Explosão máxima": "Que loucura foi essa que deu na cabeça?\nTrocar o futuro por uma incerteza!\nBrincar com a sorte, perder o que é meu\nO erro foi grande, o castigo sou eu!\nPéssimo negócio, que bobeira eu fiz\nTinha o céu nas mãos e quis ser infeliz!",
+      "Outro": "O preço da incerteza...\nEu perdi você.\n(Fim seco e marcante)"
+    },
+    "struct": [
+      "Verse 1",
+      "Pre-Chorus",
+      "Chorus - O Chiclete",
+      "Verse 2",
+      "Pre-Chorus",
+      "Chorus - O Chiclete",
+      "Bridge",
+      "Guitar Solo - Solo melódico e expressivo",
+      "Chorus Final - Explosão máxima",
+      "Outro"
+    ],
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785711897/qjhjymz7absko4l3ooef.mp3"
+  },
+  {
     "id": 1784932862077,
     "title": "O MACHÃO CHOROU",
     "genre": "Sertanejo",
@@ -56,7 +288,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1784932856/rupnrxxzd4d6wyqnm8o2.mp3",
-    "plays": 2
+    "plays": 1
   },
   {
     "id": 1784932793137,
@@ -132,8 +364,7 @@
       "Fade Out",
       "End"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1784932791/qj7tnw5oqjqsauqeoyi1.mp3",
-    "plays": 4
+    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1784932791/qj7tnw5oqjqsauqeoyi1.mp3"
   },
   {
     "id": 1783385309698,
@@ -197,7 +428,7 @@
       "End"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783385308/cekcz9pz1vhgk7bcbu6z.mp3",
-    "plays": 16
+    "plays": 10
   },
   {
     "id": 1783099683246,
@@ -252,7 +483,7 @@
       "Outro: Fade out com guitarra solo"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783099682/vhso3oulj0olnayrikq8.mp3",
-    "plays": 13
+    "plays": 10
   },
   {
     "id": 1782930732978,
@@ -305,7 +536,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3",
-    "plays": 6
+    "plays": 7
   },
   {
     "id": 1782927885852,
@@ -363,7 +594,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782927877/cgpkruhhdybm3uz3fo78.mp3",
-    "plays": 16
+    "plays": 15
   },
   {
     "id": 1782527636011,
@@ -433,7 +664,7 @@
       "verso final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782527632/qeuvgbsfbhqzj7sgjybo.mp3",
-    "plays": 35,
+    "plays": 32,
     "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n"
   },
   {
@@ -550,7 +781,7 @@
       "final chorus, powerful baritone vocals, anthemic"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782321580/ohpdtpvrpvmenukbsnk7.mp3",
-    "plays": 11,
+    "plays": 8,
     "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!"
   },
   {
@@ -587,7 +818,7 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782254116/wtmqdidf2idj58z4vwn7.mp3",
-    "plays": 15
+    "plays": 13
   },
   {
     "id": 1782173065596,
@@ -642,7 +873,7 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 43
+    "plays": 44
   },
   {
     "id": 1781827468701,
@@ -701,7 +932,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 22
+    "plays": 21
   },
   {
     "id": 1781825629388,
@@ -737,7 +968,7 @@
       "intro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3",
-    "plays": 16,
+    "plays": 17,
     "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n"
   },
   {
@@ -810,7 +1041,7 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3",
-    "plays": 22
+    "plays": 20
   },
   {
     "id": 1781566763204,
@@ -864,7 +1095,7 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
-    "plays": 20
+    "plays": 17
   },
   {
     "id": 1781535068368,
@@ -926,7 +1157,7 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
-    "plays": 13
+    "plays": 11
   },
   {
     "id": 1781388424432,
@@ -972,7 +1203,7 @@
       "Verse"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
-    "plays": 15
+    "plays": 12
   },
   {
     "id": 1781316597462,
@@ -1023,7 +1254,7 @@
       "Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3",
-    "plays": 24
+    "plays": 22
   },
   {
     "id": 1781316490885,
@@ -1076,7 +1307,7 @@
       "Final Chorus"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3",
-    "plays": 15
+    "plays": 11
   },
   {
     "genre": "Rock",
@@ -1122,7 +1353,7 @@
     "duration": "normal",
     "title": "RETORNO DO MEU SOL",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
-    "plays": 19,
+    "plays": 15,
     "fav": false
   },
   {
@@ -1159,7 +1390,7 @@
     "sections": {
       "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
     },
-    "plays": 12
+    "plays": 9
   },
   {
     "duration": "normal",
@@ -1269,7 +1500,7 @@
     "date": "09/06/2026",
     "mood": "Romantico",
     "genre": "Rock",
-    "plays": 9
+    "plays": 7
   },
   {
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
@@ -1335,7 +1566,7 @@
       ],
       "genre": "Sertanejo"
     },
-    "plays": 13
+    "plays": 11
   },
   {
     "duration": "normal",
@@ -1395,7 +1626,7 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 29
+    "plays": 26
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
@@ -1459,7 +1690,7 @@
     ],
     "date": "08/06/2026",
     "id": 1780966074065,
-    "plays": 11
+    "plays": 8
   },
   {
     "id": 1780956051780,
@@ -1511,7 +1742,7 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 11
+    "plays": 8
   },
   {
     "struct": [
@@ -1547,7 +1778,7 @@
     "title": "FICA MAIS UM POUCO",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
     "duration": "normal",
-    "plays": 13
+    "plays": 12
   },
   {
     "date": "07/06/2026",
@@ -1610,6 +1841,6 @@
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780947220/mz4b6ufjasol3atcaqsn.mp3",
     "title": "O SILÊNCIO DA VARANDA",
     "duration": "normal",
-    "plays": 12
+    "plays": 11
   }
 ]
