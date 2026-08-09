@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v3.3 - Erro real da OpenRouter exposto na análise IA - 2026-08-09 -->
+<!-- Jarvis Gallery Cloud v3.5 - JSON aparece ao escolher foto da galeria no Gerador de Prompt - 2026-08-09 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -4501,6 +4501,7 @@ async function gpPickItem(id) {
   gpApplyToZone(_gpTargetZone, base64, dataUrl);
   closeGalleryPicker();
   toast('✓ Foto carregada da galeria!');
+  openGpAnalysisPanel(it);
 }
 
 function gpApplyToZone(zone, base64, dataUrl) {
@@ -4597,11 +4598,118 @@ function gpApplyToZone(zone, base64, dataUrl) {
   }
 }
 
+// ── ANÁLISE DA FOTO ESCOLHIDA NA GALERIA (dentro do Gerador de Prompt) ──
+// Reusa a mesma lógica de análise da tela de Detalhe (runImageAnalysisAPI + urlToBase64):
+// se a foto escolhida já tem it.analysisJson salvo, mostra na hora; se não tem,
+// oferece "Analisar com IA" — e o resultado fica salvo no item pra próxima vez.
+let _gpaCurrentItemId = null;
+
+function openGpAnalysisPanel(it) {
+  _gpaCurrentItemId = it.id;
+
+  const img = document.getElementById('gpaImg');
+  if (it.img) { img.src = it.img; img.style.display = 'block'; }
+  else { img.style.display = 'none'; }
+
+  const analyzeBtn = document.getElementById('gpaAnalyzeBtn');
+  const jsonOut = document.getElementById('gpaJson');
+  const status = document.getElementById('gpaStatus');
+  const copyBtn = document.getElementById('gpaCopyBtn');
+
+  if (it.analysisJson) {
+    jsonOut.textContent = JSON.stringify(it.analysisJson, null, 2);
+    copyBtn.style.display = 'block';
+    status.style.display = 'none'; status.textContent = '';
+    analyzeBtn.style.display = it.img ? 'flex' : 'none'; // permite reanalisar se quiser
+  } else {
+    jsonOut.textContent = '';
+    copyBtn.style.display = 'none';
+    status.style.display = 'none'; status.textContent = '';
+    analyzeBtn.style.display = it.img ? 'flex' : 'none';
+  }
+
+  document.getElementById('gpAnalysisOverlay').classList.add('open');
+}
+
+function closeGpAnalysisOverlay() {
+  document.getElementById('gpAnalysisOverlay').classList.remove('open');
+  _gpaCurrentItemId = null;
+}
+
+async function gpaAnalyzeCurrent() {
+  const apiKey = localStorage.getItem('pg_api_key');
+  if (!apiKey) { toast('⚠ Configure sua API Key primeiro (botão no topo)'); return; }
+  const it = items.find(i => i.id === _gpaCurrentItemId);
+  if (!it || !it.img) { toast('⚠ Esta foto não tem imagem para analisar'); return; }
+
+  const btn = document.getElementById('gpaAnalyzeBtn');
+  const spinner = document.getElementById('gpaSpinner');
+  const label = document.getElementById('gpaAnalyzeLabel');
+  const status = document.getElementById('gpaStatus');
+  const jsonOut = document.getElementById('gpaJson');
+  const copyBtn = document.getElementById('gpaCopyBtn');
+
+  btn.disabled = true;
+  btn.style.pointerEvents = 'none';
+  spinner.style.display = 'inline-block';
+  label.textContent = 'Analisando…';
+  copyBtn.style.display = 'none';
+  jsonOut.textContent = '';
+  status.style.display = 'block';
+  status.style.color = 'var(--muted)';
+  status.textContent = '⏳ Baixando imagem…';
+
+  try {
+    const { base64, mime } = await urlToBase64(it.img);
+    const { result, lastError } = await runImageAnalysisAPI(base64, mime, (msg) => { status.textContent = msg; });
+
+    spinner.style.display = 'none';
+    label.textContent = '✦ Analisar com IA';
+    btn.disabled = false;
+    btn.style.pointerEvents = 'auto';
+
+    if (!result) {
+      status.style.color = 'var(--red)';
+      status.textContent = '✗ Não foi possível analisar' + (lastError ? ': ' + lastError : '. Verifique sua API Key e tente novamente.');
+      return;
+    }
+
+    jsonOut.textContent = JSON.stringify(result, null, 2);
+    status.style.color = 'var(--cyan)';
+    status.textContent = '✓ Análise concluída!';
+    copyBtn.style.display = 'block';
+
+    // Salva no item da galeria — próxima vez que essa foto for escolhida, o JSON já aparece direto
+    it.analysisJson = result;
+    clLog('edit_item', it.id, { analysisJson: result });
+    persist();
+
+    toast('✦ Imagem analisada com sucesso!');
+  } catch (e) {
+    spinner.style.display = 'none';
+    label.textContent = '✦ Analisar com IA';
+    btn.disabled = false;
+    btn.style.pointerEvents = 'auto';
+    status.style.color = 'var(--red)';
+    status.textContent = '✗ Erro ao baixar ou analisar a imagem.';
+  }
+}
+
+function gpaCopyJson() {
+  const txt = document.getElementById('gpaJson').textContent;
+  if (!txt) { toast('⚠ Nenhum JSON para copiar'); return; }
+  copyText(txt, () => toast('📋 JSON copiado!'));
+}
+
 // Esc fecha o picker
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.getElementById('galleryPickerOverlay').classList.contains('open')) {
     e.stopPropagation();
     closeGalleryPicker();
+  }
+  if (e.key === 'Escape' && document.getElementById('gpAnalysisOverlay').classList.contains('open')) {
+    e.stopPropagation();
+    closeGpAnalysisOverlay();
   }
 });
 
@@ -10356,6 +10464,42 @@ document.addEventListener('paste', e => {
       <div class="gp-body">
         <div class="gp-grid" id="gpGrid"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     ANÁLISE DA FOTO ESCOLHIDA NA GALERIA (dentro do Gerador de Prompt)
+     Aberta logo após gpPickItem() aplicar a foto numa zona. Mostra o JSON
+     já salvo no item (it.analysisJson) ou oferece analisar na hora.
+══════════════════════════════════════════════════════ -->
+<div class="overlay" id="gpAnalysisOverlay" style="z-index:1250;" onclick="if(event.target===this)closeGpAnalysisOverlay()">
+  <div class="modal detail-modal" style="max-width:480px">
+    <div class="modal-head">
+      <div class="modal-title">📄 Foto da Galeria</div>
+      <button class="modal-close" onclick="closeGpAnalysisOverlay()">✕</button>
+    </div>
+    <div class="modal-body">
+      <img id="gpaImg" class="detail-img-full" style="display:none;max-height:220px;object-fit:contain;">
+      <div class="field">
+        <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Análise IA (JSON)</span>
+          <button id="gpaAnalyzeBtn" onclick="gpaAnalyzeCurrent()" style="display:flex;align-items:center;gap:6px;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;padding:5px 13px;border-radius:6px;border:1.5px solid rgba(0,229,204,.35);background:rgba(0,229,204,.07);color:var(--cyan);cursor:pointer;transition:all .18s;">
+            <span id="gpaSpinner" style="display:none;width:12px;height:12px;border:2px solid rgba(0,229,204,.3);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;"></span>
+            <span id="gpaAnalyzeLabel">✦ Analisar com IA</span>
+          </button>
+        </div>
+        <div class="prompt-full-box" style="max-height:280px;overflow:auto;display:block">
+          <pre id="gpaJson" style="white-space:pre-wrap;word-break:break-word;font-family:'DM Mono',monospace;font-size:11px;line-height:1.5;margin:0;color:var(--text)"></pre>
+        </div>
+        <div id="gpaStatus" style="display:none;font-size:11px;font-family:'DM Mono',monospace;margin-top:5px;"></div>
+        <button id="gpaCopyBtn" onclick="gpaCopyJson()" style="display:none;margin-top:8px;width:100%;padding:9px;background:var(--s3);border:1px solid var(--border2);border-radius:7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);cursor:pointer;transition:all .18s;text-align:center;" onmouseover="this.style.background='var(--cyan2)';this.style.color='var(--cyan)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='var(--s3)';this.style.color='var(--muted)';this.style.borderColor='var(--border2)'">
+          📋 Copiar JSON gerado
+        </button>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <button class="btn-outline" onclick="closeGpAnalysisOverlay()" style="flex:1;">✓ Usar esta foto</button>
     </div>
   </div>
 </div>
