@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v3.5 - JSON aparece ao escolher foto da galeria no Gerador de Prompt - 2026-08-09 -->
+<!-- Jarvis Gallery Cloud v3.7 - Mostra erro de cada modelo no Gerador de Prompt - 2026-08-09 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -2758,7 +2758,7 @@ body{
       </div>
 
       <!-- Error -->
-      <div id="pgError" style="display:none;background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);"></div>
+      <div id="pgError" style="display:none;background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);white-space:pre-wrap;"></div>
 
       <!-- Output -->
       <div id="pgOutputCard" style="display:none;background:var(--s2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
@@ -4616,8 +4616,9 @@ function openGpAnalysisPanel(it) {
   const status = document.getElementById('gpaStatus');
   const copyBtn = document.getElementById('gpaCopyBtn');
 
-  if (it.analysisJson) {
-    jsonOut.textContent = JSON.stringify(it.analysisJson, null, 2);
+  const existingJson = getOrBackfillAnalysisJson(it);
+  if (existingJson) {
+    jsonOut.textContent = JSON.stringify(existingJson, null, 2);
     copyBtn.style.display = 'block';
     status.style.display = 'none'; status.textContent = '';
     analyzeBtn.style.display = it.img ? 'flex' : 'none'; // permite reanalisar se quiser
@@ -4693,6 +4694,28 @@ async function gpaAnalyzeCurrent() {
     status.style.color = 'var(--red)';
     status.textContent = '✗ Erro ao baixar ou analisar a imagem.';
   }
+}
+
+// Obtém o JSON de análise de um item, com fallback pro campo antigo:
+// - Se it.analysisJson já existe (análise feita pelas telas novas), usa direto.
+// - Senão, tenta parsear it.prompt como JSON — fotos analisadas ANTES de existir
+//   o campo analysisJson (via "Analisar com IA" no modal Editar Foto, que salvava
+//   o JSON como texto em it.prompt) caem aqui. Se achar, faz backfill em
+//   it.analysisJson pra não precisar reparsear da próxima vez.
+// - Se it.prompt não for JSON válido (prompt de texto livre normal), retorna null.
+function getOrBackfillAnalysisJson(it) {
+  if (it.analysisJson) return it.analysisJson;
+  if (it.prompt) {
+    try {
+      const parsed = JSON.parse(it.prompt);
+      if (parsed && typeof parsed === 'object') {
+        it.analysisJson = parsed;
+        persist();
+        return parsed;
+      }
+    } catch(e) { /* it.prompt é texto livre normal, não JSON — ignora */ }
+  }
+  return null;
 }
 
 function gpaCopyJson() {
@@ -6013,9 +6036,11 @@ ${schema}
   ];
 
   let lastError = '';
+  const modelErrors = [];
   for (const model of VISION_MODELS) {
+    const shortName = model.split('/')[1].split(':')[0];
     try {
-      document.getElementById('pgDots').textContent = ' · ' + model.split('/')[1].split(':')[0] + '…';
+      document.getElementById('pgDots').textContent = ' · ' + shortName + '…';
       const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -6064,6 +6089,7 @@ ${schema}
       return;
     } catch(e) {
       lastError = e.message;
+      modelErrors.push(shortName + ': ' + e.message);
     }
   }
 
@@ -6075,7 +6101,7 @@ ${schema}
   } else if(lastError.includes('429')||lastError.toLowerCase().includes('rate limit')){
     hint = ' → Limite atingido. Aguarde alguns minutos.';
   }
-  errEl.textContent = '✗ Todos os modelos falharam. Erro: ' + lastError + hint;
+  errEl.textContent = '✗ Todos os modelos falharam:\n' + modelErrors.join('\n') + hint;
   errEl.style.display='block';
   btn.disabled=false; btn.textContent='Analisar imagem e gerar JSON';
 } // end _pgGenerateInner
@@ -7936,13 +7962,15 @@ function openDetail(id) {
   const analyzeBtn = document.getElementById('dAnalyzeBtn');
   if (analyzeBtn) analyzeBtn.style.display = it.img ? '' : 'none';
 
-  // Restaura o JSON de análise já salvo pra essa foto (se existir), ou limpa a caixa
+  // Restaura o JSON de análise já salvo pra essa foto (se existir, incluindo o
+  // fallback pra fotos analisadas antes de existir analysisJson — ver getOrBackfillAnalysisJson), ou limpa a caixa
   const analysisBox = document.getElementById('dAnalysisBox');
   const analysisJson = document.getElementById('dAnalysisJson');
   const analysisStatus = document.getElementById('dAnalysisStatus');
   const copyJsonBtn = document.getElementById('dCopyJsonBtn');
-  if (it.analysisJson) {
-    if (analysisJson) analysisJson.textContent = JSON.stringify(it.analysisJson, null, 2);
+  const existingJson = getOrBackfillAnalysisJson(it);
+  if (existingJson) {
+    if (analysisJson) analysisJson.textContent = JSON.stringify(existingJson, null, 2);
     if (analysisBox) analysisBox.style.display = 'block';
     if (analysisStatus) { analysisStatus.style.display = 'none'; analysisStatus.textContent = ''; }
     if (copyJsonBtn) copyJsonBtn.style.display = 'block';
