@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v3.9 - (mesmo conteúdo do v3.7, reenviado de novo) - 2026-08-09 -->
+<!-- Jarvis Gallery Cloud v4.0 - Modelos gratuitos da OpenRouter atualizados - 2026-08-09 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -6025,14 +6025,15 @@ ${schema}
     }
   }
 
+  // Atualizado 09/08/2026 — a OpenRouter muda o catálogo de modelos gratuitos com frequência.
+  // Se voltar a dar "not a valid model ID" ou "unavailable for free" pra algum destes,
+  // confira a lista atual em openrouter.ai/models?fmt=cards&max_price=0&modality=vision
+  // antes de trocar — nem todo modelo gratuito aceita imagem, só os marcados "Vision".
   const VISION_MODELS = [
-    'meta-llama/llama-4-maverick:free',
-    'meta-llama/llama-4-scout:free',
+    'nvidia/nemotron-nano-12b-v2-vl:free',
     'google/gemma-4-31b-it:free',
     'google/gemma-4-26b-a4b-it:free',
-    'qwen/qwen2.5-vl-72b-instruct:free',
-    'nvidia/nemotron-nano-2-vl-12b:free',
-    'openrouter/auto'
+    'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free'
   ];
 
   let lastError = '';
