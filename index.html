@@ -2586,36 +2586,6 @@ body:has(#bulkBar.visible) .paste-fab { display: none !important; }
   z-index: 9200;
   background: linear-gradient(135deg, #0a0a14 0%, #0d1a12 45%, #120a1a 100%);
   overflow-y: auto;
-  /* esconde a scrollbar nativa: usamos a barra custom (#adScrollTrack) no lugar */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-#viewAntesDepois.active::-webkit-scrollbar { width: 0; height: 0; background: transparent; }
-
-/* Scrollbar custom — grossa, fixa, sempre visível */
-.ad-scrollbar-track {
-  position: fixed;
-  top: 64px;
-  right: 5px;
-  bottom: 0;
-  width: 14px;
-  z-index: 9400;
-  background: rgba(255,255,255,.05);
-  border-radius: 8px;
-  pointer-events: none;
-}
-#viewAntesDepois.active .ad-scrollbar-track { pointer-events: auto; }
-.ad-scrollbar-thumb {
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  top: 0;
-  height: 80px;
-  min-height: 40px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, var(--accent), #009e8c);
-  box-shadow: 0 0 8px rgba(0,196,174,.5);
-  cursor: pointer;
 }
 
 /* Grid de cards A/D */
@@ -3660,9 +3630,6 @@ body.admin-mode .gallery-card-cover-badge{display:block;}
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-
-  /* Scrollbar custom mais grossa e mais visível no mobile */
-  .ad-scrollbar-track { top: 56px; width: 16px; right: 4px; }
 
   /* ── Toolbar ── */
   .ad-toolbar { padding: 12px 14px 0; gap: 8px; flex-wrap: nowrap; }
@@ -8391,11 +8358,6 @@ renderPricing();
       <div class="ad-empty-sub">Adicione pares Antes &amp; Depois para mostrar resultados aos clientes.</div>
     </div>
   </div>
-
-  <!-- Scrollbar custom (grossa, fixa, sempre visível) -->
-  <div class="ad-scrollbar-track" id="adScrollTrack">
-    <div class="ad-scrollbar-thumb" id="adScrollThumb"></div>
-  </div>
 </div>
 
 <!-- UPLOAD MODAL A/D -->
@@ -8529,59 +8491,6 @@ function openAntesDepois() {
   adHasUnsavedChanges = false;
   updateAdSaveBtn();
   adRender();
-  setTimeout(initAdScrollbar, 60);
-}
-
-// ── Scrollbar custom (grossa, fixa) ──
-let _adScrollbarInited = false;
-function initAdScrollbar() {
-  const view = document.getElementById('viewAntesDepois');
-  const track = document.getElementById('adScrollTrack');
-  const thumb = document.getElementById('adScrollThumb');
-  if (!view || !track || !thumb) return;
-
-  function update() {
-    const scrollable = view.scrollHeight - view.clientHeight;
-    if (scrollable <= 2) { track.style.display = 'none'; return; }
-    track.style.display = 'block';
-    const trackH = track.clientHeight;
-    const thumbH = Math.max(40, (view.clientHeight / view.scrollHeight) * trackH);
-    const maxThumbTop = trackH - thumbH;
-    const pct = view.scrollTop / scrollable;
-    thumb.style.height = thumbH + 'px';
-    thumb.style.top = (pct * maxThumbTop) + 'px';
-  }
-
-  view.addEventListener('scroll', update);
-  window.addEventListener('resize', update);
-
-  if (!_adScrollbarInited) {
-    _adScrollbarInited = true;
-    let dragging = false, startY = 0, startScroll = 0;
-
-    function scrollFromThumbDrag(clientY) {
-      const trackRect = track.getBoundingClientRect();
-      const scrollable = view.scrollHeight - view.clientHeight;
-      const thumbH = thumb.offsetHeight;
-      const maxThumbTop = trackRect.height - thumbH;
-      let thumbTop = clientY - trackRect.top - (thumbH / 2);
-      thumbTop = Math.max(0, Math.min(maxThumbTop, thumbTop));
-      view.scrollTop = (thumbTop / maxThumbTop) * scrollable;
-    }
-
-    thumb.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
-    thumb.addEventListener('touchstart', e => { dragging = true; }, {passive:true});
-    // Clique direto na trilha também pula pra posição
-    track.addEventListener('mousedown', e => { if (e.target === track) scrollFromThumbDrag(e.clientY); });
-    track.addEventListener('touchstart', e => { if (e.target === track) scrollFromThumbDrag(e.touches[0].clientY); }, {passive:true});
-
-    window.addEventListener('mousemove', e => { if (dragging) scrollFromThumbDrag(e.clientY); });
-    window.addEventListener('touchmove', e => { if (dragging) scrollFromThumbDrag(e.touches[0].clientY); }, {passive:true});
-    window.addEventListener('mouseup', () => dragging = false);
-    window.addEventListener('touchend', () => dragging = false);
-  }
-
-  update();
 }
 
 function closeAntesDepois() {
@@ -8617,7 +8526,6 @@ function adRender() {
         <div class="ad-empty-sub">Clique em "+ Adicionar par" para mostrar transformações aos seus clientes.</div>
         ${document.body.classList.contains('admin-mode') ? '<button class="btn btn-accent" style="margin-top:16px" onclick="openAdUpload()">+ Adicionar par</button>' : ''}
       </div>`;
-    setTimeout(initAdScrollbar, 60);
     return;
   }
 
@@ -8647,7 +8555,6 @@ function adRender() {
 
   // Inicializar sliders após render
   setTimeout(() => adPairs.forEach(pair => initAdSlider(pair.id)), 50);
-  setTimeout(initAdScrollbar, 60);
 }
 
 function initAdSlider(id) {
