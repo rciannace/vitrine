@@ -1,6 +1,24 @@
 {
   "myPrompts": [
     {
+      "id": "mp1787618232269",
+      "title": "Iluminação",
+      "text": "Prompt para melhorar a iluminação \n\nEdite apenas a iluminação da foto, deixando-a mais bonita, equilibrada e profissional. Iluminação desejada: [luz natural suave e uniforme] Corrija sombras duras, áreas escuras e excesso de brilho, valorizando o rosto sem mudar sua aparência. Mantenha tons de pele naturais, textura real e contraste fotográfico. Não altere meu rosto, traços, expressão, corpo, cabelo, cenário ou identidade. O resultado deve parecer a mesma foto, apenas com uma iluminação muito melhor.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
+      "id": "mp1787618211713",
+      "title": "Melhora da pele",
+      "text": "Prompt para Suavizar a Pele\n\nAnalise a foto que enviei e edite a própria imagem suavizando a aparência da pele de forma natural e realista. Reduza pequenas imperfeições, textura excessiva, manchas leves e sinais de cansaço, mas sem apagar totalmente a textura natural da pele. Mantenha o resultado elegante, leve e fotográfico, sem efeito plástico ou filtro de beleza. Não altere meus traços, formato do rosto, nariz, olhos, boca, expressão ou identidade. O objetivo é melhorar a pele sem mudar meu rosto.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
       "id": "mp1786726913319",
       "title": "Executiva carro",
       "text": "Edit this photo to remove all earrings from the right ear. \nOn the left ear, keep only 2 small silver hoop earrings and remove any other earrings. \nKeep everything else exactly the same: same position, same car interior, blue royal dress shirt, black tie, black seatbelt, left hand on steering wheel, right hand on leg. \nHair is very short buzz cut grade 1. \nAdd a wedding ring to the ring finger of the left hand. \nSerious confident expression. Hyper-realistic, cinematic lighting, photorealistic, no text, no watermark.",
@@ -187,5 +205,5 @@
     "mpimg_mp1785367988954": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1785368007/jarvis_gallery/mpimg_mp1785367988954.png",
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg"
   },
-  "savedAt": "2026-08-14T17:01:57.665Z"
+  "savedAt": "2026-08-25T00:37:14.275Z"
 }
