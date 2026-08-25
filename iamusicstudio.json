@@ -15,9 +15,10 @@
       "vibe": "",
       "style_tags": [],
       "sections": {
-        "Chorus": "(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.",
-        "Guitar Solo": "(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.",
-        "Outro": ""
+        "intro": "(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.",
+        "chorus": "(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.",
+        "guitar solo": "(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.",
+        "outro": ""
       },
       "suno_style": "",
       "instruments": [],
@@ -29,6 +30,9 @@
       "duration": "normal"
     },
     "sections": {
+      "Chorus": "(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.",
+      "Guitar Solo": "(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.",
+      "Outro": "",
       "intro": "(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.",
       "chorus": "(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.",
       "guitar solo": "(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.",
