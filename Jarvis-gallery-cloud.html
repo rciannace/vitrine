@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v4.0 - Modelos gratuitos da OpenRouter atualizados - 2026-08-09 -->
+<!-- Jarvis Gallery Cloud v4.1 - Nomes legiveis no mobile + campo "Galeria" nos prompts - 2026-08-28 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -1369,8 +1369,8 @@ body{
       <!-- Sidebar cats -->
       <div class="mp-sidebar">
         <div class="mp-sidebar-head">
-          <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Categorias</span>
-          <button onclick="openAddMpCat()" style="font-size:10px;padding:3px 8px;border:1px solid var(--border2);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;">+ Cat</button>
+          <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Galerias</span>
+          <button onclick="openAddMpCat()" style="font-size:10px;padding:3px 8px;border:1px solid var(--border2);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;">+ Galeria</button>
         </div>
         <div id="mpCatList"></div>
       </div>
@@ -1423,7 +1423,7 @@ body{
             <input id="mpQuickTitle" class="field-input" placeholder="Nome do prompt…" style="font-size:13px;padding:9px 12px;">
             <div style="display:flex;gap:8px;">
               <select id="mpQuickCat" class="field-select" style="font-size:12px;padding:8px 10px;flex:1;"></select>
-              <button onclick="openAddMpCat()" style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:11px;white-space:nowrap;">+ Cat</button>
+              <button onclick="openAddMpCat()" style="padding:8px 10px;background:var(--s3);border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:11px;white-space:nowrap;">+ Galeria</button>
             </div>
             <textarea id="mpQuickText" class="field-input" rows="7"
               style="resize:vertical;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;"
@@ -1473,10 +1473,10 @@ body{
         <input id="mpTitle" class="field-input" placeholder="Ex: Cenário urbano noturno…">
       </div>
       <div class="field">
-        <label class="field-label">Categoria</label>
+        <label class="field-label">Galeria</label>
         <div style="display:flex;gap:8px;">
           <select id="mpCatSel" class="field-select" style="flex:1;"></select>
-          <button onclick="openAddMpCat()" style="padding:9px 12px;background:var(--s3);border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:11px;white-space:nowrap;">+ Cat</button>
+          <button onclick="openAddMpCat()" style="padding:9px 12px;background:var(--s3);border:1px solid var(--border2);border-radius:8px;color:var(--muted);cursor:pointer;font-size:11px;white-space:nowrap;">+ Galeria</button>
         </div>
       </div>
       <div class="field">
@@ -1517,7 +1517,7 @@ body{
 <div class="overlay" id="addMpCatOverlay" onclick="if(event.target===this)closeMpCat()">
   <div class="modal" style="max-width:380px;">
     <div class="modal-head">
-      <span class="modal-title">Nova Categoria de Prompts</span>
+      <span class="modal-title">Nova Galeria</span>
       <button class="modal-close" onclick="closeMpCat()">✕</button>
     </div>
     <div class="modal-body">
@@ -1526,7 +1526,7 @@ body{
         <input id="mpCatIcon" class="field-input" placeholder="📁" style="font-size:20px;text-align:center;" maxlength="4">
       </div>
       <div class="field">
-        <label class="field-label">Nome da Categoria *</label>
+        <label class="field-label">Nome da Galeria *</label>
         <input id="mpCatName" class="field-input" placeholder="Ex: Cenários, Estilos, Retratos…">
       </div>
     </div>
@@ -3702,7 +3702,7 @@ body{
 
   /* 4 colunas — máximo compacto */
   #mpGrid.cols-4 .mp-tile-headinfo { padding: 4px 5px 5px; }
-  #mpGrid.cols-4 .mp-tile-title { font-size: 9px; -webkit-line-clamp: 1; margin-bottom: 0; }
+  #mpGrid.cols-4 .mp-tile-title { font-size: 9.5px; -webkit-line-clamp: 2; line-height: 1.25; margin-bottom: 0; }
   #mpGrid.cols-4 .mp-tile-meta { display: none; }
   #mpGrid.cols-4 .mp-tile-star { font-size: 9px; padding: 3px; top: 3px; right: 3px; }
   #mpGrid.cols-4 .mp-tile-zoom { display: none; }
@@ -8735,7 +8735,7 @@ function renderMpCatList() {
       <span>${cat.icon} ${cat.name}</span>
       <div style="display:flex;align-items:center;gap:4px;">
         <span class="mp-cat-count">${count}</span>
-        <span onclick="deleteMpCat('${cat.id}');event.stopPropagation()" style="opacity:.3;cursor:pointer;font-size:10px;" title="Excluir categoria">✕</span>
+        <span onclick="deleteMpCat('${cat.id}');event.stopPropagation()" style="opacity:.3;cursor:pointer;font-size:10px;" title="Excluir galeria">✕</span>
       </div>
     </div>`;
   });
@@ -8794,7 +8794,7 @@ async function renderMpGrid() {
     <div id="mpcard-${p.id}" class="mp-tile" onclick="mpToggleCard('${p.id}')">
       <div class="mp-tile-media">${mediaHtml}</div>
       <div class="mp-tile-headinfo">
-        <div class="mp-tile-title">${p.title}</div>
+        <div class="mp-tile-title" title="${(p.title||'').replace(/"/g,'&quot;')}">${p.title}</div>
         <div class="mp-tile-meta">${catLabel || 'Sem categoria'} · ${tagsLine}</div>
       </div>
       <span class="mp-tile-star${p.fav ? ' is-fav' : ''}" onclick="event.stopPropagation();toggleMpFav('${p.id}')" title="${p.fav ? 'Favorito' : 'Favoritar'}">${p.fav ? '⭐' : '☆'}</span>
@@ -9012,7 +9012,7 @@ function closeAddMyPrompt() {
 function populateMpCatSel(selected) {
   const sel = document.getElementById('mpCatSel');
   if (!sel) return;
-  sel.innerHTML = '<option value="">Sem categoria</option>' +
+  sel.innerHTML = '<option value="">Sem galeria</option>' +
     mpCats.map(c => `<option value="${c.id}" ${c.id===selected?'selected':''}>${c.icon} ${c.name}</option>`).join('');
 }
 
@@ -9063,7 +9063,7 @@ function saveMpCat() {
   // refresh selects
   populateMpCatSel(newCat.id);
   renderMyPrompts();
-  toast('✓ Categoria criada!');
+  toast('✓ Galeria criada!');
 }
 
 // Init on load
@@ -9268,7 +9268,7 @@ function toggleMpQuickAdd() {
     btn.style.color = 'var(--muted)';
     const sel = document.getElementById('mpQuickCat');
     if (sel) {
-      sel.innerHTML = '<option value="">Sem categoria</option>' +
+      sel.innerHTML = '<option value="">Sem galeria</option>' +
         mpCats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
     }
     mpqClearImg();
