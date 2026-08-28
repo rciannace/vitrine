@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1787879980221",
+      "title": "Melhoria foto 2",
+      "text": "Analise a foto enviada e realize uma restauração completa, corrigindo os seguintes problemas, se presentes: Riscos, Manchas de poeira ou sujeira, Marcas de dobra ou vincos , Áreas faltando ou rasgadas, descoloração ou amarelamento, partes desbotadas ou borradas.Se a imagem estiver apenas em preto e branco, realize a colorização completa com base em tons naturais e históricos. Aprimoramentos esperados na imagem: Restauração dos tons de pele originais e das cores das roupas. Reconstrução natural de detalhes faciais e corporais danificados. Remoção de ruidos visuais, aplicação de nitidez e clareza. Recuperação de elementos de fundo ausentes. Com base no contexto da imagem faça o Ajuste de texturas e iluminação, mantendo coerência visual.Orientações adicionais: A imagem final deve parecer natural, moderna e emocionalmente envolvente. Mantenha toda a estrutura facial e identidade original.Preserve composição e proporções da imagem original.Utilize uma iluminação ambiente suave e garanta alta definição.0 resultado final deve ser uma versão restaurada ultrarealista.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
       "id": "mp1787879677077",
       "title": "Melhoria de fotos",
       "text": "Edit and enhance the photo I provided while preserving the person’s face, identity, and overall appearance exactly as\r\nthey are in the original image.\r\nImprove the image in a natural, realistic, and professional way.\r\nEnhance the skin subtly by reducing minor imperfections, excessive texture, small blemishes, uneven areas, and\r\nvisible signs of tiredness. Keep natural skin texture, pores, and realistic details. Do not create a plastic, airbrushed,\r\noverly smooth, or beauty-filter effect.\r\nImprove the lighting by making it softer, more balanced, flattering, and professional. Correct harsh shadows, overly\r\ndark areas, uneven exposure, and excessive highlights while maintaining realistic photographic contrast.\r\nPreserve natural skin tones and make the face look well-lit without changing its appearance.\r\nDo NOT change the person’s facial features, face shape, eyes, nose, mouth, jawline, expression, hair, body,\r\nproportions, or identity.\r\nDo not reshape, beautify, reconstruct, or reinterpret the face in any way.\r\nDo not change the background, scenery, clothing, pose, framing, or composition unless necessary for basic exposure\r\nand color correction.\r\nThe final result should look like the exact same original photograph, simply captured with better lighting, cleaner skin\r\nappearance, improved exposure, balanced colors, and professional photographic finishing.\r\nThe goal is to improve the overall image quality while keeping the person completely recognizable and faithful to the\r\noriginal photo.",
@@ -233,5 +242,5 @@
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg"
   },
-  "savedAt": "2026-08-28T01:14:39.103Z"
+  "savedAt": "2026-08-28T01:19:42.228Z"
 }
