@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1787915185618",
+      "title": "Melhoria 3 ingles",
+      "text": "Ultra-Premium 16K Professional Remaster & Enhancement. Preserve the image exactly as provided while dramatically improving quality, realism, sharpness, and clarity. Enhance only existing visible details—do not invent, generate, reconstruct, or add facial features, hair, beard strands, pores, wrinkles, clothing details, or textures not present in the source. Maintain the exact face, hairstyle, beard density, expression, skin tone, facial proportions, lighting, colors, clothing, and composition Improve only through faithful super-resolution, natural sharpening, artifact removal, noise reduction, texture refinement, and realistic detail recovery. Preserve the original background exactly—do not replace, redesign, extend, reimagine, or add elements. Apply subtle improvements to clarity, textures, gradients, edges, lighting fidelity, and resolution while keeping the background visually identical. Professional camera realism, authentic optics, realistic dynamic range, premium color science, clean highlights, rich shadows, natural micro-contrast, crystal-clear focus, luxury commercial photography, medium-format fidelity, magazine-cover finish, production-ready 16K master. Negative Prompt: Background replacement/redesign, new elements, added objects, added hair, thicker beard, extra facial hair, invented skin texture, generated pores, AI hallucinations, facial modifications, identity changes, age changes, oversharpening, plastic skin, CGI, illustration, synthetic details, unrealistic textures, altered composition.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
       "id": "mp1787880008157",
       "title": "Melhoria 3 inglês",
       "text": "Ultra-Premium 16K Professional Remaster & Enhancement. Preserve the image exactly as provided while dramatically improving quality, realism, sharpness, and clarity. Enhance only existing visible details—do not invent, generate, reconstruct, or add facial features, hair, beard strands, pores, wrinkles, clothing details, or textures not present in the source. Maintain the exact face, hairstyle, beard density, expression, skin tone, facial proportions, lighting, colors, clothing, and composition Improve only through faithful super-resolution, natural sharpening, artifact removal, noise reduction, texture refinement, and realistic detail recovery. Preserve the original background exactly—do not replace, redesign, extend, reimagine, or add elements. Apply subtle improvements to clarity, textures, gradients, edges, lighting fidelity, and resolution while keeping the background visually identical. Professional camera realism, authentic optics, realistic dynamic range, premium color science, clean highlights, rich shadows, natural micro-contrast, crystal-clear focus, luxury commercial photography, medium-format fidelity, magazine-cover finish, production-ready 16K master. Negative Prompt: Background replacement/redesign, new elements, added objects, added hair, thicker beard, extra facial hair, invented skin texture, generated pores, AI hallucinations, facial modifications, identity changes, age changes, oversharpening, plastic skin, CGI, illustration, synthetic details, unrealistic textures, altered composition.",
@@ -257,5 +266,5 @@
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg"
   },
-  "savedAt": "2026-08-28T11:06:17.728Z"
+  "savedAt": "2026-08-28T11:06:27.623Z"
 }
