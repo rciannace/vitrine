@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v4.1 - Nomes legiveis no mobile + campo "Galeria" nos prompts - 2026-08-28 -->
+<!-- Jarvis Gallery Cloud v4.2 - Menu lateral compacto, sem stats, mais espaco - 2026-08-28 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -1123,21 +1123,7 @@ body{
 
   <div class="sb-divider"></div>
 
-  <!-- Stats strip -->
-  <div id="sbStatsStrip" style="padding:8px 14px;display:flex;justify-content:space-around;gap:4px;">
-    <div style="text-align:center;flex:1;">
-      <div id="sbStatFotos" style="font-size:16px;font-weight:700;color:var(--cyan);font-family:'DM Mono',monospace;line-height:1.1;">0</div>
-      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">fotos</div>
-    </div>
-    <div style="text-align:center;flex:1;">
-      <div id="sbStatCats" style="font-size:16px;font-weight:700;color:var(--gold);font-family:'DM Mono',monospace;line-height:1.1;">0</div>
-      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">categ.</div>
-    </div>
-    <div style="text-align:center;flex:1;">
-      <div id="sbStatFavs" style="font-size:16px;font-weight:700;color:#ff6b9d;font-family:'DM Mono',monospace;line-height:1.1;">0</div>
-      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">favs</div>
-    </div>
-  </div>
+  <!-- Stats strip removido a pedido do usuário — liberou espaço vertical pro menu lateral -->
 
   <div class="sb-divider"></div>
   <div class="sb-footer">
@@ -1179,12 +1165,7 @@ body{
     </button>
     <div class="top-bar-title" id="topBarTitle">Galeria</div>
   </div>
-  <!-- Mobile stats strip — hidden on desktop, shown on mobile via CSS -->
-  <div id="topBarStats" style="display:none;align-items:center;gap:6px;flex:1;justify-content:center;">
-    <div class="tb-stat"><span id="tbStatFotos">0</span><span class="tb-stat-label">fotos</span></div>
-    <div class="tb-stat"><span id="tbStatCats">0</span><span class="tb-stat-label">gal.</span></div>
-    <div class="tb-stat" style="--tb-color:#ff6b9d;"><span id="tbStatFavs">0</span><span class="tb-stat-label">favs</span></div>
-  </div>
+  <!-- Mobile stats strip removido a pedido do usuário — liberou espaço vertical pro menu lateral -->
   <div class="top-bar-right" id="topBarRight">
     <button class="btn btn-primary" onclick="openAdd()" style="display:flex;align-items:center;gap:6px;padding:9px 18px;">
       <span style="font-size:15px;line-height:1;">+</span> <span class="add-btn-label">Adicionar foto</span>
@@ -3412,6 +3393,9 @@ body{
 
 @media (max-width: 768px) {
   .hamburger-btn { display: flex; }
+  .sb-logo { padding: 8px 14px 6px; margin-bottom: 4px; }
+  .sb-logo-cam { max-width: 90px; }
+  .sb-logo-txt { max-width: 80px; }
   .restore-modes { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .main-tab-bar { padding: 0 10px; }
   .main-tab { padding: 11px 14px; font-size: 11px; }
