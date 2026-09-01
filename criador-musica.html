@@ -927,11 +927,12 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
     <!-- GALERIA / PLAYER -->
     <div id="libpage-galeria" style="display:none;padding-bottom:120px">
+      <input id="gal-search" class="txt-input" placeholder="🔍 Buscar música..." oninput="renderGallery()" style="font-size:13px;padding:9px 12px;margin-bottom:10px"/>
       <div id="gal-grid" class="gal-grid"></div>
       <div id="gal-empty" style="display:none;text-align:center;padding:40px 20px;color:#ccc">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
-        <div style="font-size:13px">Nenhuma música com áudio ainda</div>
-        <div style="font-size:11px;color:#ddd;margin-top:6px">Adicione áudio na Biblioteca</div>
+        <div id="gal-empty-msg" style="font-size:13px">Nenhuma música com áudio ainda</div>
+        <div id="gal-empty-sub" style="font-size:11px;color:#ddd;margin-top:6px">Adicione áudio na Biblioteca</div>
       </div>
     </div>
   </div>
@@ -3399,14 +3400,31 @@ function renderGallery(){
   const withAudio=history.filter(e=>e.audio).slice().sort((a,b)=>(a.title||"").localeCompare(b.title||"","pt",{sensitivity:"base"}));
   const grid=document.getElementById("gal-grid");
   const empty=document.getElementById("gal-empty");
+  const emptyMsg=document.getElementById("gal-empty-msg");
+  const emptySub=document.getElementById("gal-empty-sub");
   spQueue=withAudio;
   if(!withAudio.length){
     grid.innerHTML="";
     empty.style.display="block";
+    if(emptyMsg)emptyMsg.textContent="Nenhuma música com áudio ainda";
+    if(emptySub)emptySub.textContent="Adicione áudio na Biblioteca";
+    return;
+  }
+  const q=(document.getElementById("gal-search")?.value||"").toLowerCase().trim();
+  const idxs=[];
+  withAudio.forEach((e,i)=>{
+    if(!q||(e.title||"").toLowerCase().includes(q)||(e.genre||"").toLowerCase().includes(q))idxs.push(i);
+  });
+  if(!idxs.length){
+    grid.innerHTML="";
+    empty.style.display="block";
+    if(emptyMsg)emptyMsg.textContent="Nenhum resultado para '"+q+"'";
+    if(emptySub)emptySub.textContent="Tente outro nome ou gênero";
     return;
   }
   empty.style.display="none";
-  grid.innerHTML=withAudio.map((e,i)=>{
+  grid.innerHTML=idxs.map((i)=>{
+    const e=withAudio[i];
     const isPlaying=spIndex===i&&spPlaying;
     const h=Array.from(e.title||"").reduce((a,c)=>(a*31+c.charCodeAt(0))&0xffff,0);
     const g=(e.genre||"").toLowerCase();
