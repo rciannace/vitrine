@@ -927,7 +927,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
     <!-- GALERIA / PLAYER -->
     <div id="libpage-galeria" style="display:none;padding-bottom:120px">
-      <input id="gal-search" class="txt-input" placeholder="🔍 Buscar música..." oninput="renderGallery()" style="font-size:13px;padding:9px 12px;margin-bottom:10px"/>
+      <input id="gal-search" class="txt-input" placeholder="🔍 Buscar por título ou trecho da letra..." oninput="renderGallery()" style="font-size:13px;padding:9px 12px;margin-bottom:10px"/>
       <div id="gal-grid" class="gal-grid"></div>
       <div id="gal-empty" style="display:none;text-align:center;padding:40px 20px;color:#ccc">
         <div style="font-size:36px;margin-bottom:10px">🎵</div>
@@ -3413,13 +3413,17 @@ function renderGallery(){
   const q=(document.getElementById("gal-search")?.value||"").toLowerCase().trim();
   const idxs=[];
   withAudio.forEach((e,i)=>{
-    if(!q||(e.title||"").toLowerCase().includes(q)||(e.genre||"").toLowerCase().includes(q))idxs.push(i);
+    if(!q){idxs.push(i);return;}
+    if((e.title||"").toLowerCase().includes(q)){idxs.push(i);return;}
+    if((e.genre||"").toLowerCase().includes(q)){idxs.push(i);return;}
+    const lyricsBlob=Object.values(e.sections||{}).join(" ").toLowerCase();
+    if(lyricsBlob.includes(q)){idxs.push(i);return;}
   });
   if(!idxs.length){
     grid.innerHTML="";
     empty.style.display="block";
     if(emptyMsg)emptyMsg.textContent="Nenhum resultado para '"+q+"'";
-    if(emptySub)emptySub.textContent="Tente outro nome ou gênero";
+    if(emptySub)emptySub.textContent="Tente outro nome, gênero ou trecho da letra";
     return;
   }
   empty.style.display="none";
