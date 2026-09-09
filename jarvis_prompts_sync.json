@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1788914743973",
+      "title": "Fotos antigas",
+      "text": "/colourenhace",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
       "id": "mp1788389270137",
       "title": "Maquiagem",
       "text": "\"Analise a foto que enviei e identifique meu contraste natural entre pele, cabelo, sobrancelhas, olhos e lábios.\n\nDepois, edite a foto criando uma maquiagem que AUMENTE estrategicamente esse contraste para deixar meus traços mais marcantes, sofisticados e fotogênicos.\n\nFaça:\n\n* pele natural e iluminada\n* sobrancelhas mais definidas\n* cílios mais marcados\n* delineado marrom escuro ou preto\n* sombra com profundidade em tons que valorizem meus olhos\n* blush mais aparente\n* lábios com uma cor mais intensa do que meu tom natural, como rosa queimado, malva, berry suave ou vermelho elegante\n\nA maquiagem deve criar mais separação visual entre pele, olhos, sobrancelhas e boca, mas continuar elegante e realista.\n\nNão altere meus traços, formato do rosto ou identidade. O resultado deve parecer maquiagem real, não filtro de beleza.\"",
@@ -275,5 +284,5 @@
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg"
   },
-  "savedAt": "2026-09-02T22:47:52.152Z"
+  "savedAt": "2026-09-09T00:45:45.981Z"
 }
