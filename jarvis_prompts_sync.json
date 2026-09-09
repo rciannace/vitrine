@@ -7,7 +7,7 @@
       "cat": "",
       "tags": [],
       "fav": false,
-      "hasImg": false
+      "hasImg": true
     },
     {
       "id": "mp1788914743973",
@@ -291,7 +291,8 @@
     "mpimg_mp1783541885721": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1783541888/jarvis_gallery/mpimg_mp1783541885721.png",
     "mpimg_mp1785367988954": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1785368007/jarvis_gallery/mpimg_mp1785367988954.png",
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
-    "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg"
+    "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg",
+    "mpimg_mp1788946218767": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1788946274/jarvis_gallery/mpimg_mp1788946218767.png"
   },
-  "savedAt": "2026-09-09T09:30:20.782Z"
+  "savedAt": "2026-09-09T09:31:17.384Z"
 }
