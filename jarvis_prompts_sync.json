@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1788946218767",
+      "title": "Restauracao antigas",
+      "text": "Use the provided original old photograph as the primary source reference.\n\nProfessionally restore, repair, colorize, and upscale the old photograph into ultra-high-resolution 4K, while preserving the original people, identities, composition, pose, expression, clothing, environment, camera perspective, and historical authenticity.\n\nSTRICT FACIAL IDENTITY PRESERVATION: Preserve every person's exact facial identity and recognizable characteristics from the original photograph. Maintain the original head shape, forehead, eyebrows, eyes, eyelids, nose, lips, ears, cheekbones, jawline, hairline, hairstyle, facial hair, expression, age, skin characteristics, and facial proportions. Do not beautify, reshape, modernize, age, de-age, or reinterpret any face.\n\nPHOTO RESTORATION: Carefully repair scratches, dust, stains, cracks, creases, fading, discoloration, damaged areas, film deterioration, noise, grain buildup, blur, pixelation, and compression artifacts. Reconstruct damaged or missing details conservatively and naturally without inventing new facial features or changing the original scene.\n\nREALISTIC COLORIZATION: Convert the photograph into natural, historically believable full color. Apply realistic human skin tones with subtle tonal variation, naturally colored lips and eyes, authentic hair colors, believable clothing colors, and accurately balanced environmental colors. Preserve realistic highlights, shadows, contrast, and tonal depth. Avoid excessive saturation, artificial colors, or modern cinematic color grading.\n\n4K DETAIL ENHANCEMENT: Upscale to ultra-high-resolution 4K quality with refined facial detail, natural skin texture, individual hair strands, eyelashes, eyebrows, facial-hair detail, fabric fibers, clothing textures, and environmental details. Improve sharpness and clarity while retaining the natural photographic character of the original image.\n\nKeep skin realistic and naturally textured. Avoid plastic skin, excessive smoothing, oversharpening, halos, artificial HDR, fake details, or an obvious AI-generated appearance.\n\nDO NOT CHANGE: identity, facial structure, expression, apparent age, body proportions, pose, clothing design, accessories, objects, background layout, framing, or camera angle. Do not add or remove people or objects.\n\nThe final result should look like the same original historical photograph professionally restored and photographed in authentic natural color, not a newly generated recreation.\n\nFinal output: pristine 4K restoration, photorealistic natural color, authentic skin tones, clean fine details, realistic textures, high dynamic range, sharp but natural focus, historically faithful appearance, museum-quality photographic restoration, vertical 4:5 aspect ratio.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
       "id": "mp1788914743973",
       "title": "Fotos antigas",
       "text": "/colourenhace",
@@ -284,5 +293,5 @@
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg"
   },
-  "savedAt": "2026-09-09T00:45:45.981Z"
+  "savedAt": "2026-09-09T09:30:20.782Z"
 }
