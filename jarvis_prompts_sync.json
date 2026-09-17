@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1789607382742",
+      "title": "Anos 80",
+      "text": "Use the uploaded photo and recreate the same person as if photographed in India in the late 1980s. Preserve the face, skin tone, body shape, smile and overall identity very accurately. Style them in a fashionable 80s outfit like high-waisted jeans, printed shirt/denim jacket, retro accessories and voluminous hair. Use a realistic Indian college/home/street background with warm faded film colors, grain, soft focus and a vintage 1988 photo feel. 4:5 aspect ratio.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1789607055530",
       "title": "Fotos antigas coloracao",
       "text": "Restore and upscale this vintage portrait to ultra-high quality. Preserve the person’s exact identity, facial features, expression, turban, moustache, clothing, and natural skin texture. Remove scratches, dust, stains, fading, blur, and film damage. Add realistic, subtle colorization with natural skin tones, authentic clothing colors, balanced contrast, sharp fine details, and professional cinematic color grading. Keep the original composition and historical character—no face alteration or over-smoothing.",
@@ -302,7 +311,8 @@
     "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg",
     "mpimg_mp1788946218767": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1788946274/jarvis_gallery/mpimg_mp1788946218767.png",
-    "mpimg_mp1789607055530": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607057/jarvis_gallery/mpimg_mp1789607055530.png"
+    "mpimg_mp1789607055530": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607057/jarvis_gallery/mpimg_mp1789607055530.png",
+    "mpimg_mp1789607382742": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607384/jarvis_gallery/mpimg_mp1789607382742.png"
   },
-  "savedAt": "2026-09-17T01:04:20.174Z"
+  "savedAt": "2026-09-17T01:09:47.379Z"
 }
