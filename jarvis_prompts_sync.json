@@ -1,6 +1,15 @@
 {
   "myPrompts": [
     {
+      "id": "mp1789607567220",
+      "title": "Penteados",
+      "text": "sharp well-groomed beard, fair skin, and confident expression. Hairstyles include buzz cut, pompadour, long wavy hair, man bun, side fade, messy textured hair, spiky hairstyle, slick back, curly hair, and medium layered styles.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
       "id": "mp1789607382742",
       "title": "Anos 80",
       "text": "Use the uploaded photo and recreate the same person as if photographed in India in the late 1980s. Preserve the face, skin tone, body shape, smile and overall identity very accurately. Style them in a fashionable 80s outfit like high-waisted jeans, printed shirt/denim jacket, retro accessories and voluminous hair. Use a realistic Indian college/home/street background with warm faded film colors, grain, soft focus and a vintage 1988 photo feel. 4:5 aspect ratio.",
@@ -312,7 +321,8 @@
     "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg",
     "mpimg_mp1788946218767": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1788946274/jarvis_gallery/mpimg_mp1788946218767.png",
     "mpimg_mp1789607055530": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607057/jarvis_gallery/mpimg_mp1789607055530.png",
-    "mpimg_mp1789607382742": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607384/jarvis_gallery/mpimg_mp1789607382742.png"
+    "mpimg_mp1789607382742": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607384/jarvis_gallery/mpimg_mp1789607382742.png",
+    "mpimg_mp1789607567220": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607568/jarvis_gallery/mpimg_mp1789607567220.png"
   },
-  "savedAt": "2026-09-17T01:09:47.379Z"
+  "savedAt": "2026-09-17T01:12:51.697Z"
 }
