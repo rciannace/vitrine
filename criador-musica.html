@@ -364,6 +364,9 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 .gal-queue-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.65);border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;padding:10px 16px;cursor:pointer;z-index:2;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
 .gal-card:hover .gal-queue-btn{opacity:1}
 @media(max-width:700px){.gal-queue-btn{opacity:1;font-size:13px;padding:9px 14px;top:8px;right:8px}}
+.lib-queue-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.65);border:none;border-radius:9px;color:#fff;font-size:14px;font-weight:700;padding:9px 14px;cursor:pointer;z-index:2;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.lib-card:hover .lib-queue-btn{opacity:1}
+@media(max-width:700px){.lib-queue-btn{opacity:1;font-size:12px;padding:8px 12px;top:8px;right:8px}}
 #queue-panel{display:none;position:fixed;bottom:100px;right:16px;z-index:500;width:300px;max-width:calc(100vw - 32px);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);overflow:hidden;flex-direction:column}
 #queue-panel.open{display:flex}
 #queue-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
@@ -3243,6 +3246,7 @@ function renderLib(){
         <img src="${libCoverUrl(e)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 50%)"></div>
         ${e.audio?`<button onclick="libPlay(${e.id})" title="${isPlayingThis?"Pausar":"Tocar"}" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:${isPlayingThis?"#ef4444":"#f97316"};color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;box-shadow:0 2px 8px #0005;z-index:2">${isPlayingThis?"⏸":"▶"}</button>`:""}
+        ${e.audio?`<button class="lib-queue-btn" onclick="event.stopPropagation();addToQueueFromLib(${e.id})" title="Adicionar à fila">+ Fila</button>`:""}
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
         <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.title)}</div>
@@ -3837,6 +3841,16 @@ function libPlay(id){
   if(window._spCurrentId===id&&spPlaying){spToggle();return;}
   spQueue=list;
   spPlay(idx);
+}
+function addToQueueFromLib(id){
+  // adiciona à fila manual direto de um card da Biblioteca, sem precisar tocar antes
+  const list=window._libQueueList||[];
+  const e=list.find(x=>x.id===id)||history.find(x=>x.id===id);
+  if(!e||!e.audio){showToast("Música sem áudio","err");return;}
+  if(manualQueue.find(x=>x.id===e.id)){showToast("Já está na fila","ok");return;}
+  manualQueue.push(e);
+  showToast("+ Fila: "+e.title,"ok");
+  if(_queueOpen)renderQueue();
 }
 function spPlay(i){
   if(!spQueue[i])return;
