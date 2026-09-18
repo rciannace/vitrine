@@ -55,7 +55,8 @@
       "Electric Guitar Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1789495163/llupeqz0ldwdqq7apnk8.mp3",
-    "plays": 15
+    "plays": 15,
+    "fav": true
   },
   {
     "id": 1787685503885,
@@ -100,7 +101,8 @@
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1787685502/ba2vwnruh59utk4b6oyv.mp3",
     "plays": 2,
-    "_editedText": "\n(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n(Verso 3)\nO relógio não para, a madrugada é tão fria,\nE a nossa casa ficou tão vazia.\nTentando esquecer o que a gente viveu,\nBuscando a resposta do porquê se perdeu.\n\n(Verso 4)\nA noite arrasta os minutos devagar,\nE a mente não para de te procurar.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n[Guitar Solo]\n\n(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.\n[Outro]\n"
+    "_editedText": "\n(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n(Verso 3)\nO relógio não para, a madrugada é tão fria,\nE a nossa casa ficou tão vazia.\nTentando esquecer o que a gente viveu,\nBuscando a resposta do porquê se perdeu.\n\n(Verso 4)\nA noite arrasta os minutos devagar,\nE a mente não para de te procurar.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n[Guitar Solo]\n\n(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.\n[Outro]\n",
+    "fav": true
   },
   {
     "id": 1787685367155,
@@ -145,7 +147,8 @@
       "End"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1787685365/jgtthqpulqowvvtcyeuk.mp3",
-    "plays": 7
+    "plays": 7,
+    "fav": true
   },
   {
     "id": 1786050183257,
@@ -1026,7 +1029,8 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
-    "plays": 61
+    "plays": 61,
+    "fav": true
   },
   {
     "id": 1781827468701,
@@ -1546,64 +1550,6 @@
     "plays": 12
   },
   {
-    "duration": "normal",
-    "title": "A Melodia do Retorno",
-    "mood": "Romântico ❤️",
-    "genre": "Sertanejo",
-    "sections": {
-      "Refrão": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!",
-      "Verso 2": "O sorriso no rosto, que eu já não sentia\nÉ o reflexo de tudo, que você irradia\nCada toque seu, um arrepio me invade\nÉ a prova que a gente, tem pura afinidade.\n\nAs manhãs mais bonitas, o café temperado\nÉ o gosto de ter você, de novo aqui guardado",
-      "Introdução": "Meu mundo parado, um poço de saudade\nO tempo se arrasta, sem sua claridade\nO eco da sua voz, só lembrança fria\nAté que o destino, rompeu a agonia.\n\n(Solo de violão melódico e choroso, como um lamento que encontra esperança)",
-      "Refrão Final": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!\n\n(O refrão volta com mais intensidade, com backing vocals sutis e bateria ainda mais presente e marcada)",
-      "Verso 1": "O silêncio gritava, me roubando o sossego\nCada canto da casa era um triste apego\nUm peso no peito, sem ter mais seu abraço\nMas a fé renasceu, num lindo compasso.\n\nHoje o Sol apareceu, com força sem igual\nSua volta é o motivo, do meu sentimental"
-    },
-    "struct": [
-      "Introdução",
-      "Verso 1",
-      "Refrão",
-      "Verso 2",
-      "Refrão Final"
-    ],
-    "id": 1781049108336,
-    "date": "09/06/2026",
-    "song": {
-      "style_tags": [
-        "Sertanejo Romântico",
-        "Clássico",
-        "Ano 2000",
-        "Brasilidade"
-      ],
-      "duration": "normal",
-      "key": "Ré maior",
-      "production_notes": "A mixagem deve priorizar a clareza vocal e a saturação quente do violão. O solo de violão na introdução deve ter um timbre limpo, mas com um leve 'chorinho' (vibrato controlado e expressivo), evocando a melancolia que precede a alegria. A bateria deve ter um ataque firme, com ênfase no bumbo e na caixa, criando uma marcação que impulsiona a música. Nos refrões, a bateria pode ganhar um pouco mais de 'peso' com a adição de pratos e um groove mais envolvente. O baixo deve ser presente, mas sem ofuscar a voz ou o violão. O teclado pode adicionar pads sintéticos leves e quentes para dar volume e emoção aos refrões, sem soar artificial. A dinâmica é crucial: a introdução e os versos devem soar mais introspectivos e contidos, enquanto os refrões devem explodir em alegria e sentimento. O espaço estéreo deve ser bem distribuído, com o violão e a voz no centro, e a bateria e outros elementos espalhados para criar profundidade. Efeitos como um leve reverb na voz para dar um toque de 'salão' e um delay sutil nos metais (se houver, em uma versão mais elaborada) podem funcionar. A inspiração Bruno e Marrone sugere uma produção limpa, com foco na emoção crua e na melodia forte.",
-      "genre": "Sertanejo",
-      "voice": "Masculina — 🎙 Voz Grossa",
-      "instruments": [
-        "Violão acústico (base harmônica e solo principal)",
-        "Bateria (marcando forte o tempo, com viradas expressivas)",
-        "Baixo (fundamento rítmico e harmônico)",
-        "Teclado/Piano (textura e cor, pad sutil nos refrões)",
-        "Backing Vocals (em harmonias suaves nos refrões, para dar corpo)"
-      ],
-      "bpm": 90,
-      "vibe": "Um abraço apertado em forma de música, a alegria palpável de um amor reencontrado que retoma o seu curso natural.",
-      "chords": "D - G - Bm - A",
-      "title": "A Melodia do Retorno",
-      "mood": "Romântico ❤️",
-      "subtitle": "A gravidade do meu amor te trouxe de volta pra mim",
-      "sections": {
-        "Verso 1": "O silêncio gritava, me roubando o sossego\nCada canto da casa era um triste apego\nUm peso no peito, sem ter mais seu abraço\nMas a fé renasceu, num lindo compasso.\n\nHoje o Sol apareceu, com força sem igual\nSua volta é o motivo, do meu sentimental",
-        "Introdução": "Meu mundo parado, um poço de saudade\nO tempo se arrasta, sem sua claridade\nO eco da sua voz, só lembrança fria\nAté que o destino, rompeu a agonia.\n\n(Solo de violão melódico e choroso, como um lamento que encontra esperança)",
-        "Refrão Final": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!\n\n(O refrão volta com mais intensidade, com backing vocals sutis e bateria ainda mais presente e marcada)",
-        "Refrão": "Meu amor voltou, meu amor voltou!\nO tempo que se foi, a gente não guardou!\nQue bom ter você aqui, de novo ao meu lado\nMeu mundo descolorido, agora é pintado!\nMeu amor voltou, meu amor voltou!\nO coração que chorava, agora ele tocou\nA melodia da vida, volta a ter sentido\nE o meu céu escuro virou um dia florido!",
-        "Verso 2": "O sorriso no rosto, que eu já não sentia\nÉ o reflexo de tudo, que você irradia\nCada toque seu, um arrepio me invade\nÉ a prova que a gente, tem pura afinidade.\n\nAs manhãs mais bonitas, o café temperado\nÉ o gosto de ter você, de novo aqui guardado"
-      },
-      "suno_style": "sertanejo, romantic, emotional, deep male vocals, 90 BPM, fingerpicked acoustic guitar, strong drums, melancholic intro, hopeful chorus"
-    },
-    "bpm": 90,
-    "isDraft": true
-  },
-  {
     "_editedText": "[ INTRO ]\nO céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n\n[ VERSE ]\nLembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n\n[ PRE-CHORUS ]\nE o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n[ VERSE 2 ]\nOs anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n\n[ BRIDGE ]\nE se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n",
     "title": "TEMPORAL DE FAISCAS",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781042036/pnumldvkbhiu0blet9ac.mp3",
@@ -1931,7 +1877,8 @@
     "title": "FICA MAIS UM POUCO",
     "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
     "duration": "normal",
-    "plays": 18
+    "plays": 18,
+    "fav": true
   },
   {
     "date": "07/06/2026",
