@@ -1327,17 +1327,24 @@ function ghDecodeContent(b64){
     return JSON.parse(raw);
   }
 }
+function touch(e){if(e)e._mtime=Date.now();return e;}
 function ghMergeCloud(decoded){
-  // merge: local-wins — respeita deleções e saves feitos antes do sync
+  // merge por item: ganha quem foi editado por último (_mtime), não sempre o local.
+  // Isso permite que uma alteração feita no celular (favoritar, editar, etc.)
+  // apareça no desktop e vice-versa, em vez do dispositivo local sempre sobrescrever a nuvem.
   // itens na nuvem que NÃO existem no local foram deletados pelo usuário → não restaurar
-  const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-  // Para saber se um item foi "deletado localmente", comparamos com um snapshot de ids conhecidos
   const knownDeletedIds=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
   const deletedSet=new Set(knownDeletedIds);
-  const cloudMap=Object.fromEntries(decoded.filter(e=>!deletedSet.has(e.id)).map(e=>[e.id,e]));
-  // local-wins: local sobrescreve nuvem para ids iguais
-  const merged=Object.values({...cloudMap,...localMap});
-  return merged.sort((a,b)=>b.id-a.id);
+  const mergedMap={};
+  decoded.filter(e=>!deletedSet.has(e.id)).forEach(e=>{mergedMap[e.id]=e;});
+  history.forEach(localE=>{
+    const cloudE=mergedMap[localE.id];
+    if(!cloudE){mergedMap[localE.id]=localE;return;} // item novo, só existe local
+    const lm=localE._mtime||0,cm=cloudE._mtime||0;
+    if(lm===0&&cm===0){mergedMap[localE.id]=localE;} // nenhum dos dois tem timestamp (dado antigo): local-wins, comportamento de antes
+    else{mergedMap[localE.id]=(lm>=cm)?localE:cloudE;} // quem foi editado por último vence
+  });
+  return Object.values(mergedMap).sort((a,b)=>b.id-a.id);
 }
 async function ghLoad(){
   if(!ghToken)return;
@@ -2220,10 +2227,12 @@ async function extendSec(sec){
     var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
     if(histIdx>=0){
       history[histIdx].sections=currentSong.sections;
+      touch(history[histIdx]);
       ghSave();
     }else{
       // not in library yet — add it
       var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
+      touch(entry);
       history.unshift(entry);
       updateLibN();
       ghSave();
@@ -3000,6 +3009,7 @@ function toggleFav(id){
   const idx=history.findIndex(h=>h.id===id);
   if(idx<0)return;
   history[idx].fav=!history[idx].fav;
+  touch(history[idx]);
   ghSave();renderLib();
 }
 
@@ -3113,7 +3123,9 @@ function moveToRascunho(id){
   drafts.unshift(draft);
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
   history[idx]={...entry,isDraft:true};
+  touch(history[idx]);
   try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
+  ghSave();
   updateLibN();renderLib();
   showToast("📝 Música movida para Rascunhos!","ok");
 }
@@ -3124,14 +3136,17 @@ function promoteDraft(draftId){
   if(didx<0&&hidx<0)return;
   if(hidx>=0){
     history[hidx]={...history[hidx],isDraft:false};
+    touch(history[hidx]);
     try{localStorage.setItem("ams6",JSON.stringify(history));localStorage.setItem("ams6_backup",JSON.stringify(history));}catch{}
   } else {
     const d=drafts[didx];
-    history=[{...d,isDraft:false},...history].slice(0,30);
+    const promoted=touch({...d,isDraft:false});
+    history=[promoted,...history].slice(0,30);
   }
   if(didx>=0)drafts.splice(didx,1);
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
   saveLocal();updateLibN();
+  ghSave();
   showToast("✅ Música movida para a Biblioteca!","ok");
   setPage("lib");
 }
@@ -3305,7 +3320,7 @@ function addAudio(id,input){
       const d=JSON.parse(xhr.responseText);
       if(!d.secure_url)throw new Error(d.error?.message||"Erro upload");
       const idx=history.findIndex(x=>x.id===id);
-      if(idx>=0){history[idx].audio=d.secure_url;saveHistory();renderLib();showToast("🎵 Áudio salvo!","ok");}
+      if(idx>=0){history[idx].audio=d.secure_url;touch(history[idx]);saveHistory();renderLib();showToast("🎵 Áudio salvo!","ok");}
     }catch(e){showToast("❌ Erro: "+e.message,"err");renderLib();}
   };
   xhr.onerror=function(){showToast("❌ Falha na conexão","err");renderLib();};
@@ -3317,7 +3332,7 @@ function addAudio(id,input){
 function removeAudio(id){
   if(isLocked())return;
   const idx=history.findIndex(x=>x.id===id);
-  if(idx>=0){delete history[idx].audio;saveHistory();renderLib();showToast("Áudio removido","ok");}
+  if(idx>=0){delete history[idx].audio;touch(history[idx]);saveHistory();renderLib();showToast("Áudio removido","ok");}
 }
 let editingFromLib=false;
 let editingId=null;
@@ -3335,6 +3350,7 @@ function saveEditedEntry(){
   if(idx<0)return;
   history[idx].sections=currentSections;
   history[idx].song=currentSong;
+  touch(history[idx]);
   saveHistory();
   setTimeout(function(){renderVersionsBar();},50);
   showToast("✅ Música salva!","ok");
@@ -3347,6 +3363,7 @@ function editTitle(id){
   if(novo===null||novo.trim()==="")return;
   e.title=novo.trim();
   if(e.song)e.song.title=novo.trim();
+  touch(e);
   saveHistory();
   renderLib();
   showToast("✅ Nome atualizado!","ok");
@@ -3376,6 +3393,7 @@ function restoreEntry(id){
   if(idx<0)return;
   const entry=trash.splice(idx,1)[0];
   delete entry._deletedAt;
+  touch(entry);
   history.unshift(entry);
   saveTrash();
   ghSave();
@@ -3559,6 +3577,7 @@ function saveSunoEntry(){
     sections,struct
   };
   if(sunoAudioUrl)entry.audio=sunoAudioUrl;
+  touch(entry);
 
   history.unshift(entry);
 
@@ -3866,7 +3885,7 @@ function spPlay(i){
     spSyncLibUI();
     // Contador de plays
     const hi=history.findIndex(x=>x.id===e.id);
-    if(hi>=0){history[hi].plays=(history[hi].plays||0)+1;saveHistory();}
+    if(hi>=0){history[hi].plays=(history[hi].plays||0)+1;touch(history[hi]);saveHistory();}
     // Media Session API — controles nativos do SO (Windows, Android, Mac)
     if("mediaSession" in navigator){
       // Gera cor de capa baseada no gênero
@@ -4204,6 +4223,7 @@ function saveLyricsEdit(){
       history[idx].sections=entry.sections;
       history[idx].struct=entry.struct;
       history[idx]._editedText=newText;
+      touch(history[idx]);
     }
 
     // persiste
