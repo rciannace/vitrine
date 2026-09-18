@@ -519,6 +519,10 @@ body.locked .need-pass{display:none!important}
 #lock-modal .lm-err{color:#ef4444;font-size:12px;min-height:16px;font-weight:600}
 #lock-modal button.lm-cancel{background:#f8f8f8;border:1px solid #eee;color:#888;border-radius:10px;padding:10px 26px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 #lock-modal button.lm-cancel:hover{background:#f0f0f0;color:#333}
+
+/* TEXTOS EDITÁVEIS (modo admin, só quando desbloqueado) */
+body:not(.locked) .editable-field{cursor:text;border-radius:5px;outline:1.5px dashed transparent;outline-offset:3px;transition:background .15s,outline-color .15s}
+body:not(.locked) .editable-field:hover{outline-color:#f97316;background:rgba(249,115,22,.1)}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -588,19 +592,19 @@ body.locked .need-pass{display:none!important}
       <div class="tab-row" id="main-tabs">
         <div class="tab-item active" onclick="switchMainTab('descrever')">
           <span class="tab-icon">💬</span>
-          <span>Ideia</span>
+          <span class="editable-field" data-ekey="tab-descrever" onclick="editLabel(event,'tab-descrever')" title="Clique para editar (modo admin)">Ideia</span>
         </div>
         <div class="tab-item" onclick="switchMainTab('letra')">
           <span class="tab-icon">📝</span>
-          <span>Letra</span>
+          <span class="editable-field" data-ekey="tab-letra" onclick="editLabel(event,'tab-letra')" title="Clique para editar (modo admin)">Letra</span>
         </div>
         <div class="tab-item" onclick="switchMainTab('estender')">
           <span class="tab-icon">✨</span>
-          <span>Estender</span>
+          <span class="editable-field" data-ekey="tab-estender" onclick="editLabel(event,'tab-estender')" title="Clique para editar (modo admin)">Estender</span>
         </div>
         <div class="tab-item" onclick="switchMainTab('inspiracao')">
           <span class="tab-icon">💡</span>
-          <span>Inspirar</span>
+          <span class="editable-field" data-ekey="tab-inspiracao" onclick="editLabel(event,'tab-inspiracao')" title="Clique para editar (modo admin)">Inspirar</span>
         </div>
       </div>
     </div>
@@ -852,15 +856,15 @@ body.locked .need-pass{display:none!important}
   <div id="page-lib" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div>
-        <div style="font-size:18px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">SUAS MÚSICAS</div>
+        <div class="editable-field" data-ekey="lib-title" onclick="editLabel(event,'lib-title')" title="Clique para editar (modo admin)" style="font-size:18px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">SUAS MÚSICAS</div>
         <div id="sync-status" style="margin-top:4px"></div>
       </div>
       <button onclick="setPage('criar')" class="btn-voltar need-pass"><span class="bv-arrow">‹</span> Voltar</button>
     </div>
     <!-- Lib tabs -->
     <div class="lib-tab-row">
-      <div class="lib-tab active need-pass" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 BIBLIOTECA</div>
-      <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 PLAYER</div>
+      <div class="lib-tab active need-pass" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 <span class="editable-field" data-ekey="ltab-biblioteca-label" onclick="editLabel(event,'ltab-biblioteca-label')" title="Clique para editar (modo admin)">BIBLIOTECA</span></div>
+      <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 <span class="editable-field" data-ekey="ltab-galeria-label" onclick="editLabel(event,'ltab-galeria-label')" title="Clique para editar (modo admin)">PLAYER</span></div>
     </div>
     <!-- Sub-pages -->
     <div id="libpage-biblioteca">
@@ -1144,6 +1148,30 @@ function updateLockBtn(){
   else{btn.textContent="🔓";btn.title="Desbloqueado — toque para bloquear novamente";}
 }
 
+// ── TEXTOS EDITÁVEIS (cabeçalhos, abas etc — só com senha) ──
+const AMS_LABELS_KEY="ams_custom_labels";
+let amsLabels={};
+try{amsLabels=JSON.parse(localStorage.getItem(AMS_LABELS_KEY)||"{}");}catch(e){amsLabels={};}
+function amsApplyLabels(){
+  document.querySelectorAll("[data-ekey]").forEach(el=>{
+    const k=el.dataset.ekey;
+    if(amsLabels[k]!==undefined&&amsLabels[k]!=="")el.textContent=amsLabels[k];
+  });
+}
+function editLabel(event,key){
+  if(isLocked())return;
+  event.stopPropagation();
+  const el=event.currentTarget;
+  const current=amsLabels[key]!==undefined?amsLabels[key]:el.textContent.trim();
+  const novo=prompt("Novo texto:",current);
+  if(novo===null)return;
+  const val=novo.trim();
+  if(!val)return;
+  amsLabels[key]=val;
+  localStorage.setItem(AMS_LABELS_KEY,JSON.stringify(amsLabels));
+  el.textContent=val;
+}
+
 // ══════════════════════════════════════
 // DADOS
 // ══════════════════════════════════════
@@ -1406,6 +1434,7 @@ let waveTimer=null;
 // ══════════════════════════════════════
 window.onload=()=>{
   updateLockBtn();
+  amsApplyLabels();
   if(isLocked())setPage("lib");
   ghLoadToken();
   ghLoad();
@@ -1700,7 +1729,7 @@ function switchMainTab(tab){
   });
   document.querySelectorAll(".tab-item").forEach((el,i)=>{
     const tabs=["descrever","letra","estender","inspiracao"];
-    el.className="tab-item"+(tabs[i]===tab?" active":"");
+    el.classList.toggle("active",tabs[i]===tab);
   });
   const labels={descrever:"🎵 Criar Letra",letra:"🎵 Criar Música",estender:"✨ Estender Música",inspiracao:"💡 Criar com Inspiração"};
   document.getElementById("btn-gen").innerHTML=labels[tab]||"🎵 Criar";
