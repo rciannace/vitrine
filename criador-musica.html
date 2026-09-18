@@ -3210,16 +3210,20 @@ function renderLib(){
   else if(sortVal==="genre")filtered.sort((a,b)=>(a.genre||"").localeCompare(b.genre||"","pt",{sensitivity:"base"}));
   else if(sortVal==="fav")filtered.sort((a,b)=>(b.fav?1:0)-(a.fav?1:0));
   else if(sortVal==="plays")filtered.sort((a,b)=>(b.plays||0)-(a.plays||0));
+  window._libQueueList=filtered.filter(e=>e.audio); // fila de reprodução da Biblioteca, na ordem exibida
   if(!filtered.length){
     el.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#ccc;grid-column:1/-1"><div style="font-size:36px;margin-bottom:10px">${q?"🔍":"🎵"}</div><div>${q?"Nenhum resultado para '"+q+"'":"Nenhuma música ainda"}</div></div>`;
     return;
   }
-  el.innerHTML=filtered.map(e=>`
+  el.innerHTML=filtered.map(e=>{
+    const isPlayingThis=spPlaying&&window._spCurrentId===e.id;
+    return `
     <div class="lib-card" style="border-left:4px solid ${genreAccent(e.genre)}">
       <!-- Capa automática por gênero/mood -->
       <div style="position:relative;margin-bottom:10px;border-radius:10px;overflow:hidden;height:120px;background:${genreColor(e.genre)}">
         <img src="${libCoverUrl(e)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 50%)"></div>
+        ${e.audio?`<button onclick="libPlay(${e.id})" title="${isPlayingThis?"Pausar":"Tocar"}" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;border-radius:50%;background:${isPlayingThis?"#ef4444":"#f97316"};color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;box-shadow:0 2px 8px #0005;z-index:2">${isPlayingThis?"⏸":"▶"}</button>`:""}
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
         <div style="font-size:15px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.title)}</div>
@@ -3242,7 +3246,8 @@ function renderLib(){
         ${e.audio ? `<button onclick="removeAudio(${e.id})" style="padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#aaa;font-size:12px;cursor:pointer" title="Remover áudio">🔇</button>` : ""}
         <button onclick="delEntry(${e.id})" style="padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#f8f8f8;color:#999;font-size:12px;cursor:pointer">🗑</button>
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
 }
 function libCoverUrl(e){
   const g=(e.genre||"").toLowerCase();
@@ -3805,6 +3810,15 @@ function spVolMute(){
     spVolChange(0);
   }
 }
+function libPlay(id){
+  // toca uma música direto da aba Biblioteca, usando o player persistente (barra inferior)
+  const list=window._libQueueList||[];
+  const idx=list.findIndex(e=>e.id===id);
+  if(idx<0)return;
+  if(window._spCurrentId===id&&spPlaying){spToggle();return;}
+  spQueue=list;
+  spPlay(idx);
+}
 function spPlay(i){
   if(!spQueue[i])return;
   spIndex=i;
@@ -3816,7 +3830,7 @@ function spPlay(i){
   audio.play().then(()=>{
     spPlaying=true;
     spUpdateUI();
-    renderGallery();
+    spSyncLibUI();
     // Contador de plays
     const hi=history.findIndex(x=>x.id===e.id);
     if(hi>=0){history[hi].plays=(history[hi].plays||0)+1;saveHistory();}
@@ -3850,7 +3864,7 @@ function spToggle(){
   if(spPlaying){audio.pause();spPlaying=false;}
   else{audio.play();spPlaying=true;}
   spUpdateUI();
-  renderGallery();
+  spSyncLibUI();
 }
 
 function spPrev(){
@@ -3910,6 +3924,12 @@ function spFmt(s){
   return m+":"+(sec<10?"0":"")+sec;
 }
 
+function spSyncLibUI(){
+  // mantém os cards (Biblioteca ou Player) com o ícone ▶/⏸ sincronizado com o que está tocando
+  if(currentPage!=="lib")return;
+  if(activeLibTab==="galeria")renderGallery();
+  else if(activeLibTab==="biblioteca")renderLib();
+}
 function spUpdateUI(){
   const audio=document.getElementById("sp-audio");
   const player=document.getElementById("sp-player");
@@ -3994,8 +4014,8 @@ function spUpdateUI(){
       }
     }
   });
-  audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();renderGallery();});
-  audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();renderGallery();});
+  audio.addEventListener("play",()=>{spPlaying=true;spUpdateUI();spSyncLibUI();});
+  audio.addEventListener("pause",()=>{spPlaying=false;spUpdateUI();spSyncLibUI();});
 })();
 function openPasteLyrics(){
   document.getElementById("paste-lyrics-ta").value="";
