@@ -504,18 +504,21 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 /* CADEADO / PROTEÇÃO POR SENHA */
 body.locked .need-pass{display:none!important}
 #lock-btn{position:fixed;top:14px;right:14px;z-index:500;width:38px;height:38px;border-radius:50%;border:none;background:#1e1e2e;color:#f97316;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px #0004}
-#lock-overlay{display:none;position:fixed;inset:0;background:#000a;z-index:600;align-items:center;justify-content:center;padding:20px}
+#lock-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,10,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:600;align-items:center;justify-content:center;padding:20px}
 #lock-overlay.show{display:flex}
-#lock-modal{background:var(--card-bg,#fff);border-radius:16px;padding:28px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 10px 40px #0006}
-body.dark #lock-modal{background:#131320}
-#lock-modal .lm-icon{font-size:38px;margin-bottom:8px}
-#lock-modal .lm-title{font-size:16px;font-weight:700;color:var(--text,#1a1a1a);margin-bottom:4px}
-#lock-modal .lm-sub{font-size:12px;color:#999;margin-bottom:16px}
-#lock-modal input{width:100%;padding:12px;border-radius:10px;border:1.5px solid #eee;font-size:18px;text-align:center;margin-bottom:10px;box-sizing:border-box;letter-spacing:3px}
-#lock-modal .lm-err{color:#ef4444;font-size:12px;min-height:16px;margin-bottom:6px}
-#lock-modal .lm-btns{display:flex;gap:8px}
-#lock-modal button.lm-cancel{flex:1;padding:12px;border-radius:10px;border:1px solid #eee;background:#f8f8f8;color:#666;font-size:13px;font-weight:600;cursor:pointer}
-#lock-modal button.lm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+#lock-modal{background:#fff;border-radius:24px;width:min(440px,96vw);padding:40px 32px 32px;box-shadow:0 32px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:18px;text-align:center;align-items:center;animation:lockPop .22s cubic-bezier(.34,1.46,.64,1) both}
+@keyframes lockPop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+#lock-modal .lm-icon{font-size:46px;line-height:1}
+#lock-modal .lm-title{font-size:24px;font-weight:800;color:#1a1a1a}
+#lock-modal .lm-sub{font-size:13px;color:#999;margin-top:-10px}
+.lm-pin-wrap{display:flex;justify-content:center;gap:7px;width:100%}
+.lm-pin-wrap input{flex:1;min-width:0;max-width:44px;height:54px;text-align:center;font-size:20px;font-weight:700;border:2px solid #e8e8e8;border-radius:12px;background:#f4f4f5;color:#1a1a1a;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-text-security:disc}
+.lm-pin-wrap input:focus{border-color:#06b6d4;box-shadow:0 0 0 3px rgba(6,182,212,.2);background:#fff}
+.lm-pin-wrap input.error{border-color:#ef4444;animation:pinShake .3s ease}
+@keyframes pinShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#lock-modal .lm-err{color:#ef4444;font-size:12px;min-height:16px;font-weight:600}
+#lock-modal button.lm-cancel{background:#f8f8f8;border:1px solid #eee;color:#888;border-radius:10px;padding:10px 26px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+#lock-modal button.lm-cancel:hover{background:#f0f0f0;color:#333}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -527,14 +530,19 @@ body.dark #lock-modal{background:#131320}
 <div id="lock-overlay" onclick="if(event.target===this)closeLockModal()">
   <div id="lock-modal">
     <div class="lm-icon">🔒</div>
-    <div class="lm-title" id="lock-title">Área protegida</div>
-    <div class="lm-sub" id="lock-sub">Digite a senha para editar</div>
-    <input type="password" id="lock-pass" placeholder="Senha" inputmode="text" onkeydown="if(event.key==='Enter')checkLockPass()"/>
-    <div class="lm-err" id="lock-err"></div>
-    <div class="lm-btns">
-      <button class="lm-cancel" onclick="closeLockModal()">Cancelar</button>
-      <button class="lm-ok" onclick="checkLockPass()">Entrar</button>
+    <div class="lm-title" id="lock-title">Acesso Restrito</div>
+    <div class="lm-sub" id="lock-sub">Digite a senha de administrador</div>
+    <div class="lm-pin-wrap" id="lock-pin-wrap">
+      <input type="password" maxlength="1" id="lpin0" oninput="lpinInput(0)" onkeydown="lpinKey(event,0)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin1" oninput="lpinInput(1)" onkeydown="lpinKey(event,1)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin2" oninput="lpinInput(2)" onkeydown="lpinKey(event,2)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin3" oninput="lpinInput(3)" onkeydown="lpinKey(event,3)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin4" oninput="lpinInput(4)" onkeydown="lpinKey(event,4)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin5" oninput="lpinInput(5)" onkeydown="lpinKey(event,5)" inputmode="numeric">
+      <input type="password" maxlength="1" id="lpin6" oninput="lpinInput(6)" onkeydown="lpinKey(event,6)" inputmode="text">
     </div>
+    <div class="lm-err" id="lock-err"></div>
+    <button class="lm-cancel" onclick="closeLockModal()">Cancelar</button>
   </div>
 </div>
 
@@ -1080,7 +1088,14 @@ body.dark #lock-modal{background:#131320}
 // CADEADO / PROTEÇÃO POR SENHA
 // ══════════════════════════════════════
 const AMS_PASS="102030@";
+const AMS_PIN_LEN=7;
 function isLocked(){return document.body.classList.contains("locked");}
+function clearLockPin(){
+  for(let i=0;i<AMS_PIN_LEN;i++){
+    const el=document.getElementById("lpin"+i);
+    if(el){el.value="";el.classList.remove("error");}
+  }
+}
 function openLockModal(){
   if(!isLocked()){
     if(confirm("Bloquear edição novamente? Só será possível ouvir as músicas até digitar a senha.")){
@@ -1090,20 +1105,36 @@ function openLockModal(){
     return;
   }
   document.getElementById("lock-err").textContent="";
-  document.getElementById("lock-pass").value="";
+  clearLockPin();
   document.getElementById("lock-overlay").classList.add("show");
-  setTimeout(()=>{const p=document.getElementById("lock-pass");if(p)p.focus();},50);
+  setTimeout(()=>{const p=document.getElementById("lpin0");if(p)p.focus();},80);
 }
-function closeLockModal(){document.getElementById("lock-overlay").classList.remove("show");}
+function closeLockModal(){
+  document.getElementById("lock-overlay").classList.remove("show");
+  clearLockPin();
+}
+function lpinInput(idx){
+  const el=document.getElementById("lpin"+idx);
+  el.classList.remove("error");
+  document.getElementById("lock-err").textContent="";
+  if(el.value.length===1&&idx<AMS_PIN_LEN-1)document.getElementById("lpin"+(idx+1)).focus();
+  if(idx===AMS_PIN_LEN-1&&el.value.length===1)checkLockPass();
+}
+function lpinKey(e,idx){
+  if(e.key==="Backspace"&&!document.getElementById("lpin"+idx).value&&idx>0)document.getElementById("lpin"+(idx-1)).focus();
+  if(e.key==="Enter")checkLockPass();
+  if(e.key==="Escape")closeLockModal();
+}
 function checkLockPass(){
-  const val=document.getElementById("lock-pass").value;
+  let val="";
+  for(let i=0;i<AMS_PIN_LEN;i++)val+=(document.getElementById("lpin"+i)?.value||"");
   if(val===AMS_PASS){
     localStorage.setItem("ams_unlocked","true");
     location.reload();
   }else{
+    for(let i=0;i<AMS_PIN_LEN;i++)document.getElementById("lpin"+i).classList.add("error");
     document.getElementById("lock-err").textContent="Senha incorreta";
-    document.getElementById("lock-pass").value="";
-    document.getElementById("lock-pass").focus();
+    setTimeout(()=>{clearLockPin();document.getElementById("lpin0").focus();},650);
   }
 }
 function updateLockBtn(){
