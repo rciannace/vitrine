@@ -1362,9 +1362,18 @@ async function ghLoad(){
     showToast("☁️ Biblioteca carregada!","ok");
   }catch(e){console.warn("ghLoad:",e);}
 }
-async function ghSave(isRetry){
-  saveLocal(); // garante save local ANTES de qualquer operação assíncrona
-  if(!ghToken){return;}
+// Fila de salvamentos: evita que vários ghSave() disparados em sequência rápida
+// (ex: desmarcar/marcar vários favoritos seguidos) rodem em paralelo e conflitem
+// entre si usando o mesmo sha desatualizado. Cada save só começa depois que o
+// anterior terminou, sempre com o sha mais recente.
+let _ghSaveQueue=Promise.resolve();
+function ghSave(){
+  saveLocal(); // garante save local IMEDIATO, antes de qualquer fila/rede
+  if(!ghToken)return Promise.resolve();
+  _ghSaveQueue=_ghSaveQueue.then(()=>_ghSaveNetwork(0)).catch(()=>{});
+  return _ghSaveQueue;
+}
+async function _ghSaveNetwork(attempt){
   syncStatus="syncing";renderSyncUI();
   try{
     const json=JSON.stringify(history,null,2);
@@ -1375,16 +1384,17 @@ async function ghSave(isRetry){
     if(!r.ok){
       const errData=await r.json().catch(()=>({}));
       const msg=errData.message||("HTTP "+r.status);
-      // conflito de versão: o sha local ficou desatualizado (ex: vários saves seguidos).
-      // busca a versão mais nova da nuvem, funde com o que temos localmente e tenta salvar de novo (só 1x).
-      if(!isRetry&&/does not match|sha/i.test(msg)){
+      // conflito de versão: o sha local ficou desatualizado (ex: vários saves seguidos,
+      // ou outro dispositivo salvou ao mesmo tempo).
+      // busca a versão mais nova da nuvem, funde com o que temos localmente e tenta de novo (até 3x).
+      if(attempt<2&&/does not match|sha/i.test(msg)){
         const rr=await ghFetch("GET");
         if(rr.ok){
           const dd=await rr.json();
           ghFileSha=dd.sha;
           history=ghMergeCloud(ghDecodeContent(dd.content));
           saveLocal();
-          return ghSave(true);
+          return _ghSaveNetwork(attempt+1);
         }
       }
       throw new Error(msg);
