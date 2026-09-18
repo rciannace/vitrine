@@ -500,10 +500,43 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
 @keyframes spin-disc{to{transform:rotate(360deg)}}
 .disc-spin{animation:spin-disc 3s linear infinite}
+
+/* CADEADO / PROTEÇÃO POR SENHA */
+body.locked .need-pass{display:none!important}
+#lock-btn{position:fixed;top:14px;right:14px;z-index:500;width:38px;height:38px;border-radius:50%;border:none;background:#1e1e2e;color:#f97316;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px #0004}
+#lock-overlay{display:none;position:fixed;inset:0;background:#000a;z-index:600;align-items:center;justify-content:center;padding:20px}
+#lock-overlay.show{display:flex}
+#lock-modal{background:var(--card-bg,#fff);border-radius:16px;padding:28px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 10px 40px #0006}
+body.dark #lock-modal{background:#131320}
+#lock-modal .lm-icon{font-size:38px;margin-bottom:8px}
+#lock-modal .lm-title{font-size:16px;font-weight:700;color:var(--text,#1a1a1a);margin-bottom:4px}
+#lock-modal .lm-sub{font-size:12px;color:#999;margin-bottom:16px}
+#lock-modal input{width:100%;padding:12px;border-radius:10px;border:1.5px solid #eee;font-size:18px;text-align:center;margin-bottom:10px;box-sizing:border-box;letter-spacing:3px}
+#lock-modal .lm-err{color:#ef4444;font-size:12px;min-height:16px;margin-bottom:6px}
+#lock-modal .lm-btns{display:flex;gap:8px}
+#lock-modal button.lm-cancel{flex:1;padding:12px;border-radius:10px;border:1px solid #eee;background:#f8f8f8;color:#666;font-size:13px;font-weight:600;cursor:pointer}
+#lock-modal button.lm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+<script>document.body.classList.toggle("locked", localStorage.getItem("ams_unlocked")!=="true");</script>
+
+<!-- CADEADO -->
+<button id="lock-btn" onclick="openLockModal()" title="Área protegida">🔒</button>
+<div id="lock-overlay" onclick="if(event.target===this)closeLockModal()">
+  <div id="lock-modal">
+    <div class="lm-icon">🔒</div>
+    <div class="lm-title" id="lock-title">Área protegida</div>
+    <div class="lm-sub" id="lock-sub">Digite a senha para editar</div>
+    <input type="password" id="lock-pass" placeholder="Senha" inputmode="text" onkeydown="if(event.key==='Enter')checkLockPass()"/>
+    <div class="lm-err" id="lock-err"></div>
+    <div class="lm-btns">
+      <button class="lm-cancel" onclick="closeLockModal()">Cancelar</button>
+      <button class="lm-ok" onclick="checkLockPass()">Entrar</button>
+    </div>
+  </div>
+</div>
 
 <!-- HEADER v2 -->
 <div class="header">
@@ -518,7 +551,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
       <span class="lib-count" id="lib-n">0</span>
     </button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
-    <button onclick="toggleApiPanel()" id="btn-cfg" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
+    <button onclick="toggleApiPanel()" id="btn-cfg" class="need-pass" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
   </div>
 </div>
 
@@ -814,11 +847,11 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         <div style="font-size:18px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">SUAS MÚSICAS</div>
         <div id="sync-status" style="margin-top:4px"></div>
       </div>
-      <button onclick="setPage('criar')" class="btn-voltar"><span class="bv-arrow">‹</span> Voltar</button>
+      <button onclick="setPage('criar')" class="btn-voltar need-pass"><span class="bv-arrow">‹</span> Voltar</button>
     </div>
     <!-- Lib tabs -->
     <div class="lib-tab-row">
-      <div class="lib-tab active" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 BIBLIOTECA</div>
+      <div class="lib-tab active need-pass" id="ltab-biblioteca" onclick="switchLibTab('biblioteca')">📚 BIBLIOTECA</div>
       <div class="lib-tab" id="ltab-galeria" onclick="switchLibTab('galeria')">🎵 PLAYER</div>
     </div>
     <!-- Sub-pages -->
@@ -1022,7 +1055,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
         <button onclick="closeLyricsModal()" class="btn-voltar" style="padding:6px 14px 6px 10px"><span class="bv-arrow">‹</span> Voltar</button>
         <div id="lyrics-modal-title" style="font-size:14px;font-weight:700;color:#fff;text-align:center;flex:1;padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
         <div style="display:flex;gap:8px">
-          <button id="btn-edit-lyrics" onclick="toggleLyricsEdit()" title="Editar letra" style="border:none;background:#1e1e2e;color:#f97316;font-size:16px;cursor:pointer;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center">✏️</button>
+          <button id="btn-edit-lyrics" class="need-pass" onclick="toggleLyricsEdit()" title="Editar letra" style="border:none;background:#1e1e2e;color:#f97316;font-size:16px;cursor:pointer;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center">✏️</button>
           <button id="btn-save-lyrics" onclick="saveLyricsEdit()" title="Salvar edição" style="display:none;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;padding:0 12px;height:34px">💾 Salvar</button>
         </div>
       </div>
@@ -1043,6 +1076,43 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 <div class="toast" id="toast"></div>
 
 <script>
+// ══════════════════════════════════════
+// CADEADO / PROTEÇÃO POR SENHA
+// ══════════════════════════════════════
+const AMS_PASS="102030@";
+function isLocked(){return document.body.classList.contains("locked");}
+function openLockModal(){
+  if(!isLocked()){
+    if(confirm("Bloquear edição novamente? Só será possível ouvir as músicas até digitar a senha.")){
+      localStorage.removeItem("ams_unlocked");
+      location.reload();
+    }
+    return;
+  }
+  document.getElementById("lock-err").textContent="";
+  document.getElementById("lock-pass").value="";
+  document.getElementById("lock-overlay").classList.add("show");
+  setTimeout(()=>{const p=document.getElementById("lock-pass");if(p)p.focus();},50);
+}
+function closeLockModal(){document.getElementById("lock-overlay").classList.remove("show");}
+function checkLockPass(){
+  const val=document.getElementById("lock-pass").value;
+  if(val===AMS_PASS){
+    localStorage.setItem("ams_unlocked","true");
+    location.reload();
+  }else{
+    document.getElementById("lock-err").textContent="Senha incorreta";
+    document.getElementById("lock-pass").value="";
+    document.getElementById("lock-pass").focus();
+  }
+}
+function updateLockBtn(){
+  const btn=document.getElementById("lock-btn");
+  if(!btn)return;
+  if(isLocked()){btn.textContent="🔒";btn.title="Área protegida — toque para digitar a senha e liberar edição";}
+  else{btn.textContent="🔓";btn.title="Desbloqueado — toque para bloquear novamente";}
+}
+
 // ══════════════════════════════════════
 // DADOS
 // ══════════════════════════════════════
@@ -1304,6 +1374,8 @@ let waveTimer=null;
 // INIT
 // ══════════════════════════════════════
 window.onload=()=>{
+  updateLockBtn();
+  if(isLocked())setPage("lib");
   ghLoadToken();
   ghLoad();
   renderSyncUI();
@@ -2757,6 +2829,7 @@ function buildSunoDetailedStyle(){
 // PAGE / LIB
 // ══════════════════════════════════════
 function setPage(p){
+  if(isLocked()&&p!=="lib")p="lib";
   currentPage=p;
   if(p==="criar"){editingFromLib=false;editingId=null;}
   document.getElementById("page-criar").style.display=p==="criar"?"block":"none";
@@ -2764,7 +2837,7 @@ function setPage(p){
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
   document.getElementById("footer-btn").style.display=p==="criar"?"block":"none";
   if(p!=="lib"&&!spPlaying){const pl=document.getElementById("sp-player");if(pl)pl.classList.remove("active");}
-  if(p==="lib"){ghLoad();renderLib();renderSyncUI();}
+  if(p==="lib"){ghLoad();renderLib();renderSyncUI();if(isLocked())switchLibTab("galeria");}
 }
 
 function updateLibN(){document.getElementById("lib-n").textContent=history.filter(e=>!e.isDraft).length;}
@@ -2840,6 +2913,7 @@ function setLibFilter(f){
   renderLib();
 }
 function toggleFav(id){
+  if(isLocked())return;
   const idx=history.findIndex(h=>h.id===id);
   if(idx<0)return;
   history[idx].fav=!history[idx].fav;
@@ -2947,6 +3021,7 @@ function saveCurrentAsDraft(){
 }
 
 function moveToRascunho(id){
+  if(isLocked())return;
   const idx=history.findIndex(h=>h.id===id);
   if(idx<0)return;
   const entry=history[idx];
@@ -3114,6 +3189,7 @@ function libCoverUrl(e){
   return "https://images.unsplash.com/photo-"+arr[h%4]+"?w=400&q=70&fit=crop&crop=entropy";
 }
 function addAudio(id,input){
+  if(isLocked())return;
   const file=input.files[0];if(!file)return;
   const label=input.closest("label");
   const sizeMB=(file.size/1024/1024).toFixed(1);
@@ -3144,12 +3220,14 @@ function addAudio(id,input){
   xhr.send(fd);
 }
 function removeAudio(id){
+  if(isLocked())return;
   const idx=history.findIndex(x=>x.id===id);
   if(idx>=0){delete history[idx].audio;saveHistory();renderLib();showToast("Áudio removido","ok");}
 }
 let editingFromLib=false;
 let editingId=null;
 function loadEntry(id){
+  if(isLocked())return;
   const e=history.find(x=>x.id===id);if(!e)return;
   if(editingId!==id){clearVersionsHistory();}
   currentSong=e.song;currentSections=e.sections;activeRTab="letra";
@@ -3168,6 +3246,7 @@ function saveEditedEntry(){
 }
 function saveHistory(){ghSave();}
 function editTitle(id){
+  if(isLocked())return;
   const e=history.find(x=>x.id===id);if(!e)return;
   const novo=prompt("Nome da música:",e.title);
   if(novo===null||novo.trim()==="")return;
@@ -3178,6 +3257,7 @@ function editTitle(id){
   showToast("✅ Nome atualizado!","ok");
 }
 function delEntry(id){
+  if(isLocked())return;
   if(!confirm("Mover para a lixeira?"))return;
   const idx=history.findIndex(x=>x.id===id);
   if(idx<0)return;
@@ -3378,10 +3458,12 @@ function safeid(s){return s.replace(/\s/g,"_").replace(/[^a-zA-Z0-9_]/g,"");}
 // ══════════════════════════════════════
 let activeLibTab="biblioteca";
 function switchLibTab(tab){
+  if(isLocked())tab="galeria";
   activeLibTab=tab;
   ["biblioteca","galeria"].forEach(t=>{
     document.getElementById("libpage-"+t).style.display=t===tab?"block":"none";
-    document.getElementById("ltab-"+t).className="lib-tab"+(t===tab?" active":"");
+    const ltabEl=document.getElementById("ltab-"+t);
+    ltabEl.classList.toggle("active",t===tab);
   });
   if(tab==="galeria")renderGallery();
 }
@@ -3886,6 +3968,7 @@ function closeLyricsModal(){
   document.getElementById("lyrics-modal").style.display="none";
 }
 function toggleLyricsEdit(){
+  if(isLocked())return;
   var content=document.getElementById("lyrics-content");
   var editor=document.getElementById("lyrics-editor");
   var editBtn=document.getElementById("btn-edit-lyrics");
