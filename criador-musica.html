@@ -1347,19 +1347,24 @@ function ghMergeCloud(decoded){
   return Object.values(mergedMap).sort((a,b)=>b.id-a.id);
 }
 async function ghLoad(){
-  if(!ghToken)return;
   try{
-    const r=await ghFetch("GET");
-    if(r.status===404){ghFileSha=null;return;}
+    // Com token (dono, editando): leitura autenticada, guarda o sha pra poder salvar depois.
+    // Sem token (visitante, ex: as filhas abrindo o link): leitura pública, só pra MOSTRAR
+    // a biblioteca compartilhada — repositório é público, então funciona sem login nenhum.
+    const r=ghToken?await ghFetch("GET"):await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+      {headers:{"Accept":"application/vnd.github+json"}}
+    );
+    if(r.status===404){if(ghToken)ghFileSha=null;return;}
     if(!r.ok)throw new Error("HTTP "+r.status);
     const d=await r.json();
-    ghFileSha=d.sha;
+    if(ghToken)ghFileSha=d.sha;
     const decoded=ghDecodeContent(d.content);
     history=ghMergeCloud(decoded);
     localStorage.setItem("ams6",JSON.stringify(history));
     updateLibN();
     if(currentPage==="lib")renderLib();
-    showToast("☁️ Biblioteca carregada!","ok");
+    if(ghToken)showToast("☁️ Biblioteca carregada!","ok");
   }catch(e){console.warn("ghLoad:",e);}
 }
 // Fila de salvamentos: evita que vários ghSave() disparados em sequência rápida
