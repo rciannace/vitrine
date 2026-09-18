@@ -1316,6 +1316,26 @@ async function ghFetch(method,body){
   if(body)opts.body=JSON.stringify(body);
   return fetch(url,opts);
 }
+function ghDecodeContent(b64){
+  const raw=atob(b64.replace(/\n/g,""));
+  try{
+    return JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+  }catch{
+    return JSON.parse(raw);
+  }
+}
+function ghMergeCloud(decoded){
+  // merge: local-wins — respeita deleções e saves feitos antes do sync
+  // itens na nuvem que NÃO existem no local foram deletados pelo usuário → não restaurar
+  const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
+  // Para saber se um item foi "deletado localmente", comparamos com um snapshot de ids conhecidos
+  const knownDeletedIds=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
+  const deletedSet=new Set(knownDeletedIds);
+  const cloudMap=Object.fromEntries(decoded.filter(e=>!deletedSet.has(e.id)).map(e=>[e.id,e]));
+  // local-wins: local sobrescreve nuvem para ids iguais
+  const merged=Object.values({...cloudMap,...localMap});
+  return merged.sort((a,b)=>b.id-a.id);
+}
 async function ghLoad(){
   if(!ghToken)return;
   try{
@@ -1324,32 +1344,15 @@ async function ghLoad(){
     if(!r.ok)throw new Error("HTTP "+r.status);
     const d=await r.json();
     ghFileSha=d.sha;
-    const raw=atob(d.content.replace(/\n/g,""));
-    let decoded;
-    try{
-      decoded=JSON.parse(decodeURIComponent(raw.split("").map(c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
-    }catch{
-      decoded=JSON.parse(raw);
-    }
-    // merge: local-wins — respeita deleções e saves feitos antes do sync
-    // itens na nuvem que NÃO existem no local foram deletados pelo usuário → não restaurar
-    const localMap=Object.fromEntries(history.map(e=>[e.id,e]));
-    const localIds=new Set(history.map(e=>e.id));
-    // pega da nuvem apenas itens que ainda existem no local (atualiza campos) OU itens novos
-    // Para saber se um item foi "deletado localmente", comparamos com um snapshot de ids conhecidos
-    const knownDeletedIds=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
-    const deletedSet=new Set(knownDeletedIds);
-    const cloudMap=Object.fromEntries(decoded.filter(e=>!deletedSet.has(e.id)).map(e=>[e.id,e]));
-    // local-wins: local sobrescreve nuvem para ids iguais
-    const merged=Object.values({...cloudMap,...localMap});
-    history=merged.sort((a,b)=>b.id-a.id);
+    const decoded=ghDecodeContent(d.content);
+    history=ghMergeCloud(decoded);
     localStorage.setItem("ams6",JSON.stringify(history));
     updateLibN();
     if(currentPage==="lib")renderLib();
     showToast("☁️ Biblioteca carregada!","ok");
   }catch(e){console.warn("ghLoad:",e);}
 }
-async function ghSave(){
+async function ghSave(isRetry){
   saveLocal(); // garante save local ANTES de qualquer operação assíncrona
   if(!ghToken){return;}
   syncStatus="syncing";renderSyncUI();
@@ -1359,7 +1362,23 @@ async function ghSave(){
     const body={message:"AI Music Studio update",content,branch:GH_BRANCH};
     if(ghFileSha)body.sha=ghFileSha;
     const r=await ghFetch("PUT",body);
-    if(!r.ok){const e=await r.json();throw new Error(e.message||"HTTP "+r.status);}
+    if(!r.ok){
+      const errData=await r.json().catch(()=>({}));
+      const msg=errData.message||("HTTP "+r.status);
+      // conflito de versão: o sha local ficou desatualizado (ex: vários saves seguidos).
+      // busca a versão mais nova da nuvem, funde com o que temos localmente e tenta salvar de novo (só 1x).
+      if(!isRetry&&/does not match|sha/i.test(msg)){
+        const rr=await ghFetch("GET");
+        if(rr.ok){
+          const dd=await rr.json();
+          ghFileSha=dd.sha;
+          history=ghMergeCloud(ghDecodeContent(dd.content));
+          saveLocal();
+          return ghSave(true);
+        }
+      }
+      throw new Error(msg);
+    }
     const d=await r.json();
     ghFileSha=d.content.sha;
     saveLocal();
