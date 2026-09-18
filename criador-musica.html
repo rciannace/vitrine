@@ -506,7 +506,7 @@ body.dark .footer-btn-inner .btn-main{background:linear-gradient(135deg,#0d4a8a,
 
 /* CADEADO / PROTEÇÃO POR SENHA */
 body.locked .need-pass{display:none!important}
-#lock-btn{position:fixed;top:14px;right:14px;z-index:500;width:38px;height:38px;border-radius:50%;border:none;background:#1e1e2e;color:#f97316;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px #0004}
+#lock-btn{width:34px;height:34px;border-radius:50%;border:none;background:#1e1e2e;color:#f97316;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px #0004;flex-shrink:0}
 #lock-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,10,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:600;align-items:center;justify-content:center;padding:20px}
 #lock-overlay.show{display:flex}
 #lock-modal{background:#fff;border-radius:24px;width:min(440px,96vw);padding:40px 32px 32px;box-shadow:0 32px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:18px;text-align:center;align-items:center;animation:lockPop .22s cubic-bezier(.34,1.46,.64,1) both}
@@ -534,7 +534,6 @@ body:not(.locked) #main-tabs .editable-field{display:inline-block;padding:9px 11
 <script>document.body.classList.toggle("locked", localStorage.getItem("ams_unlocked")!=="true");</script>
 
 <!-- CADEADO -->
-<button id="lock-btn" onclick="openLockModal()" title="Área protegida">🔒</button>
 <div id="lock-overlay" onclick="if(event.target===this)closeLockModal()">
   <div id="lock-modal">
     <div class="lm-icon">🔒</div>
@@ -568,6 +567,7 @@ body:not(.locked) #main-tabs .editable-field{display:inline-block;padding:9px 11
     </button>
     <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">🌙</button>
     <button onclick="toggleApiPanel()" id="btn-cfg" class="need-pass" style="width:34px;height:34px;border-radius:50%;border:1px solid #eee;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">⚙️<div class="api-dot" id="api-dot" style="position:absolute;top:2px;right:2px;width:8px;height:8px"></div></button>
+    <button id="lock-btn" onclick="openLockModal()" title="Área protegida">🔒</button>
   </div>
 </div>
 
