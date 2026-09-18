@@ -3115,11 +3115,17 @@ function promoteDraft(draftId){
 }
 
 function deleteDraft(draftId){
+  if(isLocked())return;
   drafts=drafts.filter(d=>d.id!==draftId);
   try{localStorage.setItem("ams_drafts",JSON.stringify(drafts));}catch{}
   // Also remove from history if isDraft
   history=history.filter(h=>h.id!==draftId);
-  saveLocal();
+  // persiste o id deletado para o ghLoad não trazer de volta da nuvem no próximo carregamento
+  try{
+    const del=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
+    if(!del.includes(draftId)){del.push(draftId);localStorage.setItem("ams6_deleted",JSON.stringify(del.slice(-200)));}
+  }catch{}
+  ghSave();
   renderLib();showToast("Rascunho apagado","ok");
 }
 
@@ -3335,6 +3341,40 @@ function delEntry(id){
   }catch{}
   ghSave();
   updateLibN();renderLib();showToast("🗑 Movido para a lixeira","ok");
+}
+function restoreEntry(id){
+  if(isLocked())return;
+  const idx=trash.findIndex(x=>x.id===id);
+  if(idx<0)return;
+  const entry=trash.splice(idx,1)[0];
+  delete entry._deletedAt;
+  history.unshift(entry);
+  saveTrash();
+  ghSave();
+  // remove do bloqueio de re-sync do GitHub, já que voltou pra biblioteca
+  try{
+    const del=JSON.parse(localStorage.getItem("ams6_deleted")||"[]");
+    const i=del.indexOf(id);
+    if(i>=0){del.splice(i,1);localStorage.setItem("ams6_deleted",JSON.stringify(del));}
+  }catch{}
+  updateLibN();renderLib();showToast("↩ Música restaurada","ok");
+}
+function deleteForever(id){
+  if(isLocked())return;
+  if(!confirm("Apagar essa música definitivamente? Essa ação não pode ser desfeita."))return;
+  const idx=trash.findIndex(x=>x.id===id);
+  if(idx<0)return;
+  trash.splice(idx,1);
+  saveTrash();
+  renderLib();showToast("✕ Apagada definitivamente","ok");
+}
+function emptyTrash(){
+  if(isLocked())return;
+  if(!trash.length)return;
+  if(!confirm("Esvaziar toda a lixeira? Essa ação não pode ser desfeita."))return;
+  trash=[];
+  saveTrash();
+  renderLib();showToast("🗑 Lixeira esvaziada","ok");
 }
 
 // ══════════════════════════════════════
