@@ -1956,10 +1956,12 @@
       "duration": "normal",
       "style_tags": []
     },
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242030/yy6jlbiwozsxbjpqsfte.mp3",
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 12
+    "plays": 12,
+    "audioDur": 242.76,
+    "_mtime": 1791242030634
   },
   {
     "struct": [
