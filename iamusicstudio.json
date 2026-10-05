@@ -1198,9 +1198,10 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241427/x7wswlms2sjfmdhzobtc.mp3",
     "plays": 15,
-    "_mtime": 1790017628931
+    "_mtime": 1791241426944,
+    "audioDur": 179.352
   },
   {
     "id": 1781739144499,
