@@ -1716,7 +1716,7 @@
     "audioDur": 226.344
   },
   {
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241691/yd32h23qsf9jrrd0u0k3.mp3",
     "title": "MANTO DE PRATA",
     "duration": "normal",
     "date": "09/06/2026",
@@ -1780,7 +1780,8 @@
       "genre": "Sertanejo"
     },
     "plays": 19,
-    "_mtime": 1790790692612
+    "_mtime": 1791241691126,
+    "audioDur": 254.784
   },
   {
     "duration": "normal",
