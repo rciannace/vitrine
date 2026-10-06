@@ -1289,7 +1289,7 @@ let selGenre="sertanejo",selMood="romantico",selTempo="1",selVoz="fp";
 let selExtras=[],selDuration="normal";
 let selTimbre="";
 let selEstrutura=[];
-let currentSong=null,currentSections={},activeRTab="letra";
+let currentSong=null,currentSections={},currentStruct=null,activeRTab="letra";
 let versionsHistory=[];
 try{versionsHistory=JSON.parse(localStorage.getItem("ams_versions")||"[]");}catch{}
 let activeVersionIdx=null;
@@ -2284,9 +2284,7 @@ async function extendSec(sec){
     // save to library
     var histIdx=history.findIndex(function(h){return h.id===currentSong.id||(h.title===currentSong.title);});
     if(histIdx>=0){
-      history[histIdx].sections=currentSong.sections;
-      touch(history[histIdx]);
-      ghSave();
+      saveEntryLyrics(history[histIdx],currentSections,currentStruct||Object.keys(currentSections));
     }else{
       // not in library yet — add it
       var entry={id:Date.now(),date:new Date().toISOString(),...currentSong,sections:currentSong.sections,struct:Object.keys(currentSections)};
@@ -2326,7 +2324,7 @@ const SEC_TRANSLATE={"Verse 1":"Verso 1","Verse 2":"Verso 2","Verse 3":"Verso 3"
 function secName(s){return SEC_TRANSLATE[s]||s;}
 function renderResult(structs){
   const s=currentSong;
-  const secsToShow=structs||Object.keys(currentSections);
+  const secsToShow=[...new Set(structs||Object.keys(currentSections))];
   setPage("result");
   const ra=document.getElementById("page-result");
   ra.innerHTML=`<div style="animation:fadeup .4s ease">
@@ -2640,6 +2638,7 @@ function toggleEdit(sid,sec){
     body.innerHTML=`<pre class="sec-text">${esc(currentSections[sec])}</pre>`;
     btn.className="sec-btn";btn.textContent="✏ Editar";
     const el=document.getElementById("ex-lyrics");if(el)el.textContent=buildSunoLyrics(Object.keys(currentSections));
+    if(editingFromLib&&editingId){const h=history.find(x=>x.id===editingId);if(h){saveEntryLyrics(h,currentSections,currentStruct||Object.keys(currentSections));showToast("✅ Seção salva","ok");}}
   }else{
     body.innerHTML=`<textarea class="sec-ta">${esc(currentSections[sec]||"")}</textarea>`;
     body.querySelector("textarea").oninput=function(){currentSections[sec]=this.value;};
@@ -2981,7 +2980,7 @@ function buildSunoDetailedStyle(){
 function setPage(p){
   if(isLocked()&&p!=="lib")p="lib";
   currentPage=p;
-  if(p==="criar"){editingFromLib=false;editingId=null;}
+  if(p==="criar"){editingFromLib=false;editingId=null;currentStruct=null;}
   document.getElementById("page-criar").style.display=p==="criar"?"block":"none";
   document.getElementById("page-result").style.display=p==="result"?"block":"none";
   document.getElementById("page-lib").style.display=p==="lib"?"block":"none";
@@ -3394,22 +3393,74 @@ function removeAudio(id){
 }
 let editingFromLib=false;
 let editingId=null;
+// ══════════════════════════════════════
+// LETRA — fonte única de verdade (Biblioteca e Player usam as mesmas funções)
+// ══════════════════════════════════════
+function secLabel(k){return String(k).replace(/ \(\d+\)$/,"");}
+// Lê um texto colado com [Títulos] e devolve {sections, struct}.
+// Nunca perde conteúdo: texto antes do 1º título vira "Letra"; títulos repetidos
+// com conteúdo diferente ganham sufixo " (2)", " (3)"...; repetidos iguais só repetem na ordem.
+function parseLyricsText(raw){
+  const sections={},struct=[];
+  let curLabel=null,cur=[];
+  const flush=()=>{
+    if(curLabel===null)return;
+    const body=cur.join("\n").replace(/^\s*\n/,"").replace(/\n\s*$/,"").replace(/^\n+|\n+$/g,"");
+    if(curLabel==="__pre__"&&!body.trim())return;
+    let label=curLabel==="__pre__"?"Letra":curLabel;
+    let key=label,n=2;
+    while(Object.prototype.hasOwnProperty.call(sections,key)&&sections[key]!==body){key=label+" ("+n+")";n++;}
+    sections[key]=body;struct.push(key);
+  };
+  String(raw||"").replace(/\r/g,"").split("\n").forEach(l=>{
+    const m=l.match(/^\s*\[\s*(.+?)\s*\]\s*$/);
+    if(m){flush();curLabel=m[1];cur=[];}
+    else{if(curLabel===null)curLabel="__pre__";cur.push(l);}
+  });
+  flush();
+  if(!struct.length){sections["Letra"]=String(raw||"").trim();struct.push("Letra");}
+  return {sections,struct};
+}
+function buildLyricsText(struct,sections){
+  return (struct||[]).filter(k=>sections&&sections[k]!==undefined)
+    .map(k=>"["+secLabel(k)+"]\n"+(sections[k]||"")).join("\n\n");
+}
+// Grava a letra no item da biblioteca deixando TODOS os campos coerentes e sincroniza na nuvem
+function saveEntryLyrics(entry,sections,struct){
+  if(!entry)return;
+  const secs=JSON.parse(JSON.stringify(sections||{}));
+  let st=(struct||[]).filter(k=>secs[k]!==undefined);
+  Object.keys(secs).forEach(k=>{if(!st.includes(k))st.push(k);});
+  entry.sections=secs;
+  entry.struct=st;
+  entry.song=Object.assign(entry.song||{},{sections:JSON.parse(JSON.stringify(secs))});
+  entry._editedText=buildLyricsText(st,secs);
+  touch(entry);
+  ghSave();
+}
+// Lê a letra de um item: se houver texto completo salvo, ele é a referência (recupera trechos que versões antigas perdiam)
+function entryLyrics(e){
+  if(e&&e._editedText&&e._editedText.trim())return parseLyricsText(e._editedText);
+  const secs=JSON.parse(JSON.stringify((e&&e.sections)||{}));
+  return {sections:secs,struct:((e&&e.struct)||Object.keys(secs)).filter(k=>secs[k]!==undefined)};
+}
+
 function loadEntry(id){
   if(isLocked())return;
   const e=history.find(x=>x.id===id);if(!e)return;
   if(editingId!==id){clearVersionsHistory();}
-  currentSong=e.song;currentSections=e.sections;activeRTab="letra";
+  const L=entryLyrics(e);
+  currentSong=JSON.parse(JSON.stringify(e.song||{title:e.title,genre:e.genre,mood:e.mood,bpm:e.bpm,duration:e.duration}));
+  currentSections=L.sections;currentStruct=L.struct;activeRTab="letra";
   editingFromLib=true;editingId=id;
-  renderResult(e.struct||Object.keys(e.sections));showToast("Música carregada!","ok");
+  renderResult(L.struct);showToast("Música carregada!","ok");
 }
 function saveEditedEntry(){
   if(!editingId)return;
   const idx=history.findIndex(x=>x.id===editingId);
   if(idx<0)return;
-  history[idx].sections=currentSections;
-  history[idx].song=currentSong;
-  touch(history[idx]);
-  saveHistory();
+  history[idx].song=JSON.parse(JSON.stringify(currentSong));
+  saveEntryLyrics(history[idx],currentSections,currentStruct||Object.keys(currentSections));
   setTimeout(function(){renderVersionsBar();},50);
   showToast("✅ Música salva!","ok");
 }
@@ -4156,35 +4207,24 @@ function closePasteLyrics(){
   document.getElementById("paste-modal").style.display="none";
 }
 function applyPasteLyrics(){
-  var raw=document.getElementById("paste-lyrics-ta").value.trim();
-  if(!raw){showToast("Cole a letra primeiro!","err");return;}
-  var newSecs={};var newStruct=[];
-  var parts=raw.split(/\n(?=\[)/);
-  parts.forEach(function(part){
-    var m=part.match(/^\[([^\]]+)\]\n?([\s\S]*)/);
-    if(m){newSecs[m[1].trim()]=m[2].trim();newStruct.push(m[1].trim());}
-  });
-  if(newStruct.length===0){newSecs["Letra"]=raw;newStruct.push("Letra");}
-  currentSections=newSecs;
-  // try editingId first, then by title
+  var raw=document.getElementById("paste-lyrics-ta").value;
+  if(!raw.trim()){showToast("Cole a letra primeiro!","err");return;}
+  var P=parseLyricsText(raw);
+  currentSections=P.sections;currentStruct=P.struct;
   var saveId=editingId||null;
   if(!saveId&&currentSong&&currentSong.title){
     var f=history.find(function(x){return x.title===currentSong.title;});
     if(f)saveId=f.id;
   }
-  if(saveId){
-    var idx=history.findIndex(function(x){return x.id===saveId;});
-    if(idx>=0){
-      history[idx].sections=currentSections;
-      if(currentSong)history[idx].song=Object.assign(history[idx].song||{},{sections:currentSections});
-      saveHistory();
-      showToast("Letra salva na nuvem!","ok");
-    }
+  var h=saveId?history.find(function(x){return x.id===saveId;}):null;
+  if(h){
+    saveEntryLyrics(h,P.sections,P.struct);
+    showToast("✅ Letra salva!","ok");
   } else {
     showToast("Letra aplicada (abra pela Biblioteca para salvar)","ok");
   }
   closePasteLyrics();
-  renderResult(newStruct);
+  renderResult(P.struct);
 }
 function renderResultSections(){
   if(currentSections)renderResult(Object.keys(currentSections));
@@ -4194,15 +4234,8 @@ function openLyricsModal(){
   if(spIndex<0||!spQueue[spIndex])return;
   var e=spQueue[spIndex];
   document.getElementById("lyrics-modal-title").textContent=e.title||"—";
-  var secs=e.sections||{};
-  var struct=e.struct||Object.keys(secs);
-  // if user edited the text, show the edited version directly
-  var text="";
-  if(e._editedText){
-    text=e._editedText;
-  } else {
-    struct.forEach(function(s){if(secs[s])text+="[ "+s.toUpperCase()+" ]\n"+secs[s]+"\n\n";});
-  }
+  var L=entryLyrics(e);
+  var text=buildLyricsText(L.struct,L.sections);
   if(!text)text="Letra não disponível.";
   document.getElementById("lyrics-content").textContent=text;
   document.getElementById("lyrics-content").style.display="block";
@@ -4243,77 +4276,18 @@ function saveLyricsEdit(){
   var editor=document.getElementById("lyrics-editor");
   var contentEl=document.getElementById("lyrics-content");
   var newText=editor.value;
-
   if(spIndex>=0&&spQueue[spIndex]){
-    var entry=spQueue[spIndex];
-
-    // Salva o texto editado completo em uma chave especial "_edited"
-    // e mantém as seções originais intactas para não perder nada
-    entry._editedText=newText;
-
-    // Rebuild sections preservando TODO o conteúdo — sem risco de perda
-    var sections={};
-    var struct=[];
-    var lines=newText.split("\n");
-    var curKey=null;
-    var curLines=[];
-    lines.forEach(function(l){
-      var m=l.match(/^\[\s*(.+?)\s*\]\s*$/);
-      if(m){
-        if(curKey!==null){
-          sections[curKey]=curLines.join("\n");
-          // trim apenas as linhas em branco do início e fim, nunca do meio
-          sections[curKey]=sections[curKey].replace(/^\n+/,"").replace(/\n+$/,"");
-        }
-        curKey=m[1].toLowerCase().trim();
-        if(!struct.includes(curKey))struct.push(curKey);
-        curLines=[];
-      } else {
-        if(curKey===null){
-          // texto antes de qualquer tag — cria seção "intro"
-          curKey="intro";
-          struct.push(curKey);
-        }
-        curLines.push(l);
-      }
-    });
-    // flush last section
-    if(curKey!==null){
-      sections[curKey]=curLines.join("\n").replace(/^\n+/,"").replace(/\n+$/,"");
+    var entry=history.find(function(h){return h.id===spQueue[spIndex].id;})||spQueue[spIndex];
+    var P=parseLyricsText(newText);
+    saveEntryLyrics(entry,P.sections,P.struct);
+    if(spQueue[spIndex]!==entry){spQueue[spIndex].sections=entry.sections;spQueue[spIndex].struct=entry.struct;spQueue[spIndex]._editedText=entry._editedText;}
+    // se a mesma música estiver aberta na tela de edição, recarrega com a letra nova
+    if(editingFromLib&&editingId===entry.id){
+      currentSections=JSON.parse(JSON.stringify(entry.sections));currentStruct=entry.struct.slice();
+      if(currentPage==="result")renderResult(currentStruct);
     }
-
-    // só atualiza se conseguiu parsear pelo menos 1 seção
-    if(Object.keys(sections).length>0){
-      entry.sections=sections;
-      entry.struct=struct;
-    } else {
-      // fallback: salva tudo numa seção "letra" para não perder nada
-      entry.sections={letra:newText};
-      entry.struct=["letra"];
-    }
-
-    // atualiza history pela id (mais confiável que título)
-    var idx=history.findIndex(function(h){return h.id===entry.id;});
-    if(idx<0)idx=history.findIndex(function(h){return h.title===entry.title;});
-    if(idx>=0){
-      history[idx].sections=entry.sections;
-      history[idx].struct=entry.struct;
-      history[idx]._editedText=newText;
-      touch(history[idx]);
-    }
-
-    // persiste
-    ghSave();
-
-    // atualiza tela de resultado se a música estiver aberta
-    if(currentSong&&currentSong.title===entry.title){
-      currentSong.sections=entry.sections;
-      Object.assign(currentSections, entry.sections);
-      renderResultSections();
-    }
+    newText=entry._editedText;
   }
-
-  // atualiza display
   contentEl.textContent=newText;
   contentEl.style.display="block";
   editor.style.display="none";
