@@ -1132,6 +1132,15 @@ const CLD_PRESET="music_studio";
 const CLD_DEAD=["/dftsx4wv0/"]; // contas antigas desativadas: links delas são tratados como "sem áudio"
 function audioOk(e){return !!(e&&e.audio)&&!CLD_DEAD.some(x=>e.audio.includes(x));}
 function audioDead(e){return !!(e&&e.audio)&&!audioOk(e);}
+// Versão leve para ouvir (128 kbps, ~metade do tamanho). O arquivo original continua intacto no Cloudinary.
+// Se o Cloudinary recusar a versão leve, o app volta sozinho para o original.
+const CLD_LIGHT="br_128k";
+window._cldNoLight=false;
+function audioPlayUrl(e){
+  const u=(e&&e.audio)||"";
+  if(window._cldNoLight||!/res\.cloudinary\.com\/[^/]+\/video\/upload\//.test(u)||u.includes("/"+CLD_LIGHT+"/"))return u;
+  return u.replace("/video/upload/","/video/upload/"+CLD_LIGHT+"/");
+}
 
 // ══════════════════════════════════════
 // CADEADO / PROTEÇÃO POR SENHA
@@ -3328,7 +3337,7 @@ function renderLib(){
       <div style="font-size:11px;color:#aaa;margin-bottom:10px">${esc(e.mood)} · ${e.date}</div>
       ${audioOk(e) ? `
       <div style="margin-bottom:10px">
-        <audio controls preload="none" style="width:100%;height:36px;border-radius:8px;outline:none" src="${e.audio}"></audio>
+        <audio controls preload="none" style="width:100%;height:36px;border-radius:8px;outline:none" src="${audioPlayUrl(e)}" data-orig="${e.audio}" onerror="if(this.src!==this.dataset.orig){this.src=this.dataset.orig;}"></audio>
       </div>` : `
       <label style="display:flex;align-items:center;gap:7px;margin-bottom:10px;padding:8px 10px;border:1.5px dashed #f9731666;border-radius:8px;cursor:pointer;font-size:11px;color:#f97316;background:#fff8f5">
         <span>${audioDead(e)?"🔄 Reenviar áudio (link antigo fora do ar)":"🎵 Adicionar áudio do Suno"}</span>
@@ -4000,7 +4009,8 @@ function spPlay(i){
   const e=spQueue[i];
   window._spCurrentId=e.id;
   const audio=document.getElementById("sp-audio");
-  audio.src=e.audio;
+  const usedLight=audioPlayUrl(e)!==e.audio;
+  audio.src=audioPlayUrl(e);
   audio.play().then(()=>{
     _spFailStreak=0;
     spPlaying=true;
@@ -4027,7 +4037,10 @@ function spPlay(i){
       navigator.mediaSession.setActionHandler("nexttrack",()=>spNext());
       navigator.mediaSession.setActionHandler("seekto",(d)=>{if(d.seekTime)audio.currentTime=d.seekTime;});
     }
-  }).catch(err=>{spHandleAudioFail(e);});
+  }).catch(err=>{
+    if(usedLight&&!window._cldNoLight){window._cldNoLight=true;spPlay(i);return;} // tenta o original
+    spHandleAudioFail(e);
+  });
 }
 
 function spToggle(){
