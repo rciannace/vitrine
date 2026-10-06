@@ -1,12 +1,12 @@
 [
   {
-    "id": 1789495166204,
+    "id": 1791244491085,
     "title": "AMIGO DO BAR",
     "genre": "Sertanejo",
     "mood": "Romantico",
     "bpm": 90,
     "duration": "normal",
-    "date": "15/09/2026",
+    "date": "05/10/2026",
     "song": {
       "title": "AMIGO DO BAR",
       "subtitle": "",
@@ -15,14 +15,20 @@
       "vibe": "",
       "style_tags": [],
       "sections": {
-        "Verse 2": "Ele contava os segredos que você dizia,\nRindo do trouxa que não percebia.\nO sangue ferveu, eu quis ir brigar,\nMas fiquei na mesa só pra escutar!",
-        "Chorus": "A janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!",
+        "Verse 1": "",
+        "Main Vocal": "Joguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,",
+        "Verse 2": "",
+        "Vocal Harmony": "Lá no boteco eu vou refazer minha vida!",
+        "Chorus": "",
+        "Explosive Duet": "A janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!",
         "Instrumental Break": "",
         "Electric Guitar Solo": "",
-        "Verse 3": "Olha no meu olho, chega de fingir,\nNão sou mais o bobo pra você rir.\nVocê diz que não sabe, tenta disfarçar,\nMas o teu \"amigo\" veio me entregar!",
-        "Pre-Chorus": "Engole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!",
-        "Outro": "Joguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,\n\nLá no boteco eu vou refazer minha vida!",
-        "Electric Guitar Outro": ""
+        "Verse 3": "",
+        "Pre-Chorus": "",
+        "Building Tension": "Engole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!",
+        "Outro": "",
+        "Electric Guitar Outro": "",
+        "End": ""
       },
       "suno_style": "",
       "instruments": [],
@@ -34,29 +40,42 @@
       "duration": "normal"
     },
     "sections": {
-      "Verse 2": "Ele contava os segredos que você dizia,\nRindo do trouxa que não percebia.\nO sangue ferveu, eu quis ir brigar,\nMas fiquei na mesa só pra escutar!",
-      "Chorus": "A janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!",
-      "Instrumental Break": "",
-      "Electric Guitar Solo": "",
-      "Verse 3": "Olha no meu olho, chega de fingir,\nNão sou mais o bobo pra você rir.\nVocê diz que não sabe, tenta disfarçar,\nMas o teu \"amigo\" veio me entregar!",
-      "Pre-Chorus": "Engole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!",
-      "Outro": "Joguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,\n\nLá no boteco eu vou refazer minha vida!",
-      "Electric Guitar Outro": ""
+      "verse 1": "",
+      "main vocal": "Joguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,",
+      "verse 2": "",
+      "vocal harmony": "Lá no boteco eu vou refazer minha vida!",
+      "chorus": "",
+      "explosive duet": "A janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!",
+      "instrumental break": "",
+      "electric guitar solo": "",
+      "verse 3": "",
+      "pre-chorus": "",
+      "building tension": "Engole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!",
+      "outro": "",
+      "electric guitar outro": "",
+      "end": ""
     },
     "struct": [
-      "Verse 2",
-      "Chorus",
-      "Instrumental Break",
-      "Electric Guitar Solo",
-      "Verse 3",
-      "Pre-Chorus",
-      "Chorus",
-      "Outro",
-      "Electric Guitar Outro"
+      "verse 1",
+      "main vocal",
+      "verse 2",
+      "vocal harmony",
+      "chorus",
+      "explosive duet",
+      "instrumental break",
+      "electric guitar solo",
+      "verse 3",
+      "pre-chorus",
+      "building tension",
+      "outro",
+      "electric guitar outro",
+      "end"
     ],
-    "plays": 24,
-    "fav": true,
-    "_mtime": 1791240443799
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791244491/li14i8bbt9x9ilguoddb.mp3",
+    "audioDur": 188.64,
+    "_mtime": 1791244630696,
+    "plays": 2,
+    "_editedText": "[Verse 1]\n[Main Vocal]\n\nPassei da hora, cheguei atrasado,\nFui tomar uma no boteco do lado.\nSó queria esquecer o dia pesado,\nMas prestei atenção num papo furado...\nUm Zé ninguém se gabando na mesa,\nFalando teu nome com tanta certeza!\n\n[Verse 2]\n[Vocal Harmony]\nEle contava os segredos que você dizia,\nRindo do trouxa que não percebia.\nO sangue ferveu, eu quis ir brigar,\nMas fiquei na mesa só pra escutar!\n\n[Chorus]\n[Explosive Duet]\nA janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!\n\n[Instrumental Break]\n[Electric Guitar Solo]\n[Verse 3]\n[Main Vocal]\nOlha no meu olho, chega de fingir,\nNão sou mais o bobo pra você rir.\nVocê diz que não sabe, tenta disfarçar,\nMas o teu \"amigo\" veio me entregar!\n\n[Pre-Chorus]\n[Building Tension]\nEngole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!\n\n[Chorus]\n[Explosive Duet]\nA janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!\n[Outro]\n[Main Vocal]\nJoguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,\n[Vocal Harmony]\nLá no boteco eu vou refazer minha vida!\n[Electric Guitar Outro]\n[End]"
   },
   {
     "id": 1787685503885,
@@ -102,7 +121,9 @@
     "plays": 3,
     "_editedText": "\n(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n(Verso 3)\nO relógio não para, a madrugada é tão fria,\nE a nossa casa ficou tão vazia.\nTentando esquecer o que a gente viveu,\nBuscando a resposta do porquê se perdeu.\n\n(Verso 4)\nA noite arrasta os minutos devagar,\nE a mente não para de te procurar.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n[Guitar Solo]\n\n(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.\n[Outro]\n",
     "fav": true,
-    "_mtime": 1791240645400
+    "_mtime": 1791242138118,
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242137/oi9xwtbncdwignhzew11.mp3",
+    "audioDur": 242.76
   },
   {
     "id": 1787685367155,
@@ -146,10 +167,11 @@
       "Outro: Heavy fading guitar chords",
       "End"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1787685365/jgtthqpulqowvvtcyeuk.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791240934/f1ouaadzjq4bpasrvodr.mp3",
     "plays": 12,
     "fav": true,
-    "_mtime": 1790792950675
+    "_mtime": 1791240933983,
+    "audioDur": 198.12
   },
   {
     "id": 1786050183257,
@@ -202,10 +224,11 @@
       "chorus final",
       "outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1786050181/p9qpbxcmmjrb9xctponx.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241020/hy1ulobodtt5wsx7ygjt.mp3",
     "plays": 9,
     "_editedText": "[ VERSE 1 ]\nEu lembro bem do teu abraço,\nDo teu olhar que me guiava o caminhar.\nSegurava firme o meu passo,\nQuando o mundo parecia me assustar.\nO tempo passa, os anos voam,\nMas o teu amor é o que me faz ficar.\n\n[ PRE-CHORUS ]\nVocê é a voz que acalma o meu medo,\nO mapa certo pra eu me encontrar.\nNão preciso de muitos segredos,\nSó de ouvir teu riso pra me confortar.\n\n[ CHORUS ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ VERSE 2 ]\nNa mesa posta, a tua calma,\nA força mansa que me ensinou a ser.\nCom um jeito simples, tocou minha alma,\nMe deu motivos pra sempre vencer.\nA tua vida espelhada na minha,\nÉ o presente que eu ganhei pra viver.\n\n[ CHORUS ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ BRIDGE ]\nE se o mundo girar, vou estar por perto,\nCuidando de ti como cuidou de mim.\nÉ o amor mais puro, o caminho certo,\nQue não tem começo e não tem fim.\n\n[ CHORUS FINAL ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ OUTRO ]\nMeu herói, meu pai...\n\n\n",
-    "_mtime": 1789911227178
+    "_mtime": 1791241020818,
+    "audioDur": 186.84
   },
   {
     "id": 1785977700686,
@@ -263,7 +286,9 @@
       "Chorus Final - Explosão máxima",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785977689/zssxxxtisyiz3b9thizb.mp3"
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241040/mvzzqoj9abmmecxjpkvt.mp3",
+    "audioDur": 259.752,
+    "_mtime": 1791241040793
   },
   {
     "id": 1785977579523,
@@ -325,9 +350,10 @@
       "Refrão Final: Energia total, vozes dobradas, coro contagiante",
       "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785977577/wagrx2zzelmkqgpsmll4.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241058/douckqwjqaj0wqquhbso.mp3",
     "plays": 9,
-    "_mtime": 1790016085220
+    "_mtime": 1791241058195,
+    "audioDur": 202.08
   },
   {
     "id": 1785711899163,
@@ -385,10 +411,11 @@
       "Chorus Final - Explosão máxima",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1785711897/qjhjymz7absko4l3ooef.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241076/hzykwbualpm7abgig89n.mp3",
     "plays": 14,
     "fav": false,
-    "_mtime": 1790789977279
+    "_mtime": 1791241077250,
+    "audioDur": 211.848
   },
   {
     "id": 1784932862077,
@@ -446,8 +473,10 @@
       "Refrão",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1784932856/rupnrxxzd4d6wyqnm8o2.mp3",
-    "plays": 4
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241118/yoyer90wboyjljvj70co.mp3",
+    "plays": 4,
+    "audioDur": 212.76,
+    "_mtime": 1791241118768
   },
   {
     "id": 1784932793137,
@@ -523,8 +552,10 @@
       "Fade Out",
       "End"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1784932791/qj7tnw5oqjqsauqeoyi1.mp3",
-    "plays": 4
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241137/czl9et6augugjw8etotk.mp3",
+    "plays": 4,
+    "audioDur": 227.76,
+    "_mtime": 1791241138219
   },
   {
     "id": 1783385309698,
@@ -587,9 +618,10 @@
       "Outro",
       "End"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783385308/cekcz9pz1vhgk7bcbu6z.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241175/ckwjngmo1ditsxie1pab.mp3",
     "plays": 17,
-    "_mtime": 1790789770884
+    "_mtime": 1791241175239,
+    "audioDur": 204.624
   },
   {
     "id": 1783099683246,
@@ -643,9 +675,10 @@
       "Refrão",
       "Outro: Fade out com guitarra solo"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1783099682/vhso3oulj0olnayrikq8.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241196/pwgzoxft8dcdxqc4xrgz.mp3",
     "plays": 14,
-    "_mtime": 1789910177451
+    "_mtime": 1791241196440,
+    "audioDur": 152.232
   },
   {
     "id": 1782930732978,
@@ -697,9 +730,10 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782930731/uujxvs7ceb7orrmuqbmn.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241207/wfaripet7z8gunrnlpbr.mp3",
     "plays": 15,
-    "_mtime": 1789921705716
+    "_mtime": 1791241207400,
+    "audioDur": 179.16
   },
   {
     "id": 1782927885852,
@@ -756,9 +790,10 @@
       "Verso Final",
       "Refrão Final"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782927877/cgpkruhhdybm3uz3fo78.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241253/clazbegcplrdqwukayml.mp3",
     "plays": 21,
-    "_mtime": 1789910562596
+    "_mtime": 1791241254494,
+    "audioDur": 222.72
   },
   {
     "id": 1782527636011,
@@ -827,10 +862,11 @@
       "ponte",
       "verso final"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782527632/qeuvgbsfbhqzj7sgjybo.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241270/hvzn9ozmij9jbqrie0hj.mp3",
     "plays": 43,
     "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n",
-    "_mtime": 1790777793816
+    "_mtime": 1791241271158,
+    "audioDur": 191.544
   },
   {
     "id": 1782388274092,
@@ -889,9 +925,10 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782388272/bhmfjn1f0luvathn3tic.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241482/drpdk4awzi86je5doc9t.mp3",
     "plays": 12,
-    "_mtime": 1790017406107
+    "_mtime": 1791241482851,
+    "audioDur": 219.96
   },
   {
     "id": 1782321557964,
@@ -946,10 +983,11 @@
       "bridge",
       "final chorus, powerful baritone vocals, anthemic"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782321580/ohpdtpvrpvmenukbsnk7.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241339/x3tyinh56ltp0x9glgfs.mp3",
     "plays": 28,
     "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!",
-    "_mtime": 1790778121670
+    "_mtime": 1791241339410,
+    "audioDur": 284.304
   },
   {
     "id": 1782254118222,
@@ -984,9 +1022,10 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782254116/wtmqdidf2idj58z4vwn7.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241356/srnbanf98dmyo40hwa9g.mp3",
     "plays": 19,
-    "_mtime": 1789909967007
+    "_mtime": 1791241356799,
+    "audioDur": 209.952
   },
   {
     "id": 1782173065596,
@@ -1040,10 +1079,11 @@
       "Guitar Solo",
       "Final / Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1782173063/eyafvfumatvb3gwk5b0v.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241373/x2rlmaf4jicxarjjpqn5.mp3",
     "plays": 69,
     "fav": false,
-    "_mtime": 1791038421370
+    "_mtime": 1791241373280,
+    "audioDur": 227.952
   },
   {
     "id": 1781827468701,
@@ -1101,9 +1141,10 @@
       "Instrumental Outro",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827902/gyiq5wxffst3egmmq8t7.mp3",
-    "plays": 25,
-    "_mtime": 1789910785807
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241383/ha18zhmit95hyn1evbbf.mp3",
+    "plays": 26,
+    "_mtime": 1791244734659,
+    "audioDur": 241.992
   },
   {
     "id": 1781825629388,
@@ -1138,10 +1179,11 @@
     "struct": [
       "intro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781827714/poinladagbwghuthqanf.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241411/yb7q1lwix6yinwjni2s3.mp3",
     "plays": 22,
     "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n",
-    "_mtime": 1790629472756
+    "_mtime": 1791241411776,
+    "audioDur": 219.192
   },
   {
     "id": 1781739849628,
@@ -1176,9 +1218,10 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781745607/pw9aoabyuunnfbesacip.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241427/x7wswlms2sjfmdhzobtc.mp3",
     "plays": 15,
-    "_mtime": 1790017628931
+    "_mtime": 1791241426944,
+    "audioDur": 179.352
   },
   {
     "id": 1781739144499,
@@ -1213,9 +1256,10 @@
     "struct": [
       "Verso 1"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781739161/ojvsmc5qpg0n6idyvjkq.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241502/afmacq37uklgarztefvg.mp3",
     "plays": 29,
-    "_mtime": 1790016962173
+    "_mtime": 1791241502407,
+    "audioDur": 182.4
   },
   {
     "id": 1781566763204,
@@ -1268,9 +1312,10 @@
       "Chorus",
       "Outro"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781566923/salvfnsrqh0gx7r6tduc.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241514/dke41e3lm8vlwj77xnyt.mp3",
     "plays": 24,
-    "_mtime": 1790016289655
+    "_mtime": 1791241514791,
+    "audioDur": 231.744
   },
   {
     "id": 1781535068368,
@@ -1331,9 +1376,10 @@
       "Bridge",
       "Refrão Final"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781565673/kewhlcqlkj1x4ipbiwsd.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241527/hvzhgia3rnwl9hkaatk8.mp3",
     "plays": 14,
-    "_mtime": 1790016523340
+    "_mtime": 1791241528413,
+    "audioDur": 237.792
   },
   {
     "id": 1781388424432,
@@ -1378,9 +1424,10 @@
       "Chorus",
       "Verse"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781388422/ooeovajollybqzymmjrs.mp3",
-    "plays": 25,
-    "_mtime": 1790716509162
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241537/y3e9uz4h2yibgka65eth.mp3",
+    "plays": 26,
+    "_mtime": 1791244324169,
+    "audioDur": 231.912
   },
   {
     "id": 1781316597462,
@@ -1430,9 +1477,10 @@
       "Bridge",
       "Chorus"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316594/vu2rgfrdcysv89ontz93.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242686/mnigtyiack9n5yfsanxb.mp3",
     "plays": 30,
-    "_mtime": 1789911613253
+    "_mtime": 1791242686462,
+    "audioDur": 218.544
   },
   {
     "id": 1781316490885,
@@ -1484,9 +1532,10 @@
       "Bridge",
       "Final Chorus"
     ],
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781316506/mp6qy2z4ppeo9s0orvxf.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241606/k5gqhopmyzbxbbwpgycn.mp3",
     "plays": 16,
-    "_mtime": 1790790477523
+    "_mtime": 1791241606144,
+    "audioDur": 213.624
   },
   {
     "genre": "Rock",
@@ -1531,46 +1580,11 @@
     "bpm": 90,
     "duration": "normal",
     "title": "RETORNO DO MEU SOL",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781138765/goocgpm5vplm9mtmpcia.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241640/juwuevwumlxekunmpkg3.mp3",
     "plays": 20,
-    "fav": false
-  },
-  {
-    "duration": "normal",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781049502/bx4jmubpi96zhkghpmki.mp3",
-    "title": "CORAÇÃO NÃO DESISTE",
-    "song": {
-      "bpm": 90,
-      "voice": "",
-      "instruments": [],
-      "genre": "Sertanejo",
-      "key": "",
-      "production_notes": "",
-      "style_tags": [],
-      "duration": "normal",
-      "suno_style": "",
-      "subtitle": "",
-      "sections": {
-        "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
-      },
-      "mood": "Romantico",
-      "title": "CORAÇÃO NÃO DESISTE",
-      "vibe": "",
-      "chords": ""
-    },
-    "bpm": 90,
-    "genre": "Sertanejo",
-    "mood": "Romantico",
-    "date": "09/06/2026",
-    "id": 1781049470701,
-    "struct": [
-      "Verso 1"
-    ],
-    "sections": {
-      "Verso 1": "“Coração Não Desiste”\nEu tentei seguir sozinho\nMas a saudade me pegou\nA casa ficou vazia\nDesde o dia que você me deixou\nEu sei que eu pisei na bola\nFui orgulho, fui teimoso demais\nMas meu coração não aprende\nA viver sem você nunca mais\nRefrão:\nVolta pra mim, amor\nQue eu tô sofrendo aqui\nSe ainda existe paixão\nNão deixa o nosso amor cair\nVolta pra mim, amor\nVem salvar meu coração\nSe você ainda me ama\nVem terminar essa solidão\nSe meu nome ainda faz você sorrir\nEntão volta de vez pra mim., horns"
-    },
-    "plays": 16,
-    "_mtime": 1790716637941
+    "fav": false,
+    "audioDur": 274.8,
+    "_mtime": 1791241640609
   },
   {
     "duration": "normal",
@@ -1633,7 +1647,7 @@
   {
     "_editedText": "[ INTRO ]\nO céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n\n[ VERSE ]\nLembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n\n[ PRE-CHORUS ]\nE o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n[ VERSE 2 ]\nOs anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n\n[ BRIDGE ]\nE se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n",
     "title": "TEMPORAL DE FAISCAS",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781042036/pnumldvkbhiu0blet9ac.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241680/pdk4efvk8klz4xvyy1cg.mp3",
     "duration": "normal",
     "bpm": 90,
     "song": {
@@ -1681,10 +1695,11 @@
     "mood": "Romantico",
     "genre": "Rock",
     "plays": 12,
-    "_mtime": 1789776147718
+    "_mtime": 1791241680172,
+    "audioDur": 226.344
   },
   {
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1781044539/z74tymgyrh5hfg5cjiub.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241691/yd32h23qsf9jrrd0u0k3.mp3",
     "title": "MANTO DE PRATA",
     "duration": "normal",
     "date": "09/06/2026",
@@ -1748,12 +1763,13 @@
       "genre": "Sertanejo"
     },
     "plays": 19,
-    "_mtime": 1790790692612
+    "_mtime": 1791241691126,
+    "audioDur": 254.784
   },
   {
     "duration": "normal",
     "title": "A ALMA CANTOU",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780969231/viqvmivy7js7piku1x55.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791243195/vmhvcpebwdtgrq85mcxq.mp3",
     "_editedText": "O sol de novo apareceu no meu céu,\nUm presente enviado por alguém do alto nível.\nO frio na espinha, que era o meu troféu,\nSe desfez feito neblina, que sumiu amável.\nAs noites em claro, meu peito apertado,\nEra um barco à deriva, sem rumo, naufragado.\n\n[Pre-Chorus]\nPensei que o fim tinha chegado, que era tudo em vão,\nQue o meu coração, quebrado, não encontraria canção.\nMas um sopro do destino, um chamado tão divino,\nMudou a estação.\n\n[Chorus]\nA alma cantou, a alma cantou,\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou,\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\n\n[Verse 2]\nOs bares que eu chorava, os amigos a perguntar,\n\"O que foi que te afligia? Cadê teu brilho no olhar?\"\nEu não tinha resposta, o tempo me arrastava\nUm vazio na existência, que me consumia.\n\n[Bridge]\nE de repente, um toque, um som no meu celular,\nUma voz que eu conhecia, me fez desmoronar.\nNão de tristeza, mas de alívio, o pranto a me molhar,\nSabendo que o meu abrigo, voltava pra ficar.\n\n[Chorus]\nA alma cantou, a alma cantou\nQuando o teu sorriso por aqui aportou.\nA alma cantou, a alma cantou\nA saudade foi embora e a alegria me abraçou.\nChegou, chegou, meu amor chegou!\nÉ a mais pura verdade, ele chegou!",
     "mood": "Romântico ❤️",
     "genre": "Rock",
@@ -1809,13 +1825,14 @@
     },
     "bpm": 90,
     "plays": 32,
-    "_mtime": 1789840440448
+    "_mtime": 1791243196454,
+    "audioDur": 225.984
   },
   {
     "_editedText": "\n[ VERSO 1 ]\nJá são mais de quinze anos caminhando lado a lado,\nE eu ainda me surpreendo com tudo que a gente tem criado.\nO tempo não levou o brilho do primeiro olhar,\nSó fez o nosso amor crescer e se firmar.\nUm laço que o destino soube bem tecer,\nEm cada melodia a certeza de você.\n\n\n[ PRÉ-REFRÃO ]\nNosso amor criou raiz, ficou forte com o tempo,\nFoi escolha repetida em cada momento.\nUm porto seguro onde a alma encontra paz,\nUm sentimento que o tempo não desfaz.\n\n\n[ REFRÃO ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n\n[ VERSO 2 ]\nVocê me ensina todo dia um jeito novo de viver,\nNa calma da sua voz eu aprendo a entender.\nSe a vida pesa um pouco, você traz direção,\nSeu abraço é meu abrigo, meu chão.\nRefúgio que acalma o meu querer,\nEm cada gesto o teu jeito de me aquecer.\n\n\n[ BRIDGE ]\n(Bateria cresce, guitarra faz um solo com pegada emotiva, mas com linha melódica clara e inspirada em Leo Magalhães. Uma pausa dramática antes de voltar ao refrão.) \n E quantas batalhas a gente enfrentou,\nMas juntos, meu bem, a gente superou.\nO nosso futuro a gente desenhou.\n\n\n[ REFRÃO FINAL ]\nDaniele, meu amor,\nÉ você quem faz meu dia amanhecer melhor.\nDaniele, minha paz,\nCom você eu sou mais forte do que jamais fui capaz.\nSe eu tiver que escolher de novo, eu escolheria você, Daniele,\nPorque amar desse jeito é crescer.\n\n(Outro: Guitarra e bateria retornam, refrão é repetido com mais intensidade, terminando com um fade out melódico da guitarra.)\nE a cada amanhecer eu entendo outra vez,\nQue a melhor parte da minha vida\nSempre foi você, Daniele. ❤️\n\n",
     "duration": "normal",
     "title": "MEU AMOR CRIOU RAIZ",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780966401/emrmacfbwpqvkio9vvoa.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242474/dq6en9lpzglpwitmvygp.mp3",
     "song": {
       "key": "G",
       "production_notes": "Produção com foco na clareza da voz masculina, bateria com pegada sertaneja marcante e solo de guitarra emotivo e melódico. Ênfase na construção da emoção do refrão. Padrão de rádio que valorize a letra e a performance.",
@@ -1874,7 +1891,8 @@
     "date": "08/06/2026",
     "id": 1780966074065,
     "plays": 13,
-    "_mtime": 1790017809986
+    "_mtime": 1791242476017,
+    "audioDur": 198.84
   },
   {
     "id": 1780956051780,
@@ -1923,10 +1941,12 @@
       "duration": "normal",
       "style_tags": []
     },
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780956095/e8ksj53j9vnoefzon7mv.mp3",
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 12
+    "plays": 12,
+    "audioDur": 194.88,
+    "_mtime": 1791242439381,
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242439/orziyeobpbbpldtx7sqz.mp3"
   },
   {
     "struct": [
@@ -1960,11 +1980,12 @@
       "chords": ""
     },
     "title": "FICA MAIS UM POUCO",
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780955916/hbuzzzum5i2ctimfqmni.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241770/d7novnbku0vdiqffvfgz.mp3",
     "duration": "normal",
     "plays": 22,
     "fav": false,
-    "_mtime": 1790016763289
+    "_mtime": 1791241771319,
+    "audioDur": 197.064
   },
   {
     "date": "07/06/2026",
@@ -2024,9 +2045,11 @@
       "production_notes": "A produção deve focar na clareza da viola, com reverbs naturais. A voz deve ser suave, estilo Victor e Léo, com harmonias em terça no refrão.",
       "key": "E Mayor (Mi Maior)"
     },
-    "audio": "https://res.cloudinary.com/dftsx4wv0/video/upload/v1780947220/mz4b6ufjasol3atcaqsn.mp3",
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241787/fho8ilncktoy5lrpyidf.mp3",
     "title": "O SILÊNCIO DA VARANDA",
     "duration": "normal",
-    "plays": 14
+    "plays": 14,
+    "audioDur": 268.92,
+    "_mtime": 1791241788408
   }
 ]
