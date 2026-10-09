@@ -1,5 +1,138 @@
 [
   {
+    "id": 1791558372909,
+    "title": "CHAVE DO CORAÇÃO",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 115,
+    "duration": "normal",
+    "date": "09/10/2026",
+    "song": {
+      "title": "CHAVE DO CORAÇÃO",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "Apostei todas as fichas em você,\nFiz tudo que um apaixonado ia fazer.\nMas a rua falou alto no ouvido,\nE o nosso amor virou um copo esquecido.",
+        "Verse 2": "Agora vem bater na minha porta de novo,\nCom a mesma conversinha pra enganar o povo.\nDizendo que o erro já ficou pra trás,\nMas esse teu teatro não me engana mais!",
+        "Chorus": "Eu assumo que o meu peito ainda balança,\nMas de você eu já perdi a esperança!\nQuem bate esquece, mas quem apanha não,\nVocê perdeu a chave do meu coração!\nPode chorar, implorar e fazer pedido,\nNão tem conserto pra um coração partido!",
+        "Bridge": "",
+        "Brief Guitar Solo": "",
+        "Verse 3": "Eu sempre te avisei que o mundo gira,\nE a casa desabou na sua mentira.\nAchou que eu ia ficar aqui chorando?\nMas olha eu aqui, no bar, comemorando!",
+        "Pre-Chorus": "Avisa lá pros seus amigos de farra,\nQue hoje você perdeu toda a sua marra.\nO jogo virou e a ficha caiu,\nProcura outro bobo, porque esse sumiu!",
+        "Verse 4": "Pega as suas coisas e pode sumir,\nQue o meu coração já voltou a sorrir.\nSegue o teu rumo, eu já tô decidido...\nVai viver sozinha com o coração partido.",
+        "Outro": "",
+        "Short Electric Guitar Outro End": ""
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 115,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "Apostei todas as fichas em você,\nFiz tudo que um apaixonado ia fazer.\nMas a rua falou alto no ouvido,\nE o nosso amor virou um copo esquecido.",
+      "Verse 2": "Agora vem bater na minha porta de novo,\nCom a mesma conversinha pra enganar o povo.\nDizendo que o erro já ficou pra trás,\nMas esse teu teatro não me engana mais!",
+      "Chorus": "Eu assumo que o meu peito ainda balança,\nMas de você eu já perdi a esperança!\nQuem bate esquece, mas quem apanha não,\nVocê perdeu a chave do meu coração!\nPode chorar, implorar e fazer pedido,\nNão tem conserto pra um coração partido!",
+      "Bridge": "",
+      "Brief Guitar Solo": "",
+      "Verse 3": "Eu sempre te avisei que o mundo gira,\nE a casa desabou na sua mentira.\nAchou que eu ia ficar aqui chorando?\nMas olha eu aqui, no bar, comemorando!",
+      "Pre-Chorus": "Avisa lá pros seus amigos de farra,\nQue hoje você perdeu toda a sua marra.\nO jogo virou e a ficha caiu,\nProcura outro bobo, porque esse sumiu!",
+      "Verse 4": "Pega as suas coisas e pode sumir,\nQue o meu coração já voltou a sorrir.\nSegue o teu rumo, eu já tô decidido...\nVai viver sozinha com o coração partido.",
+      "Outro": "",
+      "Short Electric Guitar Outro End": ""
+    },
+    "struct": [
+      "Verse 1",
+      "Verse 2",
+      "Chorus",
+      "Bridge",
+      "Brief Guitar Solo",
+      "Verse 3",
+      "Pre-Chorus",
+      "Chorus",
+      "Verse 4",
+      "Outro",
+      "Short Electric Guitar Outro End"
+    ],
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791558371/yzwecihp8tqgfuvfokyj.mp3",
+    "audioDur": 179.832,
+    "_mtime": 1791558532275,
+    "plays": 2
+  },
+  {
+    "id": 1791406187156,
+    "title": "SETENTA ANOS DE LUZ",
+    "genre": "Pop",
+    "mood": "Alegre",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "07/10/2026",
+    "song": {
+      "title": "SETENTA ANOS DE LUZ",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verse 1": "",
+        "Smooth Vocal": "A noite chega, é tempo de celebrar,\nSetenta anos de uma luz singular.\nUm brinde à vida, ao que você construiu,\nE a cada sonho que a família dividiu.",
+        "Verse 2": "",
+        "Building Rhythm": "Os filhos e noras sentados ao redor,\nBuscando em você o nosso lado melhor.\nO riso das netas preenchendo o lugar,\nA paz que a gente encontra no teu olhar.",
+        "Chorus": "",
+        "Uplifting Harmony": "Mãe, a sua luz guia o nosso caminho,\nSetenta anos de puro carinho!\nVocê é a força que move essa história,\nNosso presente, nossa melhor memória!\n\n\nFaz um pedido, celebra a emoção,\nVocê é o centro do nosso coração.\nSetenta anos de uma alma tão rara,\nUm tempo lindo que a vida prepara!",
+        "Short Guitar Interlude": "",
+        "Verse 3": "",
+        "Main Vocal": "Uma alma livre, que não para um segundo,\nCom a sua escuta, você acalma o mundo.\nA terapeuta que sabe entender,\nE ensina a todos a arte de viver.",
+        "Pre-Chorus": "Tudo o que somos vem da sua essência,\nSorte a nossa ter a sua presença.\nHoje o momento é de agradecer,\nPor tudo aquilo que você nos faz ser."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Pop",
+      "mood": "Alegre",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verse 1": "",
+      "Smooth Vocal": "A noite chega, é tempo de celebrar,\nSetenta anos de uma luz singular.\nUm brinde à vida, ao que você construiu,\nE a cada sonho que a família dividiu.",
+      "Verse 2": "",
+      "Building Rhythm": "Os filhos e noras sentados ao redor,\nBuscando em você o nosso lado melhor.\nO riso das netas preenchendo o lugar,\nA paz que a gente encontra no teu olhar.",
+      "Chorus": "",
+      "Uplifting Harmony": "Mãe, a sua luz guia o nosso caminho,\nSetenta anos de puro carinho!\nVocê é a força que move essa história,\nNosso presente, nossa melhor memória!\n\n\nFaz um pedido, celebra a emoção,\nVocê é o centro do nosso coração.\nSetenta anos de uma alma tão rara,\nUm tempo lindo que a vida prepara!",
+      "Short Guitar Interlude": "",
+      "Verse 3": "",
+      "Main Vocal": "Uma alma livre, que não para um segundo,\nCom a sua escuta, você acalma o mundo.\nA terapeuta que sabe entender,\nE ensina a todos a arte de viver.",
+      "Pre-Chorus": "Tudo o que somos vem da sua essência,\nSorte a nossa ter a sua presença.\nHoje o momento é de agradecer,\nPor tudo aquilo que você nos faz ser."
+    },
+    "struct": [
+      "Verse 1",
+      "Smooth Vocal",
+      "Verse 2",
+      "Building Rhythm",
+      "Chorus",
+      "Uplifting Harmony",
+      "Short Guitar Interlude",
+      "Verse 3",
+      "Main Vocal",
+      "Pre-Chorus",
+      "Chorus",
+      "Uplifting Harmony"
+    ],
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791406185/kn7uqcewflxxm284sphp.mp3",
+    "audioDur": 202.752,
+    "_mtime": 1791558485388,
+    "plays": 1
+  },
+  {
     "id": 1791244491085,
     "title": "AMIGO DO BAR",
     "genre": "Sertanejo",
@@ -73,8 +206,8 @@
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791244491/li14i8bbt9x9ilguoddb.mp3",
     "audioDur": 188.64,
-    "_mtime": 1791244630696,
-    "plays": 2,
+    "_mtime": 1791406894204,
+    "plays": 6,
     "_editedText": "[Verse 1]\n[Main Vocal]\n\nPassei da hora, cheguei atrasado,\nFui tomar uma no boteco do lado.\nSó queria esquecer o dia pesado,\nMas prestei atenção num papo furado...\nUm Zé ninguém se gabando na mesa,\nFalando teu nome com tanta certeza!\n\n[Verse 2]\n[Vocal Harmony]\nEle contava os segredos que você dizia,\nRindo do trouxa que não percebia.\nO sangue ferveu, eu quis ir brigar,\nMas fiquei na mesa só pra escutar!\n\n[Chorus]\n[Explosive Duet]\nA janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!\n\n[Instrumental Break]\n[Electric Guitar Solo]\n[Verse 3]\n[Main Vocal]\nOlha no meu olho, chega de fingir,\nNão sou mais o bobo pra você rir.\nVocê diz que não sabe, tenta disfarçar,\nMas o teu \"amigo\" veio me entregar!\n\n[Pre-Chorus]\n[Building Tension]\nEngole esse choro, acabou a ilusão,\nNão tem mais conversa, não tem perdão!\nVai juntando as coisas, pode se mandar,\nQue o nosso teatro acabou de quebrar!\n\n[Chorus]\n[Explosive Duet]\nA janta tá pronta, mas a fome passou,\nDepois que o teu \"amigo\" a verdade contou!\nVocê dizia que amava, me fazia de otário,\nMas caiu a sua máscara e o seu disfarce diário!\nNão tenta chorar, não vem explicar,\nVai morar com o teu amigo que eu tô voltando pro bar!\n[Outro]\n[Main Vocal]\nJoguei a chave na mesa, bati o portão,\nFica aí sozinha com a tua traição.\nA mesa tá posta, mas eu tô de saída,\n[Vocal Harmony]\nLá no boteco eu vou refazer minha vida!\n[Electric Guitar Outro]\n[End]"
   },
   {
@@ -168,9 +301,9 @@
       "End"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791240934/f1ouaadzjq4bpasrvodr.mp3",
-    "plays": 12,
+    "plays": 13,
     "fav": true,
-    "_mtime": 1791240933983,
+    "_mtime": 1791317291551,
     "audioDur": 198.12
   },
   {
@@ -351,8 +484,8 @@
       "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241058/douckqwjqaj0wqquhbso.mp3",
-    "plays": 9,
-    "_mtime": 1791241058195,
+    "plays": 10,
+    "_mtime": 1791317289370,
     "audioDur": 202.08
   },
   {
@@ -791,8 +924,8 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241253/clazbegcplrdqwukayml.mp3",
-    "plays": 21,
-    "_mtime": 1791241254494,
+    "plays": 23,
+    "_mtime": 1791406892291,
     "audioDur": 222.72
   },
   {
@@ -863,9 +996,9 @@
       "verso final"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241270/hvzn9ozmij9jbqrie0hj.mp3",
-    "plays": 43,
+    "plays": 44,
     "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n",
-    "_mtime": 1791241271158,
+    "_mtime": 1791316969193,
     "audioDur": 191.544
   },
   {
@@ -1080,9 +1213,9 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241373/x2rlmaf4jicxarjjpqn5.mp3",
-    "plays": 70,
+    "plays": 71,
     "fav": false,
-    "_mtime": 1791245788265,
+    "_mtime": 1791406633755,
     "audioDur": 227.952
   },
   {
@@ -1180,9 +1313,9 @@
       "intro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241411/yb7q1lwix6yinwjni2s3.mp3",
-    "plays": 22,
+    "plays": 23,
     "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n",
-    "_mtime": 1791241411776,
+    "_mtime": 1791316335101,
     "audioDur": 219.192
   },
   {
@@ -1219,8 +1352,8 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241427/x7wswlms2sjfmdhzobtc.mp3",
-    "plays": 15,
-    "_mtime": 1791241426944,
+    "plays": 16,
+    "_mtime": 1791316555714,
     "audioDur": 179.352
   },
   {
@@ -1257,8 +1390,8 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241502/afmacq37uklgarztefvg.mp3",
-    "plays": 29,
-    "_mtime": 1791241502407,
+    "plays": 30,
+    "_mtime": 1791314994235,
     "audioDur": 182.4
   },
   {
@@ -1313,8 +1446,8 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241514/dke41e3lm8vlwj77xnyt.mp3",
-    "plays": 24,
-    "_mtime": 1791241514791,
+    "plays": 25,
+    "_mtime": 1791316736250,
     "audioDur": 231.744
   },
   {
@@ -1425,8 +1558,8 @@
       "Verse"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241537/y3e9uz4h2yibgka65eth.mp3",
-    "plays": 26,
-    "_mtime": 1791244324169,
+    "plays": 28,
+    "_mtime": 1791406885794,
     "audioDur": 231.912
   },
   {
@@ -1581,10 +1714,10 @@
     "duration": "normal",
     "title": "RETORNO DO MEU SOL",
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241640/juwuevwumlxekunmpkg3.mp3",
-    "plays": 20,
+    "plays": 21,
     "fav": false,
     "audioDur": 274.8,
-    "_mtime": 1791241640609
+    "_mtime": 1791312271415
   },
   {
     "duration": "normal",
@@ -1943,9 +2076,9 @@
     },
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 12,
+    "plays": 14,
     "audioDur": 194.88,
-    "_mtime": 1791242439381,
+    "_mtime": 1791317192354,
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242439/orziyeobpbbpldtx7sqz.mp3"
   },
   {
@@ -2048,8 +2181,8 @@
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241787/fho8ilncktoy5lrpyidf.mp3",
     "title": "O SILÊNCIO DA VARANDA",
     "duration": "normal",
-    "plays": 14,
+    "plays": 16,
     "audioDur": 268.92,
-    "_mtime": 1791241788408
+    "_mtime": 1791316064521
   }
 ]
