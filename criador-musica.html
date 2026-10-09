@@ -1365,8 +1365,9 @@ function renderSyncUI(){
   el.innerHTML=`<span style="font-size:11px;color:#666;cursor:pointer" onclick="toggleTokenPanel()">${icons[syncStatus]} ${msgs[syncStatus]}</span>`;
 }
 async function ghFetch(method,body){
-  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-  const opts={method,headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
+  let url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  if(method==="GET")url+=`?ref=${GH_BRANCH}&_=${Date.now()}`; // sempre a versão mais nova, nunca do cache
+  const opts={method,cache:"no-store",headers:{"Authorization":"Bearer "+ghToken,"Content-Type":"application/json","Accept":"application/vnd.github+json"}};
   if(body)opts.body=JSON.stringify(body);
   return fetch(url,opts);
 }
@@ -1403,8 +1404,8 @@ async function ghLoad(){
     // Sem token (visitante, ex: as filhas abrindo o link): leitura pública, só pra MOSTRAR
     // a biblioteca compartilhada — repositório é público, então funciona sem login nenhum.
     const r=ghToken?await ghFetch("GET"):await fetch(
-      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
-      {headers:{"Accept":"application/vnd.github+json"}}
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}&_=${Date.now()}`,
+      {cache:"no-store",headers:{"Accept":"application/vnd.github+json"}}
     );
     if(r.status===404){if(ghToken)ghFileSha=null;return;}
     if(!r.ok)throw new Error("HTTP "+r.status);
@@ -1423,10 +1424,14 @@ async function ghLoad(){
 // entre si usando o mesmo sha desatualizado. Cada save só começa depois que o
 // anterior terminou, sempre com o sha mais recente.
 let _ghSaveQueue=Promise.resolve();
+let _ghSavePending=false,_ghRetryTimer=null;
 function ghSave(){
   saveLocal(); // garante save local IMEDIATO, antes de qualquer fila/rede
   if(!ghToken)return Promise.resolve();
-  _ghSaveQueue=_ghSaveQueue.then(()=>_ghSaveNetwork(0)).catch(()=>{});
+  // se já existe um save esperando na fila, ele vai enviar a biblioteca mais atual quando rodar → não precisa de outro
+  if(_ghSavePending)return _ghSaveQueue;
+  _ghSavePending=true;
+  _ghSaveQueue=_ghSaveQueue.then(()=>{_ghSavePending=false;return _ghSaveNetwork(0);}).catch(()=>{});
   return _ghSaveQueue;
 }
 async function _ghSaveNetwork(attempt){
@@ -1443,7 +1448,8 @@ async function _ghSaveNetwork(attempt){
       // conflito de versão: o sha local ficou desatualizado (ex: vários saves seguidos,
       // ou outro dispositivo salvou ao mesmo tempo).
       // busca a versão mais nova da nuvem, funde com o que temos localmente e tenta de novo (até 3x).
-      if(attempt<2&&/does not match|sha/i.test(msg)){
+      if(attempt<4&&(r.status===409||/does not match|sha/i.test(msg))){
+        await new Promise(res=>setTimeout(res,600*(attempt+1)+Math.random()*400)); // espera a nuvem assentar
         const rr=await ghFetch("GET");
         if(rr.ok){
           const dd=await rr.json();
@@ -1453,16 +1459,26 @@ async function _ghSaveNetwork(attempt){
           return _ghSaveNetwork(attempt+1);
         }
       }
-      throw new Error(msg);
+      const err=new Error(msg);err.conflict=(r.status===409||/does not match|sha/i.test(msg));
+      throw err;
     }
     const d=await r.json();
     ghFileSha=d.content.sha;
+    if(_ghRetryTimer){clearTimeout(_ghRetryTimer);_ghRetryTimer=null;}
     saveLocal();
     syncStatus="ok";renderSyncUI();
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},3000);
   }catch(e){
     syncStatus="err";renderSyncUI();
-    showToast("❌ Sync: "+e.message,"err");
+    if(e.conflict||!navigator.onLine||/Failed to fetch|NetworkError/i.test(e.message)){
+      // nada se perde: está salvo no aparelho e vai pra nuvem na próxima tentativa
+      if(!_ghRetryTimer){
+        showToast("☁️ Nuvem ocupada — salvo no aparelho, envio em 30s","ok");
+        _ghRetryTimer=setTimeout(()=>{_ghRetryTimer=null;ghSave();},30000);
+      }
+    }else{
+      showToast("❌ Sync: "+e.message,"err");
+    }
     setTimeout(()=>{syncStatus="idle";renderSyncUI();},4000);
   }
 }
