@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261014-musica-v3 -->
+<!-- v20261014-musica-v4 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1416,8 +1416,8 @@ async function persistBg() {
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
     const current = snap.exists() ? snap.data() : {};
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
-      ...current, musicaDemos, updatedAt: Date.now()
-    });
+      musicaDemos, updatedAt: Date.now()
+    }, { merge: true });
   } catch(e) { console.error('Firebase save error:', e); }
 }
 
@@ -1469,8 +1469,8 @@ async function persistMusicaPacotes() {
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
     const current = snap.exists() ? snap.data() : {};
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
-      ...current, musicaPacotes, updatedAt: Date.now()
-    });
+      musicaPacotes, updatedAt: Date.now()
+    }, { merge: true });
   } catch(e) { console.error('Firebase pacotes save error:', e); }
 }
 
@@ -1567,8 +1567,8 @@ async function persistMusicaPedidos() {
     const snap = await window._fbGetDoc(window._fbDoc(db, 'vitrine', 'data'));
     const current = snap.exists() ? snap.data() : {};
     await window._fbSetDoc(window._fbDoc(db, 'vitrine', 'data'), {
-      ...current, musicaPedidos, updatedAt: Date.now()
-    });
+      musicaPedidos, updatedAt: Date.now()
+    }, { merge: true });
   } catch(e) { console.error('Erro ao salvar pedido de música:', e); }
 }
 
@@ -1665,6 +1665,28 @@ function deletarMusicaPedido(id) {
 }
 let currentAudio = null;
 let currentCard = null;
+
+// Altera a lista de exemplos partindo SEMPRE da versão mais nova da nuvem.
+// Assim uma aba antiga aberta em outro aparelho não apaga o que foi adicionado no celular.
+async function demosCloudChange(mutator) {
+  const ok = await waitForFirebase();
+  if (!ok) { toast('⚠️ Sem conexão com a nuvem — nada foi alterado. Tente de novo.'); return false; }
+  try {
+    const ref = window._fbDoc(window._fbDb, 'vitrine', 'data');
+    const snap = await window._fbGetDoc(ref);
+    const cloud = (snap.exists() && Array.isArray(snap.data().musicaDemos)) ? snap.data().musicaDemos : [];
+    const next = mutator(cloud.slice());
+    await window._fbSetDoc(ref, { musicaDemos: next, updatedAt: Date.now() }, { merge: true });
+    musicaDemos = next;
+    localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
+    renderMusicaDemos();
+    return true;
+  } catch (e) {
+    console.error('Erro ao salvar exemplos:', e);
+    toast('⚠️ Não consegui salvar na nuvem: ' + (e.message || 'erro'));
+    return false;
+  }
+}
 
 function saveMusicaDemos() {
   localStorage.setItem('iafoto_music_demos', JSON.stringify(musicaDemos));
@@ -1899,11 +1921,11 @@ async function confirmarMusicaUpload() {
     try {
       const res = JSON.parse(xhr.responseText);
       if (res.secure_url) {
-        musicaDemos.push({ nome, estilo: '🎵', url: res.secure_url });
-        saveMusicaDemos();
-        renderMusicaDemos();
+        const novo = { nome, estilo: '🎵', url: res.secure_url };
+        demosCloudChange(list => list.some(d => d.url === novo.url) ? list : list.concat([novo])).then(ok => {
+          if (ok) toast('🎵 "' + nome + '" adicionada e salva na nuvem!');
+        });
         fecharMusicaUpload();
-        toast('🎵 "' + nome + '" adicionada!');
       } else {
         toast('⚠️ Erro no upload: ' + (res.error?.message || 'tente novamente'));
         btn.disabled = false;
@@ -1936,10 +1958,11 @@ function deleteMusicaDemo(i) {
     currentAudio = null;
     currentCard = null;
   }
-  musicaDemos.splice(i, 1);
-  saveMusicaDemos();
-  renderMusicaDemos();
-  toast('🗑 Música removida.');
+  const alvo = musicaDemos[i];
+  if (!alvo) return;
+  demosCloudChange(list => list.filter(d => d.url !== alvo.url)).then(ok => {
+    if (ok) toast('🗑 Música removida.');
+  });
 }
 
 // Inicializar demos ao carregar
