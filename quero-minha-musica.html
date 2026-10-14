@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20260625-musica-v2 -->
+<!-- v20261014-musica-v3 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1272,8 +1272,16 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 </script>
 
 <script>
-const CLOUDINARY_CLOUD  = 'dftsx4wv0';
-const CLOUDINARY_PRESET = 'ia_foto_studio';
+// Conta nova do Cloudinary (só para músicas). A antiga (dftsx4wv0) foi desativada.
+const CLOUDINARY_CLOUD  = 'ppylrh6g';
+const CLOUDINARY_PRESET = 'music_studio';
+const CLD_DEAD = ['/dftsx4wv0/'];
+function demoDead(d) { return !!(d && d.url) && CLD_DEAD.some(x => d.url.includes(x)); }
+// Versão leve para ouvir (128 kbps, ~metade do tamanho) → economiza a conta gratuita
+function demoPlayUrl(u) {
+  if (!u || !/res\.cloudinary\.com\/[^/]+\/video\/upload\//.test(u) || u.includes('/br_128k/')) return u;
+  return u.replace('/video/upload/', '/video/upload/br_128k/');
+}
 const PRICING_STORAGE_KEY = 'iafotostudio_pricing';
 
 window.addEventListener('firebase-ready', async () => {
@@ -1670,6 +1678,7 @@ function renderMusicaDemos() {
   const isAdmin = document.body.classList.contains('admin-mode');
 
   const demosHtml = musicaDemos.map((d, i) => {
+    if (demoDead(d) && !isAdmin) return '';
     // 32 barras com alturas variadas para ocupar toda a largura
     const seed = i * 7;
     const bars = Array.from({length: 32}, (_, j) => {
@@ -1681,7 +1690,7 @@ function renderMusicaDemos() {
         '<div class="musica-demo-play" id="mdemo-play-' + i + '">▶</div>' +
         '<div class="musica-demo-info">' +
           '<div class="musica-demo-nome">' + d.nome + '</div>' +
-          '<div class="musica-demo-estilo">🎵 Música IA</div>' +
+          (demoDead(d) ? '<div class="musica-demo-estilo" style="color:#f59e0b">⚠ Áudio antigo fora do ar — apague (✕) e reenvie</div>' : '<div class="musica-demo-estilo">🎵 Música IA</div>') +
         '</div>' +
         (isAdmin ? '<button onclick="event.stopImmediatePropagation();deleteMusicaDemo(' + i + ')" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer;padding:6px 10px;border-radius:8px;flex-shrink:0;z-index:10;position:relative;">✕</button>' : '') +
       '</div>' +
@@ -1767,8 +1776,12 @@ function toggleMusicaDemo(i) {
     if (prev) { prev.classList.remove('playing'); prev.querySelector('.musica-demo-play').textContent = '▶'; }
   }
 
-  const audio = new Audio(demo.url);
-  audio.play().catch(() => toast('⚠️ Não foi possível reproduzir.'));
+  const light = demoPlayUrl(demo.url);
+  const audio = new Audio(light);
+  audio.play().catch(() => {
+    if (light !== demo.url) { audio.src = demo.url; audio.play().catch(() => toast('⚠️ Não foi possível reproduzir.')); }
+    else toast('⚠️ Não foi possível reproduzir.');
+  });
 
   // Progresso em tempo real
   audio.addEventListener('timeupdate', () => {
