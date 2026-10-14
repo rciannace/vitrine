@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20260603014322 -->
+<!-- v20261014-github -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -5993,6 +5993,12 @@ body.admin-mode .sala-link-sidebar { display: flex; }
       </button>
       <input type="file" id="syncImportFile" accept=".json" style="display:none" onchange="importSync(event)">
       <div class="sync-backup-link" onclick="exportBackup()">⬦ Backup completo</div>
+      <button class="sync-btn" id="migBtn" onclick="migrarFotosGitHub()" style="margin-top:8px">
+        <span class="sync-icon">☁</span>
+        <span class="sync-label" id="migBtnLabel">Migrar fotos p/ GitHub</span>
+      </button>
+      <div id="migStatus" style="display:none;font-size:11px;line-height:1.4;opacity:.8;margin-top:6px"></div>
+      <div class="sync-backup-link" onclick="mediaAskToken(true)">⬦ Trocar token do GitHub</div>
     </div>
   </aside>
 
@@ -6383,29 +6389,226 @@ function cloudThumb(url) {
   return url.replace('/upload/', '/upload/w_400,c_fill,q_auto,f_auto/');
 }
 
-async function uploadToCloudinary(file, onProgress) {
-  const compressed = await compressImage(file);
-  const formData = new FormData();
-  formData.append('file', compressed);
-  formData.append('upload_preset', CLOUDINARY_PRESET);
+// ══════════════════════════════════════════════════════
+// ARMAZENAMENTO DE FOTOS NO GITHUB (substitui o Cloudinary)
+// Fotos ficam em rciannace/vitrine → pasta midia/foto-studio
+// e são servidas pelo GitHub Pages (grátis, sem "créditos" que estouram).
+// ══════════════════════════════════════════════════════
+const MEDIA_OWNER  = 'rciannace';
+const MEDIA_REPO   = 'vitrine';
+const MEDIA_BRANCH = 'main';
+const MEDIA_DIR    = 'midia/foto-studio';
+const MEDIA_PAGES  = 'https://rciannace.github.io/vitrine/';
+const MEDIA_RAW    = `https://raw.githubusercontent.com/${MEDIA_OWNER}/${MEDIA_REPO}/${MEDIA_BRANCH}/`;
+const GH_API       = `https://api.github.com/repos/${MEDIA_OWNER}/${MEDIA_REPO}`;
 
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`);
-    xhr.upload.onprogress = e => {
-      if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total);
-    };
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-        resolve(data.secure_url);
-      } else {
-        reject(new Error('Upload falhou: ' + xhr.status));
-      }
-    };
-    xhr.onerror = () => reject(new Error('Erro de rede'));
-    xhr.send(formData);
+function mediaToken() {
+  return localStorage.getItem('iafoto_gh_token') || localStorage.getItem('ams_gh_token') || localStorage.getItem('jarvis_gh_token') || '';
+}
+function mediaAskToken(force) {
+  let t = force ? '' : mediaToken();
+  if (!t) {
+    t = (prompt('Cole aqui o seu token do GitHub (o mesmo que você usa no Music Studio).\nEle fica salvo só neste aparelho.') || '').trim();
+    if (t) localStorage.setItem('iafoto_gh_token', t);
+  }
+  return t;
+}
+function ghHeaders(t) {
+  return { 'Authorization': 'Bearer ' + t, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
+}
+function blobToBase64(blob) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(blob);
   });
+}
+function mediaNewName() {
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+}
+function isMediaUrl(u) { return typeof u === 'string' && u.startsWith(MEDIA_PAGES + 'midia/'); }
+
+// Envia 1 arquivo (fotos novas do dia a dia)
+async function ghPutFile(path, blob, message) {
+  const t = mediaAskToken();
+  if (!t) throw new Error('Sem token do GitHub');
+  const content = await blobToBase64(blob);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const r = await fetch(`${GH_API}/contents/${path}`, {
+      method: 'PUT', headers: ghHeaders(t),
+      body: JSON.stringify({ message: message || 'IA Foto Studio: nova foto', content, branch: MEDIA_BRANCH })
+    });
+    if (r.ok) return;
+    if (r.status === 401) { localStorage.removeItem('iafoto_gh_token'); throw new Error('Token do GitHub inválido'); }
+    if (r.status === 409 || r.status === 403 || r.status === 429) { await new Promise(z => setTimeout(z, 1500 * (attempt + 1))); continue; }
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.message || ('GitHub HTTP ' + r.status));
+  }
+  throw new Error('GitHub ocupado, tente de novo');
+}
+
+async function uploadPhoto(file, onProgress) {
+  const compressed = await compressImage(file);
+  if (onProgress) onProgress(0.3);
+  const path = `${MEDIA_DIR}/${mediaNewName()}`;
+  await ghPutFile(path, compressed);
+  if (onProgress) onProgress(1);
+  return MEDIA_PAGES + path;
+}
+// nome antigo mantido para não quebrar as chamadas existentes
+async function uploadToCloudinary(file, onProgress) { return uploadPhoto(file, onProgress); }
+
+// Foto recém-enviada leva ~1 min para aparecer no GitHub Pages.
+// Enquanto isso, mostra a cópia direta do repositório.
+document.addEventListener('error', e => {
+  const el = e.target;
+  if (!el || el.tagName !== 'IMG') return;
+  const src = el.getAttribute('src') || '';
+  if (isMediaUrl(src) && !el.dataset.rawTried) {
+    el.dataset.rawTried = '1';
+    el.src = MEDIA_RAW + src.slice(MEDIA_PAGES.length);
+  }
+}, true);
+
+// ══════════════════════════════════════════════════════
+// MIGRAÇÃO: copia as fotos do Cloudinary antigo para o GitHub
+// Respeita os limites do GitHub (≈450 envios/hora) e pode ser
+// interrompida e retomada: o progresso fica salvo.
+// ══════════════════════════════════════════════════════
+const MIG_KEY = 'iafoto_migmap';
+const MIG_BATCH = 20;          // fotos por "pacote" (1 commit por pacote)
+const MIG_GAP_MS = 7600;       // pausa entre envios → ~470/hora, abaixo do limite do GitHub
+let migRunning = false, migStop = false;
+
+function migLoadMap() { try { return JSON.parse(localStorage.getItem(MIG_KEY) || '{}'); } catch (e) { return {}; } }
+function migSaveMap(m) { try { localStorage.setItem(MIG_KEY, JSON.stringify(m)); } catch (e) {} }
+function migOriginal(u) { return u.replace(/\/upload\/(?:[a-z]{1,3}_[^/]+\/)+(?=v\d+\/|[^/]+$)/, '/upload/'); }
+function migCollectUrls() {
+  const set = new Set();
+  const add = u => { if (typeof u === 'string' && u.includes('res.cloudinary.com')) set.add(u); };
+  items.forEach(it => add(it.img));
+  adPairs.forEach(p => { add(p.before); add(p.after); });
+  return [...set];
+}
+// troca as URLs antigas pelas novas em tudo (fotos, antes/depois, pedidos)
+function migApply(map) {
+  const fix = v => {
+    if (typeof v === 'string') return map[v] && map[v] !== 'FAIL' ? map[v] : v;
+    if (Array.isArray(v)) return v.map(fix);
+    if (v && typeof v === 'object') { for (const k in v) v[k] = fix(v[k]); return v; }
+    return v;
+  };
+  items = items.map(fix); adPairs = fix(adPairs); pedidos = fix(pedidos);
+  localStorage.setItem('iafoto_items', JSON.stringify(items));
+  localStorage.setItem('iafoto_ad_pairs', JSON.stringify(adPairs));
+  localStorage.setItem('iafoto_pedidos', JSON.stringify(pedidos));
+}
+function migUpdateBtn() {
+  const btn = document.getElementById('migBtnLabel');
+  if (!btn) return;
+  const left = migCollectUrls().filter(u => !migLoadMap()[u] || migLoadMap()[u] === 'FAIL').length;
+  btn.textContent = left ? `Migrar fotos p/ GitHub (${left})` : '✓ Fotos no GitHub';
+  const wrap = document.getElementById('migBtn');
+  if (wrap) wrap.style.opacity = left ? '1' : '.55';
+}
+function migStatus(txt) { const el = document.getElementById('migStatus'); if (el) { el.style.display = txt ? 'block' : 'none'; el.textContent = txt || ''; } }
+
+async function ghReq(t, method, path, body) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const r = await fetch(`${GH_API}${path}`, { method, cache: 'no-store', headers: ghHeaders(t), body: body ? JSON.stringify(body) : undefined });
+    if (r.ok) return r.json();
+    if (r.status === 401) { localStorage.removeItem('iafoto_gh_token'); throw new Error('Token do GitHub inválido'); }
+    if (r.status === 403 || r.status === 429) {           // limite do GitHub: espera e tenta de novo
+      const info = await r.clone().json().catch(() => ({}));
+      if (r.status === 403 && !/rate limit|secondary|abuse/i.test(info.message || '') && !r.headers.get('retry-after'))
+        throw new Error('Token do GitHub sem permissão para gravar no repositório vitrine');
+      const wait = (parseInt(r.headers.get('retry-after') || '0', 10) || 60) * 1000;
+      migStatus(`⏸ GitHub pediu uma pausa… retomando em ${Math.round(wait / 1000)}s`);
+      await new Promise(z => setTimeout(z, wait));
+      continue;
+    }
+    if (r.status === 422 && path.endsWith('/refs/heads/' + MEDIA_BRANCH)) return null; // conflito de commit → refazer
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.message || ('GitHub HTTP ' + r.status));
+  }
+  throw new Error('GitHub não respondeu, tente de novo mais tarde');
+}
+const migSleep = ms => new Promise(z => setTimeout(z, ms));
+
+async function migCommit(t, entries) {
+  for (let tries = 0; tries < 4; tries++) {
+    const ref = await ghReq(t, 'GET', `/git/ref/heads/${MEDIA_BRANCH}`);
+    const head = await ghReq(t, 'GET', `/git/commits/${ref.object.sha}`);
+    await migSleep(MIG_GAP_MS);
+    const tree = await ghReq(t, 'POST', '/git/trees', { base_tree: head.tree.sha, tree: entries });
+    await migSleep(MIG_GAP_MS);
+    const commit = await ghReq(t, 'POST', '/git/commits', { message: `IA Foto Studio: migração de ${entries.length} fotos`, tree: tree.sha, parents: [head.sha] });
+    await migSleep(MIG_GAP_MS);
+    const upd = await ghReq(t, 'PATCH', `/git/refs/heads/${MEDIA_BRANCH}`, { sha: commit.sha });
+    if (upd) return;
+  }
+  throw new Error('Não consegui gravar o pacote no GitHub');
+}
+
+async function migrarFotosGitHub() {
+  if (!adminMode) return;
+  if (migRunning) { migStop = true; migStatus('⏹ Parando depois deste pacote…'); return; }
+  const t = mediaAskToken();
+  if (!t) return;
+  const map = migLoadMap();
+  const pending = migCollectUrls().filter(u => !map[u] || map[u] === 'FAIL');
+  if (!pending.length) { toast('✓ Todas as fotos já estão no GitHub'); migUpdateBtn(); return; }
+  const mins = Math.ceil(pending.length * MIG_GAP_MS * (1 + 3 / MIG_BATCH) / 60000);
+  if (!confirm(`Copiar ${pending.length} fotos do Cloudinary para o GitHub?\n\nLeva cerca de ${mins} minutos. Deixe esta aba aberta (pode minimizar).\nSe fechar, é só clicar de novo depois que ele continua de onde parou.`)) return;
+
+  migRunning = true; migStop = false;
+  const lbl = document.getElementById('migBtnLabel'); if (lbl) lbl.textContent = '⏹ Parar migração';
+  let done = 0, failed = 0, batch = [], batchMap = {};
+  const t0 = Date.now();
+  try {
+    for (const url of pending) {
+      if (migStop) break;
+      try {
+        const res = await fetch(migOriginal(url), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const blob = await res.blob();
+        const b64 = await blobToBase64(blob);
+        const b = await ghReq(t, 'POST', '/git/blobs', { content: b64, encoding: 'base64' });
+        const base = (url.split('/').pop() || mediaNewName()).replace(/\.[a-z0-9]+$/i, '').replace(/[^a-zA-Z0-9_-]/g, '') || mediaNewName();
+        const path = `${MEDIA_DIR}/${base}.jpg`;
+        batch.push({ path, mode: '100644', type: 'blob', sha: b.sha });
+        batchMap[url] = MEDIA_PAGES + path;
+      } catch (e) {
+        if (/Token do GitHub/.test(e.message)) throw e;
+        failed++; map[url] = 'FAIL';
+      }
+      done++;
+      const eta = Math.max(1, Math.round((Date.now() - t0) / done * (pending.length - done) / 60000));
+      migStatus(`☁ Migrando ${done}/${pending.length}${failed ? ` · ${failed} falharam` : ''} · ~${eta} min restantes`);
+      if (batch.length >= MIG_BATCH) {
+        await migCommit(t, batch);
+        Object.assign(map, batchMap); migSaveMap(map); migApply(batchMap); await persist();
+        batch = []; batchMap = {};
+      }
+      await migSleep(MIG_GAP_MS);
+    }
+    if (batch.length) {
+      await migCommit(t, batch);
+      Object.assign(map, batchMap); migSaveMap(map); migApply(batchMap); await persist();
+    }
+    migSaveMap(map);
+    render(); buildSidebar();
+    const ok = Object.values(map).filter(v => v !== 'FAIL').length;
+    migStatus(failed ? `✓ Pronto: ${ok} migradas · ${failed} não abriram no Cloudinary` : (migStop ? '⏸ Migração pausada — clique para continuar' : `✓ Migração concluída: ${ok} fotos no GitHub`));
+    toast(migStop ? '⏸ Migração pausada' : '✓ Migração concluída!');
+  } catch (e) {
+    migSaveMap(map);
+    migStatus('❌ ' + e.message + ' — clique de novo para continuar');
+    toast('❌ Migração: ' + e.message);
+  } finally {
+    migRunning = false; migStop = false; migUpdateBtn();
+  }
 }
 
 // ── INIT ──
@@ -7220,7 +7423,7 @@ async function confirmUpload() {
 
   const newItems = [];
   const total = pendingFiles.length;
-  const CONCURRENCY = 4;
+  const CONCURRENCY = 1; // GitHub: um envio por vez evita conflito de versão
   let completed = 0;
 
   async function uploadOne(file, index) {
@@ -7781,6 +7984,7 @@ function activateAdmin() {
   if (adFab && document.getElementById('viewAntesDepois').classList.contains('active')) adFab.style.display = 'flex';
   if (typeof adRender === 'function' && document.getElementById('viewAntesDepois').classList.contains('active')) adRender();
   updateSyncLabel();
+  migUpdateBtn();
 }
 
 function deactivateAdmin() {
