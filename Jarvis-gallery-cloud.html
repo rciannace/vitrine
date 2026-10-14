@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Jarvis Gallery Cloud v4.2 - Menu lateral compacto, sem stats, mais espaco - 2026-08-28 -->
+<!-- Jarvis Gallery Cloud v4.3 - Fotos no GitHub (sai do Cloudinary) + botao de migracao - 2026-10-14 -->
 <html lang="pt-BR">
 <head><script>
 window.onerror = function(msg, src, line, col, err) {
@@ -18,7 +18,7 @@ window.addEventListener('unhandledrejection', function(e) {
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- v1.6 --><title>Jarvis Gallery v12 Cloud</title>
+<!-- v1.6 --><title>Jarvis Gallery v13 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css">
 <style>
@@ -1631,6 +1631,11 @@ body{
         </div>
         <div id="cloudStatus" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;min-height:16px;"></div>
         <div id="cloudLastSync" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;margin-top:4px;"></div>
+        <button onclick="jmigRun()" id="jmigBtn"
+          style="width:100%;margin-top:10px;padding:11px;background:var(--s3);color:var(--cyan);border:1px dashed var(--cyan);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+          <span id="jmigBtnLabel">☁ Migrar fotos p/ GitHub</span>
+        </button>
+        <div id="jmigStatus" style="display:none;font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;margin-top:6px;line-height:1.5;"></div>
         <details style="margin-top:10px;">
           <summary style="font-size:10px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;">Como obter o token?</summary>
           <div style="font-size:10px;color:var(--muted);line-height:1.8;padding:8px 0;">
@@ -6619,26 +6624,175 @@ function cloudThumb(url) {
   return url.replace('/upload/', '/upload/w_400,c_fill,q_auto,f_auto/');
 }
 
-async function cloudinaryUpload(dataUrlOrFile, publicId) {
-  const formData = new FormData();
-  if (typeof dataUrlOrFile === 'string') {
-    // dataUrl → blob
-    const res = await fetch(dataUrlOrFile);
-    const blob = await res.blob();
-    formData.append('file', blob);
-  } else {
-    // Comprime arquivo antes de enviar
-    const compressed = await compressImage(dataUrlOrFile);
-    formData.append('file', compressed);
-  }
-  formData.append('upload_preset', CLOUDINARY_PRESET);
-  formData.append('public_id', publicId);
-  formData.append('folder', 'jarvis_gallery');
+// ══════════════════════════════════════════════════════
+// ARMAZENAMENTO NO GITHUB (substitui o Cloudinary — v4.3)
+// Fotos em rciannace/vitrine → midia/jarvis, servidas pelo GitHub Pages.
+// ══════════════════════════════════════════════════════
+const MEDIA_OWNER  = 'rciannace';
+const MEDIA_REPO   = 'vitrine';
+const MEDIA_BRANCH = 'main';
+const MEDIA_DIR    = 'midia/jarvis';
+const MEDIA_PAGES  = 'https://rciannace.github.io/vitrine/';
+const MEDIA_RAW    = `https://raw.githubusercontent.com/${MEDIA_OWNER}/${MEDIA_REPO}/${MEDIA_BRANCH}/`;
+const MEDIA_API    = `https://api.github.com/repos/${MEDIA_OWNER}/${MEDIA_REPO}`;
 
-  const res = await fetch(CLOUDINARY_UPLOAD_URL, { method: 'POST', body: formData });
-  if (!res.ok) throw new Error('Cloudinary upload failed: ' + res.status);
-  const data = await res.json();
-  return data.secure_url;
+function mediaToken() {
+  return (typeof ghToken === 'function' && ghToken()) || localStorage.getItem('jarvis_gh_token') || localStorage.getItem('iafoto_gh_token') || localStorage.getItem('ams_gh_token') || '';
+}
+function mediaHeaders(t) { return { 'Authorization': 'Bearer ' + t, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }; }
+function mediaB64(blob) {
+  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
+}
+function mediaSafe(id) { return String(id || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 60) || 'img'; }
+function isMediaUrl(u) { return typeof u === 'string' && u.startsWith(MEDIA_PAGES + 'midia/'); }
+
+async function mediaPut(path, blob) {
+  const t = mediaToken();
+  if (!t) throw new Error('Configure o token do GitHub na aba ☁ Nuvem');
+  const content = await mediaB64(blob);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const r = await fetch(`${MEDIA_API}/contents/${path}`, { method: 'PUT', headers: mediaHeaders(t),
+      body: JSON.stringify({ message: 'Jarvis: nova foto', content, branch: MEDIA_BRANCH }) });
+    if (r.ok) return;
+    if (r.status === 409 || r.status === 429 || r.status === 403) { await new Promise(z => setTimeout(z, 1500 * (attempt + 1))); continue; }
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.message || ('GitHub HTTP ' + r.status));
+  }
+  throw new Error('GitHub ocupado, tente de novo');
+}
+
+// mesmo nome de antes para não mexer no resto do app
+async function cloudinaryUpload(dataUrlOrFile, publicId) {
+  let blob;
+  if (typeof dataUrlOrFile === 'string') blob = await (await fetch(dataUrlOrFile)).blob();
+  else blob = await compressImage(dataUrlOrFile);
+  const path = `${MEDIA_DIR}/${mediaSafe(publicId)}-${Date.now().toString(36)}.jpg`;
+  await mediaPut(path, blob);
+  return MEDIA_PAGES + path;
+}
+
+// foto recém-enviada leva ~1 min para aparecer no Pages: usa a cópia direta enquanto isso
+document.addEventListener('error', e => {
+  const el = e.target;
+  if (!el || el.tagName !== 'IMG') return;
+  const src = el.getAttribute('src') || '';
+  if (isMediaUrl(src) && !el.dataset.rawTried) { el.dataset.rawTried = '1'; el.src = MEDIA_RAW + src.slice(MEDIA_PAGES.length); }
+}, true);
+
+// ── MIGRAÇÃO Cloudinary → GitHub (botão na aba ☁ Nuvem) ──
+const JMIG_KEY = 'jarvis_migmap';
+const JMIG_BATCH = 20, JMIG_GAP = 7600;
+let jmigRunning = false, jmigStop = false;
+function jmigMap() { try { return JSON.parse(localStorage.getItem(JMIG_KEY) || '{}'); } catch (e) { return {}; } }
+function jmigSave(m) { try { localStorage.setItem(JMIG_KEY, JSON.stringify(m)); } catch (e) {} }
+function jmigFotoStudioMap() { try { return JSON.parse(localStorage.getItem('iafoto_migmap') || '{}'); } catch (e) { return {}; } }
+function jmigOriginal(u) { return u.replace(/\/upload\/(?:[a-z]{1,3}_[^/]+\/)+(?=v\d+\/|[^/]+$)/, '/upload/'); }
+function jmigPending() {
+  const imgMap = JSON.parse(localStorage.getItem('jg_cloud_imgs') || '{}');
+  const m = jmigMap();
+  return [...new Set(Object.values(imgMap).filter(u => typeof u === 'string' && u.includes('res.cloudinary.com')))].filter(u => !m[u] || m[u] === 'FAIL');
+}
+function jmigStatus(txt) { const el = document.getElementById('jmigStatus'); if (el) { el.style.display = txt ? 'block' : 'none'; el.textContent = txt || ''; } }
+function jmigUpdateBtn() {
+  const lbl = document.getElementById('jmigBtnLabel'); if (!lbl) return;
+  const n = jmigPending().length;
+  lbl.textContent = jmigRunning ? '⏹ Parar migração' : (n ? `☁ Migrar fotos p/ GitHub (${n})` : '✓ Fotos no GitHub');
+}
+// aplica as URLs novas no mapa de imagens, nos itens em memória e sincroniza prompts
+function jmigApply(urlMap) {
+  const imgMap = JSON.parse(localStorage.getItem('jg_cloud_imgs') || '{}');
+  Object.keys(imgMap).forEach(k => { const n = urlMap[imgMap[k]]; if (n && n !== 'FAIL') imgMap[k] = n; });
+  localStorage.setItem('jg_cloud_imgs', JSON.stringify(imgMap));
+  (items || []).forEach(it => { const n = urlMap[it.img]; if (n && n !== 'FAIL') it.img = n; });
+}
+async function jmigReq(t, method, path, body) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const r = await fetch(`${MEDIA_API}${path}`, { method, cache: 'no-store', headers: mediaHeaders(t), body: body ? JSON.stringify(body) : undefined });
+    if (r.ok) return r.json();
+    if (r.status === 401) throw new Error('Token do GitHub inválido');
+    if (r.status === 403 || r.status === 429) {
+      const info = await r.clone().json().catch(() => ({}));
+      if (r.status === 403 && !/rate limit|secondary|abuse/i.test(info.message || '') && !r.headers.get('retry-after'))
+        throw new Error('Token do GitHub sem permissão para gravar no repositório vitrine');
+      const wait = (parseInt(r.headers.get('retry-after') || '0', 10) || 60) * 1000;
+      jmigStatus(`⏸ GitHub pediu uma pausa… retomando em ${Math.round(wait / 1000)}s`);
+      await new Promise(z => setTimeout(z, wait));
+      continue;
+    }
+    if (r.status === 422 && path.endsWith('/refs/heads/' + MEDIA_BRANCH)) return null;
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.message || ('GitHub HTTP ' + r.status));
+  }
+  throw new Error('GitHub não respondeu, tente mais tarde');
+}
+const jmigSleep = ms => new Promise(z => setTimeout(z, ms));
+async function jmigCommit(t, entries) {
+  for (let tries = 0; tries < 4; tries++) {
+    const ref = await jmigReq(t, 'GET', `/git/ref/heads/${MEDIA_BRANCH}`);
+    const head = await jmigReq(t, 'GET', `/git/commits/${ref.object.sha}`);
+    await jmigSleep(JMIG_GAP);
+    const tree = await jmigReq(t, 'POST', '/git/trees', { base_tree: head.tree.sha, tree: entries });
+    await jmigSleep(JMIG_GAP);
+    const commit = await jmigReq(t, 'POST', '/git/commits', { message: `Jarvis: migração de ${entries.length} fotos`, tree: tree.sha, parents: [head.sha] });
+    await jmigSleep(JMIG_GAP);
+    if (await jmigReq(t, 'PATCH', `/git/refs/heads/${MEDIA_BRANCH}`, { sha: commit.sha })) return;
+  }
+  throw new Error('Não consegui gravar o pacote no GitHub');
+}
+async function jmigRun() {
+  if (jmigRunning) { jmigStop = true; jmigStatus('⏹ Parando depois deste pacote…'); return; }
+  const t = mediaToken();
+  if (!t) { toast('⚠ Configure o token do GitHub primeiro'); return; }
+  const map = jmigMap();
+  // fotos que o Foto Studio já migrou: só reaproveita o link, sem reenviar
+  const fs = jmigFotoStudioMap(); const reuse = {};
+  jmigPending().forEach(u => { if (fs[u] && fs[u] !== 'FAIL') { map[u] = fs[u]; reuse[u] = fs[u]; } });
+  if (Object.keys(reuse).length) { jmigSave(map); jmigApply(reuse); }
+  const pending = jmigPending();
+  if (!pending.length) { toast('✓ Todas as fotos já estão no GitHub'); jmigUpdateBtn(); if (typeof render === 'function') render(); return; }
+  const mins = Math.ceil(pending.length * JMIG_GAP * (1 + 3 / JMIG_BATCH) / 60000);
+  if (!confirm(`Copiar ${pending.length} fotos do Cloudinary para o GitHub?\n\nLeva cerca de ${mins} minutos. Deixe esta aba aberta.\nSe fechar, é só clicar de novo que ele continua de onde parou.`)) return;
+  jmigRunning = true; jmigStop = false; jmigUpdateBtn();
+  let done = 0, failed = 0, batch = [], batchMap = {};
+  const t0 = Date.now();
+  const flush = async () => {
+    if (!batch.length) return;
+    await jmigCommit(t, batch);
+    Object.assign(map, batchMap); jmigSave(map); jmigApply(batchMap);
+    batch = []; batchMap = {};
+  };
+  try {
+    for (const url of pending) {
+      if (jmigStop) break;
+      try {
+        const res = await fetch(jmigOriginal(url), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const b = await jmigReq(t, 'POST', '/git/blobs', { content: await mediaB64(await res.blob()), encoding: 'base64' });
+        const base = mediaSafe((url.split('/').pop() || '').replace(/\.[a-z0-9]+$/i, '')) + '-' + Math.random().toString(36).slice(2, 6);
+        const path = `${MEDIA_DIR}/${base}.jpg`;
+        batch.push({ path, mode: '100644', type: 'blob', sha: b.sha });
+        batchMap[url] = MEDIA_PAGES + path;
+      } catch (e) {
+        if (/Token do GitHub/.test(e.message)) throw e;
+        failed++; map[url] = 'FAIL';
+      }
+      done++;
+      const eta = Math.max(1, Math.round((Date.now() - t0) / done * (pending.length - done) / 60000));
+      jmigStatus(`☁ Migrando ${done}/${pending.length}${failed ? ` · ${failed} falharam` : ''} · ~${eta} min restantes`);
+      if (batch.length >= JMIG_BATCH) await flush();
+      await jmigSleep(JMIG_GAP);
+    }
+    await flush();
+    jmigSave(map);
+    if (typeof mpGhPush === 'function') mpGhPush(true);   // leva os links novos das fotos dos prompts pro sync
+    if (typeof render === 'function') render();
+    jmigStatus(jmigStop ? '⏸ Migração pausada — clique para continuar' : `✓ Migração concluída${failed ? ` · ${failed} não abriram no Cloudinary` : ''}`);
+    toast(jmigStop ? '⏸ Migração pausada' : '✓ Migração concluída!');
+  } catch (e) {
+    jmigSave(map);
+    jmigStatus('❌ ' + e.message + ' — clique de novo para continuar');
+    toast('❌ Migração: ' + e.message);
+  } finally { jmigRunning = false; jmigStop = false; jmigUpdateBtn(); }
 }
 
 // Exclui imagem do Cloudinary via API (signed delete não disponível no browser sem backend)
@@ -6671,8 +6825,8 @@ async function idbPut(id, dataUrl) {
 }
 
 async function idbPutBatch(entries) {
-  // Faz uploads em paralelo com limite de 4 simultâneos
-  const CONCURRENCY = 4;
+  // GitHub: um envio por vez evita conflito de versão
+  const CONCURRENCY = 1;
   const results = {};
   let idx = 0;
   async function worker() {
@@ -8694,7 +8848,7 @@ async function mpGhPull(manual = false) {
 }
 
 // Alias para initApp chamar
-function mpCloudPull() { return mpGhPull(false); }
+function mpCloudPull() { try { jmigUpdateBtn(); } catch(e){} return mpGhPull(false); }
 
 function renderMyPrompts() {
   renderMpCatList();
