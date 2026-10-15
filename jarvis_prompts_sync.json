@@ -1,54 +1,27 @@
 {
   "myPrompts": [
     {
-      "id": "mp1788389270137",
-      "title": "Maquiagem",
-      "text": "\"Analise a foto que enviei e identifique meu contraste natural entre pele, cabelo, sobrancelhas, olhos e lábios.\n\nDepois, edite a foto criando uma maquiagem que AUMENTE estrategicamente esse contraste para deixar meus traços mais marcantes, sofisticados e fotogênicos.\n\nFaça:\n\n* pele natural e iluminada\n* sobrancelhas mais definidas\n* cílios mais marcados\n* delineado marrom escuro ou preto\n* sombra com profundidade em tons que valorizem meus olhos\n* blush mais aparente\n* lábios com uma cor mais intensa do que meu tom natural, como rosa queimado, malva, berry suave ou vermelho elegante\n\nA maquiagem deve criar mais separação visual entre pele, olhos, sobrancelhas e boca, mas continuar elegante e realista.\n\nNão altere meus traços, formato do rosto ou identidade. O resultado deve parecer maquiagem real, não filtro de beleza.\"",
-      "cat": "",
-      "tags": [],
-      "fav": false,
-      "hasImg": false
-    },
-    {
-      "id": "mp1788914743973",
-      "title": "Fotos antigas",
-      "text": "/colourenhace",
-      "cat": "",
-      "tags": [],
-      "fav": false,
-      "hasImg": false
-    },
-    {
-      "id": "mp1788946218767",
-      "title": "Restauracao antigas",
-      "text": "Use the provided original old photograph as the primary source reference.\n\nProfessionally restore, repair, colorize, and upscale the old photograph into ultra-high-resolution 4K, while preserving the original people, identities, composition, pose, expression, clothing, environment, camera perspective, and historical authenticity.\n\nSTRICT FACIAL IDENTITY PRESERVATION: Preserve every person's exact facial identity and recognizable characteristics from the original photograph. Maintain the original head shape, forehead, eyebrows, eyes, eyelids, nose, lips, ears, cheekbones, jawline, hairline, hairstyle, facial hair, expression, age, skin characteristics, and facial proportions. Do not beautify, reshape, modernize, age, de-age, or reinterpret any face.\n\nPHOTO RESTORATION: Carefully repair scratches, dust, stains, cracks, creases, fading, discoloration, damaged areas, film deterioration, noise, grain buildup, blur, pixelation, and compression artifacts. Reconstruct damaged or missing details conservatively and naturally without inventing new facial features or changing the original scene.\n\nREALISTIC COLORIZATION: Convert the photograph into natural, historically believable full color. Apply realistic human skin tones with subtle tonal variation, naturally colored lips and eyes, authentic hair colors, believable clothing colors, and accurately balanced environmental colors. Preserve realistic highlights, shadows, contrast, and tonal depth. Avoid excessive saturation, artificial colors, or modern cinematic color grading.\n\n4K DETAIL ENHANCEMENT: Upscale to ultra-high-resolution 4K quality with refined facial detail, natural skin texture, individual hair strands, eyelashes, eyebrows, facial-hair detail, fabric fibers, clothing textures, and environmental details. Improve sharpness and clarity while retaining the natural photographic character of the original image.\n\nKeep skin realistic and naturally textured. Avoid plastic skin, excessive smoothing, oversharpening, halos, artificial HDR, fake details, or an obvious AI-generated appearance.\n\nDO NOT CHANGE: identity, facial structure, expression, apparent age, body proportions, pose, clothing design, accessories, objects, background layout, framing, or camera angle. Do not add or remove people or objects.\n\nThe final result should look like the same original historical photograph professionally restored and photographed in authentic natural color, not a newly generated recreation.\n\nFinal output: pristine 4K restoration, photorealistic natural color, authentic skin tones, clean fine details, realistic textures, high dynamic range, sharp but natural focus, historically faithful appearance, museum-quality photographic restoration, vertical 4:5 aspect ratio.",
+      "id": "mp1792020707756",
+      "title": "Gerar video por foto",
+      "text": "Gpt\n/ai storyboard for brand shoot\n\n\nGemini\nGere um vídeo o GC baseado no storyboard que anexei vídeo vertical curto para venda no Instagram",
       "cat": "",
       "tags": [],
       "fav": false,
       "hasImg": true
     },
     {
-      "id": "mp1789607055530",
-      "title": "Fotos antigas coloracao",
-      "text": "Restore and upscale this vintage portrait to ultra-high quality. Preserve the person’s exact identity, facial features, expression, turban, moustache, clothing, and natural skin texture. Remove scratches, dust, stains, fading, blur, and film damage. Add realistic, subtle colorization with natural skin tones, authentic clothing colors, balanced contrast, sharp fine details, and professional cinematic color grading. Keep the original composition and historical character—no face alteration or over-smoothing.",
+      "id": "mp1790701063264",
+      "title": "Fotos antigas e coloridas",
+      "text": "Restaure esta foto antiga com qualidade profissional. Remova manchas, rasgos, riscos, mofo, desbotamento, dobras e marcas do tempo. Reconstrua os detalhes perdidos do rosto, cabelo, roupas e fundo, preservando a identidade da pessoa, a expressão, o enquadramento e o estilo original da fotografia. Corrija nitidez, contraste, iluminação e equilíbrio de cores. Se a foto estiver em preto e branco, mantenha em preto e branco, a menos que eu peça colorização. Gere um resultado limpo, realista, natural e em alta qualidade.\n\n/Color8k",
       "cat": "",
       "tags": [],
       "fav": false,
       "hasImg": true
     },
     {
-      "id": "mp1789607382742",
-      "title": "Anos 80",
-      "text": "Use the uploaded photo and recreate the same person as if photographed in India in the late 1980s. Preserve the face, skin tone, body shape, smile and overall identity very accurately. Style them in a fashionable 80s outfit like high-waisted jeans, printed shirt/denim jacket, retro accessories and voluminous hair. Use a realistic Indian college/home/street background with warm faded film colors, grain, soft focus and a vintage 1988 photo feel. 4:5 aspect ratio.",
-      "cat": "",
-      "tags": [],
-      "fav": false,
-      "hasImg": true
-    },
-    {
-      "id": "mp1789607567220",
-      "title": "Penteados",
-      "text": "sharp well-groomed beard, fair skin, and confident expression. Hairstyles include buzz cut, pompadour, long wavy hair, man bun, side fade, messy textured hair, spiky hairstyle, slick back, curly hair, and medium layered styles.",
+      "id": "mp1790074018724",
+      "title": "Batman",
+      "text": "PROMPT MASTER — /clone-fiel /max /cinema /camera /clean-texture /photographic-authenticity /real-capture\n\nUsar MINHA FOTO como referência principal e obrigatória de identidade facial.\n\nCriar um retrato fotográfico hiper-realista, premium e cinematográfico, mantendo minha identidade com fidelidade máxima: preservar exatamente formato do rosto, proporções cranianas, linha do maxilar, queixo, nariz, boca, distância e formato dos olhos, sobrancelhas, maçãs do rosto, textura real da pele, idade aparente, assimetrias naturais e demais características individuais reconhecíveis da fotografia de referência. Não embelezar excessivamente, não substituir meus traços, não transformar meu rosto em um rosto genérico. A pessoa final precisa continuar claramente sendo eu.\n\nRECRIAR A COMPOSIÇÃO VISUAL DA IMAGEM DE REFERÊNCIA:\nretrato frontal em primeiro plano de uma pessoa caracterizada como um vigilante mascarado inspirado no Batman clássico retrô, em uma luxuosa pista de dança disco com atmosfera anos 1970; enquadramento quadrado, câmera próxima, cabeça e parte superior do tórax dominando a composição.\n\nA pessoa olha diretamente para a câmera enquanto faz, simultaneamente com as duas mãos, gestos em “V” com os dedos indicador e médio próximos aos olhos, criando uma pose divertida, excêntrica e extremamente marcante. Manter anatomia realista das mãos, dez dedos corretos, dedos bem definidos, luvas ajustadas e interação física convincente entre mãos, máscara e rosto.\n\nFIGURINO:\nmáscara/capuz preto ou azul-marinho muito escuro, acabamento fosco acetinado, orelhas pontiagudas longas, recortes limpos ao redor dos olhos e região inferior do rosto exposta; detalhes gráficos minimalistas discretos na superfície da máscara; capa azul-marinho acetinada envolvendo pescoço e ombros; luvas longas azul-marinho metálico/acetinado; uniforme cinza premium, ajustado ao corpo, com textura têxtil realista; símbolo de morcego estilizado em amarelo e preto parcialmente visível no peito. Figurino físico real, construído e fotografado, sem aparência de CGI ou fantasia plástica barata.\n\nAMBIENTE:\nboate disco retrô cheia de pessoas dançando ao fundo, homens e mulheres usando figurinos glamourosos inspirados nos anos 1970, braços levantados, movimento espontâneo, energia festiva. Diversas bolas de espelhos suspensas no teto, incluindo uma grande esfera no canto superior esquerdo e outras menores distribuídas pelo cenário. Reflexos especulares reais sobre os espelhos.\n\nILUMINAÇÃO:\nmistura cinematográfica de luz cyan/turquesa vindo da esquerda com luz quente âmbar/amarela vindo da direita, feixes volumétricos discretos atravessando uma leve atmosfera de fumaça de pista de dança; reflexos coloridos naturais sobre máscara, capa e luvas; rosto iluminado de forma plausível e tridimensional, preservando tons reais de pele; highlights controlados, pretos profundos sem esmagar detalhes, contraste rico e elegante.\n\nESTÉTICA:\nfotografia editorial extremamente realista inspirada em uma sessão fotográfica extravagante de celebridade realizada dentro de uma discoteca dos anos 1970; humor visual sofisticado, espontâneo, ligeiramente surreal, porém totalmente fotografável no mundo real. Aparência de fotografia capturada por câmera full-frame profissional, não ilustração.\n\nCAMERA SIGNATURE:\ncâmera full-frame profissional, lente prime equivalente a 35–50 mm, câmera posicionada aproximadamente na altura dos olhos, distância curta do sujeito, perspectiva natural sem deformação facial, f/2.8 aproximadamente, velocidade suficiente para rosto e mãos perfeitamente nítidos, ISO moderado, foco crítico nos olhos e no rosto, profundidade de campo cinematográfica com fundo suavemente desfocado mas ainda reconhecível, bokeh óptico natural, microcontraste orgânico, latitude dinâmica ampla.\n\nPHOTOGRAPHIC AUTHENTICITY / REAL CAPTURE:\npele com poros reais, microtextura, pequenas linhas naturais, variação sutil de tonalidade, pelos finíssimos quando existentes, tecido com fibras visíveis, costuras físicas, reflexos coerentes com cada material, sombras de contato reais, pequenas imperfeições ópticas naturais, queda de foco progressiva, granulação fotográfica ultrafina, nenhuma superfície excessivamente perfeita. Sensação inequívoca de uma fotografia produzida com cenário, figurino, atores, iluminação e câmera reais.\n\nCLEAN TEXTURE:\ndetalhamento fino e elegante sem oversharpening, sem aspecto encerado, sem HDR artificial, sem excesso de clarity; preservar transições tonais suaves e materiais fisicamente plausíveis.\n\nCINEPRISMA:\ncolor grading cinematográfico premium combinando teal/cyan, azul profundo, âmbar e dourado; contraste sofisticado, densidade cromática de película moderna escaneada em alta qualidade, highlights quentes, sombras profundas com informação, pele natural separada das luzes coloridas do ambiente.\n\nQUALIDADE FINAL:\nmasterpiece photographic realism, ultra-detailed, premium editorial photography, photorealistic, true-to-life materials, extremely accurate facial identity, realistic skin, realistic hands, realistic fabric, realistic reflections, natural optics, cinematic depth, 8K UHD appearance, high dynamic range, pristine fine detail, premium commercial finish, image suitable for luxury advertising campaign and large-format print.\n\nFORMATO:\ncomposição 1:1, enquadramento frontal fechado, sujeito centralizado, rosto e mãos como foco absoluto, bolas de espelho ocupando a região superior, multidão dançando criando profundidade e contexto atrás do personagem.\n\nNEGATIVE PROMPT: alteração da identidade facial, rosto genérico, face swap impreciso, mudança de idade, mudança de etnia, mudança de sexo, remodelação do nariz, remodelação da mandíbula, olhos alterados, distância ocular incorreta, pele plastificada, beauty filter, excesso de suavização, uncanny face, CGI, 3D render, videogame graphics, cartoon, anime, pintura digital, ilustração, aspecto artificial de IA, AI look, synthetic skin, wax skin, excesso de HDR, oversharpening, halos, baixa resolução, blur no rosto, olhos fora de foco, olhos desalinhados, estrabismo acidental, dentes deformados, mãos deformadas, dedos extras, dedos faltando, dedos fundidos, dedos quebrados, mãos duplicadas, braços extras, membros duplicados, anatomia impossível, luvas fundidas à pele, máscara atravessando o rosto, máscara deformada, orelhas assimétricas da máscara, símbolo deformado, tecido plástico barato, reflexos impossíveis, iluminação incoerente, sombras incorretas, clipping severo de highlights, pretos esmagados, banding, artefatos de compressão, ruído digital grosseiro, texto, legenda, assinatura, logotipo, watermark, marca d'água, caracteres aleatórios.",
       "cat": "",
       "tags": [],
       "fav": false,
@@ -64,45 +37,54 @@
       "hasImg": true
     },
     {
-      "id": "mp1787915185618",
-      "title": "Melhoria 3 ingles",
-      "text": "Ultra-Premium 16K Professional Remaster & Enhancement. Preserve the image exactly as provided while dramatically improving quality, realism, sharpness, and clarity. Enhance only existing visible details—do not invent, generate, reconstruct, or add facial features, hair, beard strands, pores, wrinkles, clothing details, or textures not present in the source. Maintain the exact face, hairstyle, beard density, expression, skin tone, facial proportions, lighting, colors, clothing, and composition Improve only through faithful super-resolution, natural sharpening, artifact removal, noise reduction, texture refinement, and realistic detail recovery. Preserve the original background exactly—do not replace, redesign, extend, reimagine, or add elements. Apply subtle improvements to clarity, textures, gradients, edges, lighting fidelity, and resolution while keeping the background visually identical. Professional camera realism, authentic optics, realistic dynamic range, premium color science, clean highlights, rich shadows, natural micro-contrast, crystal-clear focus, luxury commercial photography, medium-format fidelity, magazine-cover finish, production-ready 16K master. Negative Prompt: Background replacement/redesign, new elements, added objects, added hair, thicker beard, extra facial hair, invented skin texture, generated pores, AI hallucinations, facial modifications, identity changes, age changes, oversharpening, plastic skin, CGI, illustration, synthetic details, unrealistic textures, altered composition.",
-      "cat": "mpc1787915175724",
-      "tags": [],
-      "fav": false,
-      "hasImg": false
-    },
-    {
-      "id": "mp1787618742156",
-      "title": "Restauração fotos",
-      "text": "Analise a foto enviada e realize uma restauração completa, corrigindo os seguintes problemas, se presentes: Riscos, Manchas de poeira ou sujeira, Marcas de dobra ou vincos , Áreas faltando ou rasgadas, descoloração ou amarelamento, partes desbotadas ou borradas.Se a imagem estiver apenas em preto e branco, realize a colorização completa com base em tons naturais e históricos. Aprimoramentos esperados na imagem: Restauração dos tons de pele originais e das cores das roupas. Reconstrução natural de detalhes faciais e corporais danificados. Remoção de ruidos visuais, aplicação de nitidez e clareza. Recuperação de elementos de fundo ausentes. Com base no contexto da imagem faça o Ajuste de texturas e iluminação, mantendo coerência visual.Orientações adicionais: A imagem final deve parecer natural, moderna e emocionalmente envolvente. Mantenha toda a estrutura facial e identidade original.Preserve composição e proporções da imagem original.Utilize uma iluminação ambiente suave e garanta alta definição.0 resultado final deve ser uma versão restaurada ultrarealista.",
-      "cat": "",
-      "tags": [],
-      "fav": false,
-      "hasImg": false
-    },
-    {
-      "id": "mp1787878513433",
-      "title": "Sentado com leão",
-      "text": "Câmera está ao nível do peito, lente média em ângulo frontal direto capturando do quadril à testa num enquadramento vertical que o operador segura firme porque o que está no visor é uma cena de intimidade inesperada: um homem (idêntico a imagem em anexo) de corpo robusto e ombros largos sentado num sofá de couro cinza-escuro, o braço esquerdo estendido sobre o encosto e a mão direita repousando suavemente sobre o dorso de um leão de juba vasta e dourada que dorme profundamente com a cabeça apoiada na coxa esquerda do homem, a postura de quem compartilha um momento de paz com uma criatura selvagem, e nesse cenário de coexistência o rosto que emerge carrega os traços exatos da referência do usuário — a mesma estrutura craniofacial com a pele e seus microdetalhes reais registrados sem concessão, o mesmo olhar de cor exata olhando diretamente para a câmera com uma expressão de calma e leve sorriso que não se impõe mas que a objetiva não consegue ignorar, as sobrancelhas levemente arqueadas em um gesto de tranquilidade, a boca fechada em um sorriso sutil, o cabelo preto-escuro penteado para trás com volume natural que a luz ambiente fria-azulada do crepúsculo toca em reflexos suaves, a barba por fazer de um ou dois dias em preto-denso que a luz ilumina em pontos de cinza-claro, enquanto a camiseta cinza-chumbo de algodão de gola redonda que abraça o torso com o tecido leve e macio que a objetiva registra em cada dobra e tensão muscular, a calça jeans azul-escura com as dobras naturais do tecido e os tênis brancos de lona com cadarços brancos e solado branco-gelo que a luz do crepúsculo banha em branco-azulado, e o leão de juba vasta e dourada com os olhos fechados em sono profundo, as garras retraídas e a pelagem macia que a luz ambiente fria-azulada do crepúsculo toca em reflexos dourados-quentes, e ao fundo a janela de vidro do apartamento de luxo se abre para a cidade ao anoitecer, os arranha-céus iluminados em pontos de luz amarela e branca que a profundidade de campo transforma em um bokeh vibrante de constelação urbana, o céu azul-escuro com tons de roxo e rosa no horizonte que a luz do crepúsculo banha em tons frios e serenos, fotografia hiper-realista cinematográfica 8K em formato 4:5 vertical onde cada fio da juba do leão e cada reflexo da cidade na janela e cada detalhe do rosto existem com a mesma presença irrecusável da serenidade que domina a cena. A identidade facial do homem deve ser idêntico a imagem em anexo.",
+      "id": "mp1789607567220",
+      "title": "Penteados",
+      "text": "sharp well-groomed beard, fair skin, and confident expression. Hairstyles include buzz cut, pompadour, long wavy hair, man bun, side fade, messy textured hair, spiky hairstyle, slick back, curly hair, and medium layered styles.",
       "cat": "",
       "tags": [],
       "fav": false,
       "hasImg": true
     },
     {
-      "id": "mp1787879677077",
-      "title": "Melhoria de fotos",
-      "text": "Edit and enhance the photo I provided while preserving the person’s face, identity, and overall appearance exactly as\r\nthey are in the original image.\r\nImprove the image in a natural, realistic, and professional way.\r\nEnhance the skin subtly by reducing minor imperfections, excessive texture, small blemishes, uneven areas, and\r\nvisible signs of tiredness. Keep natural skin texture, pores, and realistic details. Do not create a plastic, airbrushed,\r\noverly smooth, or beauty-filter effect.\r\nImprove the lighting by making it softer, more balanced, flattering, and professional. Correct harsh shadows, overly\r\ndark areas, uneven exposure, and excessive highlights while maintaining realistic photographic contrast.\r\nPreserve natural skin tones and make the face look well-lit without changing its appearance.\r\nDo NOT change the person’s facial features, face shape, eyes, nose, mouth, jawline, expression, hair, body,\r\nproportions, or identity.\r\nDo not reshape, beautify, reconstruct, or reinterpret the face in any way.\r\nDo not change the background, scenery, clothing, pose, framing, or composition unless necessary for basic exposure\r\nand color correction.\r\nThe final result should look like the exact same original photograph, simply captured with better lighting, cleaner skin\r\nappearance, improved exposure, balanced colors, and professional photographic finishing.\r\nThe goal is to improve the overall image quality while keeping the person completely recognizable and faithful to the\r\noriginal photo.",
+      "id": "mp1789607382742",
+      "title": "Anos 80",
+      "text": "Use the uploaded photo and recreate the same person as if photographed in India in the late 1980s. Preserve the face, skin tone, body shape, smile and overall identity very accurately. Style them in a fashionable 80s outfit like high-waisted jeans, printed shirt/denim jacket, retro accessories and voluminous hair. Use a realistic Indian college/home/street background with warm faded film colors, grain, soft focus and a vintage 1988 photo feel. 4:5 aspect ratio.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
+      "id": "mp1789607055530",
+      "title": "Fotos antigas coloracao",
+      "text": "Restore and upscale this vintage portrait to ultra-high quality. Preserve the person’s exact identity, facial features, expression, turban, moustache, clothing, and natural skin texture. Remove scratches, dust, stains, fading, blur, and film damage. Add realistic, subtle colorization with natural skin tones, authentic clothing colors, balanced contrast, sharp fine details, and professional cinematic color grading. Keep the original composition and historical character—no face alteration or over-smoothing.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
+      "id": "mp1788946218767",
+      "title": "Restauracao antigas",
+      "text": "Use the provided original old photograph as the primary source reference.\n\nProfessionally restore, repair, colorize, and upscale the old photograph into ultra-high-resolution 4K, while preserving the original people, identities, composition, pose, expression, clothing, environment, camera perspective, and historical authenticity.\n\nSTRICT FACIAL IDENTITY PRESERVATION: Preserve every person's exact facial identity and recognizable characteristics from the original photograph. Maintain the original head shape, forehead, eyebrows, eyes, eyelids, nose, lips, ears, cheekbones, jawline, hairline, hairstyle, facial hair, expression, age, skin characteristics, and facial proportions. Do not beautify, reshape, modernize, age, de-age, or reinterpret any face.\n\nPHOTO RESTORATION: Carefully repair scratches, dust, stains, cracks, creases, fading, discoloration, damaged areas, film deterioration, noise, grain buildup, blur, pixelation, and compression artifacts. Reconstruct damaged or missing details conservatively and naturally without inventing new facial features or changing the original scene.\n\nREALISTIC COLORIZATION: Convert the photograph into natural, historically believable full color. Apply realistic human skin tones with subtle tonal variation, naturally colored lips and eyes, authentic hair colors, believable clothing colors, and accurately balanced environmental colors. Preserve realistic highlights, shadows, contrast, and tonal depth. Avoid excessive saturation, artificial colors, or modern cinematic color grading.\n\n4K DETAIL ENHANCEMENT: Upscale to ultra-high-resolution 4K quality with refined facial detail, natural skin texture, individual hair strands, eyelashes, eyebrows, facial-hair detail, fabric fibers, clothing textures, and environmental details. Improve sharpness and clarity while retaining the natural photographic character of the original image.\n\nKeep skin realistic and naturally textured. Avoid plastic skin, excessive smoothing, oversharpening, halos, artificial HDR, fake details, or an obvious AI-generated appearance.\n\nDO NOT CHANGE: identity, facial structure, expression, apparent age, body proportions, pose, clothing design, accessories, objects, background layout, framing, or camera angle. Do not add or remove people or objects.\n\nThe final result should look like the same original historical photograph professionally restored and photographed in authentic natural color, not a newly generated recreation.\n\nFinal output: pristine 4K restoration, photorealistic natural color, authentic skin tones, clean fine details, realistic textures, high dynamic range, sharp but natural focus, historically faithful appearance, museum-quality photographic restoration, vertical 4:5 aspect ratio.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
+      "id": "mp1788914743973",
+      "title": "Fotos antigas",
+      "text": "/colourenhace",
       "cat": "",
       "tags": [],
       "fav": false,
       "hasImg": false
     },
     {
-      "id": "mp1787879980221",
-      "title": "Melhoria foto 2",
-      "text": "Analise a foto enviada e realize uma restauração completa, corrigindo os seguintes problemas, se presentes: Riscos, Manchas de poeira ou sujeira, Marcas de dobra ou vincos , Áreas faltando ou rasgadas, descoloração ou amarelamento, partes desbotadas ou borradas.Se a imagem estiver apenas em preto e branco, realize a colorização completa com base em tons naturais e históricos. Aprimoramentos esperados na imagem: Restauração dos tons de pele originais e das cores das roupas. Reconstrução natural de detalhes faciais e corporais danificados. Remoção de ruidos visuais, aplicação de nitidez e clareza. Recuperação de elementos de fundo ausentes. Com base no contexto da imagem faça o Ajuste de texturas e iluminação, mantendo coerência visual.Orientações adicionais: A imagem final deve parecer natural, moderna e emocionalmente envolvente. Mantenha toda a estrutura facial e identidade original.Preserve composição e proporções da imagem original.Utilize uma iluminação ambiente suave e garanta alta definição.0 resultado final deve ser uma versão restaurada ultrarealista.",
+      "id": "mp1788389270137",
+      "title": "Maquiagem",
+      "text": "\"Analise a foto que enviei e identifique meu contraste natural entre pele, cabelo, sobrancelhas, olhos e lábios.\n\nDepois, edite a foto criando uma maquiagem que AUMENTE estrategicamente esse contraste para deixar meus traços mais marcantes, sofisticados e fotogênicos.\n\nFaça:\n\n* pele natural e iluminada\n* sobrancelhas mais definidas\n* cílios mais marcados\n* delineado marrom escuro ou preto\n* sombra com profundidade em tons que valorizem meus olhos\n* blush mais aparente\n* lábios com uma cor mais intensa do que meu tom natural, como rosa queimado, malva, berry suave ou vermelho elegante\n\nA maquiagem deve criar mais separação visual entre pele, olhos, sobrancelhas e boca, mas continuar elegante e realista.\n\nNão altere meus traços, formato do rosto ou identidade. O resultado deve parecer maquiagem real, não filtro de beleza.\"",
       "cat": "",
       "tags": [],
       "fav": false,
@@ -118,9 +100,45 @@
       "hasImg": false
     },
     {
-      "id": "mp1787618211713",
-      "title": "Melhora da pele",
-      "text": "Prompt para Suavizar a Pele\n\nAnalise a foto que enviei e edite a própria imagem suavizando a aparência da pele de forma natural e realista. Reduza pequenas imperfeições, textura excessiva, manchas leves e sinais de cansaço, mas sem apagar totalmente a textura natural da pele. Mantenha o resultado elegante, leve e fotográfico, sem efeito plástico ou filtro de beleza. Não altere meus traços, formato do rosto, nariz, olhos, boca, expressão ou identidade. O objetivo é melhorar a pele sem mudar meu rosto.",
+      "id": "mp1787915185618",
+      "title": "Melhoria 3 ingles",
+      "text": "Ultra-Premium 16K Professional Remaster & Enhancement. Preserve the image exactly as provided while dramatically improving quality, realism, sharpness, and clarity. Enhance only existing visible details—do not invent, generate, reconstruct, or add facial features, hair, beard strands, pores, wrinkles, clothing details, or textures not present in the source. Maintain the exact face, hairstyle, beard density, expression, skin tone, facial proportions, lighting, colors, clothing, and composition Improve only through faithful super-resolution, natural sharpening, artifact removal, noise reduction, texture refinement, and realistic detail recovery. Preserve the original background exactly—do not replace, redesign, extend, reimagine, or add elements. Apply subtle improvements to clarity, textures, gradients, edges, lighting fidelity, and resolution while keeping the background visually identical. Professional camera realism, authentic optics, realistic dynamic range, premium color science, clean highlights, rich shadows, natural micro-contrast, crystal-clear focus, luxury commercial photography, medium-format fidelity, magazine-cover finish, production-ready 16K master. Negative Prompt: Background replacement/redesign, new elements, added objects, added hair, thicker beard, extra facial hair, invented skin texture, generated pores, AI hallucinations, facial modifications, identity changes, age changes, oversharpening, plastic skin, CGI, illustration, synthetic details, unrealistic textures, altered composition.",
+      "cat": "mpc1787915175724",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
+      "id": "mp1787879980221",
+      "title": "Melhoria foto 2",
+      "text": "Analise a foto enviada e realize uma restauração completa, corrigindo os seguintes problemas, se presentes: Riscos, Manchas de poeira ou sujeira, Marcas de dobra ou vincos , Áreas faltando ou rasgadas, descoloração ou amarelamento, partes desbotadas ou borradas.Se a imagem estiver apenas em preto e branco, realize a colorização completa com base em tons naturais e históricos. Aprimoramentos esperados na imagem: Restauração dos tons de pele originais e das cores das roupas. Reconstrução natural de detalhes faciais e corporais danificados. Remoção de ruidos visuais, aplicação de nitidez e clareza. Recuperação de elementos de fundo ausentes. Com base no contexto da imagem faça o Ajuste de texturas e iluminação, mantendo coerência visual.Orientações adicionais: A imagem final deve parecer natural, moderna e emocionalmente envolvente. Mantenha toda a estrutura facial e identidade original.Preserve composição e proporções da imagem original.Utilize uma iluminação ambiente suave e garanta alta definição.0 resultado final deve ser uma versão restaurada ultrarealista.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
+      "id": "mp1787879677077",
+      "title": "Melhoria de fotos",
+      "text": "Edit and enhance the photo I provided while preserving the person’s face, identity, and overall appearance exactly as\r\nthey are in the original image.\r\nImprove the image in a natural, realistic, and professional way.\r\nEnhance the skin subtly by reducing minor imperfections, excessive texture, small blemishes, uneven areas, and\r\nvisible signs of tiredness. Keep natural skin texture, pores, and realistic details. Do not create a plastic, airbrushed,\r\noverly smooth, or beauty-filter effect.\r\nImprove the lighting by making it softer, more balanced, flattering, and professional. Correct harsh shadows, overly\r\ndark areas, uneven exposure, and excessive highlights while maintaining realistic photographic contrast.\r\nPreserve natural skin tones and make the face look well-lit without changing its appearance.\r\nDo NOT change the person’s facial features, face shape, eyes, nose, mouth, jawline, expression, hair, body,\r\nproportions, or identity.\r\nDo not reshape, beautify, reconstruct, or reinterpret the face in any way.\r\nDo not change the background, scenery, clothing, pose, framing, or composition unless necessary for basic exposure\r\nand color correction.\r\nThe final result should look like the exact same original photograph, simply captured with better lighting, cleaner skin\r\nappearance, improved exposure, balanced colors, and professional photographic finishing.\r\nThe goal is to improve the overall image quality while keeping the person completely recognizable and faithful to the\r\noriginal photo.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
+    },
+    {
+      "id": "mp1787878513433",
+      "title": "Sentado com leão",
+      "text": "Câmera está ao nível do peito, lente média em ângulo frontal direto capturando do quadril à testa num enquadramento vertical que o operador segura firme porque o que está no visor é uma cena de intimidade inesperada: um homem (idêntico a imagem em anexo) de corpo robusto e ombros largos sentado num sofá de couro cinza-escuro, o braço esquerdo estendido sobre o encosto e a mão direita repousando suavemente sobre o dorso de um leão de juba vasta e dourada que dorme profundamente com a cabeça apoiada na coxa esquerda do homem, a postura de quem compartilha um momento de paz com uma criatura selvagem, e nesse cenário de coexistência o rosto que emerge carrega os traços exatos da referência do usuário — a mesma estrutura craniofacial com a pele e seus microdetalhes reais registrados sem concessão, o mesmo olhar de cor exata olhando diretamente para a câmera com uma expressão de calma e leve sorriso que não se impõe mas que a objetiva não consegue ignorar, as sobrancelhas levemente arqueadas em um gesto de tranquilidade, a boca fechada em um sorriso sutil, o cabelo preto-escuro penteado para trás com volume natural que a luz ambiente fria-azulada do crepúsculo toca em reflexos suaves, a barba por fazer de um ou dois dias em preto-denso que a luz ilumina em pontos de cinza-claro, enquanto a camiseta cinza-chumbo de algodão de gola redonda que abraça o torso com o tecido leve e macio que a objetiva registra em cada dobra e tensão muscular, a calça jeans azul-escura com as dobras naturais do tecido e os tênis brancos de lona com cadarços brancos e solado branco-gelo que a luz do crepúsculo banha em branco-azulado, e o leão de juba vasta e dourada com os olhos fechados em sono profundo, as garras retraídas e a pelagem macia que a luz ambiente fria-azulada do crepúsculo toca em reflexos dourados-quentes, e ao fundo a janela de vidro do apartamento de luxo se abre para a cidade ao anoitecer, os arranha-céus iluminados em pontos de luz amarela e branca que a profundidade de campo transforma em um bokeh vibrante de constelação urbana, o céu azul-escuro com tons de roxo e rosa no horizonte que a luz do crepúsculo banha em tons frios e serenos, fotografia hiper-realista cinematográfica 8K em formato 4:5 vertical onde cada fio da juba do leão e cada reflexo da cidade na janela e cada detalhe do rosto existem com a mesma presença irrecusável da serenidade que domina a cena. A identidade facial do homem deve ser idêntico a imagem em anexo.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": true
+    },
+    {
+      "id": "mp1787618742156",
+      "title": "Restauração fotos",
+      "text": "Analise a foto enviada e realize uma restauração completa, corrigindo os seguintes problemas, se presentes: Riscos, Manchas de poeira ou sujeira, Marcas de dobra ou vincos , Áreas faltando ou rasgadas, descoloração ou amarelamento, partes desbotadas ou borradas.Se a imagem estiver apenas em preto e branco, realize a colorização completa com base em tons naturais e históricos. Aprimoramentos esperados na imagem: Restauração dos tons de pele originais e das cores das roupas. Reconstrução natural de detalhes faciais e corporais danificados. Remoção de ruidos visuais, aplicação de nitidez e clareza. Recuperação de elementos de fundo ausentes. Com base no contexto da imagem faça o Ajuste de texturas e iluminação, mantendo coerência visual.Orientações adicionais: A imagem final deve parecer natural, moderna e emocionalmente envolvente. Mantenha toda a estrutura facial e identidade original.Preserve composição e proporções da imagem original.Utilize uma iluminação ambiente suave e garanta alta definição.0 resultado final deve ser uma versão restaurada ultrarealista.",
       "cat": "",
       "tags": [],
       "fav": false,
@@ -136,9 +154,9 @@
       "hasImg": false
     },
     {
-      "id": "mp1786304826615",
-      "title": "Restauração",
-      "text": "Prompt:\n\nRestaure completamente esta fotografia.\n\nFormato: [preto e branco / restaurar e colorir]\n\nEstilo: [aparência da época / aparência atual, como se tivesse sido tirada este ano]\n\nTextura: [preservar leve textura fotográfica / textura limpa e suave, com mínima granulação]\n\nRemova riscos, manchas, poeira, rasgos, dobras, falhas, ruídos e artefatos. Corrija exposição, brilho, contraste, níveis, sombras, realces, desbotamento, amarelamento e balanço de branco. Melhore nitidez, definição e resolução de forma natural.\n\nPreserve rigorosamente identidade, feições, expressão, idade, proporções, roupas, objetos, cenário, pose e enquadramento. Não embeleze, rejuvenesça ou invente detalhes inexistentes.\n\nSe colorir, use cores naturais: historicamente plausíveis no estilo de época ou mais limpas e realistas no estilo atual.\n\nNa textura limpa, reduza grãos e ruído sem plastificar a pele ou apagar poros, cabelos, tecidos e detalhes naturais. Evite aparência de IA.",
+      "id": "mp1787618211713",
+      "title": "Melhora da pele",
+      "text": "Prompt para Suavizar a Pele\n\nAnalise a foto que enviei e edite a própria imagem suavizando a aparência da pele de forma natural e realista. Reduza pequenas imperfeições, textura excessiva, manchas leves e sinais de cansaço, mas sem apagar totalmente a textura natural da pele. Mantenha o resultado elegante, leve e fotográfico, sem efeito plástico ou filtro de beleza. Não altere meus traços, formato do rosto, nariz, olhos, boca, expressão ou identidade. O objetivo é melhorar a pele sem mudar meu rosto.",
       "cat": "",
       "tags": [],
       "fav": false,
@@ -152,6 +170,15 @@
       "tags": [],
       "fav": false,
       "hasImg": true
+    },
+    {
+      "id": "mp1786304826615",
+      "title": "Restauração",
+      "text": "Prompt:\n\nRestaure completamente esta fotografia.\n\nFormato: [preto e branco / restaurar e colorir]\n\nEstilo: [aparência da época / aparência atual, como se tivesse sido tirada este ano]\n\nTextura: [preservar leve textura fotográfica / textura limpa e suave, com mínima granulação]\n\nRemova riscos, manchas, poeira, rasgos, dobras, falhas, ruídos e artefatos. Corrija exposição, brilho, contraste, níveis, sombras, realces, desbotamento, amarelamento e balanço de branco. Melhore nitidez, definição e resolução de forma natural.\n\nPreserve rigorosamente identidade, feições, expressão, idade, proporções, roupas, objetos, cenário, pose e enquadramento. Não embeleze, rejuvenesça ou invente detalhes inexistentes.\n\nSe colorir, use cores naturais: historicamente plausíveis no estilo de época ou mais limpas e realistas no estilo atual.\n\nNa textura limpa, reduza grãos e ruído sem plastificar a pele ou apagar poros, cabelos, tecidos e detalhes naturais. Evite aparência de IA.",
+      "cat": "",
+      "tags": [],
+      "fav": false,
+      "hasImg": false
     },
     {
       "id": "mp1785367988954",
@@ -315,24 +342,27 @@
     }
   ],
   "mpImgs": {
-    "mpimg_mp1780593047487": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1780593047487-gw3h.jpg",
-    "mpimg_mp1780613380200": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1780613380200-ji0k.jpg",
-    "mpimg_mp1780660119712": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1780660119712-ab6j.jpg",
-    "mpimg_mp1780881519353": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1780881519353-n1mq.jpg",
-    "mpimg_mp1780881810228": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1780881810228-7fg7.jpg",
-    "mpimg_mp1781985359069": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1781985359069-134m.jpg",
-    "mpimg_mp1782046485570": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1782046485570-1o71.jpg",
-    "mpimg_mp1782689691738": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1782689691738-sdpn.jpg",
-    "mpimg_mp1782763201199": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1782763201199-zo1n.jpg",
-    "mpimg_mp1783541885721": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1783541885721-zfd4.jpg",
-    "mpimg_mp1785367988954": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1785367988954-u8hm.jpg",
-    "mpimg_mp1786726913319": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1786726913319-j959.jpg",
-    "mpimg_mp1787878513433": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1787878513433-yvz8.jpg",
-    "mpimg_mp1788946218767": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1788946218767-79r4.jpg",
-    "mpimg_mp1789607055530": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1789607055530-o9y9.jpg",
-    "mpimg_mp1789607382742": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1789607382742-wlog.jpg",
-    "mpimg_mp1789607567220": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1789607567220-z802.jpg",
-    "mpimg_mp1789822440605": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1789822440605-51hv.jpg"
+    "mpimg_mp1780593047487": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1780593049/jarvis_gallery/mpimg_mp1780593047487.png",
+    "mpimg_mp1780613380200": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1780613419/jarvis_gallery/mpimg_mp1780613380200.jpg",
+    "mpimg_mp1780660119712": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1780660121/jarvis_gallery/mpimg_mp1780660119712.png",
+    "mpimg_mp1780881519353": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1780881522/jarvis_gallery/mpimg_mp1780881519353.png",
+    "mpimg_mp1780881810228": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1780881813/jarvis_gallery/mpimg_mp1780881810228.png",
+    "mpimg_mp1781985359069": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1781985361/jarvis_gallery/mpimg_mp1781985359069.png",
+    "mpimg_mp1782046485570": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1782046487/jarvis_gallery/mpimg_mp1782046485570.png",
+    "mpimg_mp1782689691738": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1782689694/jarvis_gallery/mpimg_mp1782689691738.png",
+    "mpimg_mp1782763201199": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1782763203/jarvis_gallery/mpimg_mp1782763201199.png",
+    "mpimg_mp1783541885721": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1783541888/jarvis_gallery/mpimg_mp1783541885721.png",
+    "mpimg_mp1785367988954": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1785368007/jarvis_gallery/mpimg_mp1785367988954.png",
+    "mpimg_mp1786726913319": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1786726915/jarvis_gallery/mpimg_mp1786726913319.jpg",
+    "mpimg_mp1787878513433": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1787878515/jarvis_gallery/mpimg_mp1787878513433.jpg",
+    "mpimg_mp1788946218767": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1788946274/jarvis_gallery/mpimg_mp1788946218767.png",
+    "mpimg_mp1789607055530": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607057/jarvis_gallery/mpimg_mp1789607055530.png",
+    "mpimg_mp1789607382742": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607384/jarvis_gallery/mpimg_mp1789607382742.png",
+    "mpimg_mp1789607567220": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789607568/jarvis_gallery/mpimg_mp1789607567220.png",
+    "mpimg_mp1789822440605": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1789822442/jarvis_gallery/mpimg_mp1789822440605.png",
+    "mpimg_mp1790074018724": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1790074020/jarvis_gallery/mpimg_mp1790074018724.jpg",
+    "mpimg_mp1790701063264": "https://res.cloudinary.com/dftsx4wv0/image/upload/v1790701064/jarvis_gallery/mpimg_mp1790701063264.png",
+    "mpimg_mp1792020707756": "https://rciannace.github.io/vitrine/midia/jarvis/mpimg_mp1792020707756-mv8quzod.jpg"
   },
-  "savedAt": "2026-10-14T21:50:51.800Z"
+  "savedAt": "2026-10-14T23:31:53.060Z"
 }
