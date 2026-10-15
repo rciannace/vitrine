@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261014-musica-v4 -->
+<!-- v20261014-musica-v5 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -949,6 +949,8 @@ body.admin-mode .musica-preco-del { display: flex; }
   letter-spacing: 1px;
 }
 body.admin-mode .musica-admin-edit-hint { display: block; }
+body.admin-mode [data-edit][contenteditable] { outline: 1px dashed rgba(255,102,34,.65); outline-offset: 3px; cursor: text; border-radius: 4px; }
+body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622; background: rgba(255,102,34,.08); }
 </style>
 </head>
 <body>
@@ -991,8 +993,8 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 <section class="musica-section" id="musicaSection">
   <div class="musica-inner">
 
-    <h2 class="musica-title">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
-    <p class="musica-sub">Criamos uma música única e exclusiva com Inteligência Artificial — feita sob medida para o seu momento especial</p>
+    <h2 class="musica-title" data-edit="titulo">SUA HISTÓRIA<br><span>EM MÚSICA</span></h2>
+    <p class="musica-sub" data-edit="subtitulo">Criamos uma música única e exclusiva com Inteligência Artificial — feita sob medida para o seu momento especial</p>
 
     <div class="musica-player">
       <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
@@ -1002,7 +1004,7 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
       <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
     </div>
 
-    <div class="musica-estilos-title">escolha seu estilo</div>
+    <div class="musica-estilos-title" data-edit="estilos_titulo">escolha seu estilo</div>
     <div class="musica-estilos">
       <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)">🎤 Pop</button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💃 Funk</button>
@@ -1016,25 +1018,25 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
     </div>
 
     <!-- Como funciona -->
-    <div class="musica-como-title">como funciona</div>
+    <div class="musica-como-title" data-edit="como_titulo">como funciona</div>
     <div class="musica-como-grid">
       <div class="musica-como-step">
         <div class="musica-como-num">1</div>
         <div class="musica-como-icon">🎸</div>
-        <div class="musica-como-label">Escolha o estilo</div>
-        <div class="musica-como-desc">Pop, sertanejo, romântico... escolha o clima que combina com o momento</div>
+        <div class="musica-como-label" data-edit="como_passo">Escolha o estilo</div>
+        <div class="musica-como-desc" data-edit="como_desc">Pop, sertanejo, romântico... escolha o clima que combina com o momento</div>
       </div>
       <div class="musica-como-step">
         <div class="musica-como-num">2</div>
         <div class="musica-como-icon">💭</div>
-        <div class="musica-como-label">Conte sua história</div>
-        <div class="musica-como-desc">Nomes, datas, momentos especiais — quanto mais detalhes, mais única fica a letra</div>
+        <div class="musica-como-label" data-edit="como_passo_2">Conte sua história</div>
+        <div class="musica-como-desc" data-edit="como_desc_2">Nomes, datas, momentos especiais — quanto mais detalhes, mais única fica a letra</div>
       </div>
       <div class="musica-como-step">
         <div class="musica-como-num">3</div>
         <div class="musica-como-icon">🎧</div>
-        <div class="musica-como-label">Receba em até 24h</div>
-        <div class="musica-como-desc">Sua música pronta, exclusiva, enviada direto no WhatsApp</div>
+        <div class="musica-como-label" data-edit="como_passo_3">Receba em até 24h</div>
+        <div class="musica-como-desc" data-edit="como_desc_3">Sua música pronta, exclusiva, enviada direto no WhatsApp</div>
       </div>
     </div>
 
@@ -1043,8 +1045,8 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
     <div class="musica-precos" id="musicaPrecosGrid"></div>
 
     <!-- Galeria de demos -->
-    <div class="musica-demos-title">🎧 OUÇA EXEMPLOS</div>
-    <p class="musica-demos-sub">Clique para ouvir músicas criadas com IA — cada uma única, igual será a sua</p>
+    <div class="musica-demos-title" data-edit="exemplos_titulo">🎧 OUÇA EXEMPLOS</div>
+    <p class="musica-demos-sub" data-edit="exemplos_sub">Clique para ouvir músicas criadas com IA — cada uma única, igual será a sua</p>
 
     <div class="musica-demos-grid" id="musicaDemosGrid">
       <!-- demos serão renderizadas aqui -->
@@ -1055,9 +1057,9 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 
     <div class="musica-cta">
       <button class="musica-cta-btn" onclick="pedirMusica()">
-        🎵 QUERO MINHA MÚSICA
+        <span data-edit="cta_botao">🎵 QUERO MINHA MÚSICA</span>
       </button>
-      <span class="musica-cta-note">Entrega em até 24h · Pagamento pelo WhatsApp</span>
+      <span class="musica-cta-note" data-edit="cta_nota">Entrega em até 24h · Pagamento pelo WhatsApp</span>
     </div>
 
   </div>
@@ -1068,7 +1070,7 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
   <div class="musica-pedido-box">
     <button class="musica-pedido-close" onclick="fecharMusicaPedido()">✕</button>
 
-    <div class="musica-pedido-eyebrow">🎵 IA MUSIC STUDIO</div>
+    <div class="musica-pedido-eyebrow" data-edit="pedido_selo">🎵 IA MUSIC STUDIO</div>
     <h2 class="musica-pedido-title" id="musicaPedidoTitulo">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
 
     <!-- Nome -->
@@ -1125,7 +1127,7 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
     </div>
 
     <!-- Dica -->
-    <div class="musica-pedido-dica">
+    <div class="musica-pedido-dica" data-edit="pedido_dica">
       💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará cada música!
       Pode mencionar nomes, datas especiais, o que quer que a letra fale, se quer com ou sem voz...
     </div>
@@ -1141,12 +1143,12 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 <div id="musicaObrigadaOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(5,5,10,.97);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:28px;">
   <div style="background:#14141a;border:1px solid rgba(255,255,255,.1);border-radius:28px;width:min(420px,96vw);padding:40px 32px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 40px 100px rgba(0,0,0,.5);">
     <div style="font-size:64px;">🎉</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#fff;">Pedido enviado!</div>
+    <div data-edit="obrigado_titulo" style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:#fff;">Pedido enviado!</div>
     <div style="font-size:15px;color:rgba(255,255,255,.55);line-height:1.6;">
       Valeu, <strong id="musicaObrigadaNome" style="color:#ff6622;">você</strong>! Seu pedido de música foi enviado com sucesso pelo WhatsApp.<br>
       Vamos confirmar os detalhes e começar a criar sua música! 🎵
     </div>
-    <div style="background:rgba(232,68,0,.15);border:1px solid #e84400;border-radius:14px;padding:14px 20px;font-size:13px;color:#fff;line-height:1.5;">
+    <div data-edit="obrigado_prazo" style="background:rgba(232,68,0,.15);border:1px solid #e84400;border-radius:14px;padding:14px 20px;font-size:13px;color:#fff;line-height:1.5;">
       🎧 Em até <strong>24 horas</strong> sua música exclusiva estará pronta!
     </div>
     <button onclick="fecharMusicaObrigada()" style="width:100%;padding:16px;background:var(--musica-grad);color:#fff;border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;">
@@ -1294,6 +1296,7 @@ window.addEventListener('firebase-ready', async () => {
       if (data.musicaDemos) window._musicaDemosFromFb = data.musicaDemos;
       if (data.musicaPacotes) window._musicaPacotesFromFb = data.musicaPacotes;
       if (data.musicaPedidos) window._musicaPedidosFromFb = data.musicaPedidos;
+      if (data.musicaTextos) { txtApply(data.musicaTextos); localStorage.setItem(TXT_LS, JSON.stringify(data.musicaTextos)); }
     }
   } catch(e) { console.error('Erro ao carregar dados do Firebase:', e); }
 
@@ -1368,9 +1371,81 @@ function checkAdminPin() {
   });
 }
 
+// ══════════════════════════════════════
+// TEXTOS EDITÁVEIS (modo admin): clique no texto, edite, clique fora → salva na nuvem
+// Cada texto é salvo sozinho (campo musicaTextos.<chave>), sem regravar o resto da página.
+// ══════════════════════════════════════
+const TXT_LS = 'iafoto_music_textos';
+function txtSanitize(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  d.querySelectorAll('*').forEach(n => {
+    if (!['BR','SPAN','STRONG','B','EM','I'].includes(n.tagName)) { n.replaceWith(document.createTextNode(n.textContent)); return; }
+    [...n.attributes].forEach(a => { if (a.name !== 'class') n.removeAttribute(a.name); });
+  });
+  return d.innerHTML.replace(/(&nbsp;|\s)+$/,'').trim();
+}
+function txtApply(map) {
+  if (!map) return;
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    const v = map[el.dataset.edit];
+    if (typeof v === 'string' && v.trim()) el.innerHTML = txtSanitize(v);
+  });
+}
+function txtSetEditable(on) {
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    if (on) el.setAttribute('contenteditable', 'true'); else el.removeAttribute('contenteditable');
+  });
+}
+async function txtSave(el) {
+  const key = el.dataset.edit;
+  const html = txtSanitize(el.innerHTML);
+  if (!html) { toast('⚠️ O texto não pode ficar vazio'); el.innerHTML = el.dataset.orig || ''; return; }
+  if (el.dataset.orig === html) return;
+  const ok = await waitForFirebase();
+  if (!ok) { toast('⚠️ Sem conexão — texto NÃO foi salvo na nuvem'); return; }
+  try {
+    await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'),
+      { musicaTextos: { [key]: html }, updatedAt: Date.now() }, { merge: true });
+    const cache = JSON.parse(localStorage.getItem(TXT_LS) || '{}'); cache[key] = html;
+    localStorage.setItem(TXT_LS, JSON.stringify(cache));
+    el.dataset.orig = html;
+    toast('✓ Texto salvo');
+  } catch (e) { toast('⚠️ Não consegui salvar: ' + (e.message || 'erro')); }
+}
+document.addEventListener('focusin', e => {
+  const el = e.target.closest && e.target.closest('[data-edit][contenteditable]');
+  if (el) el.dataset.orig = txtSanitize(el.innerHTML);
+});
+document.addEventListener('focusout', e => {
+  const el = e.target.closest && e.target.closest('[data-edit][contenteditable]');
+  if (el) txtSave(el);
+});
+document.addEventListener('keydown', e => {
+  const el = e.target.closest && e.target.closest('[data-edit][contenteditable]');
+  if (!el) return;
+  if (e.key === 'Enter') { e.preventDefault(); document.execCommand('insertLineBreak'); }
+  if (e.key === 'Escape') { el.innerHTML = el.dataset.orig || el.innerHTML; el.blur(); }
+});
+// no modo admin, clicar no texto do botão edita em vez de abrir o pedido
+document.addEventListener('click', e => {
+  if (!document.body.classList.contains('admin-mode')) return;
+  if (e.target.closest && e.target.closest('[data-edit]')) e.stopPropagation();
+}, true);
+// cola sempre como texto simples (sem formatação de outros sites)
+document.addEventListener('paste', e => {
+  const el = e.target.closest && e.target.closest('[data-edit][contenteditable]');
+  if (!el) return;
+  e.preventDefault();
+  document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text'));
+});
+try { txtApply(JSON.parse(localStorage.getItem(TXT_LS) || '{}')); } catch (e) {}
+document.addEventListener('DOMContentLoaded', () => { try { txtApply(JSON.parse(localStorage.getItem(TXT_LS) || '{}')); } catch (e) {} });
+
 function activateAdmin() {
   adminMode = true;
   document.body.classList.add('admin-mode');
+  txtSetEditable(true);
   const btn = document.getElementById('adminLockBtn');
   btn.textContent = '🔓'; btn.classList.add('admin-active');
   renderMusicaDemos();
@@ -1381,6 +1456,7 @@ function activateAdmin() {
 function deactivateAdmin() {
   adminMode = false;
   document.body.classList.remove('admin-mode');
+  txtSetEditable(false);
   const btn = document.getElementById('adminLockBtn');
   btn.textContent = '🔒'; btn.classList.remove('admin-active');
   renderMusicaDemos();
