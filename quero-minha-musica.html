@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261016-musica-v6 -->
+<!-- v20261026-musica-v7 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -999,6 +999,13 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
   color:rgba(255,255,255,.4);font-size:13px;cursor:pointer;min-height:180px;scroll-snap-align:start}
 .qm-depo-add:hover{border-color:#ff6622;color:#ff6622}
 body:not(.admin-mode) .qm-depo-add{display:none}
+.qm-depo-addbtn{display:none;margin:0 auto 14px;padding:10px 18px;border-radius:999px;border:1px dashed #ff6622;background:rgba(255,102,34,.1);
+  color:#ff8a4c;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+body.admin-mode .qm-depo-addbtn{display:block}
+.qm-depo-hint{display:none;text-align:center;font-size:11px;color:rgba(255,255,255,.4);margin-top:-6px}
+.qm-depo-hint.on{display:block}
+@media(min-width:900px){.qm-depo-hint.on{display:none}}
+.qm-depo-tools{display:flex;gap:6px;margin-left:auto}
 @media(min-width:900px){.qm-depo-track{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));overflow:visible}}
 
 /* Modal depoimento + lightbox */
@@ -1085,6 +1092,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <select class="qm-field" id="qmDepoEstrelas"><option value="5">★★★★★</option><option value="4">★★★★</option><option value="0">Sem estrelas</option></select>
     <div class="qm-label">Print da conversa (opcional)</div>
     <input class="qm-field" id="qmDepoPrint" type="file" accept="image/*">
+    <label style="display:none;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.6);cursor:pointer"><input type="checkbox" id="qmDepoTiraPrint"> Remover o print atual</label>
     <div id="qmDepoProgress" style="display:none;font-size:12px;color:#ff6622;text-align:center">Enviando…</div>
     <div class="musica-upload-footer">
       <button class="musica-upload-cancel" onclick="qmDepoFechar()">Cancelar</button>
@@ -1167,7 +1175,9 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <div id="musicaDepoWrap" class="qm-reveal" style="display:none">
       <div class="musica-demos-title" data-edit="depo_titulo">💬 QUEM JÁ RECEBEU</div>
       <p class="musica-demos-sub" data-edit="depo_sub">Mensagens de clientes que transformaram a sua história em música</p>
+      <button class="qm-depo-addbtn" onclick="qmDepoAbrir()">＋ Adicionar depoimento</button>
       <div class="qm-depo-track" id="musicaDepoTrack"></div>
+      <div class="qm-depo-hint" id="qmDepoHint">deslize para o lado para ver mais →</div>
     </div>
 
     <!-- Ouça antes de pagar -->
@@ -2272,19 +2282,34 @@ function renderDepoimentos() {
       '<div class="qm-depo-foot">' +
         '<div class="qm-depo-avatar">' + qmEsc((d.nome || '?').trim().charAt(0).toUpperCase()) + '</div>' +
         '<div><div class="qm-depo-nome">' + qmEsc(d.nome || 'Cliente') + '</div>' + (d.ocasiao ? '<div class="qm-depo-ocasiao">' + qmEsc(d.ocasiao) + '</div>' : '') + '</div>' +
+        '<div class="qm-depo-tools">' +
         (d.print ? '<span class="qm-depo-print" data-id="' + qmEsc(d.id) + '" onclick="qmVerPrint(this.dataset.id)">📱 ver conversa</span>' : '') +
-        (isAdmin ? '<button class="qm-admin-mini" style="margin-left:' + (d.print ? '6px' : 'auto') + '" title="Apagar" data-id="' + qmEsc(d.id) + '" onclick="qmDepoApagar(this.dataset.id)">✕</button>' : '') +
+        (isAdmin ? '<button class="qm-admin-mini" title="Editar" data-id="' + qmEsc(d.id) + '" onclick="qmDepoAbrir(this.dataset.id)">✏️</button>' +
+                   '<button class="qm-admin-mini" title="Apagar" data-id="' + qmEsc(d.id) + '" onclick="qmDepoApagar(this.dataset.id)">✕</button>' : '') +
+        '</div>' +
       '</div></div>';
-  }).join('') + '<div class="qm-depo-add" onclick="qmDepoAbrir()">＋ Adicionar depoimento</div>';
+  }).join('');
+  const hint = document.getElementById('qmDepoHint');
+  if (hint) hint.classList.toggle('on', musicaDepoimentos.length > 1);
 }
 function qmVerPrint(id) {
   const d = musicaDepoimentos.find(x => x.id === id); if (!d || !d.print) return;
   document.getElementById('qmLightboxImg').src = d.print;
   document.getElementById('qmLightbox').classList.add('open');
 }
-function qmDepoAbrir() {
-  ['qmDepoNome','qmDepoOcasiao','qmDepoTexto','qmDepoPrint'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  document.getElementById('qmDepoEstrelas').value = '5';
+let qmDepoEditId = null;
+function qmDepoAbrir(id) {
+  const d = id ? musicaDepoimentos.find(x => x.id === id) : null;
+  qmDepoEditId = d ? d.id : null;
+  document.getElementById('qmDepoNome').value = d ? (d.nome || '') : '';
+  document.getElementById('qmDepoOcasiao').value = d ? (d.ocasiao || '') : '';
+  document.getElementById('qmDepoTexto').value = d ? (d.texto || '') : '';
+  document.getElementById('qmDepoPrint').value = '';
+  document.getElementById('qmDepoEstrelas').value = d ? String(d.estrelas || 0) : '5';
+  const tit = document.querySelector('#qmDepoOverlay .musica-upload-title');
+  if (tit) tit.textContent = d ? '✏️ Editar depoimento' : '💬 Novo depoimento';
+  const tira = document.getElementById('qmDepoTiraPrint');
+  if (tira) { tira.checked = false; tira.parentElement.style.display = (d && d.print) ? 'flex' : 'none'; }
   document.getElementById('qmDepoProgress').style.display = 'none';
   document.getElementById('qmDepoBtn').disabled = false;
   document.getElementById('qmDepoOverlay').classList.add('open');
@@ -2320,11 +2345,20 @@ async function qmDepoSalvar() {
       print = j.secure_url;
     } catch (e) { toast('⚠️ O print não foi enviado (' + e.message + '). Salvando só o texto.'); }
   }
-  const novo = { id: 'dp' + Date.now().toString(36), nome, ocasiao: document.getElementById('qmDepoOcasiao').value.trim(), texto,
-    estrelas: parseInt(document.getElementById('qmDepoEstrelas').value, 10) || 0, print, criadoEm: Date.now() };
-  const next = await qmCloudList('musicaDepoimentos', list => [novo].concat(list));
+  const campos = { nome, ocasiao: document.getElementById('qmDepoOcasiao').value.trim(), texto,
+    estrelas: parseInt(document.getElementById('qmDepoEstrelas').value, 10) || 0 };
+  const tirar = document.getElementById('qmDepoTiraPrint')?.checked;
+  let next;
+  if (qmDepoEditId) {
+    const eid = qmDepoEditId;
+    next = await qmCloudList('musicaDepoimentos', list => list.map(d => d.id !== eid ? d :
+      { ...d, ...campos, print: print || (tirar ? '' : (d.print || '')) }));
+  } else {
+    const novo = { id: 'dp' + Date.now().toString(36), ...campos, print, criadoEm: Date.now() };
+    next = await qmCloudList('musicaDepoimentos', list => [novo].concat(list));
+  }
   btn.disabled = false;
-  if (next) { musicaDepoimentos = next; localStorage.setItem('iafoto_music_depos', JSON.stringify(next)); renderDepoimentos(); qmDepoFechar(); toast('💬 Depoimento publicado!'); }
+  if (next) { musicaDepoimentos = next; localStorage.setItem('iafoto_music_depos', JSON.stringify(next)); renderDepoimentos(); qmDepoFechar(); toast(qmDepoEditId ? '✓ Depoimento atualizado' : '💬 Depoimento publicado!'); qmDepoEditId = null; }
   else prog.style.display = 'none';
 }
 async function qmDepoApagar(id) {
