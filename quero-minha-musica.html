@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<!-- v20261028-musica-v8 -->
+<!-- v20261028-musica-v9 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>IA Music Studio — Música Personalizada</title>
 <meta property="og:title" content="IA Music Studio — Música Personalizada">
-<meta property="og:description" content="Criamos uma música única com Inteligência Artificial, feita sob medida para o seu momento especial.">
+<meta property="og:description" content="Uma música única, feita com Inteligência Artificial sob medida para o seu momento especial. Ouça exemplos e peça a sua pelo WhatsApp.">
+<meta name="description" content="Uma música única, feita com Inteligência Artificial sob medida para o seu momento especial. Ouça exemplos e peça a sua pelo WhatsApp.">
+<meta property="og:image" content="https://rciannace.github.io/vitrine/quero-minha-musica-capa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://rciannace.github.io/vitrine/quero-minha-musica.html">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="IA Music Studio">
+<meta name="theme-color" content="#0a0a14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23e84400'/%3E%3Cstop offset='1' stop-color='%23c40060'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='32' fill='url(%23g)'/%3E%3Cpath d='M26 44a6 6 0 1 1-4-5.6V18l20-4v22a6 6 0 1 1-4-5.6V20.8l-12 2.4z' fill='%23fff'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rciannace.github.io/vitrine/quero-minha-musica-capa.jpg">
 <meta name="twitter:title" content="IA Music Studio — Música Personalizada">
-<meta name="twitter:description" content="Criamos uma música única com Inteligência Artificial, feita sob medida para o seu momento especial.">
+<meta name="twitter:description" content="Uma música única, feita com Inteligência Artificial sob medida para o seu momento especial. Ouça exemplos e peça a sua pelo WhatsApp.">
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -949,6 +959,33 @@ body.admin-mode .musica-preco-del { display: flex; }
   letter-spacing: 1px;
 }
 body.admin-mode .musica-admin-edit-hint { display: block; }
+/* ══ v9: CTA no topo · WhatsApp flutuante · FAQ ══ */
+.qm-cta-topo{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 34px}
+.musica-sub + .musica-player{margin-top:72px}
+.qm-cta-topo .musica-cta-btn{max-width:420px}
+#qmWhats{position:fixed;right:20px;bottom:20px;z-index:9000;display:flex;align-items:center;gap:10px;text-decoration:none}
+.qm-whats-btn{width:58px;height:58px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 22px rgba(37,211,102,.45);transition:transform .15s;animation:qmWhatsPulse 2.8s ease-out infinite}
+#qmWhats:hover .qm-whats-btn{transform:scale(1.07)}
+.qm-whats-btn svg{width:32px;height:32px;fill:#fff}
+.qm-whats-balao{background:#fff;color:#111;font-size:13px;font-weight:700;padding:9px 14px;border-radius:14px 14px 4px 14px;
+  box-shadow:0 6px 22px rgba(0,0,0,.35);white-space:nowrap;opacity:0;transform:translateX(10px);transition:all .3s;pointer-events:none}
+#qmWhats.mostrar .qm-whats-balao,#qmWhats:hover .qm-whats-balao{opacity:1;transform:none;pointer-events:auto}
+body.admin-mode .qm-whats-balao{opacity:1;transform:none;pointer-events:auto}
+@keyframes qmWhatsPulse{0%{box-shadow:0 6px 22px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.5)}70%,100%{box-shadow:0 6px 22px rgba(37,211,102,.45),0 0 0 16px rgba(37,211,102,0)}}
+@media(max-width:600px){#qmWhats{right:16px;bottom:16px}.qm-whats-btn{width:54px;height:54px}.qm-whats-balao{font-size:12px}}
+body.qm-overlay-aberto #qmWhats{display:none}
+
+.qm-faq{margin:6px 0 34px}
+.qm-faq-item{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);border-radius:16px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.qm-faq-item[open]{border-color:rgba(255,102,34,.45);background:rgba(232,68,0,.06)}
+.qm-faq-item summary{list-style:none;cursor:pointer;padding:16px 50px 16px 18px;position:relative;font-weight:700;font-size:14.5px;color:#fff;line-height:1.4}
+.qm-faq-item summary::-webkit-details-marker{display:none}
+.qm-faq-item summary::after{content:'+';position:absolute;right:18px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:18px;color:#ff8a4c;transition:transform .2s}
+.qm-faq-item[open] summary::after{content:'−';background:var(--musica-grad);color:#fff}
+.qm-faq-a{padding:0 18px 18px;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.75)}
+
 /* ══ v6: DESTAQUE · FILTRO · DEPOIMENTOS · GARANTIA · ANIMAÇÕES ══ */
 /* Música em destaque */
 #musicaDestaque{margin:8px 0 40px}
@@ -1078,6 +1115,12 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 </div>
 <div id="toastEl"></div>
 
+<!-- WhatsApp flutuante: abre conversa já com mensagem -->
+<a id="qmWhats" href="https://wa.me/5511926029852" target="_blank" rel="noopener" onclick="return qmAbrirWhats(event)" aria-label="Tirar dúvidas no WhatsApp">
+  <span class="qm-whats-balao" data-edit="whats_balao">Dúvidas? Fale comigo 💬</span>
+  <span class="qm-whats-btn"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4zm6-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></span>
+</a>
+
 <!-- MODAL: adicionar depoimento -->
 <div id="qmDepoOverlay" onclick="if(event.target===this)qmDepoFechar()">
   <div class="musica-upload-box">
@@ -1114,6 +1157,11 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
       <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
       <div class="musica-bar"></div><div class="musica-bar"></div><div class="musica-bar"></div>
+    </div>
+
+    <div class="qm-cta-topo">
+      <button class="musica-cta-btn" onclick="pedirMusica()"><span data-edit="cta_topo_botao">🎵 QUERO MINHA MÚSICA</span></button>
+      <span class="musica-cta-note" data-edit="cta_topo_nota">Entrega em até 24h · Ouça antes de pagar</span>
     </div>
 
     <!-- Música em destaque (admin marca com ★ num exemplo) -->
@@ -1187,6 +1235,17 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
         <div class="qm-garantia-titulo" data-edit="garantia_titulo">OUÇA ANTES DE PAGAR</div>
         <div class="qm-garantia-texto" data-edit="garantia_texto">Você recebe uma prévia da sua música no WhatsApp e só paga se amar o resultado. Sem risco nenhum.</div>
       </div>
+    </div>
+
+    <!-- Perguntas frequentes -->
+    <div class="qm-faq qm-reveal" id="musicaFaq">
+      <div class="musica-demos-title" data-edit="faq_titulo">❓ PERGUNTAS FREQUENTES</div>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q1">Como eu recebo a minha música?</span></summary><div class="qm-faq-a" data-edit="faq_a1">Pelo WhatsApp, em arquivo de áudio (MP3), pronto para ouvir, compartilhar e guardar para sempre.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q2">A música é feita só para mim?</span></summary><div class="qm-faq-a" data-edit="faq_a2">Sim! Cada letra é criada do zero a partir da história que você conta: nomes, datas, lembranças e detalhes. Nenhuma música é repetida.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q3">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3">Você ouve uma prévia antes de pagar. Se algum detalhe da letra não ficar do jeito que você imaginou, é só falar que a gente ajusta.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q4">A voz é de uma pessoa de verdade?</span></summary><div class="qm-faq-a" data-edit="faq_a4">A voz e os instrumentos são criados com Inteligência Artificial, com qualidade de estúdio. É isso que permite fazer uma música inteira, exclusiva, em tão pouco tempo.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q5">Posso usar a música em vídeos e nas redes sociais?</span></summary><div class="qm-faq-a" data-edit="faq_a5">Pode, sim: em vídeos de festa, homenagens, surpresas e nas suas redes sociais.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6">Tudo pelo WhatsApp, via Pix, depois que você ouve a prévia e aprova a sua música.</div></details>
     </div>
 
     <div class="musica-cta qm-reveal">
@@ -1589,6 +1648,7 @@ function activateAdmin() {
   document.body.classList.add('admin-mode');
   txtSetEditable(true);
   setTimeout(renderDepoimentos, 0);
+  qmFaqAdmin(true);
   const btn = document.getElementById('adminLockBtn');
   btn.textContent = '🔓'; btn.classList.add('admin-active');
   renderMusicaDemos();
@@ -2397,6 +2457,58 @@ setInterval(() => {
   setTimeout(() => document.querySelectorAll('.qm-reveal').forEach(el => el.classList.add('in')), 4000); // segurança
 })();
 document.addEventListener('DOMContentLoaded', renderDepoimentos);
+
+// ══════════════════════════════════════
+// v9 — WhatsApp flutuante · estilo do topo → exemplos e pedido · FAQ no admin
+// ══════════════════════════════════════
+const QM_WHATS_NUM = '5511926029852';
+function qmAbrirWhats(e) {
+  if (document.body.classList.contains('admin-mode')) { if (e) e.preventDefault(); return false; } // no admin, o balão é editável
+  const msg = 'Olá! Vim pelo site da música personalizada e tenho uma dúvida 🎵';
+  window.open('https://wa.me/' + QM_WHATS_NUM + '?text=' + encodeURIComponent(msg), '_blank');
+  if (e) e.preventDefault();
+  return false;
+}
+// balão aparece sozinho por alguns segundos
+setTimeout(() => { const w = document.getElementById('qmWhats'); if (w) { w.classList.add('mostrar'); setTimeout(() => w.classList.remove('mostrar'), 9000); } }, 3000);
+// esconde o botão quando alguma tela cheia (pedido, upload) está aberta
+setInterval(() => {
+  const aberto = !!document.querySelector('#musicaPedidoOverlay.open, #musicaUploadOverlay.open, #qmDepoOverlay.open, #qmLightbox.open, #musicaPedidosOverlay.open, #adminModal.open');
+  document.body.classList.toggle('qm-overlay-aberto', aberto);
+}, 400);
+
+// estilo escolhido no topo → filtra os exemplos e já vem marcado no pedido
+function qmNomeEstilo(btn) { return (btn.textContent || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim(); }
+const _qmSelecionarEstiloOrig = selecionarEstilo;
+selecionarEstilo = function (btn) {
+  _qmSelecionarEstiloOrig(btn);
+  const g = qmNomeEstilo(btn);
+  window.qmEstiloEscolhido = g;
+  const temExemplo = musicaDemos.some(d => (d.genero || '') === g && !demoDead(d));
+  if (temExemplo) { qmSetFiltro(g); toast('🎧 Mostrando exemplos de ' + g + ' logo abaixo'); }
+  else { qmSetFiltro('Todas'); toast('✓ ' + g + ' escolhido — já vai marcado no seu pedido'); }
+};
+const _qmAbrirPedidoOrig = abrirMusicaPedido;
+abrirMusicaPedido = function (pacote) {
+  _qmAbrirPedidoOrig(pacote);
+  const g = window.qmEstiloEscolhido;
+  if (!g) return;
+  try {
+    document.querySelectorAll('#musicaBlocos [id^="estilos"]').forEach(box => {
+      const idx = box.id.replace('estilos', '');
+      const b = [...box.querySelectorAll('.musica-pedido-estilo')].find(x => qmNomeEstilo(x) === g);
+      if (b) toggleEstiloMusica(b, idx);
+    });
+  } catch (e) {}
+};
+
+// FAQ: no admin, todas abertas para editar; clicar no título edita em vez de abrir/fechar
+function qmFaqAdmin(on) { document.querySelectorAll('.qm-faq-item').forEach(d => { if (on) d.open = true; }); }
+document.addEventListener('click', e => {
+  if (!document.body.classList.contains('admin-mode')) return;
+  if (e.target.closest && e.target.closest('.qm-faq-item summary')) e.preventDefault();
+}, true);
+
 
 document.addEventListener('DOMContentLoaded', atualizarBadgeMusicaPedidos);
 document.addEventListener('DOMContentLoaded', () => {
