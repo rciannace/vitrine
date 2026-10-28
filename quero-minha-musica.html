@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261026-musica-v7 -->
+<!-- v20261028-musica-v8 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -2072,12 +2072,16 @@ function adicionarMusicaDemo() {
     document.getElementById('musicaUploadProgress').style.display = 'none';
     document.getElementById('musicaUploadProgressBar').style.width = '0%';
     document.getElementById('musicaUploadBtn').disabled = true;
+    document.getElementById('musicaUploadBtn').textContent = 'Enviar música';
     document.getElementById('musicaUploadDropzone').querySelector('.musica-drop-hint').textContent = 'Clique ou arraste um arquivo de áudio';
     overlay.classList.add('open');
   }
 }
 
-function fecharMusicaUpload() {
+function fecharMusicaUpload(forcar) {
+  if (currentAudioUpload && forcar !== true) {
+    if (!confirm('A música ainda está sendo enviada. Se fechar agora, o envio é cancelado. Cancelar o envio?')) return;
+  }
   const overlay = document.getElementById('musicaUploadOverlay');
   if (overlay) { overlay.classList.remove('open'); overlay.style.display = ''; }
   if (currentAudioUpload) { currentAudioUpload.abort && currentAudioUpload.abort(); currentAudioUpload = null; }
@@ -2126,7 +2130,8 @@ async function confirmarMusicaUpload() {
   const progressBar = document.getElementById('musicaUploadProgressBar');
 
   btn.disabled = true;
-  btn.textContent = 'Enviando...';
+  btn.textContent = 'Enviando… 0%';
+  toast('⏳ Enviando a música… não feche esta janela', 4000);
   progress.style.display = 'block';
 
   // Upload para Cloudinary com resource_type=video (aceita áudio)
@@ -2140,7 +2145,9 @@ async function confirmarMusicaUpload() {
 
   xhr.upload.onprogress = (e) => {
     if (e.lengthComputable) {
-      progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
+      const pct = Math.round((e.loaded / e.total) * 100);
+      progressBar.style.width = pct + '%';
+      btn.textContent = pct < 100 ? 'Enviando… ' + pct + '%' : 'Salvando…';
     }
   };
 
@@ -2153,7 +2160,7 @@ async function confirmarMusicaUpload() {
         demosCloudChange(list => list.some(d => d.url === novo.url) ? list : list.concat([novo])).then(ok => {
           if (ok) toast('🎵 "' + nome + '" adicionada e salva na nuvem!');
         });
-        fecharMusicaUpload();
+        fecharMusicaUpload(true);
       } else {
         toast('⚠️ Erro no upload: ' + (res.error?.message || 'tente novamente'));
         btn.disabled = false;
