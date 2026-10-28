@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-musica-v13 -->
+<!-- v20261028-musica-v14 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1838,8 +1838,14 @@ function selecionarEstilo(btn) {
   btn.classList.add('ativo');
 }
 
+// Pacote padrão = o primeiro card de preço, com o valor ATUAL que você editou na página
+function pacotePadrao() {
+  const lista = (typeof musicaPacotes !== 'undefined' && musicaPacotes.length) ? musicaPacotes : [];
+  const p = lista[0];
+  return p ? (p.nome + ' - R$' + p.preco) : 'MÚSICA SOLO';
+}
 function pedirMusica(pacote) {
-  abrirMusicaPedido(pacote || 'Solo - R$49,90');
+  abrirMusicaPedido(pacote || pacotePadrao());
 }
 
 // ── Galeria de demos ──
@@ -2683,7 +2689,7 @@ function toggleMusicaTag(btn, tipo) {
 
 function enviarPedidoMusica() {
   const nome = document.getElementById('musicaNome').value.trim();
-  const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || 'Solo - R$49,90';
+  const pacote = document.getElementById('musicaPedidoOverlay').dataset.pacote || pacotePadrao();
   const qtd = parseInt(document.getElementById('musicaPedidoOverlay').dataset.qtd) || 1;
 
   if (!nome) {
