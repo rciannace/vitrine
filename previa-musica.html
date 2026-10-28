@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-previa-v1 -->
+<!-- v20261028-previa-v2 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -69,27 +69,46 @@ audio{width:100%;margin-top:12px}
 
   <!-- 2. ajustar -->
   <div class="card hide" id="cardAjuste">
-    <div class="passo">2 · Ajuste o trecho</div>
+    <div class="passo">2 · Ouça e escolha o trecho</div>
     <canvas id="onda"></canvas>
-    <div class="tempo"><span id="tIni">0:00</span><span id="tFim">0:00</span></div>
-    <label class="lb">Duração da prévia</label>
+    <div class="tempo"><span id="tAgora">0:00</span><span id="tTotal">0:00</span></div>
+    <div class="row">
+      <button class="chip" id="btnOuvirTudo">▶ Ouvir tudo</button>
+      <button class="chip" id="btnOuvirTrecho">▶ Ouvir o trecho</button>
+    </div>
+    <div class="row">
+      <button class="chip" id="btnMarcaIni">⟦ Marcar início aqui</button>
+      <button class="chip" id="btnMarcaFim">Marcar fim aqui ⟧</button>
+    </div>
+    <p class="dica" style="margin:8px 0 0">Dica: toque em <b>Ouvir tudo</b> e, quando chegar no ponto certo, toque em <b>Marcar início</b> e depois em <b>Marcar fim</b>. Tocar na onda pula para aquele ponto.</p>
+
+    <label class="lb">Tamanho rápido</label>
     <div class="row" id="duracoes">
       <button class="chip" data-s="30">30s</button>
-      <button class="chip" data-s="45">45s</button>
       <button class="chip on" data-s="60">1 min</button>
-      <button class="chip" data-s="90">1:30</button>
+      <button class="chip" data-s="120">2 min</button>
+      <button class="chip" data-s="0">Música inteira</button>
     </div>
-    <label class="lb">Começar em <b id="lbIni">0:00</b> <span style="opacity:.7">(arraste ou toque na onda)</span></label>
+
+    <label class="lb">Início: <b id="lbIni">0:00</b></label>
     <input type="range" id="inicio" min="0" max="0" step="0.1" value="0">
+    <label class="lb">Fim: <b id="lbFim">0:00</b> · trecho de <b id="lbDur">0:00</b></label>
+    <input type="range" id="fim" min="0" max="0" step="0.1" value="0">
+
+    <div class="row">
+      <label class="chip on" id="lbFadeIn" style="text-align:center"><input type="checkbox" id="fadeIn" checked hidden> Entrada suave</label>
+      <label class="chip on" id="lbFadeOut" style="text-align:center"><input type="checkbox" id="fadeOut" checked hidden> Final suave</label>
+    </div>
+
     <label class="lb">Nome do arquivo (ex: nome do cliente)</label>
     <input type="text" id="nome" placeholder="Ex: Prévia - Ana" maxlength="60">
-    <button class="btn main" id="btnGerar">✨ Gerar prévia</button>
+    <button class="btn main" id="btnGerar">✨ Gerar áudio</button>
     <div class="prog hide" id="prog"><i></i></div>
   </div>
 
   <!-- 3. enviar -->
   <div class="card hide" id="cardEnviar">
-    <div class="passo">3 · Ouça e envie</div>
+    <div class="passo">3 · Confira e envie</div>
     <audio id="player" controls></audio>
     <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
     <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
@@ -412,34 +431,41 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
 </script>
 <script>
 (function () {
+  /* v2: player, marcar início/fim, qualquer duração, fade opcional, 192 kbps */
   const $ = id => document.getElementById(id);
-  let buffer = null, dur = 60, mp3File = null, mp3Url = null;
+  let buffer = null, mp3File = null, mp3Url = null;
 
   const fmt = s => { s = Math.max(0, s); const m = Math.floor(s / 60), r = Math.floor(s % 60); return m + ':' + String(r).padStart(2, '0'); };
 
   function info(t, erro) { const el = $('info'); el.textContent = t || ''; el.className = 'info' + (erro ? ' erro' : ''); }
 
+  let ctx = null, src = null, tocandoDesde = 0, offsetPlay = 0, fimPlay = 0, raf = 0;
+  const T = () => buffer ? buffer.duration : 0;
+  const ini = () => parseFloat($('inicio').value) || 0;
+  const fim = () => parseFloat($('fim').value) || 0;
+  function audioCtx() { if (!ctx) { const C = window.AudioContext || window.webkitAudioContext; ctx = new C(); } return ctx; }
+
   $('arquivo').addEventListener('change', async e => {
     const f = e.target.files[0];
     if (!f) return;
+    parar();
     $('cardEnviar').classList.add('hide');
     info('⏳ Lendo o som da gravação…');
     try {
       const data = await f.arrayBuffer();
-      const Ctx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new Ctx();
-      buffer = await new Promise((ok, falha) => {
-        const p = ctx.decodeAudioData(data, ok, falha);
-        if (p && p.then) p.then(ok, falha);
-      });
-      try { ctx.close(); } catch (x) {}
+      const c = audioCtx();
+      buffer = await new Promise((ok, falha) => { const p = c.decodeAudioData(data, ok, falha); if (p && p.then) p.then(ok, falha); });
       if (!buffer || buffer.duration < 1) throw new Error('sem áudio');
-      const ini = acharInicio(buffer);
-      $('inicio').max = Math.max(0, buffer.duration - 1).toFixed(1);
-      $('inicio').value = ini.toFixed(1);
+      const t = T();
+      ['inicio', 'fim'].forEach(id => { $(id).max = t.toFixed(1); });
+      const i0 = acharInicio(buffer);
+      $('inicio').value = i0.toFixed(1);
+      $('fim').value = Math.min(t, i0 + 60).toFixed(1);
+      document.querySelectorAll('#duracoes .chip').forEach(c2 => c2.classList.toggle('on', c2.dataset.s === '60'));
       const base = (f.name || 'previa').replace(/\.[^.]+$/, '');
       if (!$('nome').value) $('nome').value = /^(Screen|Gravação|screen|VID|Record)/i.test(base) ? 'Prévia' : base;
-      info('✓ Gravação com ' + fmt(buffer.duration) + ' de som. O começo do silêncio foi pulado.');
+      $('tTotal').textContent = fmt(t);
+      info('✓ Gravação com ' + fmt(t) + ' de som. O silêncio do começo foi pulado.');
       $('cardAjuste').classList.remove('hide');
       desenhar();
     } catch (err) {
@@ -449,81 +475,139 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     }
   });
 
-  // pula o silêncio do começo (enquanto você ainda não deu play)
   function acharInicio(b) {
     const ch = b.getChannelData(0), sr = b.sampleRate, win = Math.floor(sr * 0.05);
     for (let i = 0; i + win < ch.length; i += win) {
-      let s = 0;
-      for (let j = i; j < i + win; j += 4) s += Math.abs(ch[j]);
-      if (s / (win / 4) > 0.01) return Math.max(0, i / sr - 0.15);
+      let s2 = 0;
+      for (let j = i; j < i + win; j += 4) s2 += Math.abs(ch[j]);
+      if (s2 / (win / 4) > 0.01) return Math.max(0, i / sr - 0.15);
     }
     return 0;
   }
 
+  // ── onda + cabeça de leitura ──
+  let picos = null;
+  function calcPicos(W) {
+    const ch = buffer.getChannelData(0), step = Math.max(1, Math.floor(ch.length / W)), out = new Float32Array(W);
+    for (let x = 0; x < W; x++) { let m = 0; for (let k = x * step; k < (x + 1) * step && k < ch.length; k += 8) { const v = Math.abs(ch[k]); if (v > m) m = v; } out[x] = m; }
+    return out;
+  }
   function desenhar() {
     if (!buffer) return;
     const cv = $('onda'), dpr = window.devicePixelRatio || 1;
-    cv.width = cv.clientWidth * dpr; cv.height = cv.clientHeight * dpr;
-    const g = cv.getContext('2d'), W = cv.width, H = cv.height, ch = buffer.getChannelData(0);
+    const W = Math.max(1, Math.floor(cv.clientWidth * dpr)), H = Math.floor(cv.clientHeight * dpr);
+    if (cv.width !== W || cv.height !== H || !picos || picos.length !== W) { cv.width = W; cv.height = H; picos = calcPicos(W); }
+    const g = cv.getContext('2d'), t = T();
     g.clearRect(0, 0, W, H);
-    const ini = parseFloat($('inicio').value), fim = Math.min(buffer.duration, ini + dur);
-    const x0 = ini / buffer.duration * W, x1 = fim / buffer.duration * W;
-    g.fillStyle = 'rgba(255,102,34,.16)'; g.fillRect(x0, 0, x1 - x0, H);
-    const step = Math.max(1, Math.floor(ch.length / W));
+    const x0 = ini() / t * W, x1 = fim() / t * W;
+    g.fillStyle = 'rgba(255,102,34,.16)'; g.fillRect(x0, 0, Math.max(1, x1 - x0), H);
     for (let x = 0; x < W; x++) {
-      let max = 0;
-      for (let k = x * step; k < (x + 1) * step && k < ch.length; k += 8) { const v = Math.abs(ch[k]); if (v > max) max = v; }
-      const h = Math.max(1, max * H * 0.9);
+      const h = Math.max(1, picos[x] * H * 0.9);
       g.fillStyle = (x >= x0 && x <= x1) ? '#ff6a1a' : 'rgba(255,255,255,.25)';
       g.fillRect(x, (H - h) / 2, 1, h);
     }
-    $('tIni').textContent = fmt(ini); $('tFim').textContent = fmt(fim); $('lbIni').textContent = fmt(ini);
+    g.fillStyle = '#ffb38a'; g.fillRect(x0 - 1, 0, 2 * dpr, H); g.fillRect(x1 - 1, 0, 2 * dpr, H);
+    const agora = posAtual();
+    if (agora !== null) { g.fillStyle = '#fff'; g.fillRect(agora / t * W - dpr, 0, 2 * dpr, H); }
+    $('tAgora').textContent = fmt(agora !== null ? agora : ini());
+    $('lbIni').textContent = fmt(ini()); $('lbFim').textContent = fmt(fim()); $('lbDur').textContent = fmt(fim() - ini());
   }
-  $('inicio').addEventListener('input', desenhar);
+  window.addEventListener('resize', () => { picos = null; desenhar(); });
+
+  // ── tocar ──
+  function posAtual() { return src ? Math.min(fimPlay, offsetPlay + (audioCtx().currentTime - tocandoDesde)) : null; }
+  function parar() {
+    if (src) { try { src.onended = null; src.stop(); } catch (x) {} src = null; }
+    cancelAnimationFrame(raf);
+    $('btnOuvirTudo').textContent = '▶ Ouvir tudo'; $('btnOuvirTrecho').textContent = '▶ Ouvir o trecho';
+    desenhar();
+  }
+  function tocar(de, ate, qual) {
+    parar();
+    const c = audioCtx(); if (c.state === 'suspended') c.resume();
+    src = c.createBufferSource(); src.buffer = buffer; src.connect(c.destination);
+    offsetPlay = de; fimPlay = ate; tocandoDesde = c.currentTime;
+    src.start(0, de, Math.max(0.05, ate - de));
+    src.onended = () => { src = null; parar(); };
+    $(qual).textContent = '❚❚ Pausar';
+    const loop = () => { desenhar(); if (src) raf = requestAnimationFrame(loop); };
+    loop();
+  }
+  $('btnOuvirTudo').addEventListener('click', () => {
+    if (!buffer) return;
+    if (src && $('btnOuvirTudo').textContent.startsWith('❚❚')) { parar(); return; }
+    tocar(posAtual() !== null ? posAtual() : 0, T(), 'btnOuvirTudo');
+  });
+  $('btnOuvirTrecho').addEventListener('click', () => {
+    if (!buffer) return;
+    if (src && $('btnOuvirTrecho').textContent.startsWith('❚❚')) { parar(); return; }
+    tocar(ini(), fim(), 'btnOuvirTrecho');
+  });
   $('onda').addEventListener('pointerdown', e => {
     if (!buffer) return;
     const r = e.currentTarget.getBoundingClientRect();
-    $('inicio').value = Math.max(0, Math.min(buffer.duration - 1, (e.clientX - r.left) / r.width * buffer.duration)).toFixed(1);
+    const t = Math.max(0, Math.min(T() - 0.1, (e.clientX - r.left) / r.width * T()));
+    tocar(t, T(), 'btnOuvirTudo');
+  });
+  function marcar(qual) {
+    if (!buffer) return;
+    const t = posAtual() !== null ? posAtual() : (qual === 'inicio' ? ini() : fim());
+    if (qual === 'inicio') { $('inicio').value = t.toFixed(1); if (fim() <= t + 1) $('fim').value = Math.min(T(), t + 60).toFixed(1); }
+    else { $('fim').value = Math.max(ini() + 1, t).toFixed(1); }
+    document.querySelectorAll('#duracoes .chip').forEach(c => c.classList.remove('on'));
+    desenhar();
+  }
+  $('btnMarcaIni').addEventListener('click', () => marcar('inicio'));
+  $('btnMarcaFim').addEventListener('click', () => marcar('fim'));
+  $('inicio').addEventListener('input', () => { if (fim() <= ini() + 1) $('fim').value = Math.min(T(), ini() + 1).toFixed(1); desenhar(); });
+  $('fim').addEventListener('input', () => { if (fim() <= ini() + 1) $('inicio').value = Math.max(0, fim() - 1).toFixed(1); desenhar(); });
+  $('duracoes').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b || !buffer) return;
+    document.querySelectorAll('#duracoes .chip').forEach(c => c.classList.toggle('on', c === b));
+    const sdur = parseInt(b.dataset.s, 10);
+    if (sdur === 0) { $('inicio').value = acharInicio(buffer).toFixed(1); $('fim').value = T().toFixed(1); }
+    else { $('fim').value = Math.min(T(), ini() + sdur).toFixed(1); }
     desenhar();
   });
-  window.addEventListener('resize', desenhar);
-  $('duracoes').addEventListener('click', e => {
-    const b = e.target.closest('.chip'); if (!b) return;
-    document.querySelectorAll('#duracoes .chip').forEach(c => c.classList.toggle('on', c === b));
-    dur = parseInt(b.dataset.s, 10); desenhar();
-  });
+  ['fadeIn', 'fadeOut'].forEach(id => $(id).addEventListener('change', () => {
+    $(id === 'fadeIn' ? 'lbFadeIn' : 'lbFadeOut').classList.toggle('on', $(id).checked);
+  }));
 
-  // corta, aplica fade e transforma em MP3
+  // ── gera o MP3 (192 kbps) ──
   $('btnGerar').addEventListener('click', async () => {
     if (!buffer) return;
+    parar();
     const btn = $('btnGerar'); btn.disabled = true; btn.textContent = '⏳ Gerando…';
     const prog = $('prog'); prog.classList.remove('hide'); prog.firstElementChild.style.width = '0%';
     await new Promise(r => setTimeout(r, 30));
     try {
-      const sr = buffer.sampleRate, ini = parseFloat($('inicio').value);
-      const a = Math.floor(ini * sr), b = Math.min(buffer.length, Math.floor((ini + dur) * sr));
-      const n = b - a, fadeIn = Math.floor(sr * 0.4), fadeOut = Math.min(Math.floor(sr * 3), Math.floor(n / 3));
+      const sr = buffer.sampleRate;
+      const a = Math.floor(ini() * sr), b = Math.min(buffer.length, Math.floor(fim() * sr));
+      const n = b - a;
+      if (n < sr) throw new Error('o trecho precisa ter pelo menos 1 segundo');
+      const fadeIn = $('fadeIn').checked ? Math.floor(sr * 0.4) : 0;
+      const fadeOut = $('fadeOut').checked ? Math.min(Math.floor(sr * 3), Math.floor(n / 3)) : 0;
       const chans = Math.min(2, buffer.numberOfChannels);
       const pcm = [];
       for (let c = 0; c < chans; c++) {
-        const src = buffer.getChannelData(c), out = new Int16Array(n);
+        const s0 = buffer.getChannelData(c), out = new Int16Array(n);
         for (let i = 0; i < n; i++) {
           let g = 1;
-          if (i < fadeIn) g = i / fadeIn;
-          else if (i > n - fadeOut) g = Math.max(0, (n - i) / fadeOut);
-          const v = Math.max(-1, Math.min(1, src[a + i] * g));
+          if (fadeIn && i < fadeIn) g = i / fadeIn;
+          else if (fadeOut && i > n - fadeOut) g = Math.max(0, (n - i) / fadeOut);
+          const v = Math.max(-1, Math.min(1, s0[a + i] * g));
           out[i] = v < 0 ? v * 0x8000 : v * 0x7fff;
         }
         pcm.push(out);
       }
-      const enc = new lamejs.Mp3Encoder(chans, sr, 128), bloco = 1152, partes = [];
+      const enc = new lamejs.Mp3Encoder(chans, sr, 192), bloco = 1152, partes = [];
       for (let i = 0; i < n; i += bloco) {
         const l = pcm[0].subarray(i, i + bloco);
         const buf = chans === 2 ? enc.encodeBuffer(l, pcm[1].subarray(i, i + bloco)) : enc.encodeBuffer(l);
         if (buf.length) partes.push(new Int8Array(buf));
         if (i % (bloco * 200) === 0) { prog.firstElementChild.style.width = Math.round(i / n * 100) + '%'; await new Promise(r => setTimeout(r, 0)); }
       }
-      const fimEnc = enc.flush(); if (fimEnc.length) partes.push(new Int8Array(fimEnc));
+      const fe = enc.flush(); if (fe.length) partes.push(new Int8Array(fe));
       const blob = new Blob(partes, { type: 'audio/mpeg' });
       const nome = (($('nome').value || 'Prévia').trim().replace(/[\\/:*?"<>|]+/g, '') || 'Prévia') + '.mp3';
       mp3File = new File([blob], nome, { type: 'audio/mpeg' });
@@ -534,9 +618,9 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       $('cardEnviar').classList.remove('hide');
       $('cardEnviar').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
-      info('Erro ao gerar a prévia: ' + (err.message || err), true);
+      info('Erro ao gerar o áudio: ' + (err.message || err), true);
     } finally {
-      btn.disabled = false; btn.textContent = '✨ Gerar prévia';
+      btn.disabled = false; btn.textContent = '✨ Gerar áudio';
       setTimeout(() => prog.classList.add('hide'), 800);
     }
   });
