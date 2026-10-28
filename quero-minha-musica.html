@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-musica-v11 -->
+<!-- v20261028-musica-v13 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1253,8 +1253,9 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <div class="qm-faq qm-reveal" id="musicaFaq">
       <div class="musica-demos-title" data-edit="faq_titulo">❓ PERGUNTAS FREQUENTES</div>
       <details class="qm-faq-item"><summary><span data-edit="faq_q1">Como eu recebo a minha música?</span></summary><div class="qm-faq-a" data-edit="faq_a1">Pelo WhatsApp, em arquivo de áudio (MP3), pronto para ouvir, compartilhar e guardar para sempre.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q7">O que é a prévia?</span></summary><div class="qm-faq-a" data-edit="faq_a7">É um <strong>trecho da sua música já pronta</strong>, que eu envio pelo WhatsApp para você ouvir a voz, o ritmo e sentir a emoção antes de pagar.<br><br>A prévia não é a música inteira, de propósito: ela serve para você ter certeza de que gostou. Assim que o pagamento é confirmado, você recebe a <strong>música completa</strong>.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q2">A música é feita só para mim?</span></summary><div class="qm-faq-a" data-edit="faq_a2">Sim! Cada letra é criada do zero a partir da história que você conta: nomes, datas, lembranças e detalhes. Nenhuma música é repetida.</div></details>
-      <details class="qm-faq-item"><summary><span data-edit="faq_q3">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3">Você ouve uma prévia antes de pagar. Se algum detalhe da letra não ficar do jeito que você imaginou, é só falar que a gente ajusta.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3c">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma. Se quiser trocar um nome, uma palavra ou um trecho, é nesse momento que eu ajusto, até ficar do seu jeito.<br><br>Depois, ao ouvir a prévia, se quiser a música com outro ritmo ou mais rápida ou mais lenta, é só me falar que eu ajusto também.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q4">A voz é de uma pessoa de verdade?</span></summary><div class="qm-faq-a" data-edit="faq_a4">A voz e os instrumentos são criados com Inteligência Artificial, com qualidade de estúdio. É isso que permite fazer uma música inteira, exclusiva, em tão pouco tempo.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q5">Posso usar a música em vídeos e nas redes sociais?</span></summary><div class="qm-faq-a" data-edit="faq_a5">Pode, sim: em vídeos de festa, homenagens, surpresas e nas suas redes sociais.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6">Tudo pelo WhatsApp, via Pix, depois que você ouve a prévia e aprova a sua música.</div></details>
@@ -2469,6 +2470,36 @@ setInterval(() => {
   setTimeout(() => document.querySelectorAll('.qm-reveal').forEach(el => el.classList.add('in')), 4000); // segurança
 })();
 document.addEventListener('DOMContentLoaded', renderDepoimentos);
+// ══════════════════════════════════════
+// PROTEÇÃO: bloqueia botão direito, arrastar imagens e atalhos de salvar (fora do modo admin)
+// ══════════════════════════════════════
+(function () {
+  const isAdm = () => document.body.classList.contains('admin-mode');
+  document.addEventListener('contextmenu', e => {
+    if (isAdm()) return;
+    const t = e.target;
+    if (t && t.closest && t.closest('input, textarea')) return; // deixa colar texto nos campos do pedido
+    e.preventDefault();
+    toast('🔒 Conteúdo protegido');
+  });
+  document.addEventListener('dragstart', e => {
+    if (isAdm()) return;
+    if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'AUDIO')) e.preventDefault();
+  });
+  document.addEventListener('keydown', e => {
+    if (isAdm()) return;
+    const ctrl = e.ctrlKey || e.metaKey, k = (e.key || '').toLowerCase();
+    if (ctrl && (k === 's' || k === 'u')) { e.preventDefault(); if (k === 's') toast('🔒 Conteúdo protegido'); return; }
+    if (ctrl && e.shiftKey && ['i','j','c','k'].includes(k)) { e.preventDefault(); return; }
+    if (e.key === 'F12') { e.preventDefault(); }
+  });
+  const st = document.createElement('style');
+  st.textContent = `body:not(.admin-mode) img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;pointer-events:none}
+    body:not(.admin-mode) .musica-demo-card, body:not(.admin-mode) .qm-destaque{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+    body:not(.admin-mode) audio{pointer-events:none}`;
+  document.head.appendChild(st);
+})();
+
 
 // ══════════════════════════════════════
 // v9 — WhatsApp flutuante · estilo do topo → exemplos e pedido · FAQ no admin
