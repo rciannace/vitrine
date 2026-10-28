@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-previa-v2 -->
+<!-- v20261028-previa-v3 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -72,15 +72,15 @@ audio{width:100%;margin-top:12px}
     <div class="passo">2 · Ouça e escolha o trecho</div>
     <canvas id="onda"></canvas>
     <div class="tempo"><span id="tAgora">0:00</span><span id="tTotal">0:00</span></div>
+    <button class="btn main" id="btnOuvirTudo" style="margin-top:12px">▶ Tocar a gravação inteira</button>
     <div class="row">
-      <button class="chip" id="btnOuvirTudo">▶ Ouvir tudo</button>
-      <button class="chip" id="btnOuvirTrecho">▶ Ouvir o trecho</button>
+      <button class="chip" id="btnOuvirTrecho">▶ Ouvir só o trecho escolhido</button>
     </div>
     <div class="row">
       <button class="chip" id="btnMarcaIni">⟦ Marcar início aqui</button>
       <button class="chip" id="btnMarcaFim">Marcar fim aqui ⟧</button>
     </div>
-    <p class="dica" style="margin:8px 0 0">Dica: toque em <b>Ouvir tudo</b> e, quando chegar no ponto certo, toque em <b>Marcar início</b> e depois em <b>Marcar fim</b>. Tocar na onda pula para aquele ponto.</p>
+    <p class="dica" style="margin:8px 0 0">Dica: toque em <b>Tocar a gravação inteira</b> e, quando chegar no ponto certo, toque em <b>Marcar início</b> e depois em <b>Marcar fim</b>. Tocar na onda pula para aquele ponto.</p>
 
     <label class="lb">Tamanho rápido</label>
     <div class="row" id="duracoes">
@@ -111,8 +111,10 @@ audio{width:100%;margin-top:12px}
     <div class="passo">3 · Confira e envie</div>
     <audio id="player" controls></audio>
     <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
+    <div class="info" id="shareMsg"></div>
+    <a class="btn wa hide" id="btnAbrirWA" href="intent://send/#Intent;scheme=whatsapp;package=com.whatsapp.w4b;end" style="text-decoration:none">Abrir o WhatsApp Business</a>
     <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
-    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, escolha o <b>WhatsApp</b> na lista e depois o cliente. Se a lista não aparecer, use <b>Salvar o áudio</b> e envie pelo clipe 📎 → Documento/Áudio.</p>
+    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, abre a lista do celular: escolha <b>WhatsApp Business</b> e depois o cliente. Se não abrir, o áudio é salvo sozinho: abra o WhatsApp Business, entre na conversa e toque no clipe 📎 → <b>Áudio</b> (ou Documento). Use sempre pelo <b>Google Chrome</b>.</p>
   </div>
 
   <div class="card">
@@ -519,7 +521,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function parar() {
     if (src) { try { src.onended = null; src.stop(); } catch (x) {} src = null; }
     cancelAnimationFrame(raf);
-    $('btnOuvirTudo').textContent = '▶ Ouvir tudo'; $('btnOuvirTrecho').textContent = '▶ Ouvir o trecho';
+    $('btnOuvirTudo').textContent = '▶ Tocar a gravação inteira'; $('btnOuvirTrecho').textContent = '▶ Ouvir só o trecho escolhido';
     desenhar();
   }
   function tocar(de, ate, qual) {
@@ -625,14 +627,24 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     }
   });
 
+  function semAcento(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w .-]/g, '').trim() || 'previa.mp3'; }
   $('btnShare').addEventListener('click', async () => {
     if (!mp3File) return;
-    if (navigator.canShare && navigator.canShare({ files: [mp3File] })) {
-      try { await navigator.share({ files: [mp3File], title: mp3File.name }); } catch (e) {}
+    const msg = $('shareMsg'); msg.className = 'info'; msg.textContent = '';
+    const f = new File([mp3File], semAcento(mp3File.name), { type: 'audio/mpeg' });
+    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [f] }))) {
+      try { await navigator.share({ files: [f] }); return; }
+      catch (e) {
+        if (e && e.name === 'AbortError') { msg.textContent = 'Envio cancelado. Toque de novo quando quiser.'; return; }
+        msg.className = 'info erro';
+        msg.textContent = 'O celular não deixou compartilhar direto (' + ((e && (e.name + ': ' + e.message)) || 'erro') + '). Salvei o áudio: abra o WhatsApp Business e anexe pelo clipe 📎.';
+      }
     } else {
-      baixar();
-      alert('Seu celular não abriu a lista de compartilhar. O áudio foi salvo: no WhatsApp, toque no clipe 📎 → Documento e escolha o arquivo.');
+      msg.className = 'info erro';
+      msg.textContent = 'Este navegador não permite compartilhar arquivos. Abra a ferramenta no Google Chrome. Por enquanto, salvei o áudio para você anexar no WhatsApp.';
     }
+    baixar();
+    $('btnAbrirWA').classList.remove('hide');
   });
   function baixar() {
     if (!mp3Url) return;
