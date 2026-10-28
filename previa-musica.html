@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-previa-v3 -->
+<!-- v20261028-previa-v4 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -112,7 +112,10 @@ audio{width:100%;margin-top:12px}
     <audio id="player" controls></audio>
     <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
     <div class="info" id="shareMsg"></div>
-    <a class="btn wa hide" id="btnAbrirWA" href="intent://send/#Intent;scheme=whatsapp;package=com.whatsapp.w4b;end" style="text-decoration:none">Abrir o WhatsApp Business</a>
+    <div id="btnAbrirWA" class="hide">
+      <a class="btn wa" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.whatsapp.w4b;end" style="text-decoration:none">Abrir o WhatsApp Business</a>
+      <a class="btn ghost" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.whatsapp;end" style="text-decoration:none">Abrir o WhatsApp normal</a>
+    </div>
     <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
     <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, abre a lista do celular: escolha <b>WhatsApp Business</b> e depois o cliente. Se não abrir, o áudio é salvo sozinho: abra o WhatsApp Business, entre na conversa e toque no clipe 📎 → <b>Áudio</b> (ou Documento). Use sempre pelo <b>Google Chrome</b>.</p>
   </div>
