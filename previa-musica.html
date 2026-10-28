@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-previa-v4 -->
+<!-- v20261028-previa-v5 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -53,6 +53,11 @@ audio{width:100%;margin-top:12px}
 <body>
 <div class="wrap">
   <h1>🎧 Prévia de <span>Música</span></h1>
+  <div class="card hide" id="avisoChrome" style="border-color:rgba(255,176,32,.5);background:rgba(255,176,32,.08)">
+    <div class="passo" style="color:#ffb020">Abra no Google Chrome</div>
+    <p class="dica" style="margin:0 0 4px">Você está no navegador do celular, que <b>não deixa enviar o áudio direto</b> para o WhatsApp. No Google Chrome funciona.</p>
+    <a class="btn main" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none">Abrir no Google Chrome</a>
+  </div>
   <p class="sub">Transforme a gravação de tela da música em um <b>áudio curto</b>, com final suave, pronto para mandar no WhatsApp.</p>
 
   <!-- 1. escolher -->
@@ -112,12 +117,12 @@ audio{width:100%;margin-top:12px}
     <audio id="player" controls></audio>
     <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
     <div class="info" id="shareMsg"></div>
-    <div id="btnAbrirWA" class="hide">
-      <a class="btn wa" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.whatsapp.w4b;end" style="text-decoration:none">Abrir o WhatsApp Business</a>
-      <a class="btn ghost" href="intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.whatsapp;end" style="text-decoration:none">Abrir o WhatsApp normal</a>
+    <div class="hide" id="semShare" style="margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)">
+      <p class="dica" style="margin:0">Este navegador não deixou enviar direto, então o áudio foi <b>salvo no celular</b>. Para enviar direto da próxima vez, use o Google Chrome:</p>
+      <a class="btn ghost" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none;margin-top:10px">Abrir esta ferramenta no Chrome</a>
     </div>
     <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
-    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, abre a lista do celular: escolha <b>WhatsApp Business</b> e depois o cliente. Se não abrir, o áudio é salvo sozinho: abra o WhatsApp Business, entre na conversa e toque no clipe 📎 → <b>Áudio</b> (ou Documento). Use sempre pelo <b>Google Chrome</b>.</p>
+    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, o celular mostra a lista de apps: escolha <b>WhatsApp</b> ou <b>WhatsApp Business</b>, depois o cliente, e toque em enviar.</p>
   </div>
 
   <div class="card">
@@ -639,15 +644,11 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       try { await navigator.share({ files: [f] }); return; }
       catch (e) {
         if (e && e.name === 'AbortError') { msg.textContent = 'Envio cancelado. Toque de novo quando quiser.'; return; }
-        msg.className = 'info erro';
-        msg.textContent = 'O celular não deixou compartilhar direto (' + ((e && (e.name + ': ' + e.message)) || 'erro') + '). Salvei o áudio: abra o WhatsApp Business e anexe pelo clipe 📎.';
+        console.warn('share falhou', e);
       }
-    } else {
-      msg.className = 'info erro';
-      msg.textContent = 'Este navegador não permite compartilhar arquivos. Abra a ferramenta no Google Chrome. Por enquanto, salvei o áudio para você anexar no WhatsApp.';
     }
     baixar();
-    $('btnAbrirWA').classList.remove('hide');
+    $('semShare').classList.remove('hide');
   });
   function baixar() {
     if (!mp3Url) return;
@@ -655,6 +656,10 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     document.body.appendChild(a); a.click(); a.remove();
   }
   $('btnBaixar').addEventListener('click', baixar);
+  // navegador da Xiaomi (e outros) bloqueia o envio direto → sugere o Chrome
+  const ua = navigator.userAgent || '';
+  const naoChrome = /MiuiBrowser|XiaoMi\/|HeyTapBrowser|OPR\/|Firefox\/|FBAN|FBAV|Instagram/i.test(ua) || (/Android/i.test(ua) && !/Chrome\//i.test(ua));
+  if (/Android/i.test(ua) && naoChrome) $('avisoChrome').classList.remove('hide');
 })();
 </script>
 </body>
