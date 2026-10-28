@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-musica-v16 -->
+<!-- v20261028-musica-v17 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -962,7 +962,7 @@ body.admin-mode .musica-admin-edit-hint { display: block; }
 /* ══ v16: vídeo no topo ══ */
 .qm-video-box{margin:30px auto 34px;position:relative}
 .qm-video-box.deitado{width:100%;max-width:640px;aspect-ratio:16/9}
-.qm-video-box.empe{width:min(300px,66vw);aspect-ratio:9/16}
+.qm-video-box.empe{width:min(320px,74vw);aspect-ratio:9/16}
 .qm-video-frame{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:#000;cursor:pointer;
   box-shadow:0 0 0 2px rgba(255,102,34,.55),0 20px 60px rgba(232,68,0,.28)}
 .qm-video-frame img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.78)}
@@ -2537,7 +2537,7 @@ function qmRenderVideo() {
   if (tb) tb.style.display = v ? '' : 'none';
   if (!v) { box.style.display = 'none'; box.innerHTML = ''; return; }
   box.style.display = '';
-  box.className = 'qm-video-box ' + (v.vertical ? 'empe' : 'deitado');
+  box.className = 'qm-video-box ' + (v.vertical === false ? 'deitado' : 'empe');
   box.innerHTML = '<div class="qm-video-frame" onclick="qmVideoTocar()" role="button" aria-label="Assistir ao vídeo">' +
     '<img src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' +
     '<div class="qm-video-play">▶</div>' +
@@ -2567,7 +2567,7 @@ async function qmVideoDefinir() {
   if (link === null) return;
   const id = qmYoutubeId(link);
   if (!id) { toast('⚠️ Não reconheci esse link do YouTube. Copie de novo em Compartilhar → Copiar link.'); return; }
-  const vertical = /shorts\//i.test(link) ? true : (musicaVideo && musicaVideo.id === id ? !!musicaVideo.vertical : confirm('O vídeo foi gravado EM PÉ (celular na vertical)?\n\nOK = em pé   ·   Cancelar = deitado'));
+  const vertical = (musicaVideo && musicaVideo.id === id && musicaVideo.vertical === false) ? false : true; // padrão: Reels 9:16
   if (await qmVideoSalvar({ id, vertical })) toast('🎬 Vídeo colocado no topo da página!');
 }
 async function qmVideoFormato() {
