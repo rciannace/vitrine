@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v12 -->
+<!-- v20261029-previa-v13 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -512,6 +512,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
 
   function info(t, erro) { const el = $('info'); el.textContent = t || ''; el.className = 'info' + (erro ? ' erro' : ''); }
 
+  let marcaSrcs = [];
   let ctx = null, src = null, tocandoDesde = 0, offsetPlay = 0, fimPlay = 0, raf = 0;
   const T = () => buffer ? buffer.duration : 0;
   const ini = () => parseFloat($('inicio').value) || 0;
@@ -606,16 +607,35 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function posAtual() { return src ? Math.min(fimPlay, offsetPlay + (audioCtx().currentTime - tocandoDesde)) : null; }
   function parar() {
     if (src) { try { src.onended = null; src.stop(); } catch (x) {} src = null; }
+    marcaSrcs.forEach(m => { try { m.stop(); } catch (x) {} }); marcaSrcs = [];
     cancelAnimationFrame(raf);
-    $('btnOuvirTudo').textContent = '▶ Tocar a gravação inteira'; $('btnOuvirTrecho').textContent = '▶ Ouvir só o trecho escolhido';
+    $('btnOuvirTudo').textContent = '▶ Tocar a gravação inteira'; $('btnOuvirTrecho').textContent = (typeof marcaOn !== 'undefined' && marcaOn) ? '▶ Ouvir o trecho com a marca' : '▶ Ouvir só o trecho escolhido';
     desenhar();
   }
-  function tocar(de, ate, qual) {
+  function tocar(de, ate, qual, comMarca) {
     parar();
     const c = audioCtx(); if (c.state === 'suspended') c.resume();
-    src = c.createBufferSource(); src.buffer = buffer; src.connect(c.destination);
+    src = c.createBufferSource(); src.buffer = buffer;
     offsetPlay = de; fimPlay = ate; tocandoDesde = c.currentTime;
-    src.start(0, de, Math.max(0.05, ate - de));
+    if (comMarca && marcaOn) {
+      // mesma marca do áudio gerado: voz (ou sino) a cada 20s, com a música abaixando
+      const ganho = c.createGain(); src.connect(ganho); ganho.connect(c.destination);
+      const d = somMarca(c.sampleRate), mb = c.createBuffer(1, d.length, c.sampleRate); mb.copyToChannel(d, 0);
+      const len = d.length / c.sampleRate, duck = vinheta ? 0.8 : 0.45, gv = vinheta ? 1.0 : 0.7, t0 = c.currentTime + 0.05;
+      ganho.gain.setValueAtTime(1, c.currentTime);
+      window.__marcaPos(ate - de).forEach(p => {
+        const t = t0 + p;
+        ganho.gain.setValueAtTime(1, t - 0.15); ganho.gain.linearRampToValueAtTime(1 - duck, t);
+        ganho.gain.setValueAtTime(1 - duck, t + len); ganho.gain.linearRampToValueAtTime(1, t + len + 0.15);
+        const m = c.createBufferSource(), g2 = c.createGain(); g2.gain.value = gv;
+        m.buffer = mb; m.connect(g2); g2.connect(c.destination); m.start(t); marcaSrcs.push(m);
+      });
+      tocandoDesde = t0;
+      src.start(t0, de, Math.max(0.05, ate - de));
+    } else {
+      src.connect(c.destination);
+      src.start(0, de, Math.max(0.05, ate - de));
+    }
     src.onended = () => { src = null; parar(); };
     $(qual).textContent = '❚❚ Pausar';
     const loop = () => { desenhar(); if (src) raf = requestAnimationFrame(loop); };
@@ -629,7 +649,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   $('btnOuvirTrecho').addEventListener('click', () => {
     if (!buffer) return;
     if (src && $('btnOuvirTrecho').textContent.startsWith('❚❚')) { parar(); return; }
-    tocar(ini(), fim(), 'btnOuvirTrecho');
+    tocar(ini(), fim(), 'btnOuvirTrecho', true);
   });
   $('onda').addEventListener('pointerdown', e => {
     if (!buffer) return;
@@ -657,6 +677,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   let marcaOn = true, vinheta = null;   // vinheta = Float32Array mono no sample rate da gravação
   function setMarca(on) {
     marcaOn = on;
+    if (!src) $('btnOuvirTrecho').textContent = on ? '▶ Ouvir o trecho com a marca' : '▶ Ouvir só o trecho escolhido';
     $('marcaSim').classList.toggle('on', on); $('marcaNao').classList.toggle('on', !on);
     $('marcaOpc').style.display = on ? '' : 'none'; $('vinInfo').style.display = on ? '' : 'none';
     $('msgBox').style.display = on ? '' : 'none';
