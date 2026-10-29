@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v20 -->
+<!-- v20261029-musica-v21 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1133,6 +1133,13 @@ textarea.qm-field{min-height:110px;resize:vertical}
 .qm-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:-8px}
 
 /* Ouça antes de pagar */
+.qm-ajustes{margin:-6px 0 40px;padding:20px 22px;border-radius:20px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09)}
+.qm-ajustes-titulo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2.5px;color:#4ade80;text-align:center;margin-bottom:14px}
+.qm-ajustes-lista{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.qm-ajustes-item{display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.5;color:rgba(255,255,255,.68)}
+.qm-ajustes-item strong{display:block;color:#fff;font-size:14px;margin-bottom:2px}
+.qm-ajustes-n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);color:#4ade80;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+@media(max-width:760px){.qm-ajustes-lista{grid-template-columns:1fr}.qm-ajustes{padding:18px}}
 .qm-garantia{display:flex;gap:18px;align-items:center;margin:0 0 30px;padding:22px 24px;border-radius:22px;
   background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.35)}
 .qm-garantia-icon{flex-shrink:0;width:58px;height:58px;border-radius:16px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;font-size:28px}
@@ -1302,6 +1309,16 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <!-- Cards de preço com botão WhatsApp -->
     <div class="musica-admin-edit-hint">✏️ MODO ADMIN — CLIQUE EM QUALQUER TEXTO PARA EDITAR</div>
     <div class="musica-precos qm-reveal" id="musicaPrecosGrid"></div>
+
+    <!-- v21: política de ajustes (vale para todos os pacotes) -->
+    <div class="qm-ajustes qm-reveal">
+      <div class="qm-ajustes-titulo" data-edit="ajustes_titulo">✅ INCLUSO EM TODOS OS PACOTES</div>
+      <div class="qm-ajustes-lista">
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">1</span><div><strong data-edit="ajustes_t1">Você aprova a letra primeiro</strong><div data-edit="ajustes_d1">Envio a letra pelo WhatsApp antes de produzir. Troco nomes, palavras ou trechos até ficar do seu jeito.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">2</span><div><strong data-edit="ajustes_t2">Ajuste de ritmo e velocidade</strong><div data-edit="ajustes_d2">Ouviu a prévia e quer mais rápida, mais lenta ou com outro ritmo? É só me falar que eu ajusto.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">3</span><div><strong data-edit="ajustes_t3">Só paga depois de ouvir</strong><div data-edit="ajustes_d3">O pagamento é feito via Pix depois que você ouve a prévia e aprova a sua música.</div></div></div>
+      </div>
+    </div>
 
     <!-- Galeria de demos -->
     <div class="musica-demos-title" data-edit="exemplos_titulo">🎧 OUÇA EXEMPLOS</div>
