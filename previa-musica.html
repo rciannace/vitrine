@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v10 -->
+<!-- v20261029-previa-v11 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -75,6 +75,9 @@ textarea:focus{border-color:#ff6622}
 .btn.gravando{background:#dc2626!important;animation:pisca 1s ease-in-out infinite}@keyframes pisca{50%{opacity:.7}}
 .resumo{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,102,34,.08);border:1px solid rgba(255,102,34,.3);font-size:13.5px;text-align:center}
 .resumo b{color:#ffb38a}
+.voz-ok{margin-top:10px;padding:12px 14px;border-radius:12px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.4);font-size:13.5px;line-height:1.45}
+.voz-ok small{color:var(--muted);font-size:12px}
+.btn.regravar{background:rgba(255,255,255,.06)!important;border:1px solid var(--line)!important;box-shadow:none!important;font-size:13px!important;padding:10px!important}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -155,10 +158,12 @@ textarea:focus{border-color:#ff6622}
       <div class="sim-nao"><button class="sim on" id="marcaSim">Sim</button><button class="nao" id="marcaNao">Não</button></div>
     </div>
     <div id="marcaOpc">
+      <div class="voz-ok hide" id="vozOk">✅ <b>Sua voz "IA Music Studio" está salva</b><br><small>Ela entra sozinha em toda prévia com <b>Sim</b>. Não precisa gravar de novo.</small></div>
       <button class="btn main" id="btnGravar" style="margin-top:10px;font-size:15px;padding:13px">🎙️ Gravar minha voz: "IA Music Studio"</button>
       <div class="mini">
         <button id="btnOuvirMarca">▶ Ouvir a marca</button>
         <label for="vinheta" id="lbVinheta">📁 Escolher um áudio</label>
+        <button id="btnSino" class="hide">🔔 Usar o sino</button>
       </div>
     </div>
     <input type="file" id="vinheta" accept="audio/*">
@@ -672,16 +677,28 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     }
     return out;
   }
-  function somMarca(sr) { return vinheta && vinheta.sr === sr ? vinheta.data : sino(sr); }
+  function reamostrar(d, de, para) {
+    if (de === para) return d;
+    const n = Math.floor(d.length * para / de), out = new Float32Array(n), k = de / para;
+    for (let i = 0; i < n; i++) { const x = i * k, j = Math.floor(x), f = x - j; out[i] = (d[j] || 0) * (1 - f) + (d[j + 1] || 0) * f; }
+    return out;
+  }
+  function somMarca(sr) { return vinheta ? reamostrar(vinheta.data, vinheta.sr, sr) : sino(sr); }
+  function vozUI() {
+    const tem = !!vinheta;
+    $('vozOk').classList.toggle('hide', !tem);
+    $('btnSino').classList.toggle('hide', !tem);
+    $('btnGravar').classList.toggle('regravar', tem);
+    if (!(rec && rec.state === 'recording')) $('btnGravar').textContent = tem ? '🎙️ Regravar minha voz' : '🎙️ Gravar minha voz: "IA Music Studio"';
+    $('vinInfo').textContent = tem ? '' : 'Sem voz gravada: a prévia usa o sino.';
+  }
   async function carregarVinheta(b64) {
     const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     const c = audioCtx();
     const buf = await new Promise((ok, falha) => { const p = c.decodeAudioData(bytes.buffer, ok, falha); if (p && p.then) p.then(ok, falha); });
-    const sr = buffer ? buffer.sampleRate : buf.sampleRate;
-    const off = new OfflineAudioContext(1, Math.ceil(buf.duration * sr), sr);
-    const s2 = off.createBufferSource(); s2.buffer = buf; s2.connect(off.destination); s2.start();
-    const r = await off.startRendering();
-    let d = r.getChannelData(0).slice();
+    const sr = buf.sampleRate;
+    let d = new Float32Array(buf.length);
+    for (let ch = 0; ch < buf.numberOfChannels; ch++) { const x = buf.getChannelData(ch); for (let i = 0; i < d.length; i++) d[i] += x[i] / buf.numberOfChannels; }
     // corta silêncio do começo/fim e deixa o volume no ponto certo
     let pk = 0; for (let i = 0; i < d.length; i++) pk = Math.max(pk, Math.abs(d[i]));
     const lim = pk * 0.06; let i0 = 0, i1 = d.length - 1;
@@ -691,21 +708,23 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     d = d.slice(i0, i1);
     if (pk > 0) { const k = 0.95 / pk; for (let i = 0; i < d.length; i++) d[i] *= k; }
     vinheta = { sr, data: d, b64 };
-    $('vinInfo').textContent = '✓ Usando a sua voz (' + (d.length / sr).toFixed(1) + 's). ';
-    const x = document.createElement('a'); x.href = '#'; x.textContent = 'Voltar ao sino'; x.style.color = '#ff8a4c';
-    x.onclick = e => { e.preventDefault(); vinheta = null; try { localStorage.removeItem('previa_vinheta'); } catch (er) {} $('vinInfo').textContent = 'Usando o sino.'; };
-    $('vinInfo').appendChild(x);
+    vozUI();
   }
+  function salvarVoz(b64) {
+    try { localStorage.setItem('previa_vinheta', b64); } catch (er) { $('vinInfo').textContent = '⚠️ Não consegui guardar a voz neste celular.'; }
+    try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (er) {}
+  }
+  $('btnSino').addEventListener('click', () => {
+    if (!confirm('Apagar a sua voz gravada e usar o sino?')) return;
+    vinheta = null; try { localStorage.removeItem('previa_vinheta'); } catch (er) {} vozUI();
+  });
   $('vinheta').addEventListener('change', async e => {
     const f = e.target.files[0]; if (!f) return;
     if (f.size > 1500000) { $('vinInfo').textContent = '⚠️ Arquivo grande demais. Use uma vinheta curta (até uns 5 segundos).'; return; }
     const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1]); fr.readAsDataURL(f); });
-    try { await carregarVinheta(b64); try { localStorage.setItem('previa_vinheta', b64); } catch (er) { $('vinInfo').textContent += ' (não ficou salva para a próxima vez)'; } }
+    try { await carregarVinheta(b64); salvarVoz(b64); }
     catch (er) { $('vinInfo').textContent = '⚠️ Não consegui ler esse áudio.'; }
   });
-  try { const v = localStorage.getItem('previa_vinheta'); if (v) carregarVinheta(v).catch(() => {}); } catch (e) {}
-  // ao trocar de gravação, ajusta a vinheta ao sample rate novo
-  $('arquivo').addEventListener('change', () => setTimeout(() => { if (vinheta && buffer && vinheta.sr !== buffer.sampleRate) carregarVinheta(vinheta.b64).catch(() => {}); }, 1500));
 
 
   // v9: gravar a vinheta direto pelo microfone
@@ -720,12 +739,12 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       rec.ondataavailable = e => { if (e.data && e.data.size) recParts.push(e.data); };
       rec.onstop = async () => {
         clearTimeout(recTimer); st.getTracks().forEach(t => t.stop());
-        b.classList.remove('gravando'); b.textContent = '🎙️ Gravar de novo';
+        b.classList.remove('gravando'); vozUI();
         const blob = new Blob(recParts, { type: rec.mimeType || 'audio/webm' });
         const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1]); fr.readAsDataURL(blob); });
         try {
           await carregarVinheta(b64);
-          try { localStorage.setItem('previa_vinheta', b64); } catch (er) {}
+          salvarVoz(b64);
           $('btnOuvirMarca').click();
         } catch (er) { $('vinInfo').textContent = '⚠️ Não consegui usar a gravação. Tente de novo.'; }
       };
@@ -736,6 +755,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     } catch (e) { $('vinInfo').textContent = '⚠️ Sem permissão para o microfone. Toque no cadeado ao lado do endereço e libere o microfone.'; }
   });
 
+  try { const v = localStorage.getItem('previa_vinheta'); if (v) carregarVinheta(v).catch(() => vozUI()); else vozUI(); } catch (e) { vozUI(); }
   $('btnOuvirMarca').addEventListener('click', () => {
     const c = audioCtx(); if (c.state === 'suspended') c.resume();
     const sr = c.sampleRate, d = vinheta ? vinheta.data : sino(sr);
