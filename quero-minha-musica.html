@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v29 -->
+<!-- v20261029-musica-v30 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1181,6 +1181,45 @@ textarea.qm-field{min-height:110px;resize:vertical}
   body:not(.admin-mode) .qm-garantia{display:none}
 }
 .qm-pw-s{display:none}
+/* v30: ocasiões */
+.qm-ocasioes{margin:0 0 26px}
+.qm-oca-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+.qm-oca{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1.5px solid #4b4b57;background:rgba(255,255,255,.05);
+  color:rgba(255,255,255,.85);font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap;transition:all .15s}
+.qm-oca span{font-size:15px}
+.qm-oca:hover,.qm-oca:active{border-color:#e84400;color:#ffb38a;background:rgba(232,68,0,.12)}
+@media(max-width:600px){.qm-oca-row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.qm-oca-row::-webkit-scrollbar{display:none}.qm-oca{flex-shrink:0}}
+/* v30: login dos pedidos */
+.qm-login{margin:10px 14px 0;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px;font-size:12px;color:rgba(255,255,255,.75)}
+.qm-login.ok{display:block}
+.qm-login-tit{font-weight:700;color:#fff;font-size:13px}
+.qm-login-btn{margin-top:6px;width:100%;padding:10px;border:none;border-radius:10px;background:var(--musica-grad);color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+.qm-login-sair{background:none;border:none;color:#ff8a4c;font-size:11px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.qm-login-nota{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:4px}
+.qm-login-erro{color:#fbbf24;margin-top:6px}
+/* v30: leitura — textos cinza mais fortes e contornos visíveis */
+.musica-sub{color:rgba(255,255,255,.72)!important}
+.musica-estilos-title,.musica-como-title{color:rgba(255,255,255,.55)!important}
+.musica-como-desc{color:rgba(255,255,255,.66)!important}
+.musica-preco-desc{color:rgba(255,255,255,.58)!important}
+.musica-preco-nome{color:rgba(255,255,255,.8)!important}
+.musica-demos-sub{color:rgba(255,255,255,.6)!important}
+.musica-demo-estilo{color:rgba(255,255,255,.6)!important}
+.qm-demo-tema{color:rgba(255,255,255,.62)!important}
+.musica-demo-times{color:rgba(255,255,255,.5)!important}
+.musica-cta-note{color:rgba(255,255,255,.55)!important}
+.qm-depo-ocasiao{color:rgba(255,255,255,.62)!important}
+.qm-ajustes-item{color:rgba(255,255,255,.75)!important}
+.qm-garantia-texto{color:rgba(255,255,255,.82)!important}
+.qm-faq-a{color:rgba(255,255,255,.82)!important}
+.musica-pedido-label{color:rgba(255,255,255,.62)!important}
+.musica-pedido-dica{color:rgba(255,255,255,.7)!important}
+.musica-estilo-btn,.qm-chip{border:1.5px solid #4b4b57!important;color:rgba(255,255,255,.85)!important}
+.musica-estilo-btn.ativo,.musica-estilo-btn:hover{border-color:#e84400!important;color:#ff8a4c!important}
+.qm-chip.ativo{border-color:transparent!important;color:#fff!important}
+.musica-como-step,.musica-preco-card,.musica-demo-card,.qm-depo,.qm-ajustes,.qm-faq-item{border-color:rgba(255,255,255,.14)!important}
+.musica-preco-card.destaque{border-color:rgba(232,68,0,.6)!important}
+.musica-demo-card.playing,.musica-demo-card.qm-aberto{border-color:rgba(232,68,0,.6)!important}
 /* v28: botões do pedido em grade harmoniosa */
 #musicaBlocos .musica-pedido-estilos,#musicaBlocos .musica-pedido-tipos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 #musicaBlocos .musica-pedido-estilos.qm-ch-2{grid-template-columns:repeat(2,1fr)}
@@ -1277,6 +1316,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <button class="musica-pedidos-close" onclick="fecharMusicaPedidos()">✕</button>
     </div>
     <div id="qmStatsBox"></div>
+    <div id="qmLoginBox"></div>
     <div class="musica-pedidos-list" id="musicaPedidosList"></div>
   </div>
 </div>
@@ -1408,6 +1448,12 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
         <div class="musica-como-label" data-edit="como_passo_3">Receba em até 6h</div>
         <div class="musica-como-desc" data-edit="como_desc_3">Sua música pronta, exclusiva, enviada direto no WhatsApp</div>
       </div>
+    </div>
+
+    <!-- v30: ocasiões — já abre o pedido preenchido -->
+    <div class="qm-ocasioes qm-reveal">
+      <div class="musica-estilos-title" data-edit="ocasioes_titulo">para qual ocasião?</div>
+      <div class="qm-oca-row"><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎂</span> Aniversário</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💍</span> Casamento</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💞</span> Namoro</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👩‍👧</span> Dia das Mães</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👨‍👧</span> Dia dos Pais</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🤰</span> Chá de bebê</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🙏</span> Homenagem</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎓</span> Formatura</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>✨</span> Outra</button></div>
     </div>
 
     <!-- Cards de preço com botão WhatsApp -->
@@ -1680,7 +1726,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, increment, collection, getDocs, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
@@ -1700,7 +1746,17 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
   window._fbGetDoc  = getDoc;
   window._fbSetDoc  = setDoc;
   window._fbInc     = increment;
+  window._fbCol     = collection;
+  window._fbGetDocs = getDocs;
+  window._fbDelDoc  = deleteDoc;
+  window._fbDelField = deleteField;
   window._fbReady   = true;
+  // Login do admin na nuvem (protege os pedidos). Carregado à parte: se falhar, o site continua normal.
+  import("https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js").then(m => {
+    const auth = m.getAuth(app);
+    window._fbAuth = auth; window._fbSignIn = m.signInWithEmailAndPassword; window._fbSignOut = m.signOut;
+    m.onAuthStateChanged(auth, u => { window._fbUser = u || null; window._fbAuthPronto = true; window.dispatchEvent(new Event('qm-auth')); });
+  }).catch(e => console.warn('auth:', e));
   window.dispatchEvent(new Event('firebase-ready'));
 </script>
 
@@ -1879,6 +1935,7 @@ document.addEventListener('DOMContentLoaded', () => { try { txtApply(JSON.parse(
 
 function activateAdmin() {
   adminMode = true;
+  setTimeout(async () => { await qmEsperarAuth(); await qmCarregarPedidos(); atualizarBadgeMusicaPedidos(); }, 0);
   try { localStorage.setItem('qm_eu_admin', '1'); } catch (e) {}
   document.body.classList.add('admin-mode');
   txtSetEditable(true);
@@ -2098,6 +2155,10 @@ async function salvarPedidoMusica(pedido) {
   const ok = await waitForFirebase();
   if (!ok) { console.error('Firebase não conectou — pedido não foi salvo na nuvem.'); return; }
   try {
+    await window._fbSetDoc(window._fbDoc(window._fbDb, 'musicaPedidos', String(novo.id)), novo);
+    return;
+  } catch (e) { console.warn('Área protegida indisponível, salvando no lugar antigo:', e && e.message); }
+  try {
     const ref = window._fbDoc(window._fbDb, 'vitrine', 'data');
     const snap = await window._fbGetDoc(ref);
     const cloud = (snap.exists() && Array.isArray(snap.data().musicaPedidos)) ? snap.data().musicaPedidos : [];
@@ -2113,30 +2174,81 @@ function atualizarBadgeMusicaPedidos() {
   else { badge.style.display = 'none'; }
 }
 
+let qmPedAntigos = [];   // pedidos que ainda estão no lugar antigo (público)
+let qmPedErro = '';
+async function qmCarregarPedidos() {
+  const ok = await waitForFirebase();
+  if (!ok) { qmPedErro = 'Sem conexão com a nuvem'; return; }
+  qmPedErro = '';
+  let antigos = [], novos = [];
+  try {
+    const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
+    antigos = (snap.exists() && Array.isArray(snap.data().musicaPedidos)) ? snap.data().musicaPedidos : [];
+  } catch (e) {}
+  if (window._fbUser) {
+    try {
+      const q = await window._fbGetDocs(window._fbCol(window._fbDb, 'musicaPedidos'));
+      q.forEach(d => novos.push({ ...d.data(), _doc: d.id }));
+    } catch (e) { qmPedErro = (e && e.code === 'permission-denied') ? 'Este e-mail não tem permissão para ver os pedidos.' : ('Erro ao ler pedidos: ' + (e && e.message)); }
+  }
+  qmPedAntigos = antigos;
+  const ids = new Set(novos.map(p => p.id));
+  musicaPedidos = novos.concat(antigos.filter(p => !ids.has(p.id))).sort((a, b) => (b.id || 0) - (a.id || 0));
+  try { localStorage.removeItem('iafoto_music_pedidos'); } catch (e) {}
+}
 async function abrirMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.add('open');
   qmCarregarStats();
-  renderMusicaPedidosList(); // mostra o que já tem em cache, na hora
-  // Busca os dados mais recentes direto do banco (evita mostrar lista desatualizada
-  // ou vazia em navegadores mais lentos pra conectar, como o Samsung Internet)
-  const ok = await waitForFirebase();
-  if (!ok) {
-    console.error('Firebase não conectou a tempo — mostrando só o que já estava salvo neste navegador.');
-    toast('⚠️ Sem conexão com a nuvem no momento — lista pode estar desatualizada.');
+  qmRenderLogin();
+  renderMusicaPedidosList();
+  await qmEsperarAuth();
+  qmRenderLogin();
+  await qmCarregarPedidos();
+  qmRenderLogin();
+  renderMusicaPedidosList();
+  atualizarBadgeMusicaPedidos();
+}
+function qmEsperarAuth() {
+  return new Promise(r => { if (window._fbAuthPronto) return r(); const t = setTimeout(r, 4000); window.addEventListener('qm-auth', () => { clearTimeout(t); r(); }, { once: true }); });
+}
+function qmRenderLogin() {
+  const box = document.getElementById('qmLoginBox'); if (!box) return;
+  if (!window._fbAuthPronto) { box.innerHTML = ''; return; }
+  if (!window._fbUser) {
+    box.innerHTML = '<div class="qm-login"><div class="qm-login-tit">🔐 Entre para ver os pedidos protegidos</div>' +
+      '<input class="qm-field" id="qmLoginEmail" type="email" placeholder="Seu e-mail do Firebase" autocomplete="username">' +
+      '<input class="qm-field" id="qmLoginSenha" type="password" placeholder="Senha" autocomplete="current-password">' +
+      '<button class="qm-login-btn" onclick="qmLoginNuvem()">Entrar</button>' +
+      '<div class="qm-login-nota">Só precisa fazer uma vez neste aparelho.</div></div>';
     return;
   }
+  const n = qmPedAntigos.length;
+  box.innerHTML = '<div class="qm-login ok">🔐 Conectado: ' + qmEsc(window._fbUser.email || '') +
+    ' <button class="qm-login-sair" onclick="qmSairNuvem()">sair</button>' +
+    (qmPedErro ? '<div class="qm-login-erro">⚠️ ' + qmEsc(qmPedErro) + '</div>' : '') +
+    (n ? '<button class="qm-login-btn" onclick="qmMoverAntigos()">📦 Proteger ' + n + ' pedido' + (n > 1 ? 's' : '') + ' antigo' + (n > 1 ? 's' : '') + '</button>' +
+         '<div class="qm-login-nota">Eles ainda estão no lugar antigo, que qualquer um consegue ler. Toque para mover.</div>' : '') + '</div>';
+}
+async function qmLoginNuvem() {
+  const email = (document.getElementById('qmLoginEmail').value || '').trim(), senha = document.getElementById('qmLoginSenha').value || '';
+  if (!email || !senha) { toast('⚠️ Digite e-mail e senha'); return; }
+  try { await window._fbSignIn(window._fbAuth, email, senha); toast('✓ Conectado'); await qmCarregarPedidos(); qmRenderLogin(); renderMusicaPedidosList(); atualizarBadgeMusicaPedidos(); }
+  catch (e) { toast('⚠️ Não entrou: ' + ((e && e.code) || 'erro').replace('auth/', '')); }
+}
+async function qmSairNuvem() { try { await window._fbSignOut(window._fbAuth); } catch (e) {} await qmCarregarPedidos(); qmRenderLogin(); renderMusicaPedidosList(); }
+async function qmMoverAntigos() {
+  if (!window._fbUser) return;
+  if (!confirm('Mover ' + qmPedAntigos.length + ' pedido(s) antigo(s) para a área protegida?')) return;
   try {
-    const snap = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'));
-    if (snap.exists()) {
-      const data = snap.data();
-      if (data.musicaPedidos) {
-        musicaPedidos = data.musicaPedidos;
-        localStorage.setItem('iafoto_music_pedidos', JSON.stringify(musicaPedidos));
-        renderMusicaPedidosList();
-        atualizarBadgeMusicaPedidos();
-      }
-    }
-  } catch(e) { console.error('Erro ao buscar pedidos:', e); }
+    for (const p of qmPedAntigos) await window._fbSetDoc(window._fbDoc(window._fbDb, 'musicaPedidos', String(p.id)), p);
+    // confere se todos chegaram antes de apagar do lugar antigo
+    const q = await window._fbGetDocs(window._fbCol(window._fbDb, 'musicaPedidos'));
+    const ids = new Set(); q.forEach(d => ids.add(d.data().id));
+    if (!qmPedAntigos.every(p => ids.has(p.id))) throw new Error('nem todos foram copiados');
+    await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPedidos: window._fbDelField(), updatedAt: Date.now() }, { merge: true });
+    toast('🔐 Pedidos protegidos!');
+  } catch (e) { toast('⚠️ Não consegui mover: ' + (e && e.message)); }
+  await qmCarregarPedidos(); qmRenderLogin(); renderMusicaPedidosList(); atualizarBadgeMusicaPedidos();
 }
 function fecharMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.remove('open');
@@ -2200,8 +2312,14 @@ function renderMusicaPedidosList() {
 }
 
 async function qmPedStatus(id, status) {
-  const next = await qmCloudList('musicaPedidos', list => list.map(p => p.id === id ? { ...p, status } : p));
-  if (next) { musicaPedidos = next; localStorage.setItem('iafoto_music_pedidos', JSON.stringify(next)); toast('✓ ' + qmStatusInfo(status).nome); }
+  const p = musicaPedidos.find(x => x.id === id); if (!p) return;
+  if (p._doc) {
+    try { await window._fbSetDoc(window._fbDoc(window._fbDb, 'musicaPedidos', p._doc), { status }, { merge: true }); p.status = status; toast('✓ ' + qmStatusInfo(status).nome); }
+    catch (e) { toast('⚠️ Não consegui salvar: ' + (e && e.message)); }
+  } else {
+    const next = await qmCloudList('musicaPedidos', list => list.map(x => x.id === id ? { ...x, status } : x));
+    if (next) { p.status = status; qmPedAntigos = next; toast('✓ ' + qmStatusInfo(status).nome); }
+  }
   renderMusicaPedidosList(); atualizarBadgeMusicaPedidos();
 }
 function toggleMusicaPedidoStatus(id) {
@@ -2210,8 +2328,12 @@ function toggleMusicaPedidoStatus(id) {
 }
 async function deletarMusicaPedido(id) {
   if (!confirm('Apagar este pedido?')) return;
-  const next = await qmCloudList('musicaPedidos', list => list.filter(p => p.id !== id));
-  if (next) { musicaPedidos = next; localStorage.setItem('iafoto_music_pedidos', JSON.stringify(next)); }
+  const p = musicaPedidos.find(x => x.id === id); if (!p) return;
+  try {
+    if (p._doc) await window._fbDelDoc(window._fbDoc(window._fbDb, 'musicaPedidos', p._doc));
+    else { const next = await qmCloudList('musicaPedidos', list => list.filter(x => x.id !== id)); if (!next) return; qmPedAntigos = next; }
+    musicaPedidos = musicaPedidos.filter(x => x.id !== id);
+  } catch (e) { toast('⚠️ Não consegui apagar: ' + (e && e.message)); }
   renderMusicaPedidosList(); atualizarBadgeMusicaPedidos();
 }
 
@@ -3033,6 +3155,7 @@ const _qmAbrirPedidoOrig = abrirMusicaPedido;
 abrirMusicaPedido = function (pacote) {
   _qmAbrirPedidoOrig(pacote);
   qmConta('f');
+  if (window.qmOcasiaoEscolhida) document.querySelectorAll('#musicaBlocos [id^="musicaOcasiao"]').forEach(el => { if (!el.value) el.value = window.qmOcasiaoEscolhida; });
   const g = window.qmEstiloEscolhido;
   if (!g) return;
   try {
@@ -3187,6 +3310,13 @@ function toggleEstiloMusica(btn, idx) {
   qmCantorPlaceholder(idx, btn.textContent);
 }
 
+function qmOcasiao(btn) {
+  if (document.body.classList.contains('admin-mode')) return;
+  const nome = btn.textContent.replace(/^[^A-Za-zÀ-ÿ]+/, '').trim();
+  window.qmOcasiaoEscolhida = nome === 'Outra' ? '' : nome;
+  pedirMusica();
+  if (nome === 'Outra') setTimeout(() => { const el = document.getElementById('musicaOcasiao1'); if (el) el.focus(); }, 350);
+}
 function qmRitmoMusica(btn, idx) {
   const on = btn.classList.contains('sel');
   document.querySelectorAll('#ritmo'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
