@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v28 -->
+<!-- v20261029-musica-v29 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1192,6 +1192,12 @@ textarea.qm-field{min-height:110px;resize:vertical}
 #musicaBlocos .musica-pedido-estilo.sel{background:rgba(232,68,0,.18);border-color:#e84400;color:#ffb38a;box-shadow:0 0 0 1px #e84400 inset}
 #musicaBlocos .musica-pedido-tipo.sel{background:rgba(196,0,96,.18);border-color:#e040a0;color:#ffb3dc;box-shadow:0 0 0 1px #e040a0 inset}
 #musicaBlocos .musica-pedido-label{margin-bottom:8px}
+/* v29: contorno cinza chumbo para enxergar bem no celular */
+#musicaBlocos .musica-pedido-estilo,#musicaBlocos .musica-pedido-tipo{background:rgba(255,255,255,.06);border:1.5px solid #4b4b57;color:rgba(255,255,255,.85)}
+#musicaBlocos .musica-pedido-estilo.sel{border-color:#e84400}
+#musicaBlocos .musica-pedido-tipo.sel{border-color:#e040a0}
+#musicaPedidoOverlay .musica-pedido-input,#musicaPedidoOverlay .musica-pedido-textarea{border:1.5px solid #4b4b57;background:rgba(255,255,255,.05)}
+#musicaPedidoOverlay .musica-pedido-input:focus,#musicaPedidoOverlay .musica-pedido-textarea:focus{border-color:#e84400}
 /* v27: status dos pedidos + números */
 .musica-pedidos-box{max-width:620px!important}
 #qmStatsBox{padding:12px 14px 0}
