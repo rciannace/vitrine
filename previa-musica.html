@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v9 -->
+<!-- v20261029-previa-v10 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -73,6 +73,8 @@ audio{width:100%;margin-top:12px}
 textarea{width:100%;min-height:120px;padding:12px;border-radius:12px;border:1px solid var(--line);background:#0e0e16;color:#fff;font-size:14px;line-height:1.5;font-family:inherit;outline:none;resize:vertical}
 textarea:focus{border-color:#ff6622}
 .btn.gravando{background:#dc2626!important;animation:pisca 1s ease-in-out infinite}@keyframes pisca{50%{opacity:.7}}
+.resumo{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,102,34,.08);border:1px solid rgba(255,102,34,.3);font-size:13.5px;text-align:center}
+.resumo b{color:#ffb38a}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -131,10 +133,14 @@ textarea:focus{border-color:#ff6622}
       <button class="chip" data-s="0">Música inteira</button>
     </div>
 
+    <div class="resumo" id="resumoTrecho">Trecho: <b id="rsIni">0:00</b> até <b id="rsFim">0:00</b> · <b id="rsDur">0:00</b></div>
+    <button class="chip" id="btnFino" style="width:100%;margin-top:10px;flex:none">✏️ Ajuste fino do início e do fim</button>
+    <div id="fino" class="hide">
     <label class="lb">Início: <b id="lbIni">0:00</b></label>
     <input type="range" id="inicio" min="0" max="0" step="0.1" value="0">
     <label class="lb">Fim: <b id="lbFim">0:00</b> · trecho de <b id="lbDur">0:00</b></label>
     <input type="range" id="fim" min="0" max="0" step="0.1" value="0">
+    </div>
 
     <div class="row">
       <label class="chip on" id="lbFadeIn" style="text-align:center"><input type="checkbox" id="fadeIn" checked hidden> Entrada suave</label>
@@ -572,8 +578,23 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     if (agora !== null) { g.fillStyle = '#fff'; g.fillRect(agora / t * W - dpr, 0, 2 * dpr, H); }
     $('tAgora').textContent = fmt(agora !== null ? agora : ini());
     $('lbIni').textContent = fmt(ini()); $('lbFim').textContent = fmt(fim()); $('lbDur').textContent = fmt(fim() - ini());
+    $('rsIni').textContent = fmt(ini()); $('rsFim').textContent = fmt(fim()); $('rsDur').textContent = fmt(fim() - ini());
+    if (!$('btnGerar').disabled) $('btnGerar').textContent = '✨ Gerar áudio de ' + fmt(fim() - ini());
+    acenderAtalho();
   }
   window.addEventListener('resize', () => { picos = null; desenhar(); });
+  // o botão de tamanho rápido só fica aceso se o trecho realmente tiver aquele tamanho
+  let _somB = null, _somI = 0;
+  function somIni() { if (_somB !== buffer) { _somB = buffer; _somI = acharInicio(buffer); } return _somI; }
+  function acenderAtalho() {
+    if (!buffer) return;
+    const d = fim() - ini(), inteira = Math.abs(fim() - T()) < 0.3 && ini() <= somIni() + 0.3;
+    document.querySelectorAll('#duracoes .chip').forEach(c => {
+      const sd = parseInt(c.dataset.s, 10);
+      c.classList.toggle('on', sd === 0 ? inteira : (!inteira && Math.abs(d - sd) < 0.3));
+    });
+  }
+  $('btnFino').addEventListener('click', () => { const f = $('fino').classList.toggle('hide'); $('btnFino').textContent = f ? '✏️ Ajuste fino do início e do fim' : '▲ Fechar ajuste fino'; });
 
   // ── tocar ──
   function posAtual() { return src ? Math.min(fimPlay, offsetPlay + (audioCtx().currentTime - tocandoDesde)) : null; }
@@ -811,7 +832,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     } catch (err) {
       info('Erro ao gerar o áudio: ' + (err.message || err), true);
     } finally {
-      btn.disabled = false; btn.textContent = '✨ Gerar áudio';
+      btn.disabled = false; btn.textContent = '✨ Gerar áudio de ' + fmt(fim() - ini());
       setTimeout(() => prog.classList.add('hide'), 800);
     }
   });
