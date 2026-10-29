@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v36 -->
+<!-- v20261029-musica-v37 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1132,7 +1132,7 @@ textarea.qm-field{min-height:110px;resize:vertical}
   /* estilos numa linha, arrastando */
   .musica-estilos{flex-wrap:wrap;justify-content:center;overflow:visible;margin:0 0 26px;padding:0;gap:6px!important}
   .musica-estilos::-webkit-scrollbar{display:none}
-  .musica-estilo-btn{flex:0 0 calc((100% - 24px) / 5);box-sizing:border-box;flex-direction:column;justify-content:center;gap:3px;padding:8px 2px;border-radius:12px;min-height:54px;transform:none!important}
+  .musica-estilo-btn{flex:0 0 calc((100% - 18px) / 4);box-sizing:border-box;flex-direction:column;justify-content:center;gap:3px;padding:8px 2px;border-radius:12px;min-height:54px;transform:none!important}
   .musica-estilo-btn .qm-eb-e{font-size:18px;line-height:1}
   .musica-estilo-btn .qm-eb-t{font-size:clamp(9.5px,2.75vw,11.5px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   /* como funciona em linhas */
@@ -1216,6 +1216,8 @@ textarea.qm-field{min-height:110px;resize:vertical}
 /* v28: botões do pedido em grade harmoniosa */
 #musicaBlocos .musica-pedido-estilos,#musicaBlocos .musica-pedido-tipos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 #musicaBlocos .musica-pedido-estilos.qm-ch-2{grid-template-columns:repeat(2,1fr)}
+#musicaBlocos [id^="estilos"]{grid-template-columns:repeat(4,1fr)}
+#musicaBlocos [id^="estilos"] .musica-pedido-estilo:nth-child(5){grid-column:1 / span 1}
 #musicaBlocos .musica-pedido-estilo,#musicaBlocos .musica-pedido-tipo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   min-height:58px;padding:8px 4px;border-radius:12px;font-size:11.5px;line-height:1.15;text-align:center;
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.72)}
@@ -1413,10 +1415,8 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎤</span> <span class="qm-eb-t">Pop</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">💃</span> <span class="qm-eb-t">Funk</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🤠</span> <span class="qm-eb-t">Sertanejo</span></button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">💕</span> <span class="qm-eb-t">Romântico</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎸</span> <span class="qm-eb-t">MPB</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">✝️</span> <span class="qm-eb-t">Gospel</span></button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎹</span> <span class="qm-eb-t">Instrumental</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🪗</span> <span class="qm-eb-t">Forró</span></button>
       <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🥁</span> <span class="qm-eb-t">Pagode</span></button>
     </div>
@@ -1558,10 +1558,8 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎤 Pop</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💃 Funk</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🤠 Sertanejo</button>
-        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">💕 Romântico</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎸 MPB</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">✝️ Gospel</button>
-        <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🎹 Instrumental</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🪗 Forró</button>
         <button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,1)">🥁 Pagode</button>
         </div>
@@ -1702,7 +1700,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <div class="qm-label">Nome da música</div>
     <input class="qm-field" id="musicaUploadTitulo" placeholder="Ex: Manto de Prata" maxlength="60">
     <div class="qm-label">Estilo</div>
-    <select class="qm-field" id="musicaUploadGenero"><option>Pop</option><option>Funk</option><option>Sertanejo</option><option>Romântico</option><option>MPB</option><option>Gospel</option><option>Instrumental</option><option>Forró</option><option>Pagode</option><option>Rock</option><option>Infantil</option><option>Outro</option></select>
+    <select class="qm-field" id="musicaUploadGenero"><option>Pop</option><option>Funk</option><option>Sertanejo</option><option>MPB</option><option>Gospel</option><option>Forró</option><option>Pagode</option><option>Rock</option><option>Infantil</option><option>Outro</option></select>
     <div class="qm-label">Feita para… (opcional)</div>
     <input class="qm-field" id="musicaUploadTema" placeholder="Ex: aniversário de 15 anos da Ana" maxlength="90">
 
@@ -2773,7 +2771,7 @@ async function qmDemoDestaque(i) {
 async function qmDemoEditar(i) {
   const alvo = musicaDemos[i]; if (!alvo) return;
   const nome = prompt('Nome da música:', alvo.nome || ''); if (nome === null) return;
-  const genero = prompt('Estilo (ex: Sertanejo, Pop, Gospel, Romântico, Funk, MPB, Forró, Pagode, Rock, Infantil):', alvo.genero || ''); if (genero === null) return;
+  const genero = prompt('Estilo (ex: Sertanejo, Pop, Gospel, Funk, MPB, Forró, Pagode, Rock, Infantil):', alvo.genero || ''); if (genero === null) return;
   const tema = prompt('Feita para… (ex: aniversário de 15 anos da Ana) — pode deixar vazio:', alvo.tema || ''); if (tema === null) return;
   const next = await qmCloudList('musicaDemos', list => list.map(d => d.url === alvo.url ? { ...d, nome: nome.trim() || d.nome, genero: genero.trim(), tema: tema.trim() } : d));
   if (next) { musicaDemos = next; localStorage.setItem('iafoto_music_demos', JSON.stringify(next)); renderMusicaDemos(); toast('✓ Exemplo atualizado'); }
@@ -3205,7 +3203,7 @@ function qmCantorPlaceholder(idx, estilo) {
 }
 function gerarBlocoMusica(idx) {
   const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
-  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🪗 Forró','🥁 Pagode'];
+  const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','🎸 MPB','✝️ Gospel','🪗 Forró','🥁 Pagode'];
   const vozes = ['🎤 Feminina','🎸 Masculina'];
   const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🌸 Calma','💪 Motivacional','🌙 Nostálgica'];
   const ritmos = ['🐢 Mais lenta','🎵 Moderada','⚡ Mais rápida'];
