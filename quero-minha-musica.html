@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v32 -->
+<!-- v20261029-musica-v33 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1144,9 +1144,11 @@ textarea.qm-field{min-height:110px;resize:vertical}
 /* ══ v22: CELULAR COMPACTO ══ */
 @media (max-width: 600px){
   /* estilos numa linha, arrastando */
-  .musica-estilos{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -16px 26px;padding:4px 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .musica-estilos{flex-wrap:wrap;justify-content:center;overflow:visible;margin:0 0 26px;padding:0;gap:6px!important}
   .musica-estilos::-webkit-scrollbar{display:none}
-  .musica-estilo-btn{flex-shrink:0;white-space:nowrap;padding:8px 14px}
+  .musica-estilo-btn{flex:0 0 calc((100% - 24px) / 5);box-sizing:border-box;flex-direction:column;justify-content:center;gap:3px;padding:8px 2px;border-radius:12px;min-height:54px;transform:none!important}
+  .musica-estilo-btn .qm-eb-e{font-size:18px;line-height:1}
+  .musica-estilo-btn .qm-eb-t{font-size:clamp(9.5px,2.75vw,11.5px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   /* como funciona em linhas */
   .musica-como-grid{gap:8px;margin-bottom:26px}
   .musica-como-step{display:grid;grid-template-columns:34px 1fr;column-gap:12px;align-items:start;text-align:left;padding:12px 14px;border-radius:14px}
@@ -1425,15 +1427,15 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 
     <div class="musica-estilos-title" data-edit="estilos_titulo">escolha seu estilo</div>
     <div class="musica-estilos">
-      <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)">🎤 Pop</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💃 Funk</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🤠 Sertanejo</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">💕 Romântico</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎸 MPB</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">✝️ Gospel</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🎹 Instrumental</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🪗 Forró</button>
-      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)">🥁 Pagode</button>
+      <button class="musica-estilo-btn ativo" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎤</span> <span class="qm-eb-t">Pop</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">💃</span> <span class="qm-eb-t">Funk</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🤠</span> <span class="qm-eb-t">Sertanejo</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">💕</span> <span class="qm-eb-t">Romântico</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎸</span> <span class="qm-eb-t">MPB</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">✝️</span> <span class="qm-eb-t">Gospel</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🎹</span> <span class="qm-eb-t">Instrumental</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🪗</span> <span class="qm-eb-t">Forró</span></button>
+      <button class="musica-estilo-btn" onclick="selecionarEstilo(this)"><span class="qm-eb-e">🥁</span> <span class="qm-eb-t">Pagode</span></button>
     </div>
 
     <!-- Como funciona -->
