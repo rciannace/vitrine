@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261028-previa-v5 -->
+<!-- v20261029-previa-v7 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -55,7 +55,7 @@ audio{width:100%;margin-top:12px}
   <h1>🎧 Prévia de <span>Música</span></h1>
   <div class="card hide" id="avisoChrome" style="border-color:rgba(255,176,32,.5);background:rgba(255,176,32,.08)">
     <div class="passo" style="color:#ffb020">Abra no Google Chrome</div>
-    <p class="dica" style="margin:0 0 4px">Você está no navegador do celular, que <b>não deixa enviar o áudio direto</b> para o WhatsApp. No Google Chrome funciona.</p>
+    <p class="dica" style="margin:0 0 4px">Este navegador (Samsung, Xiaomi e outros) <b>não deixa enviar o áudio direto</b> para o WhatsApp. No Google Chrome funciona.</p>
     <a class="btn main" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none">Abrir no Google Chrome</a>
   </div>
   <p class="sub">Transforme a gravação de tela da música em um <b>áudio curto</b>, com final suave, pronto para mandar no WhatsApp.</p>
@@ -125,10 +125,6 @@ audio{width:100%;margin-top:12px}
     <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, o celular mostra a lista de apps: escolha <b>WhatsApp</b> ou <b>WhatsApp Business</b>, depois o cliente, e toque em enviar.</p>
   </div>
 
-  <div class="card">
-    <div class="passo">Como gravar no Poco X7 Pro</div>
-    <p class="dica">Gravador de tela → ⚙️ → <b>Fonte de áudio: Sistema</b>. Abra a música no Suno, toque no botão vermelho, dê play e pare depois de 1 a 2 minutos. Depois escolha esse vídeo aqui em cima. Não precisa cortar o começo: a ferramenta pula o silêncio sozinha.</p>
-  </div>
 </div>
 
 <script>function lamejs(){function X(c){return new Int32Array(c)}function K(c){return new Float32Array(c)}function ca(c){if(1==c.length)return K(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(ca(c));return n}function Ia(c){if(1==c.length)return X(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(Ia(c));return n}function dc(c){if(1==c.length)return new Int16Array(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(dc(c));return n}function Ob(c){if(1==c.length)return Array(c[0]);
@@ -658,7 +654,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   $('btnBaixar').addEventListener('click', baixar);
   // navegador da Xiaomi (e outros) bloqueia o envio direto → sugere o Chrome
   const ua = navigator.userAgent || '';
-  const naoChrome = /MiuiBrowser|XiaoMi\/|HeyTapBrowser|OPR\/|Firefox\/|FBAN|FBAV|Instagram/i.test(ua) || (/Android/i.test(ua) && !/Chrome\//i.test(ua));
+  const naoChrome = /MiuiBrowser|XiaoMi\/|SamsungBrowser|HeyTapBrowser|OPR\/|Firefox\/|FBAN|FBAV|Instagram/i.test(ua) || (/Android/i.test(ua) && !/Chrome\//i.test(ua));
   if (/Android/i.test(ua) && naoChrome) $('avisoChrome').classList.remove('hide');
 })();
 </script>
