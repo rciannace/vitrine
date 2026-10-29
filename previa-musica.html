@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v14 -->
+<!-- v20261029-previa-v15 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -537,7 +537,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       $('fim').value = Math.min(t, i0 + 60).toFixed(1);
       document.querySelectorAll('#duracoes .chip').forEach(c2 => c2.classList.toggle('on', c2.dataset.s === '60'));
       const base = (f.name || 'previa').replace(/\.[^.]+$/, '');
-      if (!$('nome').value) $('nome').value = /^(Screen|Gravação|screen|VID|Record)/i.test(base) ? 'Prévia' : base;
+      if (!$('nome').value && !/^(Screen|Gravação|screen|VID|Record|Prévia|Previa)/i.test(base)) $('nome').value = base;
       $('tTotal').textContent = fmt(t);
       info('✓ Gravação com ' + fmt(t) + ' de som. O silêncio do começo foi pulado.');
       $('cardAjuste').classList.remove('hide');
@@ -869,8 +869,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       }
       const fe = enc.flush(); if (fe.length) partes.push(new Int8Array(fe));
       const blob = new Blob(partes, { type: 'audio/mpeg' });
-      const base = (($('nome').value || '').trim().replace(/[\\/:*?"<>|]+/g, '').replace(/^prévia\s*-\s*/i, '')) || 'Música';
-      const nome = (marcaOn ? 'Prévia - ' + base + ' - IA Music Studio' : base + ' - IA Music Studio') + '.mp3';
+      const nome = nomeArquivo();
       mp3File = new File([blob], nome, { type: 'audio/mpeg' });
       if (mp3Url) URL.revokeObjectURL(mp3Url);
       mp3Url = URL.createObjectURL(blob);
@@ -891,11 +890,12 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     }
   });
 
+  function nomeArquivo() { return ((($('nome').value || '').trim().replace(/[\\/:*?"<>|]+/g, '')) || 'Musica') + '.mp3'; }
   function semAcento(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w .-]/g, '').trim() || 'previa.mp3'; }
   $('btnShare').addEventListener('click', async () => {
     if (!mp3File) return;
     const msg = $('shareMsg'); msg.className = 'info'; msg.textContent = '';
-    const f = new File([mp3File], semAcento(mp3File.name), { type: 'audio/mpeg' });
+    const f = new File([mp3File], semAcento(nomeArquivo()), { type: 'audio/mpeg' });
     if (marcaOn && $('msgTxt').value) { try { navigator.clipboard.writeText($('msgTxt').value).then(() => { msg.textContent = '💬 A mensagem já está copiada: é só colar no WhatsApp.'; }).catch(() => {}); } catch (e) {} }
     if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [f] }))) {
       try { await navigator.share({ files: [f] }); return; }
@@ -909,7 +909,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   });
   function baixar() {
     if (!mp3Url) return;
-    const a = document.createElement('a'); a.href = mp3Url; a.download = semAcento(mp3File.name);
+    const a = document.createElement('a'); a.href = mp3Url; a.download = semAcento(nomeArquivo());
     document.body.appendChild(a); a.click(); a.remove();
   }
   $('btnBaixar').addEventListener('click', baixar);
