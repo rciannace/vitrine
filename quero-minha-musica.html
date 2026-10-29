@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v21 -->
+<!-- v20261029-musica-v23 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1140,6 +1140,47 @@ textarea.qm-field{min-height:110px;resize:vertical}
 .qm-ajustes-item strong{display:block;color:#fff;font-size:14px;margin-bottom:2px}
 .qm-ajustes-n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);color:#4ade80;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
 @media(max-width:760px){.qm-ajustes-lista{grid-template-columns:1fr}.qm-ajustes{padding:18px}}
+/* ══ v22: CELULAR COMPACTO ══ */
+@media (max-width: 600px){
+  /* estilos numa linha, arrastando */
+  .musica-estilos{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -16px 26px;padding:4px 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .musica-estilos::-webkit-scrollbar{display:none}
+  .musica-estilo-btn{flex-shrink:0;white-space:nowrap;padding:8px 14px}
+  /* como funciona em linhas */
+  .musica-como-grid{gap:8px;margin-bottom:26px}
+  .musica-como-step{display:grid;grid-template-columns:34px 1fr;column-gap:12px;align-items:start;text-align:left;padding:12px 14px;border-radius:14px}
+  .musica-como-num{display:none}
+  .musica-como-icon{grid-row:1 / span 3;font-size:24px;margin:0;line-height:1.2;text-align:center}
+  .musica-como-label{margin-bottom:2px;font-size:15px}
+  .musica-como-desc{font-size:12.5px;line-height:1.45}
+  body:not(.admin-mode) .musica-como-desc.qm-corta{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .qm-como-mais{display:none;background:none;border:none;padding:2px 0 0;color:#ff8a4c;font-size:12px;font-family:inherit;cursor:pointer;text-align:left}
+  body:not(.admin-mode) .qm-como-mais.on{display:block}
+  /* preços: 3 lado a lado, só o essencial */
+  .musica-precos{grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin-bottom:14px}
+  .musica-preco-card{padding:16px 6px 10px;border-radius:14px}
+  .musica-preco-card:hover{transform:none}
+  .musica-preco-icon{font-size:20px;margin-bottom:4px}
+  .musica-preco-nome{font-size:12.5px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .musica-preco-val{font-size:24px}
+  .musica-preco-val sup{font-size:10px}
+  .musica-preco-val span{font-size:18px;font-weight:700}
+  body:not(.admin-mode) .musica-preco-desc{display:none}
+  .musica-preco-whats{margin-top:8px;padding:7px 2px;font-size:11px;border-radius:8px}
+  .qm-pw-l{display:none}.qm-pw-s{display:inline!important}
+  .musica-preco-card.destaque::before{content:'MAIS PEDIDO';top:0;right:0;left:0;transform:none;padding:2px 0;font-size:7px;letter-spacing:1px;text-align:center}
+  /* incluso: só os títulos */
+  .qm-ajustes{margin:0 0 26px;padding:14px 16px}
+  .qm-ajustes-titulo{margin-bottom:10px;font-size:10px}
+  .qm-ajustes-lista{gap:8px}
+  .qm-ajustes-item{align-items:center;gap:10px}
+  .qm-ajustes-item strong{font-size:13px;margin:0}
+  body:not(.admin-mode) .qm-ajustes-item strong + div{display:none}
+  .qm-ajustes-n{width:22px;height:22px;font-size:11px}
+  /* sem repetição */
+  body:not(.admin-mode) .qm-garantia{display:none}
+}
+.qm-pw-s{display:none}
 .qm-garantia{display:flex;gap:18px;align-items:center;margin:0 0 30px;padding:22px 24px;border-radius:22px;
   background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.35)}
 .qm-garantia-icon{flex-shrink:0;width:58px;height:58px;border-radius:16px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;font-size:28px}
@@ -1314,8 +1355,8 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <div class="qm-ajustes qm-reveal">
       <div class="qm-ajustes-titulo" data-edit="ajustes_titulo">✅ INCLUSO EM TODOS OS PACOTES</div>
       <div class="qm-ajustes-lista">
-        <div class="qm-ajustes-item"><span class="qm-ajustes-n">1</span><div><strong data-edit="ajustes_t1">Você aprova a letra primeiro</strong><div data-edit="ajustes_d1">Envio a letra pelo WhatsApp antes de produzir. Troco nomes, palavras ou trechos até ficar do seu jeito.</div></div></div>
-        <div class="qm-ajustes-item"><span class="qm-ajustes-n">2</span><div><strong data-edit="ajustes_t2">Ajuste de ritmo e velocidade</strong><div data-edit="ajustes_d2">Ouviu a prévia e quer mais rápida, mais lenta ou com outro ritmo? É só me falar que eu ajusto.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">1</span><div><strong data-edit="ajustes_t1">Você aprova a letra primeiro</strong><div data-edit="ajustes_d1b">Envio a letra pelo WhatsApp antes de produzir. Troco nomes, palavras ou trechos quantas vezes precisar, até ficar do seu jeito.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">2</span><div><strong data-edit="ajustes_t2b">Até 2 ajustes no áudio</strong><div data-edit="ajustes_d2b">Ouviu a prévia e quer mais rápida, mais lenta ou com outro ritmo? Faço até 2 ajustes de ritmo ou velocidade por música.</div></div></div>
         <div class="qm-ajustes-item"><span class="qm-ajustes-n">3</span><div><strong data-edit="ajustes_t3">Só paga depois de ouvir</strong><div data-edit="ajustes_d3">O pagamento é feito via Pix depois que você ouve a prévia e aprova a sua música.</div></div></div>
       </div>
     </div>
@@ -1370,7 +1411,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <details class="qm-faq-item"><summary><span data-edit="faq_q1">Como eu recebo a minha música?</span></summary><div class="qm-faq-a" data-edit="faq_a1">Pelo WhatsApp, em arquivo de áudio (MP3), pronto para ouvir, compartilhar e guardar para sempre.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q7">O que é a prévia?</span></summary><div class="qm-faq-a" data-edit="faq_a7">É um <strong>trecho da sua música já pronta</strong>, que eu envio pelo WhatsApp para você ouvir a voz, o ritmo e sentir a emoção antes de pagar.<br><br>A prévia não é a música inteira, de propósito: ela serve para você ter certeza de que gostou. Assim que o pagamento é confirmado, você recebe a <strong>música completa</strong>.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q2">A música é feita só para mim?</span></summary><div class="qm-faq-a" data-edit="faq_a2">Sim! Cada letra é criada do zero a partir da história que você conta: nomes, datas, lembranças e detalhes. Nenhuma música é repetida.</div></details>
-      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3c">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma. Se quiser trocar um nome, uma palavra ou um trecho, é nesse momento que eu ajusto, até ficar do seu jeito.<br><br>Depois, ao ouvir a prévia, se quiser a música com outro ritmo ou mais rápida ou mais lenta, é só me falar que eu ajusto também.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3d">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma. Se quiser trocar um nome, uma palavra ou um trecho, é nesse momento que eu ajusto, <strong>quantas vezes precisar</strong>, até ficar do seu jeito.<br><br>Depois, ao ouvir a prévia, se quiser a música com outro ritmo, mais rápida ou mais lenta, eu faço <strong>até 2 ajustes no áudio</strong> por música.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q4">A voz é de uma pessoa de verdade?</span></summary><div class="qm-faq-a" data-edit="faq_a4">A voz e os instrumentos são criados com Inteligência Artificial, com qualidade de estúdio. É isso que permite fazer uma música inteira, exclusiva, em tão pouco tempo.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q5">Posso usar a música em vídeos e nas redes sociais?</span></summary><div class="qm-faq-a" data-edit="faq_a5">Pode, sim: em vídeos de festa, homenagens, surpresas e nas suas redes sociais.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6">Tudo pelo WhatsApp, via Pix, depois que você ouve a prévia e aprova a sua música.</div></details>
@@ -1900,7 +1941,7 @@ function renderMusicaPacotes() {
       <div class="musica-preco-nome editable-field" onclick="adminEditField(event,${i},'nome')">${p.nome}</div>
       <div class="musica-preco-val"><sup>R$</sup><span class="editable-field" onclick="adminEditField(event,${i},'preco')">${p.preco}</span></div>
       <div class="musica-preco-desc editable-field" onclick="adminEditField(event,${i},'desc')">${p.desc}</div>
-      <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('${p.nome} - R$${p.preco}')">💬 Pedir no WhatsApp</button>
+      <button class="musica-preco-whats" onclick="event.stopPropagation();pedirMusica('${p.nome} - R$${p.preco}')">💬 <span class="qm-pw-l">Pedir no WhatsApp</span><span class="qm-pw-s">Pedir</span></button>
     </div>
   `).join('') + addBtn;
 }
@@ -2597,6 +2638,20 @@ setInterval(() => {
   setTimeout(() => document.querySelectorAll('.qm-reveal').forEach(el => el.classList.add('in')), 4000); // segurança
 })();
 document.addEventListener('DOMContentLoaded', renderDepoimentos);
+// v22: "ver mais" no Como funciona (celular)
+function qmComoCortes(){
+  document.querySelectorAll('.musica-como-desc').forEach(d=>{
+    let b=d.nextElementSibling;
+    if(!b||!b.classList.contains('qm-como-mais')){b=document.createElement('button');b.type='button';b.className='qm-como-mais';b.textContent='ver mais';
+      b.onclick=e=>{e.stopPropagation();const fechado=d.classList.toggle('qm-corta');d.dataset.aberto=fechado?'':'1';b.textContent=fechado?'ver mais':'ver menos';};d.after(b);}
+    if(d.dataset.aberto==='1'){b.classList.add('on');return;}
+    d.classList.add('qm-corta');b.textContent='ver mais';
+    b.classList.toggle('on', d.scrollHeight>d.clientHeight+2);
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>{qmComoCortes();setTimeout(qmComoCortes,1500);setTimeout(qmComoCortes,4000);});
+window.addEventListener('resize',()=>{clearTimeout(window._qmCc);window._qmCc=setTimeout(qmComoCortes,200);});
+
 
 // ══════════════════════════════════════
 // v16 — VÍDEO "COMO FUNCIONA" (YouTube)
