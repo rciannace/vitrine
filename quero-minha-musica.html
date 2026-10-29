@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v33 -->
+<!-- v20261029-musica-v34 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1156,9 +1156,6 @@ textarea.qm-field{min-height:110px;resize:vertical}
   .musica-como-icon{grid-row:1 / span 3;font-size:24px;margin:0;line-height:1.2;text-align:center}
   .musica-como-label{margin-bottom:2px;font-size:15px}
   .musica-como-desc{font-size:12.5px;line-height:1.45}
-  body:not(.admin-mode) .musica-como-desc.qm-corta{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .qm-como-mais{display:none;background:none;border:none;padding:2px 0 0;color:#ff8a4c;font-size:12px;font-family:inherit;cursor:pointer;text-align:left}
-  body:not(.admin-mode) .qm-como-mais.on{display:block}
   /* preços: 3 lado a lado, só o essencial */
   .musica-precos{grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin-bottom:14px}
   .musica-preco-card{padding:16px 6px 10px;border-radius:14px}
@@ -2931,19 +2928,6 @@ document.addEventListener('DOMContentLoaded', renderDepoimentos);
   };
 })();
 
-// v22: "ver mais" no Como funciona (celular)
-function qmComoCortes(){
-  document.querySelectorAll('.musica-como-desc').forEach(d=>{
-    let b=d.nextElementSibling;
-    if(!b||!b.classList.contains('qm-como-mais')){b=document.createElement('button');b.type='button';b.className='qm-como-mais';b.textContent='ver mais';
-      b.onclick=e=>{e.stopPropagation();const fechado=d.classList.toggle('qm-corta');d.dataset.aberto=fechado?'':'1';b.textContent=fechado?'ver mais':'ver menos';};d.after(b);}
-    if(d.dataset.aberto==='1'){b.classList.add('on');return;}
-    d.classList.add('qm-corta');b.textContent='ver mais';
-    b.classList.toggle('on', d.scrollHeight>d.clientHeight+2);
-  });
-}
-document.addEventListener('DOMContentLoaded',()=>{qmComoCortes();setTimeout(qmComoCortes,1500);setTimeout(qmComoCortes,4000);});
-window.addEventListener('resize',()=>{clearTimeout(window._qmCc);window._qmCc=setTimeout(qmComoCortes,200);});
 
 
 // ══════════════════════════════════════
