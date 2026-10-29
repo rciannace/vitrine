@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v13 -->
+<!-- v20261029-previa-v14 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -787,7 +787,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     const s1 = c.createBufferSource(); s1.buffer = b; s1.connect(c.destination); s1.start();
   });
   // posições da marca (segundos, relativos ao trecho)
-  window.__marcaPos = n => { const out = []; for (let t = 8; t < n - 4; t += 20) out.push(t); return out; };
+  window.__marcaPos = n => { const out = []; for (let t = 20; t < n - 3; t += 20) out.push(t); return out; };
 
   function msgPadrao() {
     const nome = ($('nome').value || '').trim();
@@ -879,7 +879,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       window.__qmMsg();
       const mi = $('mkInfo');
       if (mk && mkPos.length) { mi.style.display = ''; mi.innerHTML = '🔊 ' + (vinheta ? 'Sua voz' : 'O sino') + ' entra em <b>' + mkPos.map(p0 => fmt(p0 / sr)).join(', ') + '</b>. Toque no player e confira.'; }
-      else if (mk) { mi.style.display = ''; mi.innerHTML = '⚠️ Trecho curto demais para a marca (precisa de mais de 12 segundos).'; }
+      else if (mk) { mi.style.display = ''; mi.innerHTML = '⚠️ Trecho curto demais para a marca (precisa de mais de 23 segundos).'; }
       else { mi.style.display = 'none'; }
       $('cardEnviar').classList.remove('hide');
       $('cardEnviar').scrollIntoView({ behavior: 'smooth', block: 'start' });
