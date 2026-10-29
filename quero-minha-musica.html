@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v24 -->
+<!-- v20261029-musica-v26 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1181,6 +1181,8 @@ textarea.qm-field{min-height:110px;resize:vertical}
   body:not(.admin-mode) .qm-garantia{display:none}
 }
 .qm-pw-s{display:none}
+.qm-ped-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+@media(max-width:360px){.qm-ped-2col{grid-template-columns:1fr}}
 /* ══ v24: EXEMPLOS EM LISTA · DEPOIMENTOS MENORES ══ */
 .musica-demos-grid{grid-template-columns:1fr!important;gap:8px!important}
 @media(min-width:900px){.musica-demos-grid{grid-template-columns:1fr 1fr!important}}
@@ -1515,9 +1517,8 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     </div>
 
     <!-- Dica -->
-    <div class="musica-pedido-dica" data-edit="pedido_dica">
-      💡 <strong>Dica:</strong> Quanto mais detalhes você der, mais personalizada ficará cada música!
-      Pode mencionar nomes, datas especiais, o que quer que a letra fale, se quer com ou sem voz...
+    <div class="musica-pedido-dica" data-edit="pedido_dica2">
+      💡 <strong>Dica:</strong> Quanto mais detalhes você contar na história, mais emocionante fica a letra!
     </div>
 
     <!-- Botão -->
@@ -2957,36 +2958,55 @@ function qtdMusicasDoPacote(pacote) {
   return 1;
 }
 
-// ── Gerar bloco HTML de uma música
+// ── Gerar bloco HTML de uma música (v25: homenageado, ocasião, cantor de referência)
+const QM_CANTOR_EX = {
+  'Pop':'Ex: Anitta, Ivete Sangalo, Luísa Sonza…',
+  'Funk':'Ex: Ludmilla, MC Livinho, Pedro Sampaio…',
+  'Sertanejo':'Ex: Marília Mendonça, Henrique & Juliano, Jorge & Mateus…',
+  'Romântico':'Ex: Roberto Carlos, Lauana Prado, Tiago Iorc…',
+  'MPB':'Ex: Djavan, Marisa Monte, Ana Vilela…',
+  'Gospel':'Ex: Aline Barros, Fernandinho, Gabriela Rocha…',
+  'Instrumental':'Ex: violão, piano, orquestra…',
+  'Forró':'Ex: Wesley Safadão, Xand Avião, Mari Fernandez…',
+  'Pagode':'Ex: Thiaguinho, Péricles, Menos é Mais…'
+};
+function qmCantorPlaceholder(idx, estilo) {
+  const el = document.getElementById('musicaCantor' + idx); if (!el) return;
+  const k = Object.keys(QM_CANTOR_EX).find(n => (estilo || '').includes(n));
+  el.placeholder = k ? QM_CANTOR_EX[k] : 'Ex: Marília Mendonça, Anitta, Roberto Carlos…';
+  const lab = document.getElementById('musicaCantorLab' + idx);
+  if (lab) lab.textContent = k === 'Instrumental' ? '🎹 Instrumento ou artista de referência (opcional)' : '🎤 Cantor(a) que mais combina com você nesse estilo';
+}
 function gerarBlocoMusica(idx) {
-  const num = idx;
-  const cor = 'rgba(255,255,255,.04)';
-  const borda = 'rgba(255,255,255,.1)';
   const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
   const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🪗 Forró','🥁 Pagode'];
-  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
   const vozes = ['🎤 Feminina','🎸 Masculina'];
-  const tons  = ['🔺 Aguda','🔻 Grave','➖ Neutra'];
-  return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:'+cor+';border:1px solid '+borda+';border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
+  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
+  const inp = (id, ph, max) => '<input class="musica-pedido-input" id="' + id + '" type="text" maxlength="' + (max || 80) + '" autocomplete="off" placeholder="' + ph + '">';
+  const lab = (t, id) => '<div class="musica-pedido-label"' + (id ? ' id="' + id + '"' : '') + '>' + t + '</div>';
+  return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
     '<div style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:2px;color:#e84400;">'+titulo+'</div>'+
-    '<div><div class="musica-pedido-label">🎸 Estilo musical</div>'+
+    '<div>' + lab('💝 Nome de quem vai receber a música') + inp('musicaHomenageado'+idx, 'Ex: Carlos', 60) + '</div>'+
+    '<div class="qm-ped-2col">'+
+      '<div>' + lab('👥 Quem é para você?') + inp('musicaRelacao'+idx, 'Ex: meu marido', 60) + '</div>'+
+      '<div>' + lab('🎉 Ocasião') + inp('musicaOcasiao'+idx, 'Ex: aniversário', 60) + '</div>'+
+    '</div>'+
+    '<div>' + lab('📅 Data especial (opcional)') + inp('musicaData'+idx, 'Ex: 15/12, nosso aniversário de 10 anos', 60) + '</div>'+
+    '<div>' + lab('🎸 Estilo musical') +
     '<div class="musica-pedido-estilos" id="estilos'+idx+'">'+
     estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+e+'</button>').join('')+
     '</div></div>'+
-    '<div><div class="musica-pedido-label">🎙️ Voz</div>'+
-    '<div class="musica-pedido-estilos" id="voz'+idx+'">'+
-    vozes.map(v => '<button class="musica-pedido-estilo" onclick="toggleVozMusica(this,'+idx+')">'+v+'</button>').join('')+
-    '</div></div>'+
-    '<div><div class="musica-pedido-label">🎵 Tom da voz</div>'+
-    '<div class="musica-pedido-estilos" id="tom'+idx+'">'+
-    tons.map(t => '<button class="musica-pedido-estilo" onclick="toggleTomMusica(this,'+idx+')">'+t+'</button>').join('')+
-    '</div></div>'+
-    '<div><div class="musica-pedido-label">✨ Tipo / clima</div>'+
+    '<div>' + lab('🎤 Cantor(a) que mais combina com você nesse estilo', 'musicaCantorLab'+idx) + inp('musicaCantor'+idx, 'Ex: Marília Mendonça, Anitta, Roberto Carlos…', 80) + '</div>'+
+    '<div>' + lab('✨ Tipo / clima') +
     '<div class="musica-pedido-tipos" id="tipos'+idx+'">'+
     tipos.map(t => '<button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,'+idx+')">'+t+'</button>').join('')+
     '</div></div>'+
-    '<div><div class="musica-pedido-label">💭 Ideia da música'+(idx>1?' '+idx:'')+'</div>'+
-    '<textarea class="musica-pedido-textarea" id="musicaIdeia'+idx+'" placeholder="Descreva o que quer nesta música — estilo, tema, quem é, o que quer que a letra fale..." style="min-height:80px;"></textarea>'+
+    '<div id="vozWrap'+idx+'">' + lab('🎙️ Voz') +
+    '<div class="musica-pedido-estilos" id="voz'+idx+'">'+
+    vozes.map(v => '<button class="musica-pedido-estilo" onclick="toggleVozMusica(this,'+idx+')">'+v+'</button>').join('')+
+    '</div></div>'+
+    '<div>' + lab('💭 Conte a história' + (idx>1?' da música '+idx:'')) +
+    '<textarea class="musica-pedido-textarea" id="musicaIdeia'+idx+'" style="min-height:110px;" placeholder="Como vocês se conheceram, há quanto tempo estão juntos, apelidos, nomes de filhos, lembranças marcantes, jeito da pessoa, o que você quer que ela sinta ao ouvir…"></textarea>'+
     '</div></div>';
 }
 
@@ -3034,6 +3054,9 @@ function voltarParaMusicas() {
 function toggleEstiloMusica(btn, idx) {
   document.querySelectorAll('#estilos'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
+  const inst = btn.textContent.includes('Instrumental');
+  const vw = document.getElementById('vozWrap' + idx); if (vw) vw.style.display = inst ? 'none' : '';
+  qmCantorPlaceholder(idx, btn.textContent);
 }
 
 function toggleVozMusica(btn, idx) {
@@ -3070,20 +3093,17 @@ function enviarPedidoMusica() {
     return;
   }
 
-  // Voz e Tom são obrigatórios — confere antes de montar a mensagem
+  // v25: confere o essencial de cada música antes de montar a mensagem
+  const val = id => ((document.getElementById(id) || {}).value || '').trim();
+  const falta = (id, txt) => { const el = document.getElementById(id); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => el.focus && el.focus(), 300); } toast('⚠️ ' + txt); };
   for (let i = 1; i <= qtd; i++) {
-    const vozBtn = document.querySelector('#voz'+i+' .musica-pedido-estilo.sel');
-    const tomBtn = document.querySelector('#tom'+i+' .musica-pedido-estilo.sel');
-    if (!vozBtn) {
-      document.getElementById('voz'+i)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      toast('⚠️ Escolha a voz' + (qtd > 1 ? ' da música ' + i : '') + ' para continuar!');
-      return;
-    }
-    if (!tomBtn) {
-      document.getElementById('tom'+i)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      toast('⚠️ Escolha o tom da voz' + (qtd > 1 ? ' da música ' + i : '') + ' para continuar!');
-      return;
-    }
+    const m = qtd > 1 ? ' (música ' + i + ')' : '';
+    if (!val('musicaHomenageado'+i)) return falta('musicaHomenageado'+i, 'Diga o nome de quem vai receber a música' + m);
+    if (!val('musicaRelacao'+i)) return falta('musicaRelacao'+i, 'Diga quem essa pessoa é para você' + m);
+    if (!val('musicaOcasiao'+i)) return falta('musicaOcasiao'+i, 'Diga a ocasião da música' + m);
+    const est = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
+    const inst = est && est.textContent.includes('Instrumental');
+    if (!inst && !document.querySelector('#voz'+i+' .musica-pedido-estilo.sel')) return falta('voz'+i, 'Escolha a voz' + m);
   }
 
   let msg = '🎵 *PEDIDO DE MÚSICA PERSONALIZADA*\n\n' +
@@ -3094,19 +3114,25 @@ function enviarPedidoMusica() {
   for (let i = 1; i <= qtd; i++) {
     const estiloBtn = document.querySelector('#estilos'+i+' .musica-pedido-estilo.sel');
     const estilo = estiloBtn ? estiloBtn.textContent.trim() : 'Não informado';
-    const voz = document.querySelector('#voz'+i+' .musica-pedido-estilo.sel').textContent.trim();
-    const tom = document.querySelector('#tom'+i+' .musica-pedido-estilo.sel').textContent.trim();
+    const inst = estilo.includes('Instrumental');
+    const vozBtn = document.querySelector('#voz'+i+' .musica-pedido-estilo.sel');
+    const voz = inst ? 'Sem voz (instrumental)' : (vozBtn ? vozBtn.textContent.trim() : 'Não informado');
+    const hom = val('musicaHomenageado'+i), rel = val('musicaRelacao'+i), oca = val('musicaOcasiao'+i), dat = val('musicaData'+i), can = val('musicaCantor'+i);
+    const ideia = val('musicaIdeia'+i);
     const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
-    const tipos = tiposSel.length ? tiposSel.join(', ') : 'Não informado';
-    const ideia = (document.getElementById('musicaIdeia'+i) || {}).value?.trim() || '';
+    const tipos = tiposSel.length ? tiposSel.join(', ') : '';
 
     if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
+    msg += '💝 Para: ' + hom + ' (' + rel + ')\n';
+    msg += '🎉 Ocasião: ' + oca + '\n';
+    if (dat) msg += '📅 Data: ' + dat + '\n';
     msg += '🎸 Estilo: ' + estilo + '\n';
-    msg += '🎙️ Voz: ' + voz + ' (' + tom + ')\n';
-    msg += '✨ Clima: ' + tipos + '\n';
-    if (ideia) msg += '💭 Ideia: ' + ideia + '\n';
+    if (can) msg += '🎤 Referência: ' + can + '\n';
+    if (tipos) msg += '✨ Clima: ' + tipos + '\n';
+    msg += '🎙️ Voz: ' + voz + '\n';
+    if (ideia) msg += '💭 História: ' + ideia + '\n';
     msg += '\n';
-    resumo += '🎸 ' + estilo + ' · 🎙️ ' + voz + ' (' + tom + ') · ✨ ' + tipos + (ideia ? '\n💭 ' + ideia : '') + '\n';
+    resumo += '💝 ' + hom + ' (' + rel + ') · 🎉 ' + oca + (dat ? ' · 📅 ' + dat : '') + '\n🎸 ' + estilo + (can ? ' · 🎤 ' + can : '') + (tipos ? ' · ✨ ' + tipos : '') + ' · 🎙️ ' + voz + (ideia ? '\n💭 ' + ideia : '') + '\n';
   }
 
   msg += '_Aguardo retorno! 😊_';
