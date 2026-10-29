@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v26 -->
+<!-- v20261029-musica-v28 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1181,6 +1181,34 @@ textarea.qm-field{min-height:110px;resize:vertical}
   body:not(.admin-mode) .qm-garantia{display:none}
 }
 .qm-pw-s{display:none}
+/* v28: botões do pedido em grade harmoniosa */
+#musicaBlocos .musica-pedido-estilos,#musicaBlocos .musica-pedido-tipos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+#musicaBlocos .musica-pedido-estilos.qm-ch-2{grid-template-columns:repeat(2,1fr)}
+#musicaBlocos .musica-pedido-estilo,#musicaBlocos .musica-pedido-tipo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  min-height:58px;padding:8px 4px;border-radius:12px;font-size:11.5px;line-height:1.15;text-align:center;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.72)}
+#musicaBlocos .qm-ch-e{font-size:18px;line-height:1}
+#musicaBlocos .qm-ch-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#musicaBlocos .musica-pedido-estilo.sel{background:rgba(232,68,0,.18);border-color:#e84400;color:#ffb38a;box-shadow:0 0 0 1px #e84400 inset}
+#musicaBlocos .musica-pedido-tipo.sel{background:rgba(196,0,96,.18);border-color:#e040a0;color:#ffb3dc;box-shadow:0 0 0 1px #e040a0 inset}
+#musicaBlocos .musica-pedido-label{margin-bottom:8px}
+/* v27: status dos pedidos + números */
+.musica-pedidos-box{max-width:620px!important}
+#qmStatsBox{padding:12px 14px 0}
+.qm-stats-tit{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:6px}
+.qm-stats{width:100%;border-collapse:collapse;font-size:12px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.03);border-radius:10px;overflow:hidden}
+.qm-stats th{font-weight:600;font-size:10px;color:rgba(255,255,255,.5);padding:7px 4px;text-align:center;line-height:1.2}
+.qm-stats td{padding:7px 4px;text-align:center;border-top:1px solid rgba(255,255,255,.06);font-variant-numeric:tabular-nums}
+.qm-stats td:first-child{text-align:left;padding-left:10px;color:rgba(255,255,255,.55);white-space:nowrap}
+.qm-stats tr:nth-child(2) td{color:#fff;font-weight:700}
+.qm-stats-nota,.qm-stats-load{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:6px}
+.qm-ped-filtro{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.qm-ped-filtro::-webkit-scrollbar{display:none}
+.qm-ped-filtro button{flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);cursor:pointer;font-family:inherit}
+.qm-ped-filtro button.on{background:var(--musica-grad);border-color:transparent;color:#fff;font-weight:700}
+.qm-ped-status{flex:1;padding:7px 8px;border-radius:8px;border:1px solid;background:#14141c;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;outline:none}
+.qm-ped-status option{color:#fff;background:#14141c}
+.musica-pedido-actions button.del{flex:0 0 auto!important;padding:6px 12px!important}
 .qm-ped-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
 @media(max-width:360px){.qm-ped-2col{grid-template-columns:1fr}}
 /* ══ v24: EXEMPLOS EM LISTA · DEPOIMENTOS MENORES ══ */
@@ -1242,6 +1270,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <span class="musica-pedidos-title">📋 Pedidos de música</span>
       <button class="musica-pedidos-close" onclick="fecharMusicaPedidos()">✕</button>
     </div>
+    <div id="qmStatsBox"></div>
     <div class="musica-pedidos-list" id="musicaPedidosList"></div>
   </div>
 </div>
@@ -1645,7 +1674,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
@@ -1664,6 +1693,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
   window._fbDoc     = doc;
   window._fbGetDoc  = getDoc;
   window._fbSetDoc  = setDoc;
+  window._fbInc     = increment;
   window._fbReady   = true;
   window.dispatchEvent(new Event('firebase-ready'));
 </script>
@@ -1843,6 +1873,7 @@ document.addEventListener('DOMContentLoaded', () => { try { txtApply(JSON.parse(
 
 function activateAdmin() {
   adminMode = true;
+  try { localStorage.setItem('qm_eu_admin', '1'); } catch (e) {}
   document.body.classList.add('admin-mode');
   txtSetEditable(true);
   setTimeout(renderDepoimentos, 0);
@@ -2057,26 +2088,28 @@ async function persistMusicaPedidos() {
 }
 
 async function salvarPedidoMusica(pedido) {
-  musicaPedidos.unshift({
-    id: Date.now(),
-    status: 'aguardando',
-    dataFmt: new Date().toLocaleDateString('pt-BR'),
-    ...pedido
-  });
-  await persistMusicaPedidos();
-  atualizarBadgeMusicaPedidos();
+  const novo = { id: Date.now(), status: 'aguardando', dataFmt: new Date().toLocaleDateString('pt-BR'), ...pedido };
+  const ok = await waitForFirebase();
+  if (!ok) { console.error('Firebase não conectou — pedido não foi salvo na nuvem.'); return; }
+  try {
+    const ref = window._fbDoc(window._fbDb, 'vitrine', 'data');
+    const snap = await window._fbGetDoc(ref);
+    const cloud = (snap.exists() && Array.isArray(snap.data().musicaPedidos)) ? snap.data().musicaPedidos : [];
+    await window._fbSetDoc(ref, { musicaPedidos: [novo].concat(cloud), updatedAt: Date.now() }, { merge: true });
+  } catch (e) { console.error('Erro ao salvar pedido de música:', e); }
 }
 
 function atualizarBadgeMusicaPedidos() {
   const badge = document.getElementById('musicaPedidosBadge');
   if (!badge) return;
-  const novos = musicaPedidos.filter(p => p.status === 'aguardando').length;
+  const novos = musicaPedidos.filter(p => (p.status || 'aguardando') === 'aguardando').length;
   if (novos > 0) { badge.textContent = novos; badge.style.display = 'flex'; }
   else { badge.style.display = 'none'; }
 }
 
 async function abrirMusicaPedidos() {
   document.getElementById('musicaPedidosOverlay').classList.add('open');
+  qmCarregarStats();
   renderMusicaPedidosList(); // mostra o que já tem em cache, na hora
   // Busca os dados mais recentes direto do banco (evita mostrar lista desatualizada
   // ou vazia em navegadores mais lentos pra conectar, como o Samsung Internet)
@@ -2109,44 +2142,125 @@ function toggleMusicaPedidoDetalhe(id) {
   renderMusicaPedidosList();
 }
 
+// v27: etapas do pedido
+const QM_STATUS = [
+  { id: 'aguardando', nome: '🆕 Novo',           cor: '#ff6622' },
+  { id: 'letra',      nome: '📝 Letra enviada',  cor: '#60a5fa' },
+  { id: 'previa',     nome: '🎧 Prévia enviada', cor: '#c084fc' },
+  { id: 'pago',       nome: '💰 Pago',           cor: '#facc15' },
+  { id: 'entregue',   nome: '✅ Entregue',       cor: '#4ade80' }
+];
+let qmPedFiltro = 'todos';
+function qmStatusInfo(id) { return QM_STATUS.find(x => x.id === id) || QM_STATUS[0]; }
+function qmPedSetFiltro(f) { qmPedFiltro = f; renderMusicaPedidosList(); }
+
 function renderMusicaPedidosList() {
   const list = document.getElementById('musicaPedidosList');
+  qmRenderStats();
   if (!musicaPedidos.length) {
     list.innerHTML = '<div class="musica-pedidos-empty">Nenhum pedido ainda.<br>Os pedidos aparecem aqui quando alguém enviar o formulário.</div>';
     return;
   }
-  list.innerHTML = musicaPedidos.map(p => {
+  const conta = id => musicaPedidos.filter(p => (p.status || 'aguardando') === id).length;
+  const andamento = musicaPedidos.filter(p => !['entregue'].includes(p.status || 'aguardando')).length;
+  const chips = [['todos', 'Todos (' + musicaPedidos.length + ')'], ['andamento', 'Em andamento (' + andamento + ')']]
+    .concat(QM_STATUS.map(st => [st.id, st.nome + ' (' + conta(st.id) + ')']));
+  const filtrados = musicaPedidos.filter(p => {
+    const st = p.status || 'aguardando';
+    return qmPedFiltro === 'todos' || (qmPedFiltro === 'andamento' ? st !== 'entregue' : st === qmPedFiltro);
+  });
+  list.innerHTML = '<div class="qm-ped-filtro">' + chips.map(([id, t]) =>
+      '<button class="' + (qmPedFiltro === id ? 'on' : '') + '" onclick="qmPedSetFiltro(\'' + id + '\')">' + t + '</button>').join('') + '</div>' +
+    (filtrados.length ? '' : '<div class="musica-pedidos-empty">Nenhum pedido nesta etapa.</div>') +
+    filtrados.map(p => {
     const expandido = musicaPedidoExpandidoId === p.id;
+    const st = qmStatusInfo(p.status || 'aguardando');
     return `
-    <div class="musica-pedido-item ${p.status === 'entregue' ? 'entregue' : ''}">
+    <div class="musica-pedido-item ${st.id === 'entregue' ? 'entregue' : ''}" style="border-left:3px solid ${st.cor}">
       <div class="musica-pedido-top" onclick="toggleMusicaPedidoDetalhe(${p.id})" title="Clique para ver os detalhes do pedido">
-        <span class="musica-pedido-nome">${p.nome || 'Sem nome'} <span class="musica-pedido-ver">${expandido ? '▲ ocultar' : '▼ ver detalhes'}</span></span>
+        <span class="musica-pedido-nome">${qmEsc(p.nome || 'Sem nome')} <span class="musica-pedido-ver">${expandido ? '▲ ocultar' : '▼ ver detalhes'}</span></span>
         <span class="musica-pedido-data">${p.dataFmt || ''}</span>
       </div>
-      ${expandido ? `<div class="musica-pedido-detalhe">${(p.resumo || '').replace(/</g,'&lt;')}</div>` : ''}
+      ${expandido ? `<div class="musica-pedido-detalhe">${qmEsc(p.resumo || '')}</div>` : ''}
       <div class="musica-pedido-actions">
-        <button class="done" onclick="toggleMusicaPedidoStatus(${p.id})">${p.status === 'entregue' ? '↺ Reabrir' : '✓ Marcar entregue'}</button>
-        <button class="del" onclick="deletarMusicaPedido(${p.id})">🗑 Apagar</button>
+        <select class="qm-ped-status" style="color:${st.cor};border-color:${st.cor}66" onchange="qmPedStatus(${p.id}, this.value)">
+          ${QM_STATUS.map(x => `<option value="${x.id}" ${x.id === st.id ? 'selected' : ''}>${x.nome}</option>`).join('')}
+        </select>
+        <button class="del" onclick="deletarMusicaPedido(${p.id})">🗑</button>
       </div>
     </div>
   `;
   }).join('');
 }
 
+async function qmPedStatus(id, status) {
+  const next = await qmCloudList('musicaPedidos', list => list.map(p => p.id === id ? { ...p, status } : p));
+  if (next) { musicaPedidos = next; localStorage.setItem('iafoto_music_pedidos', JSON.stringify(next)); toast('✓ ' + qmStatusInfo(status).nome); }
+  renderMusicaPedidosList(); atualizarBadgeMusicaPedidos();
+}
 function toggleMusicaPedidoStatus(id) {
-  musicaPedidos = musicaPedidos.map(p => p.id === id ? {...p, status: p.status === 'entregue' ? 'aguardando' : 'entregue'} : p);
-  persistMusicaPedidos();
-  renderMusicaPedidosList();
-  atualizarBadgeMusicaPedidos();
+  const p = musicaPedidos.find(x => x.id === id); if (!p) return;
+  qmPedStatus(id, p.status === 'entregue' ? 'aguardando' : 'entregue');
+}
+async function deletarMusicaPedido(id) {
+  if (!confirm('Apagar este pedido?')) return;
+  const next = await qmCloudList('musicaPedidos', list => list.filter(p => p.id !== id));
+  if (next) { musicaPedidos = next; localStorage.setItem('iafoto_music_pedidos', JSON.stringify(next)); }
+  renderMusicaPedidosList(); atualizarBadgeMusicaPedidos();
 }
 
-function deletarMusicaPedido(id) {
-  if (!confirm('Apagar este pedido?')) return;
-  musicaPedidos = musicaPedidos.filter(p => p.id !== id);
-  persistMusicaPedidos();
-  renderMusicaPedidosList();
-  atualizarBadgeMusicaPedidos();
+// v27: contador de visitas e cliques (cada aparelho conta 1 visita por sessão; o seu aparelho de admin não conta)
+const QM_STATS_DOC = ['vitrine', 'musicaStats'];
+function qmHoje(d) { return (d || new Date()).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }); }
+function qmEuSouAdmin() { try { return localStorage.getItem('qm_eu_admin') === '1'; } catch (e) { return false; } }
+async function qmConta(campo) {
+  if (qmEuSouAdmin() || document.body.classList.contains('admin-mode')) return;
+  try {
+    const ok = await waitForFirebase(); if (!ok || !window._fbInc) return;
+    const dado = { dias: { [qmHoje()]: { [campo]: window._fbInc(1) } } };
+    try { await window._fbSetDoc(window._fbDoc(window._fbDb, ...QM_STATS_DOC), dado, { merge: true }); }
+    catch (e1) { await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaStats: dado }, { merge: true }); } // plano B
+  } catch (e) { console.warn('contador:', e && e.message); }
 }
+(function () {
+  try {
+    if (sessionStorage.getItem('qm_visita')) return;
+    sessionStorage.setItem('qm_visita', '1');
+  } catch (e) {}
+  setTimeout(() => qmConta('v'), 1500);
+})();
+
+let qmStatsCache = null;
+async function qmCarregarStats() {
+  try {
+    const ok = await waitForFirebase(); if (!ok) return;
+    const juntar = (dst, dias) => Object.entries(dias || {}).forEach(([d, r]) => { dst[d] = dst[d] || {}; Object.entries(r || {}).forEach(([c, n]) => dst[d][c] = (dst[d][c] || 0) + (n || 0)); });
+    const tot = {};
+    try { const a = await window._fbGetDoc(window._fbDoc(window._fbDb, ...QM_STATS_DOC)); if (a.exists()) juntar(tot, a.data().dias); } catch (e) {}
+    try { const b = await window._fbGetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data')); if (b.exists() && b.data().musicaStats) juntar(tot, b.data().musicaStats.dias); } catch (e) {}
+    qmStatsCache = tot;
+    qmRenderStats();
+  } catch (e) { qmStatsCache = { _erro: e && e.message }; qmRenderStats(); }
+}
+function qmRenderStats() {
+  const box = document.getElementById('qmStatsBox'); if (!box) return;
+  if (!qmStatsCache) { box.innerHTML = '<div class="qm-stats-load">Carregando números…</div>'; return; }
+  if (qmStatsCache._erro) { box.innerHTML = '<div class="qm-stats-load">⚠️ Não consegui ler os números (' + qmEsc(qmStatsCache._erro) + ')</div>'; return; }
+  const soma = dias => {
+    const t = { v: 0, f: 0, p: 0, w: 0 };
+    for (let k = 0; k < dias; k++) {
+      const d = new Date(Date.now() - k * 86400000); const r = qmStatsCache[qmHoje(d)] || {};
+      Object.keys(t).forEach(c => t[c] += r[c] || 0);
+    }
+    return t;
+  };
+  const linhas = [['Hoje', soma(1)], ['7 dias', soma(7)], ['30 dias', soma(30)]];
+  box.innerHTML = '<div class="qm-stats-tit">📊 Movimento do site</div>' +
+    '<table class="qm-stats"><tr><th></th><th>👀 Visitas</th><th>📝 Abriram pedido</th><th>✅ Enviaram pedido</th><th>💬 WhatsApp direto</th></tr>' +
+    linhas.map(([n, t]) => '<tr><td>' + n + '</td><td>' + t.v + '</td><td>' + t.f + '</td><td>' + t.p + '</td><td>' + t.w + '</td></tr>').join('') +
+    '</table><div class="qm-stats-nota">Contagem a partir de hoje. Suas visitas neste aparelho não entram na conta.</div>';
+}
+
 let currentAudio = null;
 let currentCard = null;
 
@@ -2874,6 +2988,7 @@ async function qmLetraSalvar() {
 const QM_WHATS_NUM = '5511926029852';
 function qmAbrirWhats(e) {
   if (document.body.classList.contains('admin-mode')) { if (e) e.preventDefault(); return false; } // no admin, o balão é editável
+  qmConta('w');
   const msg = 'Olá! Vim pelo site e quero a minha música personalizada 🎵';
   window.open('https://wa.me/' + QM_WHATS_NUM + '?text=' + encodeURIComponent(msg), '_blank');
   if (e) e.preventDefault();
@@ -2911,6 +3026,7 @@ selecionarEstilo = function (btn) {
 const _qmAbrirPedidoOrig = abrirMusicaPedido;
 abrirMusicaPedido = function (pacote) {
   _qmAbrirPedidoOrig(pacote);
+  qmConta('f');
   const g = window.qmEstiloEscolhido;
   if (!g) return;
   try {
@@ -2981,7 +3097,9 @@ function gerarBlocoMusica(idx) {
   const titulo = idx > 1 ? `🎵 MÚSICA ${idx}` : '🎵 SUA MÚSICA';
   const estilos = ['🎤 Pop','💃 Funk','🤠 Sertanejo','💕 Romântico','🎸 MPB','✝️ Gospel','🎹 Instrumental','🪗 Forró','🥁 Pagode'];
   const vozes = ['🎤 Feminina','🎸 Masculina'];
-  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🕺 Animada','🌊 Calma','🎉 Festiva','💪 Motivacional','🌙 Nostálgica','🔥 Intensa','🌸 Suave'];
+  const tipos = ['💞 Romântica','😄 Alegre','😢 Emocionante','🌸 Calma','💪 Motivacional','🌙 Nostálgica'];
+  const ritmos = ['🐢 Mais lenta','🎵 Moderada','⚡ Mais rápida'];
+  const ch = t => { const k = t.indexOf(' '); return '<span class="qm-ch-e">' + t.slice(0, k) + '</span> <span class="qm-ch-t">' + t.slice(k + 1) + '</span>'; };
   const inp = (id, ph, max) => '<input class="musica-pedido-input" id="' + id + '" type="text" maxlength="' + (max || 80) + '" autocomplete="off" placeholder="' + ph + '">';
   const lab = (t, id) => '<div class="musica-pedido-label"' + (id ? ' id="' + id + '"' : '') + '>' + t + '</div>';
   return '<div class="musica-bloco" id="musicaBloco'+idx+'" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">'+
@@ -2994,16 +3112,20 @@ function gerarBlocoMusica(idx) {
     '<div>' + lab('📅 Data especial (opcional)') + inp('musicaData'+idx, 'Ex: 15/12, nosso aniversário de 10 anos', 60) + '</div>'+
     '<div>' + lab('🎸 Estilo musical') +
     '<div class="musica-pedido-estilos" id="estilos'+idx+'">'+
-    estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+e+'</button>').join('')+
+    estilos.map(e => '<button class="musica-pedido-estilo" onclick="toggleEstiloMusica(this,'+idx+')">'+ch(e)+'</button>').join('')+
     '</div></div>'+
     '<div>' + lab('🎤 Cantor(a) que mais combina com você nesse estilo', 'musicaCantorLab'+idx) + inp('musicaCantor'+idx, 'Ex: Marília Mendonça, Anitta, Roberto Carlos…', 80) + '</div>'+
     '<div>' + lab('✨ Tipo / clima') +
     '<div class="musica-pedido-tipos" id="tipos'+idx+'">'+
-    tipos.map(t => '<button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,'+idx+')">'+t+'</button>').join('')+
+    tipos.map(t => '<button class="musica-pedido-tipo" onclick="toggleTipoMusica(this,'+idx+')">'+ch(t)+'</button>').join('')+
+    '</div></div>'+
+    '<div>' + lab('🥁 Ritmo') +
+    '<div class="musica-pedido-estilos" id="ritmo'+idx+'">'+
+    ritmos.map(t => '<button class="musica-pedido-estilo" onclick="qmRitmoMusica(this,'+idx+')">'+ch(t)+'</button>').join('')+
     '</div></div>'+
     '<div id="vozWrap'+idx+'">' + lab('🎙️ Voz') +
-    '<div class="musica-pedido-estilos" id="voz'+idx+'">'+
-    vozes.map(v => '<button class="musica-pedido-estilo" onclick="toggleVozMusica(this,'+idx+')">'+v+'</button>').join('')+
+    '<div class="musica-pedido-estilos qm-ch-2" id="voz'+idx+'">'+
+    vozes.map(v => '<button class="musica-pedido-estilo" onclick="toggleVozMusica(this,'+idx+')">'+ch(v)+'</button>').join('')+
     '</div></div>'+
     '<div>' + lab('💭 Conte a história' + (idx>1?' da música '+idx:'')) +
     '<textarea class="musica-pedido-textarea" id="musicaIdeia'+idx+'" style="min-height:110px;" placeholder="Como vocês se conheceram, há quanto tempo estão juntos, apelidos, nomes de filhos, lembranças marcantes, jeito da pessoa, o que você quer que ela sinta ao ouvir…"></textarea>'+
@@ -3059,6 +3181,11 @@ function toggleEstiloMusica(btn, idx) {
   qmCantorPlaceholder(idx, btn.textContent);
 }
 
+function qmRitmoMusica(btn, idx) {
+  const on = btn.classList.contains('sel');
+  document.querySelectorAll('#ritmo'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
+  if (!on) btn.classList.add('sel');
+}
 function toggleVozMusica(btn, idx) {
   document.querySelectorAll('#voz'+idx+' .musica-pedido-estilo').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
@@ -3121,6 +3248,8 @@ function enviarPedidoMusica() {
     const ideia = val('musicaIdeia'+i);
     const tiposSel = [...document.querySelectorAll('#tipos'+i+' .musica-pedido-tipo.sel')].map(b => b.textContent.trim());
     const tipos = tiposSel.length ? tiposSel.join(', ') : '';
+    const ritmoBtn = document.querySelector('#ritmo'+i+' .musica-pedido-estilo.sel');
+    const ritmo = ritmoBtn ? ritmoBtn.textContent.trim() : '';
 
     if (qtd > 1) { msg += '━━━ 🎵 MÚSICA ' + i + ' ━━━\n'; resumo += '\n🎵 Música ' + i + ':\n'; }
     msg += '💝 Para: ' + hom + ' (' + rel + ')\n';
@@ -3129,10 +3258,11 @@ function enviarPedidoMusica() {
     msg += '🎸 Estilo: ' + estilo + '\n';
     if (can) msg += '🎤 Referência: ' + can + '\n';
     if (tipos) msg += '✨ Clima: ' + tipos + '\n';
+    if (ritmo) msg += '🥁 Ritmo: ' + ritmo + '\n';
     msg += '🎙️ Voz: ' + voz + '\n';
     if (ideia) msg += '💭 História: ' + ideia + '\n';
     msg += '\n';
-    resumo += '💝 ' + hom + ' (' + rel + ') · 🎉 ' + oca + (dat ? ' · 📅 ' + dat : '') + '\n🎸 ' + estilo + (can ? ' · 🎤 ' + can : '') + (tipos ? ' · ✨ ' + tipos : '') + ' · 🎙️ ' + voz + (ideia ? '\n💭 ' + ideia : '') + '\n';
+    resumo += '💝 ' + hom + ' (' + rel + ') · 🎉 ' + oca + (dat ? ' · 📅 ' + dat : '') + '\n🎸 ' + estilo + (can ? ' · 🎤 ' + can : '') + (tipos ? ' · ✨ ' + tipos : '') + (ritmo ? ' · 🥁 ' + ritmo : '') + ' · 🎙️ ' + voz + (ideia ? '\n💭 ' + ideia : '') + '\n';
   }
 
   msg += '_Aguardo retorno! 😊_';
@@ -3151,6 +3281,7 @@ function enviarPedidoMusica() {
   // no clique, senão o celular bloqueia a abertura do WhatsApp
   fecharMusicaPedido();
   abrirSalaObrigadaMusica(nome);
+  qmConta('p');
   window.open('https://wa.me/5511926029852?text=' + encodeURIComponent(msg), '_blank');
 }
 
