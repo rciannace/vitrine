@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v37 -->
+<!-- v20261029-musica-v38 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1181,7 +1181,11 @@ textarea.qm-field{min-height:110px;resize:vertical}
   color:rgba(255,255,255,.85);font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap;transition:all .15s}
 .qm-oca span{font-size:15px}
 .qm-oca:hover,.qm-oca:active{border-color:#e84400;color:#ffb38a;background:rgba(232,68,0,.12)}
-@media(max-width:600px){.qm-oca-row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.qm-oca-row::-webkit-scrollbar{display:none}.qm-oca{flex-shrink:0}}
+@media(max-width:600px){.qm-oca-row{gap:6px}
+  .qm-oca{flex:0 0 calc((100% - 26px) / 5);box-sizing:border-box;flex-direction:column;justify-content:center;gap:3px;padding:8px 2px;border-radius:12px;min-height:54px}
+  .qm-oca span{font-size:18px;line-height:1}
+  .qm-oca b{font-weight:400;font-size:clamp(9px,2.6vw,11px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}}
+.qm-oca b{font-weight:400}
 /* v30: login dos pedidos */
 .qm-login{margin:10px 14px 0;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px;font-size:12px;color:rgba(255,255,255,.75)}
 .qm-login.ok{display:block}
@@ -1447,7 +1451,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
     <!-- v30: ocasiões — já abre o pedido preenchido -->
     <div class="qm-ocasioes qm-reveal">
       <div class="musica-estilos-title" data-edit="ocasioes_titulo">para qual ocasião?</div>
-      <div class="qm-oca-row"><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎂</span> Aniversário</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💍</span> Casamento</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💞</span> Namoro</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👩‍👧</span> Dia das Mães</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👨‍👧</span> Dia dos Pais</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🤰</span> Chá de bebê</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🙏</span> Homenagem</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎓</span> Formatura</button><button class="qm-oca" onclick="qmOcasiao(this)"><span>✨</span> Outra</button></div>
+      <div class="qm-oca-row"><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎂</span> <b>Aniversário</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💍</span> <b>Casamento</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>💞</span> <b>Namoro</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👩‍👧</span> <b>Dia das Mães</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>👨‍👧</span> <b>Dia dos Pais</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🤰</span> <b>Chá de bebê</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🙏</span> <b>Homenagem</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>🎓</span> <b>Formatura</b></button><button class="qm-oca" onclick="qmOcasiao(this)"><span>✨</span> <b>Outra</b></button></div>
     </div>
 
     <!-- Cards de preço com botão WhatsApp -->
