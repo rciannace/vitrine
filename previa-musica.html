@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v20 -->
+<!-- v20261103-previa-v22 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -83,6 +83,13 @@ textarea:focus{border-color:#ff6622}
 .lk{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);margin-top:6px;font-size:13px}
 .lk .n{flex:1;min-width:0}.lk .n b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lk .n small{color:var(--muted)}
 .lk button{flex-shrink:0;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.hist-head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:none;color:#fff;font-size:15px;font-weight:800;padding:0;cursor:pointer;text-align:left}
+.hist-head b{color:#ff8a4c}
+.lk{flex-wrap:wrap}.lk .acoes{display:flex;gap:6px;width:100%;margin-top:8px}.lk .acoes button{flex:1}
+.lk .tp{font-size:12px;color:rgba(255,255,255,.75);margin-top:2px}
+.lk .st{display:inline-block;margin-top:3px;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+.st.nao{background:rgba(255,176,32,.14);color:#ffc35c}.st.sim{background:rgba(74,222,128,.14);color:#4ade80}.st.meio{background:rgba(96,165,250,.14);color:#93c5fd}
+.lk button.del{flex:0 0 auto!important;color:#f87171}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -105,6 +112,17 @@ textarea:focus{border-color:#ff6622}
     <a class="btn main" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none">Abrir no Google Chrome</a>
   </div>
   <p class="sub">Transforme a gravação de tela da música em um <b>áudio curto</b>, com final suave, pronto para mandar no WhatsApp.</p>
+
+  <!-- histórico de prévias enviadas -->
+  <div class="card" id="cardHist">
+    <button class="hist-head" id="btnHist"><span>📂 Histórico de prévias enviadas <b id="histN"></b></span><span id="histSeta">▼</span></button>
+    <div class="hide" id="histBox">
+      <div class="row" id="histFiltro" style="margin-top:10px">
+        <button class="chip on" data-f="todos">Todas</button><button class="chip" data-f="nao">Não ouviram</button><button class="chip" data-f="sim">Já ouviram</button>
+      </div>
+      <div id="meusLinks" style="margin-top:8px"></div>
+    </div>
+  </div>
 
   <!-- 1. escolher -->
   <div class="card">
@@ -204,8 +222,7 @@ textarea:focus{border-color:#ff6622}
         <button class="btn wa" id="btnShareLink">📤 Enviar o link no WhatsApp</button>
         <button class="btn ghost" id="btnCopiarLink">📋 Copiar só o link</button>
       </div>
-      <button class="chip" id="btnMeusLinks" style="width:100%;margin-top:12px;flex:none">📂 Meus links (ver quem já ouviu / liberar de novo)</button>
-      <div class="hide" id="meusLinks" style="margin-top:8px"></div>
+      <p class="dica" style="margin-top:10px">Todos os links ficam no <b>📂 Histórico</b>, no topo da página.</p>
     </div>
     <div class="vu">
       <div class="vu-tit">👁️ Visualização única</div>
@@ -231,7 +248,7 @@ textarea:focus{border-color:#ff6622}
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
   const app = initializeApp({
     apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
     authDomain: "ia-foto-studio-346ed.firebaseapp.com",
@@ -240,7 +257,7 @@ textarea:focus{border-color:#ff6622}
     messagingSenderId: "16163406496",
     appId: "1:16163406496:web:ab936afab6f681a007ffc5"
   });
-  window._fbDb = getFirestore(app); window._fbDoc = doc; window._fbGetDoc = getDoc; window._fbSetDoc = setDoc; window._fbReady = true;
+  window._fbDb = getFirestore(app); window._fbDoc = doc; window._fbGetDoc = getDoc; window._fbSetDoc = setDoc; window._fbCol = collection; window._fbGetDocs = getDocs; window._fbReady = true;
 </script>
 <script>function lamejs(){function X(c){return new Int32Array(c)}function K(c){return new Float32Array(c)}function ca(c){if(1==c.length)return K(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(ca(c));return n}function Ia(c){if(1==c.length)return X(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(Ia(c));return n}function dc(c){if(1==c.length)return new Int16Array(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(dc(c));return n}function Ob(c){if(1==c.length)return Array(c[0]);
 var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(Ob(c));return n}function ra(c){this.ordinal=c}function G(c){this.ordinal=c}function la(c){this.ordinal=function(){return c}}function mc(){this.getLameVersion=function(){return"3.98.4"};this.getLameShortVersion=function(){return"3.98.4"};this.getLameVeryShortVersion=function(){return"LAME3.98r"};this.getPsyVersion=function(){return"0.93"};this.getLameUrl=function(){return"http://www.mp3dev.org/"};this.getLameOsBitness=function(){return"32bits"}}
@@ -919,6 +936,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       const blob = new Blob(partes, { type: 'audio/mpeg' });
       const nome = nomeArquivo();
       mp3File = new File([blob], nome, { type: 'audio/mpeg' });
+      window.__ger = { dur: n / sr, marca: !!mk, inteira: Math.abs(fim() - T()) < 0.3 && ini() <= somIni() + 0.3 };
       if (mp3Url) URL.revokeObjectURL(mp3Url);
       mp3Url = URL.createObjectURL(blob);
       $('player').src = mp3Url;
@@ -941,6 +959,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function nomeArquivo() { return ((($('nome').value || '').trim().replace(/[\\/:*?"<>|]+/g, '')) || 'Musica') + '.mp3'; }
   function semAcento(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w .-]/g, '').trim() || 'previa.mp3'; }
   $('btnShare').addEventListener('click', async () => {
+    registrarEnvio('audio');
     if (!mp3File) return;
     const msg = $('shareMsg'); msg.className = 'info'; msg.textContent = '';
     const f = new File([mp3File], semAcento(nomeArquivo()), { type: 'audio/mpeg' });
@@ -996,13 +1015,14 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       try { up = await enviar(true); }
       catch (e1) { if (/sem internet/.test(e1.message)) throw e1; up = await enviar(false); }   // se a pasta não for aceita, envia sem pasta
       const id = idNovo(), nome = ($('nome').value || '').trim();
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { url: up.secure_url, nome, max: vezes(), plays: 0, criado: Date.now() });
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
       prog.firstElementChild.style.width = '100%';
       linkUrl = LINK_BASE + id;
       $('linkTxt').value = linkUrl;
       const l = meusLinks(); l.unshift({ id, nome: nome || 'Sem nome', criado: Date.now() }); salvarMeus(l);
       $('linkInfo').textContent = '✓ Link criado! Ele vale para ' + (vezes() === 1 ? '1 escuta.' : vezes() + ' escutas.');
       $('linkPronto').classList.remove('hide');
+      carregarHist().then(() => { if (!$('histBox').classList.contains('hide')) mostrarMeus(false); }).catch(() => {});
     } catch (e) {
       $('linkInfo').textContent = '⚠️ Não consegui criar o link: ' + (e.message || e);
     } finally { btn.disabled = false; setTimeout(() => prog.classList.add('hide'), 600); }
@@ -1019,29 +1039,81 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     catch (e) { $('linkTxt').select(); document.execCommand('copy'); $('btnCopiarLink').textContent = '✓ Link copiado'; }
     setTimeout(() => $('btnCopiarLink').textContent = '📋 Copiar só o link', 2500);
   });
-  async function mostrarMeus() {
-    const box = $('meusLinks'), l = meusLinks();
-    if (!l.length) { box.innerHTML = '<div class="dica">Nenhum link criado neste celular ainda.</div>'; return; }
-    box.innerHTML = '<div class="dica">Carregando…</div>';
-    if (!(await fbPronto())) { box.innerHTML = '<div class="dica erro">Sem conexão com a nuvem.</div>'; return; }
-    const linhas = [];
-    for (const it of l.slice(0, 15)) {
-      let st = '…', d = null;
-      try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaLinks', it.id)); d = sn.exists() ? sn.data() : null; } catch (e) {}
-      st = !d ? 'não encontrado' : (d.plays >= d.max ? '✅ ouviu (' + d.plays + '/' + d.max + ')' : (d.plays ? '▶ ouviu ' + d.plays + ' de ' + d.max : '⏳ ainda não ouviu'));
-      linhas.push('<div class="lk"><div class="n"><b>' + (it.nome || 'Sem nome').replace(/</g, '&lt;') + '</b><small>' + new Date(it.criado).toLocaleDateString('pt-BR') + ' · ' + st + '</small></div>' +
-        (d ? '<button data-id="' + it.id + '" data-a="mais">+1 escuta</button>' : '') + '<button data-id="' + it.id + '" data-a="copiar">Copiar</button></div>');
-    }
-    box.innerHTML = linhas.join('');
+  // ══ v22: registro de envios de áudio/vídeo ══
+  let ultimoReg = '';
+  async function registrarEnvio(tipo) {
+    const chave = tipo + '|' + (mp3Url || '') + '|' + (tipo === 'video' ? (vidUrl || '') : '');
+    if (chave === ultimoReg) return; ultimoReg = chave;        // não repete se tocar duas vezes no mesmo envio
+    try {
+      if (!(await fbPronto(3000))) return;
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', 'e' + idNovo()), { tipo, nome: ($('nome').value || '').trim(), criado: Date.now(), plays: 0, max: 0, ...(window.__ger || {}) });
+      carregarHist().catch(() => {});
+    } catch (e) {}
   }
-  $('btnMeusLinks').addEventListener('click', () => { const b = $('meusLinks'); b.classList.toggle('hide'); if (!b.classList.contains('hide')) mostrarMeus(); });
+  function descTipo(d) {
+    const tp = d.tipo === 'audio' ? '🎵 Áudio enviado' : d.tipo === 'video' ? '🎬 Vídeo enviado' : '🔗 Link';
+    const dur = d.inteira ? 'música inteira (' + fmt(d.dur || 0) + ')' : (d.dur ? fmt(d.dur) : '');
+    const mk = d.marca === undefined ? '' : (d.marca ? 'com marca' : 'sem marca');
+    return [tp, dur, mk].filter(Boolean).join(' · ');
+  }
+  // ══ v21: histórico de prévias (vem da nuvem, então não se perde ao atualizar a página) ══
+  let histCache = [], histFiltro = 'todos';
+  function stLink(d) {
+    if (d.plays >= d.max) return { c: 'sim', t: '✅ Ouviu' + (d.max > 1 ? ' (' + d.plays + '/' + d.max + ')' : '') };
+    if (d.plays > 0) return { c: 'meio', t: '▶ Ouviu ' + d.plays + ' de ' + d.max };
+    return { c: 'nao', t: '⏳ Ainda não ouviu' };
+  }
+  async function carregarHist() {
+    if (!(await fbPronto())) return null;
+    const out = [];
+    try {
+      const q = await window._fbGetDocs(window._fbCol(window._fbDb, 'previaLinks'));
+      q.forEach(x => { const d = x.data(); if (!d.apagado) out.push({ id: x.id, ...d }); });
+    } catch (e) {
+      // se a nuvem não deixar listar, usa os links guardados neste celular
+      for (const it of meusLinks()) { try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaLinks', it.id)); if (sn.exists() && !sn.data().apagado) out.push({ id: it.id, ...sn.data() }); } catch (er) {} }
+    }
+    out.sort((a, b) => (b.criado || 0) - (a.criado || 0));
+    histCache = out; $('histN').textContent = out.length ? '(' + out.length + ')' : '';
+    return out;
+  }
+  async function mostrarMeus(recarregar = true) {
+    const box = $('meusLinks');
+    if (recarregar) { box.innerHTML = '<div class="dica">Carregando…</div>'; const r = await carregarHist(); if (r === null) { box.innerHTML = '<div class="dica erro">Sem conexão com a nuvem.</div>'; return; } }
+    const ehLink = d => !d.tipo || d.tipo === 'link';
+    const l = histCache.filter(d => histFiltro === 'todos' || (ehLink(d) && (histFiltro === 'sim' ? d.plays >= d.max : d.plays < d.max)));
+    if (!l.length) { box.innerHTML = '<div class="dica">' + (histCache.length ? 'Nenhuma prévia neste filtro.' : 'Nenhuma prévia enviada ainda.') + '</div>'; return; }
+    box.innerHTML = l.slice(0, 60).map(d => {
+      const st = stLink(d), dt = new Date(d.criado || 0);
+      const link = ehLink(d);
+      return '<div class="lk"><div class="n"><b>' + (d.nome || 'Sem nome').replace(/</g, '&lt;') + '</b><small>' + dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '</small>' +
+        '<div class="tp">' + descTipo(d) + '</div>' + (link ? '<span class="st ' + st.c + '">' + st.t + '</span>' : '') + '</div>' +
+        '<div class="acoes">' + (link ? '<button data-id="' + d.id + '" data-a="mais">+1 escuta</button><button data-id="' + d.id + '" data-a="enviar">📤 Enviar</button><button data-id="' + d.id + '" data-a="copiar">📋 Copiar</button>' : '<span class="dica" style="flex:1;align-self:center">Arquivo enviado direto no WhatsApp</span>') +
+        '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div></div>';
+    }).join('');
+  }
+  $('btnHist').addEventListener('click', () => { const b = $('histBox'); b.classList.toggle('hide'); $('histSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; if (!b.classList.contains('hide')) mostrarMeus(); });
+  $('histFiltro').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; histFiltro = b.dataset.f; document.querySelectorAll('#histFiltro .chip').forEach(c => c.classList.toggle('on', c === b)); mostrarMeus(false); });
+  carregarHist().catch(() => {});
   $('meusLinks').addEventListener('click', async e => {
     const b = e.target.closest('button'); if (!b) return;
-    const id = b.dataset.id;
-    if (b.dataset.a === 'copiar') { try { await navigator.clipboard.writeText(LINK_BASE + id); b.textContent = '✓'; } catch (er) {} return; }
+    const id = b.dataset.id, d = histCache.find(x => x.id === id), url = LINK_BASE + id;
+    if (b.dataset.a === 'copiar') { try { await navigator.clipboard.writeText(url); b.textContent = '✓ Copiado'; } catch (er) {} return; }
+    if (b.dataset.a === 'enviar') {
+      const resta = d ? Math.max(1, d.max - d.plays) : 1;
+      const t = 'Oi! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url + '\n\n⚠️ Ela pode ser ouvida ' + (resta === 1 ? 'só 1 vez' : resta + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
+      if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (er) { if (er && er.name === 'AbortError') return; } }
+      window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); return;
+    }
     try {
       const ref = window._fbDoc(window._fbDb, 'previaLinks', id), sn = await window._fbGetDoc(ref); if (!sn.exists()) return;
-      const d = sn.data(); await window._fbSetDoc(ref, { max: Math.max(d.max, d.plays) + 1 }, { merge: true });
+      const x = sn.data();
+      if (b.dataset.a === 'mais') { await window._fbSetDoc(ref, { max: Math.max(x.max, x.plays) + 1 }, { merge: true }); }
+      if (b.dataset.a === 'apagar') {
+        if (!confirm('Apagar "' + (x.nome || 'esta prévia') + '" do histórico?\n\nO link para de funcionar para o cliente.')) return;
+        await window._fbSetDoc(ref, { apagado: true, max: x.plays || 0 }, { merge: true });
+        salvarMeus(meusLinks().filter(it => it.id !== id));
+      }
       mostrarMeus();
     } catch (er) { b.textContent = '⚠️'; }
   });
@@ -1117,6 +1189,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     } finally { btn.disabled = false; prog.classList.add('hide'); }
   });
   $('btnShareVid').addEventListener('click', async () => {
+    registrarEnvio('video');
     if (!vidFile) return;
     if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [vidFile] }))) {
       try { await navigator.share({ files: [vidFile] }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
