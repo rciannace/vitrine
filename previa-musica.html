@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v18 -->
+<!-- v20261103-previa-v19 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -202,7 +202,7 @@ textarea:focus{border-color:#ff6622}
       <div class="hide" id="linkPronto">
         <input type="text" id="linkTxt" readonly style="margin-top:8px;font-size:13px">
         <button class="btn wa" id="btnShareLink">📤 Enviar o link no WhatsApp</button>
-        <button class="btn ghost" id="btnCopiarLink">📋 Copiar o link</button>
+        <button class="btn ghost" id="btnCopiarLink">📋 Copiar só o link</button>
       </div>
       <button class="chip" id="btnMeusLinks" style="width:100%;margin-top:12px;flex:none">📂 Meus links (ver quem já ouviu / liberar de novo)</button>
       <div class="hide" id="meusLinks" style="margin-top:8px"></div>
@@ -1013,10 +1013,11 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
     window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
   });
+  $('linkTxt').addEventListener('click', () => $('btnCopiarLink').click());
   $('btnCopiarLink').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(msgLink(linkUrl)); $('btnCopiarLink').textContent = '✓ Copiado (mensagem + link)'; }
+    try { await navigator.clipboard.writeText(linkUrl); $('btnCopiarLink').textContent = '✓ Link copiado!'; }
     catch (e) { $('linkTxt').select(); document.execCommand('copy'); $('btnCopiarLink').textContent = '✓ Link copiado'; }
-    setTimeout(() => $('btnCopiarLink').textContent = '📋 Copiar o link', 2500);
+    setTimeout(() => $('btnCopiarLink').textContent = '📋 Copiar só o link', 2500);
   });
   async function mostrarMeus() {
     const box = $('meusLinks'), l = meusLinks();
