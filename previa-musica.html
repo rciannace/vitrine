@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v17 -->
+<!-- v20261103-previa-v18 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -155,8 +155,8 @@ textarea:focus{border-color:#ff6622}
       <label class="chip on" id="lbFadeOut" style="text-align:center"><input type="checkbox" id="fadeOut" checked hidden> Final suave</label>
     </div>
 
-    <label class="lb">Nome do cliente (ou da música)</label>
-    <input type="text" id="nome" placeholder="Ex: Ana" maxlength="60">
+    <label class="lb">Nome da música</label>
+    <input type="text" id="nome" placeholder="Ex: Saudade do Lençol" maxlength="60">
 
     <div class="sw">
       <div class="t"><b>🔊 Marca sonora de prévia</b><small id="swTxt">A cada 20 segundos toca a marca (sua voz ou um sino), mostrando que é uma amostra. Use <b>Sim</b> para clientes e <b>Não</b> para as suas músicas.</small></div>
@@ -839,7 +839,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
 
   function msgPadrao() {
     const nome = ($('nome').value || '').trim();
-    return 'Oi' + (nome && nome.toLowerCase() !== 'prévia' ? ', ' + nome : '') + '! 🎵\n\nAqui está a prévia da sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
+    return 'Oi! 🎵\n\nAqui está a prévia da sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
       'Se quiser, faço até 2 ajustes de ritmo ou velocidade. Assim que você aprovar, te envio a música completa. 💛\n\nIA Music Studio';
   }
   let msgEditada = false;
@@ -973,7 +973,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function salvarMeus(l) { try { localStorage.setItem('previa_links', JSON.stringify(l.slice(0, 40))); } catch (e) {} }
   function msgLink(url) {
     const nome = ($('nome').value || '').trim(), v = vezes();
-    return 'Oi' + (nome ? ', ' + nome : '') + '! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url +
+    return 'Oi! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url +
       '\n\n⚠️ Ela pode ser ouvida ' + (v === 1 ? 'só 1 vez' : v + ' vezes') + ', então ouça com calma (de preferência com fone) e depois me conta o que achou! 💛';
   }
   $('btnLink').addEventListener('click', async () => {
@@ -983,14 +983,18 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     $('linkInfo').textContent = '⏳ Enviando a prévia para a nuvem…';
     try {
       if (!(await fbPronto())) throw new Error('sem conexão com a nuvem');
-      const fd = new FormData(); fd.append('file', mp3File, 'previa.mp3'); fd.append('upload_preset', CLD_PRESET);
-      const up = await new Promise((ok, falha) => {
+      const enviar = comPasta => new Promise((ok, falha) => {
+        const fd = new FormData(); fd.append('file', mp3File, 'previa.mp3'); fd.append('upload_preset', CLD_PRESET);
+        if (comPasta) fd.append('folder', 'previas');
         const x = new XMLHttpRequest(); x.open('POST', 'https://api.cloudinary.com/v1_1/' + CLD_CLOUD + '/video/upload');
         x.upload.onprogress = e => { if (e.lengthComputable) prog.firstElementChild.style.width = (5 + e.loaded / e.total * 85) + '%'; };
         x.onload = () => { try { const j = JSON.parse(x.responseText); j.secure_url ? ok(j) : falha(new Error((j.error && j.error.message) || 'falha no envio')); } catch (er) { falha(er); } };
         x.onerror = () => falha(new Error('sem internet'));
         x.send(fd);
       });
+      let up;
+      try { up = await enviar(true); }
+      catch (e1) { if (/sem internet/.test(e1.message)) throw e1; up = await enviar(false); }   // se a pasta não for aceita, envia sem pasta
       const id = idNovo(), nome = ($('nome').value || '').trim();
       await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { url: up.secure_url, nome, max: vezes(), plays: 0, criado: Date.now() });
       prog.firstElementChild.style.width = '100%';
