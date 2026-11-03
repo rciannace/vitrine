@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-previa-v15 -->
+<!-- v20261103-previa-v17 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -78,6 +78,11 @@ textarea:focus{border-color:#ff6622}
 .voz-ok{margin-top:10px;padding:12px 14px;border-radius:12px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.4);font-size:13.5px;line-height:1.45}
 .voz-ok small{color:var(--muted);font-size:12px}
 .btn.regravar{background:rgba(255,255,255,.06)!important;border:1px solid var(--line)!important;box-shadow:none!important;font-size:13px!important;padding:10px!important}
+.vu{margin-top:16px;padding:14px;border-radius:14px;border:1px solid rgba(255,102,34,.35);background:rgba(255,102,34,.06)}
+.vu-tit{font-weight:800;font-size:15px}
+.lk{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);margin-top:6px;font-size:13px}
+.lk .n{flex:1;min-width:0}.lk .n b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lk .n small{color:var(--muted)}
+.lk button{flex-shrink:0;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;font-size:12px;font-weight:700;cursor:pointer}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -184,6 +189,36 @@ textarea:focus{border-color:#ff6622}
       <a class="btn ghost" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none;margin-top:10px">Abrir esta ferramenta no Chrome</a>
     </div>
     <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
+    <div class="vu" id="boxLink">
+      <div class="vu-tit">🔗 Link de escuta única</div>
+      <p class="dica" style="margin:4px 0 10px">O cliente recebe um <b>link</b>, ouve a prévia na página do IA Music Studio <b>sem poder baixar</b>, e depois o link expira.</p>
+      <label class="lb" style="margin-top:0">Quantas vezes o cliente pode ouvir</label>
+      <div class="row" id="vezes" style="margin-top:0">
+        <button class="chip on" data-v="1">1 vez</button><button class="chip" data-v="2">2 vezes</button><button class="chip" data-v="3">3 vezes</button>
+      </div>
+      <button class="btn main" id="btnLink">🔗 Criar link de escuta única</button>
+      <div class="prog hide" id="progLink"><i></i></div>
+      <div class="info" id="linkInfo"></div>
+      <div class="hide" id="linkPronto">
+        <input type="text" id="linkTxt" readonly style="margin-top:8px;font-size:13px">
+        <button class="btn wa" id="btnShareLink">📤 Enviar o link no WhatsApp</button>
+        <button class="btn ghost" id="btnCopiarLink">📋 Copiar o link</button>
+      </div>
+      <button class="chip" id="btnMeusLinks" style="width:100%;margin-top:12px;flex:none">📂 Meus links (ver quem já ouviu / liberar de novo)</button>
+      <div class="hide" id="meusLinks" style="margin-top:8px"></div>
+    </div>
+    <div class="vu">
+      <div class="vu-tit">👁️ Visualização única</div>
+      <p class="dica" style="margin:4px 0 10px">O WhatsApp só deixa mandar <b>vídeo</b> (não áudio) com visualização única. Aqui o áudio vira um vídeo com o logo, para o cliente ouvir <b>uma vez só</b>.</p>
+      <button class="btn main" id="btnVideo">🎬 Criar vídeo de visualização única</button>
+      <div class="prog hide" id="progVid"><i></i></div>
+      <div class="info" id="vidInfo"></div>
+      <div class="hide" id="vidPronto">
+        <button class="btn wa" id="btnShareVid">📤 Enviar o vídeo no WhatsApp</button>
+        <button class="btn ghost" id="btnBaixarVid">⬇ Salvar o vídeo no celular</button>
+        <p class="dica" style="margin-top:10px">Na tela de envio do WhatsApp, antes de mandar, toque no <b>círculo com o número 1</b> ao lado da legenda. Ele fica verde: é a visualização única.</p>
+      </div>
+    </div>
     <div id="msgBox">
       <label class="lb">💬 Mensagem para o cliente (já vai copiada ao tocar em Enviar)</label>
       <textarea id="msgTxt"></textarea>
@@ -194,6 +229,19 @@ textarea:focus{border-color:#ff6622}
 
 </div>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+  const app = initializeApp({
+    apiKey: "AIzaSyCe3FthvhE19DV2MD9-24Oe2lAwyPK5cEo",
+    authDomain: "ia-foto-studio-346ed.firebaseapp.com",
+    projectId: "ia-foto-studio-346ed",
+    storageBucket: "ia-foto-studio-346ed.firebasestorage.app",
+    messagingSenderId: "16163406496",
+    appId: "1:16163406496:web:ab936afab6f681a007ffc5"
+  });
+  window._fbDb = getFirestore(app); window._fbDoc = doc; window._fbGetDoc = getDoc; window._fbSetDoc = setDoc; window._fbReady = true;
+</script>
 <script>function lamejs(){function X(c){return new Int32Array(c)}function K(c){return new Float32Array(c)}function ca(c){if(1==c.length)return K(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(ca(c));return n}function Ia(c){if(1==c.length)return X(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(Ia(c));return n}function dc(c){if(1==c.length)return new Int16Array(c[0]);var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(dc(c));return n}function Ob(c){if(1==c.length)return Array(c[0]);
 var k=c[0];c=c.slice(1);for(var n=[],u=0;u<k;u++)n.push(Ob(c));return n}function ra(c){this.ordinal=c}function G(c){this.ordinal=c}function la(c){this.ordinal=function(){return c}}function mc(){this.getLameVersion=function(){return"3.98.4"};this.getLameShortVersion=function(){return"3.98.4"};this.getLameVeryShortVersion=function(){return"LAME3.98r"};this.getPsyVersion=function(){return"0.93"};this.getLameUrl=function(){return"http://www.mp3dev.org/"};this.getLameOsBitness=function(){return"32bits"}}
 function Y(){function c(f,b,c,a,m,k){for(;0!=m--;)c[a]=1E-10+f[b+0]*k[0]-c[a-1]*k[1]+f[b-1]*k[2]-c[a-2]*k[3]+f[b-2]*k[4]-c[a-3]*k[5]+f[b-3]*k[6]-c[a-4]*k[7]+f[b-4]*k[8]-c[a-5]*k[9]+f[b-5]*k[10]-c[a-6]*k[11]+f[b-6]*k[12]-c[a-7]*k[13]+f[b-7]*k[14]-c[a-8]*k[15]+f[b-8]*k[16]-c[a-9]*k[17]+f[b-9]*k[18]-c[a-10]*k[19]+f[b-10]*k[20],++a,++b}function k(f,b,c,a,m,k){for(;0!=m--;)c[a]=f[b+0]*k[0]-c[a-1]*k[1]+f[b-1]*k[2]-c[a-2]*k[3]+f[b-2]*k[4],++a,++b}function n(f){return f*f}var V=Y.RMS_WINDOW_TIME_NUMERATOR,
@@ -913,6 +961,169 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     document.body.appendChild(a); a.click(); a.remove();
   }
   $('btnBaixar').addEventListener('click', baixar);
+  // ══ v17: link de escuta única (página ouvir.html) ══
+  const CLD_CLOUD = 'ppylrh6g', CLD_PRESET = 'music_studio';
+  const LINK_BASE = 'https://rciannace.github.io/vitrine/ouvir.html?id=';
+  let linkUrl = '';
+  function fbPronto(ms = 8000) { return new Promise(r => { if (window._fbReady) return r(true); const t0 = Date.now(); const it = setInterval(() => { if (window._fbReady) { clearInterval(it); r(true); } else if (Date.now() - t0 > ms) { clearInterval(it); r(false); } }, 100); }); }
+  const vezes = () => parseInt((document.querySelector('#vezes .chip.on') || {}).dataset?.v || '1', 10);
+  $('vezes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#vezes .chip').forEach(c => c.classList.toggle('on', c === b)); });
+  function idNovo() { const a = 'abcdefghijkmnpqrstuvwxyz23456789'; let x = ''; const r = crypto.getRandomValues(new Uint8Array(10)); r.forEach(n => x += a[n % a.length]); return x; }
+  function meusLinks() { try { return JSON.parse(localStorage.getItem('previa_links') || '[]'); } catch (e) { return []; } }
+  function salvarMeus(l) { try { localStorage.setItem('previa_links', JSON.stringify(l.slice(0, 40))); } catch (e) {} }
+  function msgLink(url) {
+    const nome = ($('nome').value || '').trim(), v = vezes();
+    return 'Oi' + (nome ? ', ' + nome : '') + '! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url +
+      '\n\n⚠️ Ela pode ser ouvida ' + (v === 1 ? 'só 1 vez' : v + ' vezes') + ', então ouça com calma (de preferência com fone) e depois me conta o que achou! 💛';
+  }
+  $('btnLink').addEventListener('click', async () => {
+    if (!mp3File) return;
+    const btn = $('btnLink'); btn.disabled = true; $('linkPronto').classList.add('hide');
+    const prog = $('progLink'); prog.classList.remove('hide'); prog.firstElementChild.style.width = '5%';
+    $('linkInfo').textContent = '⏳ Enviando a prévia para a nuvem…';
+    try {
+      if (!(await fbPronto())) throw new Error('sem conexão com a nuvem');
+      const fd = new FormData(); fd.append('file', mp3File, 'previa.mp3'); fd.append('upload_preset', CLD_PRESET);
+      const up = await new Promise((ok, falha) => {
+        const x = new XMLHttpRequest(); x.open('POST', 'https://api.cloudinary.com/v1_1/' + CLD_CLOUD + '/video/upload');
+        x.upload.onprogress = e => { if (e.lengthComputable) prog.firstElementChild.style.width = (5 + e.loaded / e.total * 85) + '%'; };
+        x.onload = () => { try { const j = JSON.parse(x.responseText); j.secure_url ? ok(j) : falha(new Error((j.error && j.error.message) || 'falha no envio')); } catch (er) { falha(er); } };
+        x.onerror = () => falha(new Error('sem internet'));
+        x.send(fd);
+      });
+      const id = idNovo(), nome = ($('nome').value || '').trim();
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { url: up.secure_url, nome, max: vezes(), plays: 0, criado: Date.now() });
+      prog.firstElementChild.style.width = '100%';
+      linkUrl = LINK_BASE + id;
+      $('linkTxt').value = linkUrl;
+      const l = meusLinks(); l.unshift({ id, nome: nome || 'Sem nome', criado: Date.now() }); salvarMeus(l);
+      $('linkInfo').textContent = '✓ Link criado! Ele vale para ' + (vezes() === 1 ? '1 escuta.' : vezes() + ' escutas.');
+      $('linkPronto').classList.remove('hide');
+    } catch (e) {
+      $('linkInfo').textContent = '⚠️ Não consegui criar o link: ' + (e.message || e);
+    } finally { btn.disabled = false; setTimeout(() => prog.classList.add('hide'), 600); }
+  });
+  $('btnShareLink').addEventListener('click', async () => {
+    if (!linkUrl) return;
+    const t = msgLink(linkUrl);
+    if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+    window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+  });
+  $('btnCopiarLink').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(msgLink(linkUrl)); $('btnCopiarLink').textContent = '✓ Copiado (mensagem + link)'; }
+    catch (e) { $('linkTxt').select(); document.execCommand('copy'); $('btnCopiarLink').textContent = '✓ Link copiado'; }
+    setTimeout(() => $('btnCopiarLink').textContent = '📋 Copiar o link', 2500);
+  });
+  async function mostrarMeus() {
+    const box = $('meusLinks'), l = meusLinks();
+    if (!l.length) { box.innerHTML = '<div class="dica">Nenhum link criado neste celular ainda.</div>'; return; }
+    box.innerHTML = '<div class="dica">Carregando…</div>';
+    if (!(await fbPronto())) { box.innerHTML = '<div class="dica erro">Sem conexão com a nuvem.</div>'; return; }
+    const linhas = [];
+    for (const it of l.slice(0, 15)) {
+      let st = '…', d = null;
+      try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaLinks', it.id)); d = sn.exists() ? sn.data() : null; } catch (e) {}
+      st = !d ? 'não encontrado' : (d.plays >= d.max ? '✅ ouviu (' + d.plays + '/' + d.max + ')' : (d.plays ? '▶ ouviu ' + d.plays + ' de ' + d.max : '⏳ ainda não ouviu'));
+      linhas.push('<div class="lk"><div class="n"><b>' + (it.nome || 'Sem nome').replace(/</g, '&lt;') + '</b><small>' + new Date(it.criado).toLocaleDateString('pt-BR') + ' · ' + st + '</small></div>' +
+        (d ? '<button data-id="' + it.id + '" data-a="mais">+1 escuta</button>' : '') + '<button data-id="' + it.id + '" data-a="copiar">Copiar</button></div>');
+    }
+    box.innerHTML = linhas.join('');
+  }
+  $('btnMeusLinks').addEventListener('click', () => { const b = $('meusLinks'); b.classList.toggle('hide'); if (!b.classList.contains('hide')) mostrarMeus(); });
+  $('meusLinks').addEventListener('click', async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const id = b.dataset.id;
+    if (b.dataset.a === 'copiar') { try { await navigator.clipboard.writeText(LINK_BASE + id); b.textContent = '✓'; } catch (er) {} return; }
+    try {
+      const ref = window._fbDoc(window._fbDb, 'previaLinks', id), sn = await window._fbGetDoc(ref); if (!sn.exists()) return;
+      const d = sn.data(); await window._fbSetDoc(ref, { max: Math.max(d.max, d.plays) + 1 }, { merge: true });
+      mostrarMeus();
+    } catch (er) { b.textContent = '⚠️'; }
+  });
+
+  // ══ v16: vídeo para "visualização única" (o WhatsApp só permite isso com foto/vídeo) ══
+  let vidFile = null, vidUrl = null;
+  function tipoVideo() {
+    const op = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (const t of op) { try { if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t; } catch (e) {} }
+    return '';
+  }
+  $('btnVideo').addEventListener('click', async () => {
+    if (!mp3Url) return;
+    const tipo = tipoVideo();
+    if (!tipo) { $('vidInfo').textContent = '⚠️ Este navegador não consegue criar vídeo. Use o Google Chrome atualizado.'; return; }
+    const btn = $('btnVideo'); btn.disabled = true; $('vidPronto').classList.add('hide');
+    const prog = $('progVid'); prog.classList.remove('hide'); prog.firstElementChild.style.width = '0%';
+    try {
+      const c = audioCtx(); if (c.state === 'suspended') await c.resume();
+      const dados = await (await fetch(mp3Url)).arrayBuffer();
+      const ab = await new Promise((ok, falha) => { const p = c.decodeAudioData(dados, ok, falha); if (p && p.then) p.then(ok, falha); });
+      const dur = ab.duration;
+      // tela do vídeo: logo + nome + barra de tempo
+      const cv = document.createElement('canvas'); cv.width = 720; cv.height = 720;
+      const g = cv.getContext('2d'), logo = document.querySelector('.topo img');
+      const titulo = ($('nome').value || '').trim();
+      const pk = picos && picos.length ? picos : null;
+      const desenha = t => {
+        const gr = g.createLinearGradient(0, 0, 720, 720); gr.addColorStop(0, '#120a18'); gr.addColorStop(1, '#0a0a14');
+        g.fillStyle = gr; g.fillRect(0, 0, 720, 720);
+        if (logo && logo.complete) { const w = 300, h = w * logo.naturalHeight / logo.naturalWidth; g.drawImage(logo, 360 - w / 2, 70, w, h); }
+        g.textAlign = 'center'; g.fillStyle = '#fff'; g.font = 'bold 34px system-ui, sans-serif';
+        if (titulo) g.fillText(titulo.slice(0, 32), 360, 520);
+        g.fillStyle = '#d9b15c'; g.font = '600 20px system-ui, sans-serif'; g.fillText('PRÉVIA · IA MUSIC STUDIO', 360, 556);
+        // barras animadas
+        for (let i = 0; i < 32; i++) {
+          const v = 0.25 + 0.75 * Math.abs(Math.sin(t * 3 + i * 0.7) * Math.cos(t * 1.3 + i * 0.3));
+          const h = 8 + v * 46; g.fillStyle = i / 32 <= t / dur ? '#ff6a1a' : 'rgba(255,255,255,.25)';
+          g.fillRect(120 + i * 15, 620 - h / 2, 9, h);
+        }
+        g.fillStyle = 'rgba(255,255,255,.7)'; g.font = '18px system-ui, sans-serif';
+        g.fillText(fmt(t) + ' / ' + fmt(dur), 360, 690);
+      };
+      desenha(0);
+      const vStream = cv.captureStream(24);
+      const dest = c.createMediaStreamDestination();
+      const fonte = c.createBufferSource(); fonte.buffer = ab; fonte.connect(dest);
+      const stream = new MediaStream([...vStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+      const rec2 = new MediaRecorder(stream, { mimeType: tipo, videoBitsPerSecond: 700000, audioBitsPerSecond: 128000 });
+      const partes2 = [];
+      rec2.ondataavailable = e => { if (e.data && e.data.size) partes2.push(e.data); };
+      const fim2 = new Promise(r => { rec2.onstop = r; });
+      rec2.start(1000);
+      const t0 = c.currentTime + 0.1; fonte.start(t0);
+      let anima = 0;
+      const passo = () => {
+        const t = Math.max(0, c.currentTime - t0);
+        desenha(Math.min(t, dur));
+        prog.firstElementChild.style.width = Math.min(100, t / dur * 100) + '%';
+        $('vidInfo').textContent = '⏺ Criando o vídeo… ' + fmt(Math.min(t, dur)) + ' de ' + fmt(dur) + ' (leva o tempo do áudio, deixe a tela ligada)';
+        if (t < dur + 0.3) anima = requestAnimationFrame(passo); else rec2.stop();
+      };
+      anima = requestAnimationFrame(passo);
+      await fim2; cancelAnimationFrame(anima);
+      const ext = tipo.includes('mp4') ? 'mp4' : 'webm';
+      const blob = new Blob(partes2, { type: tipo.split(';')[0] });
+      vidFile = new File([blob], semAcento(nomeArquivo().replace(/\.mp3$/, '')) + '.' + ext, { type: blob.type });
+      if (vidUrl) URL.revokeObjectURL(vidUrl); vidUrl = URL.createObjectURL(blob);
+      $('vidInfo').textContent = '✓ Vídeo pronto (' + (blob.size / 1048576).toFixed(1) + ' MB' + (ext === 'webm' ? ' · formato WebM: se o WhatsApp não aceitar, atualize o Chrome' : '') + ').';
+      $('vidPronto').classList.remove('hide');
+    } catch (e) {
+      $('vidInfo').textContent = '⚠️ Não consegui criar o vídeo: ' + (e.message || e);
+    } finally { btn.disabled = false; prog.classList.add('hide'); }
+  });
+  $('btnShareVid').addEventListener('click', async () => {
+    if (!vidFile) return;
+    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [vidFile] }))) {
+      try { await navigator.share({ files: [vidFile] }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    $('btnBaixarVid').click();
+    $('vidInfo').textContent = 'O vídeo foi salvo no celular. Mande pelo WhatsApp escolhendo da Galeria.';
+  });
+  $('btnBaixarVid').addEventListener('click', () => {
+    if (!vidUrl) return;
+    const a = document.createElement('a'); a.href = vidUrl; a.download = vidFile.name; document.body.appendChild(a); a.click(); a.remove();
+  });
+
   // navegador da Xiaomi (e outros) bloqueia o envio direto → sugere o Chrome
   const ua = navigator.userAgent || '';
   const naoChrome = /MiuiBrowser|XiaoMi\/|SamsungBrowser|HeyTapBrowser|OPR\/|Firefox\/|FBAN|FBAV|Instagram/i.test(ua) || (/Android/i.test(ua) && !/Chrome\//i.test(ua));
