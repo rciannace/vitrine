@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-ouvir-v1 -->
+<!-- v20261103-ouvir-v2 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -80,7 +80,7 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
   const ref = id ? doc(db, 'previaLinks', id) : null;
   let dados = null;
   function acabou() {
-    const msg = 'Oi, Raffael! Ouvi a prévia' + (dados && dados.nome ? ' (' + dados.nome + ')' : '') + ' e quero a minha música completa! 🎵';
+    const msg = 'Oi, Raffael! Ouvi a prévia' + (dados && dados.nome ? ' da música "' + dados.nome + '"' : '') + ' e quero a minha música completa! 🎵';
     $('btnWa').href = 'https://wa.me/5511926029852?text=' + encodeURIComponent(msg);
     mostra('acabou');
   }
@@ -93,7 +93,6 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       dados = sn.data();
       if ((dados.plays || 0) >= (dados.max || 1)) return acabou();
       const resta = (dados.max || 1) - (dados.plays || 0);
-      if (dados.nome) $('titulo').textContent = 'Oi, ' + dados.nome + '! Sua música chegou 🎵';
       $('aviso').textContent = resta === 1 ? '⚠️ Esta prévia pode ser ouvida 1 vez só. Ouça com calma!' : '⚠️ Esta prévia pode ser ouvida mais ' + resta + ' vezes.';
       mostra('pronto');
     } catch (e) { mostra('erro'); }
