@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v19 -->
+<!-- v20261103-previa-v20 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -974,7 +974,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function msgLink(url) {
     const nome = ($('nome').value || '').trim(), v = vezes();
     return 'Oi! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url +
-      '\n\n⚠️ Ela pode ser ouvida ' + (v === 1 ? 'só 1 vez' : v + ' vezes') + ', então ouça com calma (de preferência com fone) e depois me conta o que achou! 💛';
+      '\n\n⚠️ Ela pode ser ouvida ' + (v === 1 ? 'só 1 vez' : v + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
   }
   $('btnLink').addEventListener('click', async () => {
     if (!mp3File) return;
