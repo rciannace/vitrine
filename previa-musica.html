@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v22 -->
+<!-- v20261103-previa-v23 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -90,6 +90,8 @@ textarea:focus{border-color:#ff6622}
 .lk .st{display:inline-block;margin-top:3px;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px}
 .st.nao{background:rgba(255,176,32,.14);color:#ffc35c}.st.sim{background:rgba(74,222,128,.14);color:#4ade80}.st.meio{background:rgba(96,165,250,.14);color:#93c5fd}
 .lk button.del{flex:0 0 auto!important;color:#f87171}
+.dois{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+.lk .cli{font-size:12.5px;color:#ffb38a;font-weight:700;margin-top:1px}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -173,8 +175,12 @@ textarea:focus{border-color:#ff6622}
       <label class="chip on" id="lbFadeOut" style="text-align:center"><input type="checkbox" id="fadeOut" checked hidden> Final suave</label>
     </div>
 
-    <label class="lb">Nome da música</label>
-    <input type="text" id="nome" placeholder="Ex: Saudade do Lençol" maxlength="60">
+    <div class="dois">
+      <div><label class="lb">Nome da música</label>
+      <input type="text" id="nome" placeholder="Ex: Minha Primeira Luz" maxlength="60"></div>
+      <div><label class="lb">Nome do cliente</label>
+      <input type="text" id="cliente" placeholder="Ex: Simone" maxlength="40"></div>
+    </div>
 
     <div class="sw">
       <div class="t"><b>🔊 Marca sonora de prévia</b><small id="swTxt">A cada 20 segundos toca a marca (sua voz ou um sino), mostrando que é uma amostra. Use <b>Sim</b> para clientes e <b>Não</b> para as suas músicas.</small></div>
@@ -854,14 +860,20 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   // posições da marca (segundos, relativos ao trecho)
   window.__marcaPos = n => { const out = []; for (let t = 20; t < n - 3; t += 20) out.push(t); return out; };
 
+  const cliente = () => ($('cliente').value || '').trim();
+  const saud = c => c ? 'Olá, ' + c + '! 🎵' : 'Olá! 🎵';
+  function textoLink(url, vez, c) {
+    return saud(c) + '\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n\n' + url +
+      '\n\n⚠️ Ela pode ser ouvida ' + (vez === 1 ? 'só 1 vez' : vez + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
+  }
   function msgPadrao() {
-    const nome = ($('nome').value || '').trim();
-    return 'Oi! 🎵\n\nAqui está a prévia da sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
+    return saud(cliente()) + '\n\nAqui está a prévia da sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
       'Se quiser, faço até 2 ajustes de ritmo ou velocidade. Assim que você aprovar, te envio a música completa. 💛\n\nIA Music Studio';
   }
   let msgEditada = false;
   $('msgTxt').addEventListener('input', () => { msgEditada = true; });
   $('nome').addEventListener('input', () => { if (!msgEditada) $('msgTxt').value = msgPadrao(); });
+  $('cliente').addEventListener('input', () => { if (!msgEditada) $('msgTxt').value = msgPadrao(); });
   async function copiarMsg(silencioso) {
     const t = $('msgTxt').value;
     try { await navigator.clipboard.writeText(t); if (!silencioso) { $('btnCopiar').textContent = '✓ Copiada! Cole no WhatsApp'; setTimeout(() => $('btnCopiar').textContent = '📋 Copiar mensagem', 2500); } return true; }
@@ -990,11 +1002,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function idNovo() { const a = 'abcdefghijkmnpqrstuvwxyz23456789'; let x = ''; const r = crypto.getRandomValues(new Uint8Array(10)); r.forEach(n => x += a[n % a.length]); return x; }
   function meusLinks() { try { return JSON.parse(localStorage.getItem('previa_links') || '[]'); } catch (e) { return []; } }
   function salvarMeus(l) { try { localStorage.setItem('previa_links', JSON.stringify(l.slice(0, 40))); } catch (e) {} }
-  function msgLink(url) {
-    const nome = ($('nome').value || '').trim(), v = vezes();
-    return 'Oi! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url +
-      '\n\n⚠️ Ela pode ser ouvida ' + (v === 1 ? 'só 1 vez' : v + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
-  }
+  function msgLink(url) { return textoLink(url, vezes(), cliente()); }
   $('btnLink').addEventListener('click', async () => {
     if (!mp3File) return;
     const btn = $('btnLink'); btn.disabled = true; $('linkPronto').classList.add('hide');
@@ -1014,8 +1022,8 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       let up;
       try { up = await enviar(true); }
       catch (e1) { if (/sem internet/.test(e1.message)) throw e1; up = await enviar(false); }   // se a pasta não for aceita, envia sem pasta
-      const id = idNovo(), nome = ($('nome').value || '').trim();
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
+      const id = idNovo(), nome = ($('nome').value || '').trim(), cli = cliente();
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, cliente: cli, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
       prog.firstElementChild.style.width = '100%';
       linkUrl = LINK_BASE + id;
       $('linkTxt').value = linkUrl;
@@ -1046,7 +1054,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     if (chave === ultimoReg) return; ultimoReg = chave;        // não repete se tocar duas vezes no mesmo envio
     try {
       if (!(await fbPronto(3000))) return;
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', 'e' + idNovo()), { tipo, nome: ($('nome').value || '').trim(), criado: Date.now(), plays: 0, max: 0, ...(window.__ger || {}) });
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', 'e' + idNovo()), { tipo, nome: ($('nome').value || '').trim(), cliente: cliente(), criado: Date.now(), plays: 0, max: 0, ...(window.__ger || {}) });
       carregarHist().catch(() => {});
     } catch (e) {}
   }
@@ -1086,7 +1094,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     box.innerHTML = l.slice(0, 60).map(d => {
       const st = stLink(d), dt = new Date(d.criado || 0);
       const link = ehLink(d);
-      return '<div class="lk"><div class="n"><b>' + (d.nome || 'Sem nome').replace(/</g, '&lt;') + '</b><small>' + dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '</small>' +
+      return '<div class="lk"><div class="n"><b>' + (d.nome || 'Sem nome').replace(/</g, '&lt;') + '</b>' + (d.cliente ? '<div class="cli">👤 ' + d.cliente.replace(/</g, '&lt;') + '</div>' : '') + '<small>' + dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '</small>' +
         '<div class="tp">' + descTipo(d) + '</div>' + (link ? '<span class="st ' + st.c + '">' + st.t + '</span>' : '') + '</div>' +
         '<div class="acoes">' + (link ? '<button data-id="' + d.id + '" data-a="mais">+1 escuta</button><button data-id="' + d.id + '" data-a="enviar">📤 Enviar</button><button data-id="' + d.id + '" data-a="copiar">📋 Copiar</button>' : '<span class="dica" style="flex:1;align-self:center">Arquivo enviado direto no WhatsApp</span>') +
         '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div></div>';
@@ -1101,7 +1109,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     if (b.dataset.a === 'copiar') { try { await navigator.clipboard.writeText(url); b.textContent = '✓ Copiado'; } catch (er) {} return; }
     if (b.dataset.a === 'enviar') {
       const resta = d ? Math.max(1, d.max - d.plays) : 1;
-      const t = 'Oi! 🎵\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n' + url + '\n\n⚠️ Ela pode ser ouvida ' + (resta === 1 ? 'só 1 vez' : resta + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
+      const t = textoLink(url, resta, d ? d.cliente : '');
       if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (er) { if (er && er.name === 'AbortError') return; } }
       window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); return;
     }
