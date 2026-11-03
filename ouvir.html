@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-ouvir-v3 -->
+<!-- v20261103-ouvir-v4 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -92,7 +92,7 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
     if (!ref) return mostra('erro');
     try {
       const sn = await getDoc(ref);
-      if (!sn.exists()) return mostra('erro');
+      if (!sn.exists() || !sn.data().url) return mostra('erro');
       dados = sn.data();
       if ((dados.plays || 0) >= (dados.max || 1)) return acabou();
       const resta = (dados.max || 1) - (dados.plays || 0);
