@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-ouvir-v2 -->
+<!-- v20261103-ouvir-v3 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -29,6 +29,8 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
 .prog b{display:block;height:100%;width:0;background:var(--grad)}
 .aviso{margin-top:20px;font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.5}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;border:none;font-size:16px;font-weight:800;color:#fff;text-decoration:none;margin-top:18px;background:#25d366}
+.aviso-grande{margin:4px 0 18px;padding:14px 16px;border-radius:14px;background:rgba(255,176,32,.1);border:1.5px solid rgba(255,176,32,.55);color:#ffd27a;font-size:16.5px;font-weight:700;line-height:1.45}
+.aviso-grande small{display:block;margin-top:4px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.75)}
 .fim{font-size:44px;margin-bottom:6px}
 .hide{display:none}
 </style>
@@ -42,12 +44,13 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
 
   <div id="pronto" class="hide">
     <h1 id="titulo">A sua música chegou 🎵</h1>
+    <div class="aviso-grande" id="aviso"></div>
     <p class="sub" id="subt">Coloque o fone, se puder, e toque para ouvir.</p>
     <button class="play" id="play" aria-label="Ouvir">▶</button>
     <div class="barras" id="barras"></div>
     <div class="tempo" id="tempo">&nbsp;</div>
     <div class="prog"><b id="pb"></b></div>
-    <div class="aviso" id="aviso"></div>
+    <div class="aviso" id="erroTocar"></div>
   </div>
 
   <div id="acabou" class="hide">
@@ -93,7 +96,8 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       dados = sn.data();
       if ((dados.plays || 0) >= (dados.max || 1)) return acabou();
       const resta = (dados.max || 1) - (dados.plays || 0);
-      $('aviso').textContent = resta === 1 ? '⚠️ Esta prévia pode ser ouvida 1 vez só. Ouça com calma!' : '⚠️ Esta prévia pode ser ouvida mais ' + resta + ' vezes.';
+      $('aviso').innerHTML = (resta === 1 ? '⚠️ Esta prévia só pode ser ouvida 1 vez. Ouça com atenção!' : '⚠️ Esta prévia pode ser ouvida mais ' + resta + ' vezes. Ouça com atenção!') +
+        '<small>Depois de começar, não dá para pausar nem voltar.</small>';
       mostra('pronto');
     } catch (e) { mostra('erro'); }
   })();
@@ -126,7 +130,7 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       src.onended = () => { src = null; dados = d; setTimeout(acabou, 600); };
     } catch (e) {
       b.disabled = false; b.textContent = '▶';
-      $('aviso').textContent = '⚠️ Não consegui tocar agora. Confira a internet e tente de novo.';
+      $('erroTocar').textContent = '⚠️ Não consegui tocar agora. Confira a internet e tente de novo.';
     }
   });
 </script>
