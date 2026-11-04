@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261029-musica-v40 -->
+<!-- v20261104-musica-v41 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1162,7 +1162,7 @@ textarea.qm-field{min-height:110px;resize:vertical}
   .qm-ajustes-lista{gap:8px}
   .qm-ajustes-item{align-items:center;gap:10px}
   .qm-ajustes-item strong{font-size:13px;margin:0}
-  body:not(.admin-mode) .qm-ajustes-item strong + div{display:none}
+  .qm-ajustes-item{align-items:flex-start!important}.qm-ajustes-item strong + div{font-size:12.5px;line-height:1.45}
   .qm-ajustes-n{width:22px;height:22px;font-size:11px}
   /* sem repetição */
   body:not(.admin-mode) .qm-garantia{display:none}
@@ -1461,10 +1461,10 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 
     <!-- v21: política de ajustes (vale para todos os pacotes) -->
     <div class="qm-ajustes qm-reveal">
-      <div class="qm-ajustes-titulo" data-edit="ajustes_titulo">✅ INCLUSO EM TODOS OS PACOTES</div>
+      <div class="qm-ajustes-titulo" data-edit="ajustes_titulo2">✅ COMO FUNCIONAM OS AJUSTES</div>
       <div class="qm-ajustes-lista">
-        <div class="qm-ajustes-item"><span class="qm-ajustes-n">1</span><div><strong data-edit="ajustes_t1">Você aprova a letra primeiro</strong><div data-edit="ajustes_d1b">Envio a letra pelo WhatsApp antes de produzir. Troco nomes, palavras ou trechos quantas vezes precisar, até ficar do seu jeito.</div></div></div>
-        <div class="qm-ajustes-item"><span class="qm-ajustes-n">2</span><div><strong data-edit="ajustes_t2b">Até 2 ajustes no áudio</strong><div data-edit="ajustes_d2b">Ouviu a prévia e quer mais rápida, mais lenta ou com outro ritmo? Faço até 2 ajustes de ritmo ou velocidade por música.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">1</span><div><strong data-edit="ajustes_t1">Você aprova a letra primeiro</strong><div data-edit="ajustes_d1c">Envio a letra pelo WhatsApp antes de produzir. No <b>Essencial</b> são até 2 rodadas de ajustes (mande todas as mudanças de uma vez). No <b>Sob Medida</b>, ajusto quantas vezes precisar.</div></div></div>
+        <div class="qm-ajustes-item"><span class="qm-ajustes-n">2</span><div><strong data-edit="ajustes_t2c">Ajustes no áudio</strong><div data-edit="ajustes_d2c">Ouviu a prévia e quer mais rápida, mais lenta ou com outro ritmo? São até 2 ajustes no <b>Essencial</b> e até 3 no <b>Sob Medida</b>.</div></div></div>
         <div class="qm-ajustes-item"><span class="qm-ajustes-n">3</span><div><strong data-edit="ajustes_t3">Só paga depois de ouvir</strong><div data-edit="ajustes_d3">O pagamento é feito via Pix depois que você ouve a prévia e aprova a sua música.</div></div></div>
       </div>
     </div>
@@ -1519,7 +1519,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <details class="qm-faq-item"><summary><span data-edit="faq_q1">Como eu recebo a minha música?</span></summary><div class="qm-faq-a" data-edit="faq_a1">Pelo WhatsApp, em arquivo de áudio (MP3), pronto para ouvir, compartilhar e guardar para sempre.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q7">O que é a prévia?</span></summary><div class="qm-faq-a" data-edit="faq_a7">É um <strong>trecho da sua música já pronta</strong>, que eu envio pelo WhatsApp para você ouvir a voz, o ritmo e sentir a emoção antes de pagar.<br><br>A prévia não é a música inteira, de propósito: ela serve para você ter certeza de que gostou. Assim que o pagamento é confirmado, você recebe a <strong>música completa</strong>.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q2">A música é feita só para mim?</span></summary><div class="qm-faq-a" data-edit="faq_a2">Sim! Cada letra é criada do zero a partir da história que você conta: nomes, datas, lembranças e detalhes. Nenhuma música é repetida.</div></details>
-      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3d">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma. Se quiser trocar um nome, uma palavra ou um trecho, é nesse momento que eu ajusto, <strong>quantas vezes precisar</strong>, até ficar do seu jeito.<br><br>Depois, ao ouvir a prévia, se quiser a música com outro ritmo, mais rápida ou mais lenta, eu faço <strong>até 2 ajustes no áudio</strong> por música.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3e">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma.<br><br><strong>Essencial (R$ 29,90):</strong> até <strong>2 rodadas de ajustes na letra</strong>. Em cada rodada, você me manda todas as mudanças de uma vez (nomes, palavras, trechos) e eu devolvo a letra corrigida. Depois da prévia, até <strong>2 ajustes no áudio</strong> (ritmo ou velocidade).<br><br><strong>Sob Medida (R$ 59,90):</strong> ajusto a letra <strong>quantas vezes precisar</strong>, até ficar perfeita, e faço até <strong>3 ajustes no áudio</strong>.<br><br>Se no Essencial você quiser mais mudanças, dá para passar para o Sob Medida a qualquer momento, pagando só a diferença.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q4">A voz é de uma pessoa de verdade?</span></summary><div class="qm-faq-a" data-edit="faq_a4">A voz e os instrumentos são criados com Inteligência Artificial, com qualidade de estúdio. É isso que permite fazer uma música inteira, exclusiva, em tão pouco tempo.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q5">Posso usar a música em vídeos e nas redes sociais?</span></summary><div class="qm-faq-a" data-edit="faq_a5">Pode, sim: em vídeos de festa, homenagens, surpresas e nas suas redes sociais.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6">Tudo pelo WhatsApp, via Pix, depois que você ouve a prévia e aprova a sua música.</div></details>
