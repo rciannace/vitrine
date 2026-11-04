@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-ouvir-v4 -->
+<!-- v20261104-ouvir-v5 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -31,6 +31,12 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;border:none;font-size:16px;font-weight:800;color:#fff;text-decoration:none;margin-top:18px;background:#25d366}
 .aviso-grande{margin:4px 0 18px;padding:14px 16px;border-radius:14px;background:rgba(255,176,32,.1);border:1.5px solid rgba(255,176,32,.55);color:#ffd27a;font-size:16.5px;font-weight:700;line-height:1.45}
 .aviso-grande small{display:block;margin-top:4px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.75)}
+.pix{margin:4px 0 6px;padding:18px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1.5px solid rgba(74,222,128,.45)}
+.pix-v{font-size:30px;font-weight:900;color:#4ade80;margin-bottom:8px}
+.pix-l{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.pix-k{font-size:17px;font-weight:700;word-break:break-all;margin:4px 0 2px;-webkit-user-select:all;user-select:all}
+.pix-t{font-size:13px;color:rgba(255,255,255,.65)}
+.btn-pix{width:100%;margin-top:12px;padding:13px;border-radius:12px;border:none;background:#22c55e;color:#06210f;font-weight:900;font-size:15px;cursor:pointer}
 .fim{font-size:44px;margin-bottom:6px}
 .hide{display:none}
 </style>
@@ -56,8 +62,15 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
   <div id="acabou" class="hide">
     <div class="fim">💛</div>
     <h1 id="fimTit">Esta prévia já foi ouvida</h1>
-    <p class="sub">Gostou? Fale com o Raffael para receber a sua música completa, em alta qualidade.</p>
-    <a class="btn" id="btnWa" href="https://wa.me/5511926029852" target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+    <p class="sub" id="fimSub">Gostou? Faça o Pix e receba a sua música completa, em alta qualidade e sem marcação.</p>
+    <div class="pix hide" id="pixBox">
+      <div class="pix-v" id="pixValor"></div>
+      <div class="pix-l">Chave Pix</div>
+      <div class="pix-k" id="pixChave"></div>
+      <div class="pix-t" id="pixTit"></div>
+      <button class="btn-pix" id="btnPix">📋 Copiar chave Pix</button>
+    </div>
+    <a class="btn" id="btnWa" href="https://wa.me/5511926029852" target="_blank" rel="noopener">💬 Mandar o comprovante no WhatsApp</a>
   </div>
 
   <div id="erro" class="hide"><h1>Link inválido</h1><p class="sub">Este link não existe ou foi digitado errado. Fale com o Raffael pelo WhatsApp.</p>
@@ -82,11 +95,37 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
   const id = (new URLSearchParams(location.search).get('id') || '').replace(/[^a-z0-9]/gi, '');
   const ref = id ? doc(db, 'previaLinks', id) : null;
   let dados = null;
-  function acabou() {
-    const msg = 'Oi, Raffael! Ouvi a prévia' + (dados && dados.nome ? ' da música "' + dados.nome + '"' : '') + ' e quero a minha música completa! 🎵';
+  function acabou(expirado) {
+    const d = dados || {};
+    let msg;
+    if (expirado) {
+      $('fimTit').textContent = 'Este link expirou ⌛';
+      $('fimSub').textContent = 'O prazo para ouvir esta prévia terminou. Fale com o Raffael para receber um novo acesso.';
+      $('btnWa').textContent = '💬 Falar no WhatsApp';
+      msg = 'Oi, Raffael! O link da prévia' + (d.nome ? ' da música "' + d.nome + '"' : '') + ' expirou. Pode liberar de novo?';
+    } else if (d.pago) {
+      $('fimTit').textContent = 'Pagamento confirmado 💛';
+      $('fimSub').textContent = 'Obrigado! A sua música completa vai chegar pelo WhatsApp.';
+      $('btnWa').textContent = '💬 Falar no WhatsApp';
+      msg = 'Oi, Raffael!';
+    } else {
+      msg = 'Oi, Raffael! Ouvi a prévia' + (d.nome ? ' da música "' + d.nome + '"' : '') + ' e quero a minha música completa! 🎵' + (d.pix ? ' Segue o comprovante do Pix 👇' : '');
+      if (d.pix) {
+        $('pixBox').classList.remove('hide');
+        $('pixValor').textContent = d.valor ? 'R$ ' + d.valor : '';
+        $('pixChave').textContent = d.pix;
+        $('pixTit').textContent = d.titular ? 'Em nome de ' + d.titular : '';
+      } else { $('btnWa').textContent = '💬 Falar no WhatsApp'; $('fimSub').textContent = 'Gostou? Fale com o Raffael para receber a sua música completa, em alta qualidade.'; }
+    }
     $('btnWa').href = 'https://wa.me/5511926029852?text=' + encodeURIComponent(msg);
     mostra('acabou');
   }
+  $('btnPix').addEventListener('click', async () => {
+    const k = (dados && dados.pix) || '';
+    try { await navigator.clipboard.writeText(k); } catch (e) { const t = document.createElement('textarea'); t.value = k; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (x) {} t.remove(); }
+    $('btnPix').textContent = '✓ Chave copiada! Cole no app do banco';
+    setTimeout(() => $('btnPix').textContent = '📋 Copiar chave Pix', 3000);
+  });
   for (let i = 0; i < 28; i++) $('barras').appendChild(document.createElement('i'));
   (async () => {
     if (!ref) return mostra('erro');
@@ -95,6 +134,7 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       if (!sn.exists() || !sn.data().url) return mostra('erro');
       dados = sn.data();
       if ((dados.plays || 0) >= (dados.max || 1)) return acabou();
+      if (dados.expiraEm && Date.now() > dados.expiraEm) return acabou(true);
       const resta = (dados.max || 1) - (dados.plays || 0);
       $('aviso').innerHTML = (resta === 1 ? '⚠️ Esta prévia só pode ser ouvida 1 vez. Ouça com atenção!' : '⚠️ Esta prévia pode ser ouvida mais ' + resta + ' vezes. Ouça com atenção!') +
         '<small>Depois de começar, não dá para pausar nem voltar.</small>';
@@ -108,7 +148,8 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
     try {
       // confere de novo e já conta a escuta
       const sn = await getDoc(ref); const d = sn.exists() ? sn.data() : null;
-      if (!d || (d.plays || 0) >= (d.max || 1)) return acabou();
+      if (!d || (d.plays || 0) >= (d.max || 1)) { dados = d || dados; return acabou(); }
+      if (d.expiraEm && Date.now() > d.expiraEm) { dados = d; return acabou(true); }
       const C = window.AudioContext || window.webkitAudioContext; ctx = new C(); if (ctx.state === 'suspended') await ctx.resume();
       const buf = await (await fetch(d.url)).arrayBuffer();
       const ab = await new Promise((ok, falha) => { const p = ctx.decodeAudioData(buf, ok, falha); if (p && p.then) p.then(ok, falha); });
