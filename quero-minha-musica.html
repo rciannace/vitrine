@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261104-musica-v41 -->
+<!-- v20261104-musica-v43 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1168,6 +1168,14 @@ textarea.qm-field{min-height:110px;resize:vertical}
   body:not(.admin-mode) .qm-garantia{display:none}
 }
 .qm-pw-s{display:none}
+.qm-pac-info{margin:-4px 0 4px;padding:14px 16px;border-radius:14px;background:rgba(232,68,0,.10);border:1.5px solid rgba(232,68,0,.45)}
+.qm-pac-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:#fff}
+.qm-pac-top b{font-family:inherit;color:#ff8a4c;font-weight:400}
+.qm-pac-info ul{margin:8px 0 0;padding:0;list-style:none}
+.qm-pac-info li{font-size:13px;line-height:1.45;color:rgba(255,255,255,.85);padding-left:20px;position:relative;margin-top:3px}
+.qm-pac-info li::before{content:'✓';position:absolute;left:0;color:#4ade80;font-weight:700}
+.qm-pac-troca{margin-top:8px;font-size:12px;color:#ff8a4c;text-decoration:underline;cursor:pointer;display:inline-block}
+@media(max-width:600px){.musica-precos:has(> .musica-preco-card:nth-child(4)){grid-template-columns:repeat(2,1fr)!important}}
 /* v31: logo no topo + foto cantando no "Quem faz" */
 .qm-logo-topo{display:block;width:min(190px,50vw);height:auto;margin:-6px auto 10px;pointer-events:none;filter:drop-shadow(0 8px 28px rgba(232,180,80,.28))}
 .qm-quem{align-items:stretch!important}
@@ -1542,6 +1550,7 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
 
     <div class="musica-pedido-eyebrow" data-edit="pedido_selo">🎵 IA MUSIC STUDIO</div>
     <h2 class="musica-pedido-title" id="musicaPedidoTitulo">SUA MÚSICA<br><span>PERSONALIZADA</span></h2>
+    <div class="qm-pac-info" id="qmPacInfo" style="display:none"></div>
 
     <!-- Nome -->
     <div>
@@ -1779,6 +1788,7 @@ window.addEventListener('firebase-ready', async () => {
       const data = snap.data();
       if (data.musicaDemos) window._musicaDemosFromFb = data.musicaDemos;
       if (data.musicaPacotes) window._musicaPacotesFromFb = data.musicaPacotes;
+      window._musicaPacotesV = data.musicaPacotesV || 0;
       if (data.musicaPedidos) window._musicaPedidosFromFb = data.musicaPedidos;
       if ('musicaInstagram' in data) { musicaInstagram = data.musicaInstagram || ''; localStorage.setItem('iafoto_music_ig', musicaInstagram); setTimeout(qmQuemRender, 0); }
       if ('musicaVideo' in data) { musicaVideo = data.musicaVideo || null; localStorage.setItem('iafoto_music_video', JSON.stringify(musicaVideo)); setTimeout(qmRenderVideo, 0); }
@@ -1794,6 +1804,7 @@ window.addEventListener('firebase-ready', async () => {
   }
   if (window._musicaPacotesFromFb) {
     musicaPacotes = window._musicaPacotesFromFb;
+    if ((window._musicaPacotesV || 0) < 2) qmMigrarPacotesV2();
     localStorage.setItem(MUSICA_PACOTES_KEY, JSON.stringify(musicaPacotes));
     renderMusicaPacotes();
   }
@@ -2012,6 +2023,37 @@ const PACOTES_DEFAULT = [
 ];
 
 let musicaPacotes = [];
+
+// v43: resumo do pacote escolhido no topo do formulário
+function qmMostrarPacote(pacote) {
+  const box = document.getElementById('qmPacInfo'); if (!box) return;
+  const nome = String(pacote || '').split(' - R$')[0].trim().toLowerCase();
+  const p = (musicaPacotes || []).find(x => String(x.nome || '').trim().toLowerCase() === nome);
+  if (!p) { box.style.display = 'none'; return; }
+  const itens = String(p.desc || '').split(/<br\s*\/?>|·/i).map(t => t.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
+  box.innerHTML = '<div class="qm-pac-top"><span>' + (p.icon || '🎵') + ' ' + qmEsc(p.nome) + '</span><b>R$ ' + qmEsc(p.preco) + '</b></div>' +
+    (itens.length ? '<ul>' + itens.map(t => '<li>' + qmEsc(t) + '</li>').join('') + '</ul>' : '') +
+    '<div class="qm-pac-troca" onclick="fecharMusicaPedido();setTimeout(()=>{const g=document.getElementById(\'musicaPrecosGrid\');if(g)g.scrollIntoView({behavior:\'smooth\',block:\'center\'})},150)">Trocar de pacote</div>';
+  box.style.display = '';
+}
+// v42: pacotes Essencial (R$ 29,90) e Sob Medida (R$ 59,90) — feito uma vez só; depois tudo continua editável no admin
+const QM_ESSENCIAL = { id:'essencial', icon:'🎵', nome:'ESSENCIAL', preco:'29,90', desc:'1 música única com vocal e letra<br>até 2 rodadas de ajustes na letra<br>até 2 ajustes no áudio', destaque: false };
+const QM_SOBMEDIDA = { id:'sobmedida', icon:'✨', nome:'SOB MEDIDA', preco:'59,90', desc:'1 música única com vocal e letra<br>ajustes na letra sem limite<br>até 3 ajustes no áudio · prioridade', destaque: true };
+async function qmMigrarPacotesV2() {
+  let lista = Array.isArray(musicaPacotes) ? musicaPacotes.slice() : [];
+  const iSolo = lista.findIndex(p => p.id === 'solo' || /solo|essencial/i.test(p.nome || ''));
+  if (iSolo >= 0) lista[iSolo] = { ...lista[iSolo], ...QM_ESSENCIAL, id: lista[iSolo].id || 'essencial' };
+  else lista.unshift({ ...QM_ESSENCIAL });
+  const pos = (iSolo >= 0 ? iSolo : 0) + 1;
+  if (!lista.some(p => p.id === 'sobmedida' || /sob medida/i.test(p.nome || ''))) lista.splice(pos, 0, { ...QM_SOBMEDIDA });
+  // só um "mais pedido": o Sob Medida
+  lista = lista.map(p => ({ ...p, destaque: p.id === 'sobmedida' }));
+  musicaPacotes = lista;
+  try {
+    if (await waitForFirebase()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPacotes: lista, musicaPacotesV: 2, updatedAt: Date.now() }, { merge: true });
+    window._musicaPacotesV = 2;
+  } catch (e) { console.warn('pacotes v2:', e); }
+}
 
 function loadMusicaPacotes() {
   try {
@@ -3139,6 +3181,7 @@ const _qmAbrirPedidoOrig = abrirMusicaPedido;
 abrirMusicaPedido = function (pacote) {
   _qmAbrirPedidoOrig(pacote);
   qmConta('f');
+  try { qmMostrarPacote(pacote); } catch (e) {}
   if (window.qmOcasiaoEscolhida) document.querySelectorAll('#musicaBlocos [id^="musicaOcasiao"]').forEach(el => { if (!el.value) el.value = window.qmOcasiaoEscolhida; });
   const g = window.qmEstiloEscolhido;
   if (!g) return;
