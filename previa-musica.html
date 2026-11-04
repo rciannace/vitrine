@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261103-previa-v23 -->
+<!-- v20261104-previa-v24 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -92,6 +92,14 @@ textarea:focus{border-color:#ff6622}
 .lk button.del{flex:0 0 auto!important;color:#f87171}
 .dois{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
 .lk .cli{font-size:12.5px;color:#ffb38a;font-weight:700;margin-top:1px}
+.abas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 0 4px}
+.abas button{padding:11px 4px;border-radius:12px;border:1.5px solid #4b4b57;background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-weight:800;font-size:14px;cursor:pointer}
+.abas button.on{background:var(--grad);border-color:transparent;color:#fff}
+#validade{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}#validade .chip{min-width:0;padding:11px 2px;font-size:13px}
+.pane{display:none}.pane.on{display:block}
+#histFiltro{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}#histFiltro .chip{min-width:0;padding:9px 4px;font-size:12.5px}
+.st.pago{background:rgba(250,204,21,.14);color:#facc15}.st.receber{background:rgba(248,113,113,.14);color:#fca5a5}.st.exp{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.lk .acoes2{display:flex;gap:6px;width:100%;margin-top:6px}.lk .acoes2 button{flex:1}
 .btn.copy{background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14px;padding:12px}
 
 </style>
@@ -115,12 +123,25 @@ textarea:focus{border-color:#ff6622}
   </div>
   <p class="sub">Transforme a gravação de tela da música em um <b>áudio curto</b>, com final suave, pronto para mandar no WhatsApp.</p>
 
+  <!-- Pix e valor -->
+  <div class="card" id="cardCfg">
+    <button class="hist-head" id="btnCfg"><span>⚙️ Pix e valor <b id="cfgOk"></b></span><span id="cfgSeta">▼</span></button>
+    <div class="hide" id="cfgBox">
+      <p class="dica" style="margin:8px 0 0">Aparece para o cliente <b>no fim da prévia</b> e nas mensagens de cobrança.</p>
+      <label class="lb">Chave Pix</label><input type="text" id="cfgPix" placeholder="Ex: seu CPF, e-mail ou celular" maxlength="80">
+      <label class="lb">Nome que aparece no Pix (titular)</label><input type="text" id="cfgTit" placeholder="Ex: Rafael I." maxlength="60">
+      <label class="lb">Valor padrão (R$)</label><input type="text" id="cfgValor" placeholder="Ex: 29,90" inputmode="decimal" maxlength="12">
+      <button class="btn main" id="btnCfgSalvar">💾 Salvar</button>
+      <div class="info" id="cfgInfo"></div>
+    </div>
+  </div>
+
   <!-- histórico de prévias enviadas -->
   <div class="card" id="cardHist">
     <button class="hist-head" id="btnHist"><span>📂 Histórico de prévias enviadas <b id="histN"></b></span><span id="histSeta">▼</span></button>
     <div class="hide" id="histBox">
       <div class="row" id="histFiltro" style="margin-top:10px">
-        <button class="chip on" data-f="todos">Todas</button><button class="chip" data-f="nao">Não ouviram</button><button class="chip" data-f="sim">Já ouviram</button>
+        <button class="chip on" data-f="todos">Todas</button><button class="chip" data-f="nao">Não ouviram</button><button class="chip" data-f="sim">Já ouviram</button><button class="chip" data-f="receber">A receber</button><button class="chip" data-f="pagos">Pagos</button>
       </div>
       <div id="meusLinks" style="margin-top:8px"></div>
     </div>
@@ -206,13 +227,8 @@ textarea:focus{border-color:#ff6622}
     <div class="passo">3 · Confira e envie</div>
     <audio id="player" controls></audio>
     <div class="resumo" id="mkInfo" style="display:none"></div>
-    <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
-    <div class="info" id="shareMsg"></div>
-    <div class="hide" id="semShare" style="margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)">
-      <p class="dica" style="margin:0">Este navegador não deixou enviar direto, então o áudio foi <b>salvo no celular</b>. Para enviar direto da próxima vez, use o Google Chrome:</p>
-      <a class="btn ghost" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none;margin-top:10px">Abrir esta ferramenta no Chrome</a>
-    </div>
-    <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
+    <div class="abas" id="abas"><button data-t="link">🔗 Link</button><button data-t="audio">🎵 Áudio</button><button data-t="video">🎬 Vídeo</button></div>
+    <div class="pane" data-p="link">
     <div class="vu" id="boxLink">
       <div class="vu-tit">🔗 Link de escuta única</div>
       <p class="dica" style="margin:4px 0 10px">O cliente recebe um <b>link</b>, ouve a prévia na página do IA Music Studio <b>sem poder baixar</b>, e depois o link expira.</p>
@@ -220,6 +236,12 @@ textarea:focus{border-color:#ff6622}
       <div class="row" id="vezes" style="margin-top:0">
         <button class="chip on" data-v="1">1 vez</button><button class="chip" data-v="2">2 vezes</button><button class="chip" data-v="3">3 vezes</button>
       </div>
+      <label class="lb">Validade do link</label>
+      <div class="row" id="validade" style="margin-top:0">
+        <button class="chip" data-h="0">Sem prazo</button><button class="chip" data-h="24">24 h</button><button class="chip on" data-h="48">48 h</button><button class="chip" data-h="168">7 dias</button>
+      </div>
+      <label class="lb">Valor desta música (aparece para o cliente junto com o Pix)</label>
+      <input type="text" id="valorLink" placeholder="Ex: 29,90" inputmode="decimal" maxlength="12">
       <button class="btn main" id="btnLink">🔗 Criar link de escuta única</button>
       <div class="prog hide" id="progLink"><i></i></div>
       <div class="info" id="linkInfo"></div>
@@ -230,6 +252,23 @@ textarea:focus{border-color:#ff6622}
       </div>
       <p class="dica" style="margin-top:10px">Todos os links ficam no <b>📂 Histórico</b>, no topo da página.</p>
     </div>
+    </div>
+    <div class="pane" data-p="audio">
+    <button class="btn wa" id="btnShare"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4z"/></svg> Enviar no WhatsApp</button>
+    <div class="info" id="shareMsg"></div>
+    <div class="hide" id="semShare" style="margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)">
+      <p class="dica" style="margin:0">Este navegador não deixou enviar direto, então o áudio foi <b>salvo no celular</b>. Para enviar direto da próxima vez, use o Google Chrome:</p>
+      <a class="btn ghost" href="intent://rciannace.github.io/vitrine/previa-musica.html#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.android.chrome;end" style="text-decoration:none;margin-top:10px">Abrir esta ferramenta no Chrome</a>
+    </div>
+    <button class="btn ghost" id="btnBaixar">⬇ Salvar o áudio no celular</button>
+    <div id="msgBox">
+      <label class="lb">💬 Mensagem para o cliente (já vai copiada ao tocar em Enviar)</label>
+      <textarea id="msgTxt"></textarea>
+      <button class="btn copy" id="btnCopiar">📋 Copiar mensagem</button>
+    </div>
+    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, o celular mostra a lista de apps: escolha <b>WhatsApp</b> ou <b>WhatsApp Business</b>, depois o cliente, e toque em enviar.</p>
+    </div>
+    <div class="pane" data-p="video">
     <div class="vu">
       <div class="vu-tit">👁️ Visualização única</div>
       <p class="dica" style="margin:4px 0 10px">O WhatsApp só deixa mandar <b>vídeo</b> (não áudio) com visualização única. Aqui o áudio vira um vídeo com o logo, para o cliente ouvir <b>uma vez só</b>.</p>
@@ -242,12 +281,7 @@ textarea:focus{border-color:#ff6622}
         <p class="dica" style="margin-top:10px">Na tela de envio do WhatsApp, antes de mandar, toque no <b>círculo com o número 1</b> ao lado da legenda. Ele fica verde: é a visualização única.</p>
       </div>
     </div>
-    <div id="msgBox">
-      <label class="lb">💬 Mensagem para o cliente (já vai copiada ao tocar em Enviar)</label>
-      <textarea id="msgTxt"></textarea>
-      <button class="btn copy" id="btnCopiar">📋 Copiar mensagem</button>
     </div>
-    <p class="dica" style="margin-top:12px">Ao tocar em <b>Enviar no WhatsApp</b>, o celular mostra a lista de apps: escolha <b>WhatsApp</b> ou <b>WhatsApp Business</b>, depois o cliente, e toque em enviar.</p>
   </div>
 
 </div>
@@ -613,6 +647,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       info('✓ Gravação com ' + fmt(t) + ' de som. O silêncio do começo foi pulado.');
       $('cardAjuste').classList.remove('hide');
       desenhar();
+      setTimeout(() => window.__aplicarDurPref && window.__aplicarDurPref(), 0);
     } catch (err) {
       buffer = null;
       $('cardAjuste').classList.add('hide');
@@ -971,6 +1006,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function nomeArquivo() { return ((($('nome').value || '').trim().replace(/[\\/:*?"<>|]+/g, '')) || 'Musica') + '.mp3'; }
   function semAcento(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w .-]/g, '').trim() || 'previa.mp3'; }
   $('btnShare').addEventListener('click', async () => {
+    if (!confirmaSemMarca()) return;
     registrarEnvio('audio');
     if (!mp3File) return;
     const msg = $('shareMsg'); msg.className = 'info'; msg.textContent = '';
@@ -1005,6 +1041,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function msgLink(url) { return textoLink(url, vezes(), cliente()); }
   $('btnLink').addEventListener('click', async () => {
     if (!mp3File) return;
+    if (!confirmaSemMarca()) return;
     const btn = $('btnLink'); btn.disabled = true; $('linkPronto').classList.add('hide');
     const prog = $('progLink'); prog.classList.remove('hide'); prog.firstElementChild.style.width = '5%';
     $('linkInfo').textContent = '⏳ Enviando a prévia para a nuvem…';
@@ -1023,7 +1060,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       try { up = await enviar(true); }
       catch (e1) { if (/sem internet/.test(e1.message)) throw e1; up = await enviar(false); }   // se a pasta não for aceita, envia sem pasta
       const id = idNovo(), nome = ($('nome').value || '').trim(), cli = cliente();
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, cliente: cli, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, cliente: cli, ...dadosCobranca(), validadeH: validadeH(), expiraEm: validadeH() ? Date.now() + validadeH() * 3600000 : 0, ajustes: 0, pago: false, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
       prog.firstElementChild.style.width = '100%';
       linkUrl = LINK_BASE + id;
       $('linkTxt').value = linkUrl;
@@ -1047,6 +1084,51 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     catch (e) { $('linkTxt').select(); document.execCommand('copy'); $('btnCopiarLink').textContent = '✓ Link copiado'; }
     setTimeout(() => $('btnCopiarLink').textContent = '📋 Copiar só o link', 2500);
   });
+
+  function confirmaSemMarca() {
+    if (marcaOn || !cliente()) return true;
+    return confirm('Atenção: a marca sonora está em NÃO.\n\nVai para ' + cliente() + ' SEM a voz "IA Music Studio". Tem certeza?');
+  }
+
+  // ══ v24: Pix e valor · preferências · cobrança ══
+  let cfg = (() => { try { return JSON.parse(localStorage.getItem('previa_cfg') || '{}'); } catch (e) { return {}; } })();
+  function aplicarCfg() {
+    $('cfgPix').value = cfg.pix || ''; $('cfgTit').value = cfg.titular || ''; $('cfgValor').value = cfg.valor || '';
+    if (!$('valorLink').value) $('valorLink').value = cfg.valor || '';
+    $('cfgOk').textContent = cfg.pix ? '✓' : '(configure)';
+  }
+  aplicarCfg();
+  fbPronto().then(async ok => { if (!ok) return; try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaConfig', 'geral')); if (sn.exists()) { cfg = { ...cfg, ...sn.data() }; localStorage.setItem('previa_cfg', JSON.stringify(cfg)); aplicarCfg(); } } catch (e) {} });
+  $('btnCfg').addEventListener('click', () => { const b = $('cfgBox'); b.classList.toggle('hide'); $('cfgSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; });
+  $('btnCfgSalvar').addEventListener('click', async () => {
+    cfg = { pix: $('cfgPix').value.trim(), titular: $('cfgTit').value.trim(), valor: $('cfgValor').value.trim().replace(/^R\$\s*/i, '') };
+    try { localStorage.setItem('previa_cfg', JSON.stringify(cfg)); } catch (e) {}
+    try { if (await fbPronto()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaConfig', 'geral'), cfg, { merge: true }); $('cfgInfo').textContent = '✓ Salvo'; }
+    catch (e) { $('cfgInfo').textContent = '✓ Salvo neste celular (sem nuvem agora)'; }
+    $('valorLink').value = cfg.valor; aplicarCfg();
+  });
+  function dadosCobranca() { return { valor: ($('valorLink').value || cfg.valor || '').trim().replace(/^R\$\s*/i, ''), pix: cfg.pix || '', titular: cfg.titular || '' }; }
+  function textoCobranca(d) {
+    const v = d.valor || cfg.valor, px = d.pix || cfg.pix, tt = d.titular || cfg.titular;
+    return (d.cliente ? 'Olá, ' + d.cliente + '! Tudo bem? 😊' : 'Olá! Tudo bem? 😊') +
+      '\n\nQue bom que você gostou da prévia' + (d.nome ? ' de "' + d.nome + '"' : '') + '! 🎵' +
+      '\n\nPara eu te enviar a música completa, em alta qualidade e sem a marcação, é só fazer o Pix:\n\n' +
+      (v ? '💰 Valor: R$ ' + v + '\n' : '') + (px ? '🔑 Chave Pix: ' + px + '\n' : '') + (tt ? '👤 ' + tt + '\n' : '') +
+      '\nAssim que você me mandar o comprovante, eu te envio a música na hora! 💛';
+  }
+  // preferências lembradas
+  let prefs = (() => { try { return JSON.parse(localStorage.getItem('previa_prefs') || '{}'); } catch (e) { return {}; } })();
+  function salvarPrefs() { try { localStorage.setItem('previa_prefs', JSON.stringify(prefs)); } catch (e) {} }
+  const validadeH = () => parseInt((document.querySelector('#validade .chip.on') || {}).dataset?.h || '0', 10);
+  $('validade').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#validade .chip').forEach(c => c.classList.toggle('on', c === b)); prefs.validade = b.dataset.h; salvarPrefs(); });
+  $('vezes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { prefs.vezes = b.dataset.v; salvarPrefs(); } });
+  $('duracoes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { prefs.dur = b.dataset.s; salvarPrefs(); } });
+  function abrirAba(t) { document.querySelectorAll('#abas button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.dataset.p === t)); prefs.aba = t; salvarPrefs(); }
+  $('abas').addEventListener('click', e => { const b = e.target.closest('button'); if (b) abrirAba(b.dataset.t); });
+  abrirAba(prefs.aba || 'link');
+  if (prefs.vezes) document.querySelectorAll('#vezes .chip').forEach(c => c.classList.toggle('on', c.dataset.v === prefs.vezes));
+  if (prefs.validade !== undefined) document.querySelectorAll('#validade .chip').forEach(c => c.classList.toggle('on', c.dataset.h === prefs.validade));
+  window.__aplicarDurPref = () => { if (prefs.dur && prefs.dur !== '60') { const c = document.querySelector('#duracoes .chip[data-s="' + prefs.dur + '"]'); if (c) c.click(); } };
   // ══ v22: registro de envios de áudio/vídeo ══
   let ultimoReg = '';
   async function registrarEnvio(tipo) {
@@ -1054,7 +1136,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     if (chave === ultimoReg) return; ultimoReg = chave;        // não repete se tocar duas vezes no mesmo envio
     try {
       if (!(await fbPronto(3000))) return;
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', 'e' + idNovo()), { tipo, nome: ($('nome').value || '').trim(), cliente: cliente(), criado: Date.now(), plays: 0, max: 0, ...(window.__ger || {}) });
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', 'e' + idNovo()), { tipo, nome: ($('nome').value || '').trim(), cliente: cliente(), ...dadosCobranca(), ajustes: 0, pago: false, criado: Date.now(), plays: 0, max: 0, ...(window.__ger || {}) });
       carregarHist().catch(() => {});
     } catch (e) {}
   }
@@ -1066,7 +1148,10 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   }
   // ══ v21: histórico de prévias (vem da nuvem, então não se perde ao atualizar a página) ══
   let histCache = [], histFiltro = 'todos';
+  const expirou = d => d.expiraEm && Date.now() > d.expiraEm && d.plays < d.max;
+  const ouviu = d => (d.tipo && d.tipo !== 'link') || d.plays > 0;
   function stLink(d) {
+    if (expirou(d)) return { c: 'exp', t: '⌛ Link expirou' + (d.plays ? ' (ouviu ' + d.plays + ')' : '') };
     if (d.plays >= d.max) return { c: 'sim', t: '✅ Ouviu' + (d.max > 1 ? ' (' + d.plays + '/' + d.max + ')' : '') };
     if (d.plays > 0) return { c: 'meio', t: '▶ Ouviu ' + d.plays + ' de ' + d.max };
     return { c: 'nao', t: '⏳ Ainda não ouviu' };
@@ -1089,15 +1174,21 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     const box = $('meusLinks');
     if (recarregar) { box.innerHTML = '<div class="dica">Carregando…</div>'; const r = await carregarHist(); if (r === null) { box.innerHTML = '<div class="dica erro">Sem conexão com a nuvem.</div>'; return; } }
     const ehLink = d => !d.tipo || d.tipo === 'link';
-    const l = histCache.filter(d => histFiltro === 'todos' || (ehLink(d) && (histFiltro === 'sim' ? d.plays >= d.max : d.plays < d.max)));
+    const l = histCache.filter(d => histFiltro === 'todos' ||
+      (histFiltro === 'pagos' ? d.pago : histFiltro === 'receber' ? (!d.pago && ouviu(d)) :
+       (ehLink(d) && (histFiltro === 'sim' ? d.plays >= d.max : d.plays < d.max))));
     if (!l.length) { box.innerHTML = '<div class="dica">' + (histCache.length ? 'Nenhuma prévia neste filtro.' : 'Nenhuma prévia enviada ainda.') + '</div>'; return; }
     box.innerHTML = l.slice(0, 60).map(d => {
       const st = stLink(d), dt = new Date(d.criado || 0);
       const link = ehLink(d);
       return '<div class="lk"><div class="n"><b>' + (d.nome || 'Sem nome').replace(/</g, '&lt;') + '</b>' + (d.cliente ? '<div class="cli">👤 ' + d.cliente.replace(/</g, '&lt;') + '</div>' : '') + '<small>' + dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '</small>' +
-        '<div class="tp">' + descTipo(d) + '</div>' + (link ? '<span class="st ' + st.c + '">' + st.t + '</span>' : '') + '</div>' +
+        '<div class="tp">' + descTipo(d) + '</div>' + (link ? '<span class="st ' + st.c + '">' + st.t + '</span> ' : '') +
+        (d.pago ? '<span class="st pago">💰 Pago</span>' : (ouviu(d) ? '<span class="st receber">⏳ Aguardando pagamento</span>' : '')) + '</div>' +
         '<div class="acoes">' + (link ? '<button data-id="' + d.id + '" data-a="mais">+1 escuta</button><button data-id="' + d.id + '" data-a="enviar">📤 Enviar</button><button data-id="' + d.id + '" data-a="copiar">📋 Copiar</button>' : '<span class="dica" style="flex:1;align-self:center">Arquivo enviado direto no WhatsApp</span>') +
-        '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div></div>';
+        '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div>' +
+        '<div class="acoes2">' + (!d.pago ? '<button data-id="' + d.id + '" data-a="cobrar">💸 Cobrar</button>' : '') +
+        '<button data-id="' + d.id + '" data-a="pago">' + (d.pago ? '↺ Desmarcar pago' : '💰 Marcar pago') + '</button>' +
+        '<button data-id="' + d.id + '" data-a="ajuste">🎚 Ajustes ' + (d.ajustes || 0) + '/2</button></div></div>';
     }).join('');
   }
   $('btnHist').addEventListener('click', () => { const b = $('histBox'); b.classList.toggle('hide'); $('histSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; if (!b.classList.contains('hide')) mostrarMeus(); });
@@ -1107,6 +1198,11 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     const b = e.target.closest('button'); if (!b) return;
     const id = b.dataset.id, d = histCache.find(x => x.id === id), url = LINK_BASE + id;
     if (b.dataset.a === 'copiar') { try { await navigator.clipboard.writeText(url); b.textContent = '✓ Copiado'; } catch (er) {} return; }
+    if (b.dataset.a === 'cobrar') {
+      const t = textoCobranca(d || {});
+      if (navigator.share) { try { await navigator.share({ text: t }); return; } catch (er) { if (er && er.name === 'AbortError') return; } }
+      window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); return;
+    }
     if (b.dataset.a === 'enviar') {
       const resta = d ? Math.max(1, d.max - d.plays) : 1;
       const t = textoLink(url, resta, d ? d.cliente : '');
@@ -1116,7 +1212,13 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     try {
       const ref = window._fbDoc(window._fbDb, 'previaLinks', id), sn = await window._fbGetDoc(ref); if (!sn.exists()) return;
       const x = sn.data();
-      if (b.dataset.a === 'mais') { await window._fbSetDoc(ref, { max: Math.max(x.max, x.plays) + 1 }, { merge: true }); }
+      if (b.dataset.a === 'mais') { await window._fbSetDoc(ref, { max: Math.max(x.max, x.plays) + 1, ...(x.expiraEm ? { expiraEm: Date.now() + (x.validadeH || 48) * 3600000 } : {}) }, { merge: true }); }
+      if (b.dataset.a === 'pago') { await window._fbSetDoc(ref, { pago: !x.pago, pagoEm: x.pago ? 0 : Date.now() }, { merge: true }); }
+      if (b.dataset.a === 'ajuste') {
+        let a = (x.ajustes || 0) + 1;
+        if ((x.ajustes || 0) >= 2) { if (!confirm('Esse cliente já usou os 2 ajustes de áudio combinados.\n\nZerar o contador?')) return; a = 0; }
+        await window._fbSetDoc(ref, { ajustes: a }, { merge: true });
+      }
       if (b.dataset.a === 'apagar') {
         if (!confirm('Apagar "' + (x.nome || 'esta prévia') + '" do histórico?\n\nO link para de funcionar para o cliente.')) return;
         await window._fbSetDoc(ref, { apagado: true, max: x.plays || 0 }, { merge: true });
@@ -1135,6 +1237,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   }
   $('btnVideo').addEventListener('click', async () => {
     if (!mp3Url) return;
+    if (!confirmaSemMarca()) return;
     const tipo = tipoVideo();
     if (!tipo) { $('vidInfo').textContent = '⚠️ Este navegador não consegue criar vídeo. Use o Google Chrome atualizado.'; return; }
     const btn = $('btnVideo'); btn.disabled = true; $('vidPronto').classList.add('hide');
