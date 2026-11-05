@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261104-previa-v24 -->
+<!-- v20261105-previa-v26 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -898,11 +898,11 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   const cliente = () => ($('cliente').value || '').trim();
   const saud = c => c ? 'Olá, ' + c + '! 🎵' : 'Olá! 🎵';
   function textoLink(url, vez, c) {
-    return saud(c) + '\n\nA prévia da sua música está pronta! Toque no link para ouvir:\n\n' + url +
+    return saud(c) + '\n\nA sua música está pronta! 🎶 Toque no link para ouvir ' + ((window.__ger && window.__ger.inteira) ? 'a música inteira' : 'a sua música') + ':\n\n' + url +
       '\n\n⚠️ Ela pode ser ouvida ' + (vez === 1 ? 'só 1 vez' : vez + ' vezes') + ', e não dá para pausar nem voltar. Então ouça com atenção (de preferência com fone) e depois me conta o que achou! 💛';
   }
   function msgPadrao() {
-    return saud(cliente()) + '\n\nAqui está a prévia da sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
+    return saud(cliente()) + '\n\nAqui está a sua música personalizada. Ouça com calma e me conta o que achou!\n\n' +
       'Se quiser, faço até 2 ajustes de ritmo ou velocidade. Assim que você aprovar, te envio a música completa. 💛\n\nIA Music Studio';
   }
   let msgEditada = false;
@@ -1111,8 +1111,8 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   function textoCobranca(d) {
     const v = d.valor || cfg.valor, px = d.pix || cfg.pix, tt = d.titular || cfg.titular;
     return (d.cliente ? 'Olá, ' + d.cliente + '! Tudo bem? 😊' : 'Olá! Tudo bem? 😊') +
-      '\n\nQue bom que você gostou da prévia' + (d.nome ? ' de "' + d.nome + '"' : '') + '! 🎵' +
-      '\n\nPara eu te enviar a música completa, em alta qualidade e sem a marcação, é só fazer o Pix:\n\n' +
+      '\n\nQue bom que você gostou da sua música' + (d.nome ? ' "' + d.nome + '"' : '') + '! 🎵' +
+      '\n\nPara eu te enviar o arquivo definitivo (MP3), em alta qualidade e sem a marcação, é só fazer o Pix dos 50% finais:\n\n' +
       (v ? '💰 Valor: R$ ' + v + '\n' : '') + (px ? '🔑 Chave Pix: ' + px + '\n' : '') + (tt ? '👤 ' + tt + '\n' : '') +
       '\nAssim que você me mandar o comprovante, eu te envio a música na hora! 💛';
   }
