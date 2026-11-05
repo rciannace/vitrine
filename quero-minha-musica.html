@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261105-musica-v45 -->
+<!-- v20261105-musica-v47 -->
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1526,10 +1526,10 @@ body.admin-mode [data-edit][contenteditable]:focus { outline: 2px solid #ff6622;
       <div class="musica-demos-title" data-edit="faq_titulo">❓ PERGUNTAS FREQUENTES</div>
       <details class="qm-faq-item"><summary><span data-edit="faq_q1">Como eu recebo a minha música?</span></summary><div class="qm-faq-a" data-edit="faq_a1b">Primeiro, eu te envio um link seguro de visualização única para você ouvir a sua música inteira e aprovar o resultado. Assim que o pagamento dos 50% finais for confirmado, você recebe o arquivo de áudio definitivo (MP3) direto no WhatsApp, pronto para baixar, guardar e compartilhar.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q2">A música é feita só para mim?</span></summary><div class="qm-faq-a" data-edit="faq_a2">Sim! Cada letra é criada do zero a partir da história que você conta: nomes, datas, lembranças e detalhes. Nenhuma música é repetida.</div></details>
-      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3g">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma.<br><br><strong>Essencial (R$ 49,90):</strong> até <strong>2 rodadas de ajustes na letra</strong>. Em cada rodada, você me manda todas as mudanças de uma vez (nomes, palavras, trechos) e eu devolvo a letra corrigida. Depois de ouvir a música, até <strong>2 ajustes no áudio</strong> (ritmo ou velocidade).<br><br><strong>Sob Medida (R$ 89,90):</strong> ajusto a letra <strong>quantas vezes precisar</strong>, até ficar perfeita, e faço até <strong>3 ajustes no áudio</strong>.<br><br>Se no Essencial você quiser mais mudanças, dá para passar para o Sob Medida a qualquer momento, pagando só a diferença.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q3b">E se eu quiser mudar alguma coisa?</span></summary><div class="qm-faq-a" data-edit="faq_a3i">Antes de produzir a música, eu te envio a <strong>letra</strong> pelo WhatsApp para você ler com calma.<br><br><strong>Essencial (R$ 49,99):</strong> até <strong>2 rodadas de ajustes na letra</strong>. Em cada rodada, você me manda todas as mudanças de uma vez (nomes, palavras, trechos) e eu devolvo a letra corrigida. Depois de ouvir a música, até <strong>2 ajustes no áudio</strong> (ritmo ou velocidade).<br><br><strong>Sob Medida (R$ 69,99):</strong> ajusto a letra <strong>quantas vezes precisar</strong>, até ficar perfeita, e faço até <strong>3 ajustes no áudio</strong>.<br><br>Se no Essencial você quiser mais mudanças, dá para passar para o Sob Medida a qualquer momento, pagando só a diferença.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q4">A voz é de uma pessoa de verdade?</span></summary><div class="qm-faq-a" data-edit="faq_a4">A voz e os instrumentos são criados com Inteligência Artificial, com qualidade de estúdio. É isso que permite fazer uma música inteira, exclusiva, em tão pouco tempo.</div></details>
       <details class="qm-faq-item"><summary><span data-edit="faq_q5">Posso usar a música em vídeos e nas redes sociais?</span></summary><div class="qm-faq-a" data-edit="faq_a5">Pode, sim: em vídeos de festa, homenagens, surpresas e nas suas redes sociais.</div></details>
-      <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6b">Trabalhamos com sinal de 50% para início da produção. O pagamento pode ser feito via Pix ou em até 3x no Cartão de Crédito através de link seguro.</div></details>
+      <details class="qm-faq-item"><summary><span data-edit="faq_q6">Como funciona o pagamento?</span></summary><div class="qm-faq-a" data-edit="faq_a6d">Trabalhamos com sinal de 50% para início da produção. O pagamento pode ser feito via Pix ou em até 3x no Cartão de Crédito através de link seguro.<br><br>Exemplo: no <strong>Essencial (R$ 49,99)</strong>, você paga <strong>R$ 25,00 de sinal</strong> e <strong>R$ 24,99</strong> depois de ouvir a sua música. No <strong>Sob Medida (R$ 69,99)</strong>, <strong>R$ 35,00</strong> de sinal e <strong>R$ 34,99</strong> no final.</div></details>
     </div>
 
     <div class="musica-cta qm-reveal">
@@ -1804,7 +1804,7 @@ window.addEventListener('firebase-ready', async () => {
   if (window._musicaPacotesFromFb) {
     musicaPacotes = window._musicaPacotesFromFb;
     if ((window._musicaPacotesV || 0) < 2) qmMigrarPacotesV2();
-    else if (window._musicaPacotesV < 3) qmPrecosV3();
+    else if (window._musicaPacotesV < 5) qmPrecosV3();
     localStorage.setItem(MUSICA_PACOTES_KEY, JSON.stringify(musicaPacotes));
     renderMusicaPacotes();
   }
@@ -2037,11 +2037,11 @@ function qmMostrarPacote(pacote) {
   box.style.display = '';
 }
 // v42: pacotes Essencial (R$ 29,90) e Sob Medida (R$ 59,90) — feito uma vez só; depois tudo continua editável no admin
-const QM_ESSENCIAL = { id:'essencial', icon:'🎵', nome:'ESSENCIAL', preco:'49,90', desc:'1 música única com vocal e letra<br>até 2 rodadas de ajustes na letra<br>até 2 ajustes no áudio', destaque: false };
-const QM_SOBMEDIDA = { id:'sobmedida', icon:'✨', nome:'SOB MEDIDA', preco:'89,90', desc:'1 música única com vocal e letra<br>ajustes na letra sem limite<br>até 3 ajustes no áudio · prioridade', destaque: true };
+const QM_ESSENCIAL = { id:'essencial', icon:'🎵', nome:'ESSENCIAL', preco:'49,99', desc:'1 música única com vocal e letra<br>até 2 rodadas de ajustes na letra<br>até 2 ajustes no áudio', destaque: false };
+const QM_SOBMEDIDA = { id:'sobmedida', icon:'✨', nome:'SOB MEDIDA', preco:'69,99', desc:'1 música única com vocal e letra<br>ajustes na letra sem limite<br>até 3 ajustes no áudio · prioridade', destaque: true };
 async function qmPrecosV3() {
-  musicaPacotes = (musicaPacotes || []).map(p => /essencial/i.test(p.nome || '') || p.id === 'essencial' ? { ...p, preco: '49,90' } : /sob medida/i.test(p.nome || '') || p.id === 'sobmedida' ? { ...p, preco: '89,90' } : p);
-  try { if (await waitForFirebase()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPacotes, musicaPacotesV: 3, updatedAt: Date.now() }, { merge: true }); window._musicaPacotesV = 3; } catch (e) {}
+  musicaPacotes = (musicaPacotes || []).map(p => /essencial/i.test(p.nome || '') || p.id === 'essencial' ? { ...p, preco: '49,99' } : /sob medida/i.test(p.nome || '') || p.id === 'sobmedida' ? { ...p, preco: '69,99' } : p);
+  try { if (await waitForFirebase()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPacotes, musicaPacotesV: 5, updatedAt: Date.now() }, { merge: true }); window._musicaPacotesV = 5; } catch (e) {}
 }
 async function qmMigrarPacotesV2() {
   let lista = Array.isArray(musicaPacotes) ? musicaPacotes.slice() : [];
@@ -2054,7 +2054,7 @@ async function qmMigrarPacotesV2() {
   lista = lista.map(p => ({ ...p, destaque: p.id === 'sobmedida' }));
   musicaPacotes = lista;
   try {
-    if (await waitForFirebase()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPacotes: lista, musicaPacotesV: 3, updatedAt: Date.now() }, { merge: true });
+    if (await waitForFirebase()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'vitrine', 'data'), { musicaPacotes: lista, musicaPacotesV: 5, updatedAt: Date.now() }, { merge: true });
     window._musicaPacotesV = 2;
   } catch (e) { console.warn('pacotes v2:', e); }
 }
