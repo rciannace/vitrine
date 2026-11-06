@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261105-ouvir-v7 -->
+<!-- v20261106-ouvir-v8 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -113,8 +113,11 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       msg = 'Oi, Raffael! Ouvi a minha música' + (d.nome ? ' "' + d.nome + '"' : '') + ' e aprovei! 🎵' + (d.pix ? ' Segue o comprovante do Pix 👇' : '');
       if (d.pix) {
         $('pixBox').classList.remove('hide');
-        let v = d.valor || '';
-        if (v && !d.valorTotal) { const t = parseFloat(String(v).replace(/[^\d,.]/g, '').replace(',', '.')) || 0; if (t) v = (Math.floor(t * 100 / 2) / 100).toFixed(2).replace('.', ','); }
+        let v = '';
+        const tot = d.valorTotal || d.valor || '';            // links antigos guardavam o total em "valor"
+        let t = Math.round((parseFloat(String(tot).replace(/[^\d,.]/g, '').replace(',', '.')) || 0) * 100);
+        if (t && t % 100 === 90) t += 9;                        // preços antigos 49,90 / 89,90 → 49,99 / 89,99
+        if (t) v = (Math.floor(t / 2) / 100).toFixed(2).replace('.', ',');
         $('pixValor').innerHTML = v ? 'R$ ' + v + '<small class="pix-sub">50% final</small>' : '';
         $('pixChave').textContent = d.pix;
         $('pixTit').textContent = d.titular ? 'Em nome de ' + d.titular : '';
