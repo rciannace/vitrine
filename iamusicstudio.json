@@ -1,5 +1,61 @@
 [
   {
+    "id": 1794006073379,
+    "title": "O MELHOR DO MEU DIA",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 90,
+    "duration": "normal",
+    "date": "06/11/2026",
+    "song": {
+      "title": "O MELHOR DO MEU DIA",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "Cheguei do trabalho cansado, a cabeça a mil,\nMas só de ver seu sorriso, meu peito se abriu.\nA porta de casa, o cheiro do nosso jantar,\nTudo que eu preciso tá no seu olhar.",
+        "Verso 2": "Deixo o celular de lado, esqueço a confusão,\nProblema do dia a dia não tem mais razão.\nAgora o meu tempo é todo pra te namorar,\nNo nosso cantinho, eu só quero relaxar.",
+        "Refrão": "O melhor do meu dia é voltar pra você,\nUm amor desse jeito é tão bom de viver!\nMinha paz, minha parceira, mulher que eu sempre quis,\nDo seu lado eu sou o cara mais feliz!",
+        "Verso 3": "O silêncio na sala, a casa na santa paz,\nEsse nosso clima é o que me satisfaz.\nEsquecendo da hora, sem ter o que fazer,\nMinha melhor escolha sempre foi você.",
+        "Pré-Refrão": "E se o mundo lá fora tentar complicar,\nEu tenho o seu beijo pra me acalmar.\nNão troco essa vida por nada, meu bem,\nO que a gente tem, mais ninguém tem!",
+        "Outro": "Pode encostar no meu peito, deixa o som levar,\nMeu coração só tem olhos pra te amar.\nEsquece de tudo lá fora, deixa o tempo parar,\nNossa história linda é o meu melhor lugar.",
+        "Fim": "Vem pra cá, minha paixão...\nO nosso tempo chegou."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 90,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "Cheguei do trabalho cansado, a cabeça a mil,\nMas só de ver seu sorriso, meu peito se abriu.\nA porta de casa, o cheiro do nosso jantar,\nTudo que eu preciso tá no seu olhar.",
+      "Verso 2": "Deixo o celular de lado, esqueço a confusão,\nProblema do dia a dia não tem mais razão.\nAgora o meu tempo é todo pra te namorar,\nNo nosso cantinho, eu só quero relaxar.",
+      "Refrão": "O melhor do meu dia é voltar pra você,\nUm amor desse jeito é tão bom de viver!\nMinha paz, minha parceira, mulher que eu sempre quis,\nDo seu lado eu sou o cara mais feliz!",
+      "Verso 3": "O silêncio na sala, a casa na santa paz,\nEsse nosso clima é o que me satisfaz.\nEsquecendo da hora, sem ter o que fazer,\nMinha melhor escolha sempre foi você.",
+      "Pré-Refrão": "E se o mundo lá fora tentar complicar,\nEu tenho o seu beijo pra me acalmar.\nNão troco essa vida por nada, meu bem,\nO que a gente tem, mais ninguém tem!",
+      "Outro": "Pode encostar no meu peito, deixa o som levar,\nMeu coração só tem olhos pra te amar.\nEsquece de tudo lá fora, deixa o tempo parar,\nNossa história linda é o meu melhor lugar.",
+      "Fim": "Vem pra cá, minha paixão...\nO nosso tempo chegou."
+    },
+    "struct": [
+      "Verso 1",
+      "Verso 2",
+      "Refrão",
+      "Verso 3",
+      "Pré-Refrão",
+      "Refrão",
+      "Outro",
+      "Fim"
+    ],
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1794006071/xi5wcpodcrpm9dqzkffd.mp3",
+    "audioDur": 183.312,
+    "_mtime": 1794006073418
+  },
+  {
     "id": 1793537442535,
     "title": "FIM DA NOITE",
     "genre": "Pagode",
