@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261105-previa-v26 -->
+<!-- v20261106-previa-v28 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -130,7 +130,7 @@ textarea:focus{border-color:#ff6622}
       <p class="dica" style="margin:8px 0 0">Aparece para o cliente <b>no fim da prévia</b> e nas mensagens de cobrança.</p>
       <label class="lb">Chave Pix</label><input type="text" id="cfgPix" placeholder="Ex: seu CPF, e-mail ou celular" maxlength="80">
       <label class="lb">Nome que aparece no Pix (titular)</label><input type="text" id="cfgTit" placeholder="Ex: Rafael I." maxlength="60">
-      <label class="lb">Valor padrão (R$)</label><input type="text" id="cfgValor" placeholder="Ex: 29,90" inputmode="decimal" maxlength="12">
+      <label class="lb">Valor total padrão do pacote (R$)</label><input type="text" id="cfgValor" placeholder="Ex: 49,99" inputmode="decimal" maxlength="12"><div class="dica" id="cfgMetade" style="margin-top:4px"></div>
       <button class="btn main" id="btnCfgSalvar">💾 Salvar</button>
       <div class="info" id="cfgInfo"></div>
     </div>
@@ -240,7 +240,7 @@ textarea:focus{border-color:#ff6622}
       <div class="row" id="validade" style="margin-top:0">
         <button class="chip" data-h="0">Sem prazo</button><button class="chip" data-h="24">24 h</button><button class="chip on" data-h="48">48 h</button><button class="chip" data-h="168">7 dias</button>
       </div>
-      <label class="lb">Valor desta música (aparece para o cliente junto com o Pix)</label>
+      <label class="lb">Valor total desta música</label>
       <input type="text" id="valorLink" placeholder="Ex: 29,90" inputmode="decimal" maxlength="12">
       <button class="btn main" id="btnLink">🔗 Criar link de escuta única</button>
       <div class="prog hide" id="progLink"><i></i></div>
@@ -1098,22 +1098,36 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
     $('cfgOk').textContent = cfg.pix ? '✓' : '(configure)';
   }
   aplicarCfg();
-  fbPronto().then(async ok => { if (!ok) return; try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaConfig', 'geral')); if (sn.exists()) { cfg = { ...cfg, ...sn.data() }; localStorage.setItem('previa_cfg', JSON.stringify(cfg)); aplicarCfg(); } } catch (e) {} });
+  fbPronto().then(async ok => { if (!ok) return; try { const sn = await window._fbGetDoc(window._fbDoc(window._fbDb, 'previaConfig', 'geral')); if (sn.exists()) { cfg = { ...cfg, ...sn.data() }; localStorage.setItem('previa_cfg', JSON.stringify(cfg)); aplicarCfg(); mostrarMetades(); } } catch (e) {} });
   $('btnCfg').addEventListener('click', () => { const b = $('cfgBox'); b.classList.toggle('hide'); $('cfgSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; });
   $('btnCfgSalvar').addEventListener('click', async () => {
     cfg = { pix: $('cfgPix').value.trim(), titular: $('cfgTit').value.trim(), valor: $('cfgValor').value.trim().replace(/^R\$\s*/i, '') };
     try { localStorage.setItem('previa_cfg', JSON.stringify(cfg)); } catch (e) {}
     try { if (await fbPronto()) await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaConfig', 'geral'), cfg, { merge: true }); $('cfgInfo').textContent = '✓ Salvo'; }
     catch (e) { $('cfgInfo').textContent = '✓ Salvo neste celular (sem nuvem agora)'; }
-    $('valorLink').value = cfg.valor; aplicarCfg();
+    $('valorLink').value = cfg.valor; aplicarCfg(); mostrarMetades();
   });
-  function dadosCobranca() { return { valor: ($('valorLink').value || cfg.valor || '').trim().replace(/^R\$\s*/i, ''), pix: cfg.pix || '', titular: cfg.titular || '' }; }
+  // valor total → 50% final (o sinal fica com o centavo a mais: 49,99 = 25,00 + 24,99)
+  const paraNum = v => parseFloat(String(v || '').replace(/[^\d,.]/g, '').replace(/\.(?=\d{3})/g, '').replace(',', '.')) || 0;
+  const paraBR = n => n.toFixed(2).replace('.', ',');
+  const centavos = v => { let c = Math.round(paraNum(v) * 100); if (c && c % 100 === 90) c += 9; return c; };   // 49,90 → 49,99
+  function metadeFinal(total) { const c = centavos(total); return c ? paraBR(Math.floor(c / 2) / 100) : ''; }
+  function sinalDe(total) { const c = centavos(total); return c ? paraBR((c - Math.floor(c / 2)) / 100) : ''; }
+  function mostrarMetades() {
+    const tv = ($('valorLink').value || cfg.valor || '');
+    const t1 = $('cfgValor').value; $('cfgMetade').textContent = t1 ? 'Sinal R$ ' + sinalDe(t1) + ' · 50% final R$ ' + metadeFinal(t1) + ' (é o que o cliente vê no fim da música)' : '';
+    let el = $('valorInfo'); if (!el) { el = document.createElement('div'); el.id = 'valorInfo'; el.className = 'dica'; el.style.marginTop = '4px'; $('valorLink').after(el); }
+    el.textContent = tv ? 'O cliente vê: R$ ' + metadeFinal(tv) + ' (50% final). Sinal: R$ ' + sinalDe(tv) + '.' : '';
+  }
+  ['valorLink', 'cfgValor'].forEach(id => $(id).addEventListener('input', mostrarMetades));
+  setTimeout(mostrarMetades, 0);
+  function dadosCobranca() { const total = ($('valorLink').value || cfg.valor || '').trim().replace(/^R\$\s*/i, ''); return { valor: metadeFinal(total), valorTotal: total, pix: cfg.pix || '', titular: cfg.titular || '' }; }
   function textoCobranca(d) {
-    const v = d.valor || cfg.valor, px = d.pix || cfg.pix, tt = d.titular || cfg.titular;
+    const v = metadeFinal(d.valorTotal || d.valor || cfg.valor), px = d.pix || cfg.pix, tt = d.titular || cfg.titular;
     return (d.cliente ? 'Olá, ' + d.cliente + '! Tudo bem? 😊' : 'Olá! Tudo bem? 😊') +
       '\n\nQue bom que você gostou da sua música' + (d.nome ? ' "' + d.nome + '"' : '') + '! 🎵' +
       '\n\nPara eu te enviar o arquivo definitivo (MP3), em alta qualidade e sem a marcação, é só fazer o Pix dos 50% finais:\n\n' +
-      (v ? '💰 Valor: R$ ' + v + '\n' : '') + (px ? '🔑 Chave Pix: ' + px + '\n' : '') + (tt ? '👤 ' + tt + '\n' : '') +
+      (v ? '💰 Valor (50% final): R$ ' + v + '\n' : '') + (px ? '🔑 Chave Pix: ' + px + '\n' : '') + (tt ? '👤 ' + tt + '\n' : '') +
       '\nAssim que você me mandar o comprovante, eu te envio a música na hora! 💛';
   }
   // preferências lembradas
@@ -1188,7 +1202,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
         '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div>' +
         '<div class="acoes2">' + (!d.pago ? '<button data-id="' + d.id + '" data-a="cobrar">💸 Cobrar</button>' : '') +
         '<button data-id="' + d.id + '" data-a="pago">' + (d.pago ? '↺ Desmarcar pago' : '💰 Marcar pago') + '</button>' +
-        '<button data-id="' + d.id + '" data-a="ajuste">🎚 Ajustes ' + (d.ajustes || 0) + '/2</button></div></div>';
+        '<button data-id="' + d.id + '" data-a="ajuste">🎚 Ajustes ' + (d.ajustes || 0) + '/2</button>' + (link ? '<button data-id="' + d.id + '" data-a="valor">✏️ R$</button>' : '') + '</div></div>';
     }).join('');
   }
   $('btnHist').addEventListener('click', () => { const b = $('histBox'); b.classList.toggle('hide'); $('histSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; if (!b.classList.contains('hide')) mostrarMeus(); });
@@ -1213,6 +1227,12 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       const ref = window._fbDoc(window._fbDb, 'previaLinks', id), sn = await window._fbGetDoc(ref); if (!sn.exists()) return;
       const x = sn.data();
       if (b.dataset.a === 'mais') { await window._fbSetDoc(ref, { max: Math.max(x.max, x.plays) + 1, ...(x.expiraEm ? { expiraEm: Date.now() + (x.validadeH || 48) * 3600000 } : {}) }, { merge: true }); }
+      if (b.dataset.a === 'valor') {
+        const atual = x.valorTotal || x.valor || cfg.valor || '';
+        const nv = prompt('Valor TOTAL desta música (o cliente vê a metade):', atual); if (nv === null || !nv.trim()) return;
+        await window._fbSetDoc(ref, { valorTotal: nv.trim(), valor: metadeFinal(nv) }, { merge: true });
+        alert('Pronto! O cliente agora vê R$ ' + metadeFinal(nv) + ' (50% final).');
+      }
       if (b.dataset.a === 'pago') { await window._fbSetDoc(ref, { pago: !x.pago, pagoEm: x.pago ? 0 : Date.now() }, { merge: true }); }
       if (b.dataset.a === 'ajuste') {
         let a = (x.ajustes || 0) + 1;
