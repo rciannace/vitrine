@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261105-ouvir-v6 -->
+<!-- v20261105-ouvir-v7 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -33,6 +33,7 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
 .aviso-grande small{display:block;margin-top:4px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.75)}
 .pix{margin:4px 0 6px;padding:18px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1.5px solid rgba(74,222,128,.45)}
 .pix-v{font-size:30px;font-weight:900;color:#4ade80;margin-bottom:8px}
+.pix-sub{display:block;font-size:12px;font-weight:600;letter-spacing:1px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-top:2px}
 .pix-l{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
 .pix-k{font-size:17px;font-weight:700;word-break:break-all;margin:4px 0 2px;-webkit-user-select:all;user-select:all}
 .pix-t{font-size:13px;color:rgba(255,255,255,.65)}
@@ -112,7 +113,9 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       msg = 'Oi, Raffael! Ouvi a minha música' + (d.nome ? ' "' + d.nome + '"' : '') + ' e aprovei! 🎵' + (d.pix ? ' Segue o comprovante do Pix 👇' : '');
       if (d.pix) {
         $('pixBox').classList.remove('hide');
-        $('pixValor').textContent = d.valor ? 'R$ ' + d.valor : '';
+        let v = d.valor || '';
+        if (v && !d.valorTotal) { const t = parseFloat(String(v).replace(/[^\d,.]/g, '').replace(',', '.')) || 0; if (t) v = (Math.floor(t * 100 / 2) / 100).toFixed(2).replace('.', ','); }
+        $('pixValor').innerHTML = v ? 'R$ ' + v + '<small class="pix-sub">50% final</small>' : '';
         $('pixChave').textContent = d.pix;
         $('pixTit').textContent = d.titular ? 'Em nome de ' + d.titular : '';
       } else { $('btnWa').textContent = '💬 Falar no WhatsApp'; $('fimSub').textContent = 'Aprovou? Fale com o Raffael para receber o arquivo definitivo (MP3).'; }
