@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261106-previa-v29 -->
+<!-- v20261110-previa-v30 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -240,8 +240,13 @@ textarea:focus{border-color:#ff6622}
       <div class="row" id="validade" style="margin-top:0">
         <button class="chip" data-h="0">Sem prazo</button><button class="chip" data-h="24">24 h</button><button class="chip on" data-h="48">48 h</button><button class="chip" data-h="168">7 dias</button>
       </div>
-      <label class="lb">Valor total desta música</label>
+      <label class="lb">Mostrar Pix e valor (50% final) depois que ouvir?</label>
+      <div class="row" id="mostraPix" style="margin-top:0;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <button class="chip on" data-v="1">Sim, cobrar</button><button class="chip" data-v="0">Não, só "fale comigo"</button>
+      </div>
+      <div id="valorWrap"><label class="lb">Valor total desta música</label>
       <input type="text" id="valorLink" placeholder="Ex: 29,90" inputmode="decimal" maxlength="12">
+      </div>
       <button class="btn main" id="btnLink">🔗 Criar link de escuta única</button>
       <div class="prog hide" id="progLink"><i></i></div>
       <div class="info" id="linkInfo"></div>
@@ -1060,7 +1065,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
       try { up = await enviar(true); }
       catch (e1) { if (/sem internet/.test(e1.message)) throw e1; up = await enviar(false); }   // se a pasta não for aceita, envia sem pasta
       const id = idNovo(), nome = ($('nome').value || '').trim(), cli = cliente();
-      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, cliente: cli, ...dadosCobranca(), validadeH: validadeH(), expiraEm: validadeH() ? Date.now() + validadeH() * 3600000 : 0, ajustes: 0, pago: false, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
+      await window._fbSetDoc(window._fbDoc(window._fbDb, 'previaLinks', id), { tipo: 'link', url: up.secure_url, nome, cliente: cli, ...dadosCobranca(), mostrarPix: mostraPix(), validadeH: validadeH(), expiraEm: validadeH() ? Date.now() + validadeH() * 3600000 : 0, ajustes: 0, pago: false, max: vezes(), plays: 0, criado: Date.now(), ...(window.__ger || {}) });
       prog.firstElementChild.style.width = '100%';
       linkUrl = LINK_BASE + id;
       $('linkTxt').value = linkUrl;
@@ -1137,6 +1142,10 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
   $('validade').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#validade .chip').forEach(c => c.classList.toggle('on', c === b)); prefs.validade = b.dataset.h; salvarPrefs(); });
   $('vezes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { prefs.vezes = b.dataset.v; salvarPrefs(); } });
   $('duracoes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { prefs.dur = b.dataset.s; salvarPrefs(); } });
+  const mostraPix = () => (document.querySelector('#mostraPix .chip.on') || {}).dataset?.v !== '0';
+  $('mostraPix').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return;
+    document.querySelectorAll('#mostraPix .chip').forEach(c => c.classList.toggle('on', c === b));
+    $('valorWrap').style.display = mostraPix() ? '' : 'none'; });
   function abrirAba(t) { document.querySelectorAll('#abas button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.dataset.p === t)); prefs.aba = t; salvarPrefs(); }
   $('abas').addEventListener('click', e => { const b = e.target.closest('button'); if (b) abrirAba(b.dataset.t); });
   abrirAba(prefs.aba || 'link');
@@ -1202,7 +1211,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
         '<button class="del" data-id="' + d.id + '" data-a="apagar">🗑</button></div>' +
         '<div class="acoes2">' + (!d.pago ? '<button data-id="' + d.id + '" data-a="cobrar">💸 Cobrar</button>' : '') +
         '<button data-id="' + d.id + '" data-a="pago">' + (d.pago ? '↺ Desmarcar pago' : '💰 Marcar pago') + '</button>' +
-        '<button data-id="' + d.id + '" data-a="ajuste">🎚 Ajustes ' + (d.ajustes || 0) + '/2</button>' + (link ? '<button data-id="' + d.id + '" data-a="valor">✏️ R$</button>' : '') + '</div></div>';
+        '<button data-id="' + d.id + '" data-a="ajuste">🎚 Ajustes ' + (d.ajustes || 0) + '/2</button>' + (link ? '<button data-id="' + d.id + '" data-a="valor">✏️ R$</button><button data-id="' + d.id + '" data-a="pixon">' + (d.mostrarPix === false ? '💲 Pix: não' : '💲 Pix: sim') + '</button>' : '') + '</div></div>';
     }).join('');
   }
   $('btnHist').addEventListener('click', () => { const b = $('histBox'); b.classList.toggle('hide'); $('histSeta').textContent = b.classList.contains('hide') ? '▼' : '▲'; if (!b.classList.contains('hide')) mostrarMeus(); });
@@ -1233,6 +1242,7 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
         await window._fbSetDoc(ref, { valorTotal: nv.trim(), valor: metadeFinal(nv) }, { merge: true });
         alert('Pronto! O cliente agora vê R$ ' + metadeFinal(nv) + ' (50% final).');
       }
+      if (b.dataset.a === 'pixon') { await window._fbSetDoc(ref, { mostrarPix: x.mostrarPix === false }, { merge: true }); }
       if (b.dataset.a === 'pago') { await window._fbSetDoc(ref, { pago: !x.pago, pagoEm: x.pago ? 0 : Date.now() }, { merge: true }); }
       if (b.dataset.a === 'ajuste') {
         let a = (x.ajustes || 0) + 1;
