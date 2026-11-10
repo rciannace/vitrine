@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v20261106-ouvir-v9 -->
+<!-- v20261110-ouvir-v10 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -109,6 +109,11 @@ h1{font-size:24px;margin:0 0 6px;font-weight:800}
       $('fimSub').textContent = 'Obrigado! O arquivo definitivo da sua música vai chegar pelo WhatsApp.';
       $('btnWa').textContent = '💬 Falar no WhatsApp';
       msg = 'Oi, Raffael!';
+    } else if (d.mostrarPix === false) {
+      $('fimTit').textContent = 'Você já ouviu a sua música 💛';
+      $('fimSub').textContent = 'Gostou? Fale com o Raffael pelo WhatsApp para combinarem os próximos passos.';
+      $('btnWa').textContent = '💬 Falar com o Raffael';
+      msg = 'Oi, Raffael! Ouvi a minha música' + (d.nome ? ' "' + d.nome + '"' : '') + ' 🎵';
     } else {
       msg = 'Oi, Raffael! Ouvi a minha música' + (d.nome ? ' "' + d.nome + '"' : '') + ' e aprovei! 🎵' + (d.pix ? ' Segue o comprovante do Pix 👇' : '');
       if (d.pix) {
