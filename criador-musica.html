@@ -201,6 +201,16 @@ body.dark .tab-item.active::after{background:#00c2d1;box-shadow:0 0 8px rgba(0,1
 .api-input{flex:1;background:#f8f8f8;border:1.5px solid #eee;color:#1a1a1a;padding:11px 13px;border-radius:11px;font-size:12px;font-family:monospace}
 .api-input.ok{border-color:#22c55e}
 .api-input.err{border-color:#ef4444}
+.ia-box{margin-top:14px;padding-top:12px;border-top:1px solid #eee}
+.ia-tit{font-size:11px;font-weight:700;color:#333;letter-spacing:1px;margin-bottom:8px}
+.ia-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.ia-seg button{padding:8px 4px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fafafa;font-size:12px;font-weight:700;cursor:pointer;color:#555}
+.ia-seg button.on{border-color:#f97316;background:#fff7ed;color:#ea580c}
+.ia-lb{font-size:10px;color:#888;margin:8px 0 4px;font-weight:600}
+.ia-sel{width:100%;font-size:12px;padding:8px}
+.ia-dica{font-size:10px;color:#999;margin-top:5px;line-height:1.4}
+.ia-chk{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:#333;cursor:pointer}
+.ia-chk small{color:#999;font-size:10px}
 .btn-api{padding:11px 16px;border-radius:11px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .btn-api.ok{background:#22c55e}
 .btn-voltar{
@@ -616,6 +626,30 @@ window.amsAuthReady=(async()=>{
     <button class="btn-api" id="btn-api" onclick="validateKey()">Validar</button>
   </div>
   <div style="font-size:10px;color:#bbb;margin-top:6px">Obtenha grátis em <a href="https://openrouter.ai" target="_blank" style="color:#f97316">openrouter.ai</a></div>
+
+  <div class="ia-box">
+    <div class="ia-tit">🧠 INTELIGÊNCIA QUE ESCREVE</div>
+    <div class="ia-seg" id="ia-prov">
+      <button data-p="openrouter" onclick="iaSetProv('openrouter')">OpenRouter</button>
+      <button data-p="gemini" onclick="iaSetProv('gemini')">Gemini (Google)</button>
+    </div>
+    <div id="ia-or-box">
+      <div class="ia-lb">Modelo</div>
+      <select id="ia-or-model" class="api-input ia-sel" onchange="iaSalvarModelo()"></select>
+      <div class="ia-dica" id="ia-or-info">Carregando a lista de modelos…</div>
+    </div>
+    <div id="ia-gem-box" style="display:none">
+      <div class="ia-lb">Chave do Gemini (Google AI Studio)</div>
+      <div class="api-row">
+        <input type="password" id="gem-key" class="api-input" placeholder="AIza..." style="font-size:11px"/>
+        <button class="btn-api" id="btn-gem" onclick="iaValidarGemini()">Validar</button>
+      </div>
+      <div class="ia-lb">Modelo</div>
+      <select id="ia-gem-model" class="api-input ia-sel" onchange="iaSalvarModelo()"></select>
+      <div class="ia-dica">Crie a chave grátis em <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#f97316">aistudio.google.com/apikey</a> (com a mesma conta Google).</div>
+    </div>
+    <label class="ia-chk"><input type="checkbox" id="ia-revisao" onchange="localStorage.setItem('ia_revisao',this.checked?'1':'0')"> ✍️ Revisão automática da letra <small>(mais lenta, letra melhor)</small></label>
+  </div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
 
@@ -1732,14 +1766,15 @@ function buildSunoStyles(){
   const instrExtras=selExtras.filter(e=>["Piano","Guitarra","Violão","Sanfona","Saxofone","Solo de Guitarra","Synth","Bateria forte","Grave Pesado"].includes(e)).map(e=>EXTRAS_MAP[e]);
   const moodExtras=selExtras.filter(e=>["Emotivo","Relaxante","Agressivo","Vinheta"].includes(e)).map(e=>EXTRAS_MAP[e]);
 
-  // ── SHORT (máx 120 chars para o campo Style of Music) ──
-  const shortParts=[gd.en,md.en.split(",")[0].trim()];
-  if(vocalsExtras.length)shortParts.push(vocalsExtras[0]);
-  else shortParts.push(vozFull);
+  // ── STYLE OF MUSIC (até 1000 caracteres no Suno v4.5 em diante; o mais importante vem primeiro) ──
+  const shortParts=[gd.en+(gd.sub?", "+gd.sub:""),md.en,vozFull+(td?", "+td.detail:"")];
+  if(vocalsExtras.length)shortParts.push(vocalsExtras.join(", "));
   shortParts.push(bpm+" BPM");
-  if(instrExtras.length)shortParts.push(instrExtras[0]);
-  let short=shortParts.join(", ");
-  if(short.length>120)short=short.slice(0,117)+"...";
+  shortParts.push(gd.instruments+(instrExtras.length?", "+instrExtras.join(", "):""));
+  if(moodExtras.length)shortParts.push(moodExtras.join(", "));
+  shortParts.push(gd.era+", "+gd.production+", radio-ready mix");
+  let short=[...new Set(shortParts.filter(Boolean).join(", ").split(",").map(x=>x.trim()).filter(Boolean))].join(", ");
+  if(short.length>1000)short=short.slice(0,997)+"...";
 
   // ── EXTENDED (Custom Mode — rico e detalhado) ──
   const lines=[];
@@ -1768,8 +1803,8 @@ function updateSunoPreview(){
   el.textContent=short;
   if(elExt)elExt.textContent=extended;
   if(ch){
-    ch.textContent=short.length+"/120";
-    ch.style.color=short.length>120?"#ef4444":short.length>100?"#f59e0b":"#22c55e";
+    ch.textContent=short.length+"/1000";
+    ch.style.color=short.length>1000?"#ef4444":short.length>900?"#f59e0b":"#22c55e";
   }
 }
 
@@ -1885,6 +1920,137 @@ function selDur(d){
     }
   });
 }
+
+
+// ══════════════════════════════════════
+// INTELIGÊNCIA QUE ESCREVE (OpenRouter com modelo escolhido, ou Gemini direto)
+// Todas as chamadas do app passam por aqui, sem mudar o resto do código.
+// ══════════════════════════════════════
+const IA_OR_SUGERIDOS=["google/gemini-2.5-pro","anthropic/claude-sonnet-4.5","openai/gpt-5","google/gemini-2.5-flash"];
+const IA_GEM_SUGERIDOS=["gemini-2.5-pro","gemini-2.5-flash"];
+function iaProv(){return localStorage.getItem("ia_prov")||"openrouter";}
+function iaSetProv(p){
+  localStorage.setItem("ia_prov",p);
+  document.querySelectorAll("#ia-prov button").forEach(b=>b.classList.toggle("on",b.dataset.p===p));
+  document.getElementById("ia-or-box").style.display=p==="openrouter"?"":"none";
+  document.getElementById("ia-gem-box").style.display=p==="gemini"?"":"none";
+  if(p==="gemini"&&!localStorage.getItem("or_key")&&localStorage.getItem("gem_key"))localStorage.setItem("or_key","usar-gemini");
+}
+function iaSalvarModelo(){
+  const a=document.getElementById("ia-or-model").value, b=document.getElementById("ia-gem-model").value;
+  if(a)localStorage.setItem("ia_model_or",a);
+  if(b)localStorage.setItem("ia_model_gem",b);
+}
+function iaPreencher(sel,lista,atual){
+  const el=document.getElementById(sel); if(!el)return;
+  const ids=[...new Set([atual,...lista].filter(Boolean))];
+  el.innerHTML=ids.map(id=>`<option value="${id}"${id===atual?" selected":""}>${id}</option>`).join("");
+}
+async function iaCarregarModelosOR(){
+  const atual=localStorage.getItem("ia_model_or")||IA_OR_SUGERIDOS[0];
+  iaPreencher("ia-or-model",IA_OR_SUGERIDOS,atual);
+  try{
+    const r=await _fetchOriginal("https://openrouter.ai/api/v1/models");
+    const d=await r.json();
+    const bons=(d.data||[]).map(m=>m.id).filter(id=>!id.includes(":")&&/^(google\/gemini|anthropic\/claude|openai\/gpt-[45]|x-ai\/grok|deepseek\/)/.test(id)).sort();
+    const top=IA_OR_SUGERIDOS.filter(x=>bons.includes(x));
+    iaPreencher("ia-or-model",[...top,...bons],bons.includes(atual)||!bons.length?atual:(top[0]||bons[0]));
+    iaSalvarModelo();
+    document.getElementById("ia-or-info").textContent="Para letras em português, comece pelo Gemini Pro ou pelo Claude Sonnet.";
+  }catch(e){document.getElementById("ia-or-info").textContent="Não consegui carregar a lista agora — usando as sugestões.";}
+}
+async function iaValidarGemini(){
+  const key=document.getElementById("gem-key").value.trim();
+  const btn=document.getElementById("btn-gem");
+  if(!key){showToast("Cole a chave do Gemini","err");return;}
+  btn.textContent="...";btn.disabled=true;
+  try{
+    const r=await _fetchOriginal("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key="+encodeURIComponent(key));
+    const d=await r.json();
+    if(!r.ok)throw new Error(d?.error?.message||"chave inválida");
+    const ids=(d.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes("generateContent")).map(m=>m.name.replace("models/",""))
+      .filter(id=>/^gemini-/.test(id)&&!/(embedding|tts|image|audio|live|vision|aqa)/.test(id));
+    ids.sort((a,b)=>{const pa=/pro/.test(a)?0:1,pb=/pro/.test(b)?0:1;return pa-pb||b.localeCompare(a);});
+    localStorage.setItem("gem_key",key);
+    if(!localStorage.getItem("or_key"))localStorage.setItem("or_key","usar-gemini");
+    const atual=localStorage.getItem("ia_model_gem")||ids.find(x=>/pro/.test(x))||ids[0]||IA_GEM_SUGERIDOS[0];
+    iaPreencher("ia-gem-model",ids.length?ids:IA_GEM_SUGERIDOS,atual); iaSalvarModelo();
+    btn.textContent="✓ OK";btn.className="btn-api ok";showToast("✅ Gemini conectado!","ok");
+  }catch(e){btn.textContent="Validar";showToast("Gemini: "+e.message,"err");}
+  finally{btn.disabled=false;}
+}
+// converte uma chamada no formato OpenRouter para o Gemini e devolve a resposta no mesmo formato
+async function iaChamarGemini(body){
+  const key=localStorage.getItem("gem_key")||"";
+  const model=localStorage.getItem("ia_model_gem")||IA_GEM_SUGERIDOS[0];
+  const msgs=body.messages||[];
+  const sys=msgs.filter(m=>m.role==="system").map(m=>m.content).join("\n\n");
+  const contents=msgs.filter(m=>m.role!=="system").map(m=>({role:m.role==="assistant"?"model":"user",parts:[{text:String(m.content)}]}));
+  const req={contents,generationConfig:{maxOutputTokens:Math.max(8192,(body.max_tokens||1000)*4),temperature:body.temperature??0.9}};
+  if(sys)req.systemInstruction={parts:[{text:sys}]};
+  const r=await _fetchOriginal("https://generativelanguage.googleapis.com/v1beta/models/"+model+":generateContent?key="+encodeURIComponent(key),
+    {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(req)});
+  const d=await r.json();
+  if(!r.ok)return new Response(JSON.stringify({error:{message:"Gemini: "+(d?.error?.message||r.status)}}),{status:r.status,headers:{"Content-Type":"application/json"}});
+  const txt=((d.candidates||[])[0]?.content?.parts||[]).filter(x=>!x.thought).map(x=>x.text||"").join("");
+  if(!txt)return new Response(JSON.stringify({error:{message:"Gemini não devolveu texto ("+((d.candidates||[])[0]?.finishReason||"vazio")+")"}}),{status:500,headers:{"Content-Type":"application/json"}});
+  return new Response(JSON.stringify({choices:[{message:{content:txt}}]}),{status:200,headers:{"Content-Type":"application/json"}});
+}
+const _fetchOriginal=window.fetch.bind(window);
+window.fetch=async function(url,opt){
+  try{
+    if(typeof url==="string"&&url.indexOf("openrouter.ai/api/v1/chat/completions")>=0&&opt&&opt.body){
+      const body=JSON.parse(opt.body);
+      const curto=(body.max_tokens||0)<=5;                       // o "Validar" da chave OpenRouter continua igual
+      if(!curto&&iaProv()==="gemini"&&localStorage.getItem("gem_key"))return iaChamarGemini(body);
+      const m=localStorage.getItem("ia_model_or");
+      if(!curto&&m){body.model=m;opt={...opt,body:JSON.stringify(body)};}
+    }
+  }catch(e){console.warn("ia:",e);}
+  return _fetchOriginal(url,opt);
+};
+// revisão automática: a IA confere e melhora a própria letra antes de mostrar
+async function iaRevisarLetra(parsed,info){
+  if(localStorage.getItem("ia_revisao")==="0")return parsed;
+  const apiKey=localStorage.getItem("or_key")||"";
+  try{
+    showToast("✍️ Revisando a letra…","ok");
+    const prompt=`Você é um letrista profissional brasileiro e revisor exigente. Revise a letra abaixo (${info}) e devolva uma versão MELHOR.
+
+CONFIRA E CORRIJA, seção por seção:
+1. Rima: todo verso precisa rimar no esquema da seção (AABB ou ABAB). Troque rimas pobres ou forçadas.
+2. Métrica: versos da mesma seção com número de sílabas parecido (±2), para caber na melodia.
+3. Prosódia: a frase precisa soar natural quando CANTADA em português do Brasil; sem inversões estranhas.
+4. Clichês: troque frases batidas por imagens concretas e específicas da história.
+5. Refrão: um gancho forte e simples, fácil de cantar na primeira vez; o refrão final evolui (1-2 linhas diferentes).
+6. Coerência: a história avança do começo ao fim, sem repetir a mesma ideia com outras palavras.
+Mantenha o tema, os nomes, o título e AS MESMAS SEÇÕES (mesmos nomes de seção). Não acrescente comentários.
+
+LETRA ATUAL (JSON):
+${JSON.stringify({title:parsed.title,sections:parsed.sections})}
+
+Retorne EXCLUSIVAMENTE o JSON {"title":"...","sections":{...mesmas chaves...}} sem markdown.`;
+    const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:4000,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data?.error?.message||"Erro");
+    const rev=safeParseJSON((data.choices||[]).map(c=>c.message?.content||"").join(""));
+    const chaves=Object.keys(parsed.sections||{});
+    if(rev&&rev.sections&&chaves.every(k=>typeof rev.sections[k]==="string"&&rev.sections[k].trim()))
+      return {...parsed,title:rev.title||parsed.title,sections:Object.fromEntries(chaves.map(k=>[k,rev.sections[k]]))};
+  }catch(e){console.warn("revisão:",e);showToast("Revisão não concluída — mostrando a primeira versão","err");}
+  return parsed;
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  try{
+    iaSetProv(iaProv());
+    const gk=localStorage.getItem("gem_key"); if(gk)document.getElementById("gem-key").value=gk;
+    iaPreencher("ia-gem-model",IA_GEM_SUGERIDOS,localStorage.getItem("ia_model_gem")||IA_GEM_SUGERIDOS[0]);
+    document.getElementById("ia-revisao").checked=localStorage.getItem("ia_revisao")!=="0";
+    iaCarregarModelosOR();
+  }catch(e){console.warn(e);}
+});
 
 // ══════════════════════════════════════
 // API KEY
@@ -2153,7 +2319,7 @@ ESTRUTURA:
 • Cada linha tem função: zero verso de enchimento, cada palavra conta a história
 
 SUNO STYLE PROMPT:
-• Máximo EXATO 120 caracteres, inglês, vírgulas.
+• Entre 300 e 900 caracteres (o Suno aceita até 1000), em inglês, tags separadas por vírgula, sem frases.
 • Ordem: gênero › mood › tipo de voz › BPM › instrumentos específicos › produção.
 • Específico: "fingerpicked acoustic guitar", "raspy male tenor", "driving kick drum" — não "guitar", "vocals", "drums".
 • Ex: "sertanejo universitario, romantic, longing, emotional raspy male tenor, 90 BPM, acoustic guitar, violao, strings, radio-ready"
@@ -2171,7 +2337,8 @@ Retorne EXCLUSIVAMENTE o JSON abaixo, sem texto antes ou depois, sem markdown:
     const data=await res.json();
     if(!res.ok)throw new Error(data?.error?.message||"Erro API");
     const text=(data.choices||[]).map(c=>c.message?.content||"").join("");
-    const parsed=safeParseJSON(text);
+    let parsed=safeParseJSON(text);
+    parsed=await iaRevisarLetra(parsed,g.l+", "+m.l+", "+t.bpm+" BPM, voz "+vozLabel);
     currentSong={...parsed,bpm:t.bpm,genre:g.l,mood:m.l,voice:vozLabel,duration:dur};
     currentSections=Object.assign({},parsed.sections||{});
     const entry={id:Date.now(),title:parsed.title,genre:g.l,mood:m.l,bpm:t.bpm,duration:dur,date:new Date().toLocaleDateString("pt-BR"),song:currentSong,sections:currentSections,struct:secsToUse};
@@ -2218,16 +2385,37 @@ REGRAS:
 • Linguagem natural e cantável
 • 4-8 linhas no total
 • Mostre emoção com cenas concretas
+• Gere 3 OPÇÕES bem diferentes entre si (imagem, rima e gancho diferentes)
 
-Retorne EXCLUSIVAMENTE o JSON: {"lyrics":"novo refrão completo com quebras \n"}`;
+Retorne EXCLUSIVAMENTE o JSON: {"opcoes":["refrão 1 com quebras \n","refrão 2","refrão 3"]}`;
     const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey,"HTTP-Referer":"https://rciannace.github.io","X-Title":"AI Music Studio"},
-      body:JSON.stringify({model:"openrouter/auto",max_tokens:600,messages:[{role:"user",content:prompt}]})});
+      body:JSON.stringify({model:"openrouter/auto",max_tokens:1500,messages:[{role:"user",content:prompt}]})});
     const d=await res.json();
     if(!res.ok)throw new Error(d?.error?.message||"Erro API");
-    const txt=(d.choices||[]).map(c=>c.message?.content||"").join("").replace(/```json|```/g,"").trim();
-    const parsed=JSON.parse(txt);
-    if(parsed.lyrics){
+    const txt=(d.choices||[]).map(c=>c.message?.content||"").join("");
+    const parsed=safeParseJSON(txt)||{};
+    const opcoes=(Array.isArray(parsed.opcoes)?parsed.opcoes:[parsed.lyrics]).filter(x=>typeof x==="string"&&x.trim()).slice(0,3);
+    if(opcoes.length>1){
+      const secBlock=document.getElementById("body-"+sid);
+      if(secBlock){
+        const box=document.createElement("div");
+        box.id="alt-chorus-"+sid;
+        box.style.cssText="margin-top:12px;border:2px solid #6366f1;border-radius:10px;padding:12px;background:rgba(99,102,241,0.08)";
+        box.innerHTML='<div style="font-size:10px;font-weight:700;color:#6366f1;letter-spacing:1px;margin-bottom:8px">✨ ESCOLHA UM DOS '+opcoes.length+' NOVOS REFRÕES</div>'+
+          opcoes.map((o,k)=>`<div style="border:1px solid rgba(99,102,241,.35);border-radius:8px;padding:10px;margin-bottom:8px;background:var(--card-bg)">
+            <div style="font-size:10px;font-weight:700;color:#6366f1;margin-bottom:6px">OPÇÃO ${k+1}</div>
+            <pre style="font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;margin:0 0 8px">${esc(o)}</pre>
+            <button onclick="useChorusOpcao('${sec}','${sid}',${k})" style="width:100%;padding:8px;border-radius:8px;border:none;background:#22c55e;color:#fff;font-size:12px;font-weight:700;cursor:pointer">✅ Usar esta</button></div>`).join('')+
+          `<button onclick="discardAltChorus('${sec}','${sid}',this)" style="width:100%;padding:8px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:12px;font-weight:600;cursor:pointer">🗑 Descartar as ${opcoes.length}</button>`;
+        box.dataset.opcoes=JSON.stringify(opcoes);
+        box.dataset.lyrics=opcoes.join("\n\n---\n\n");
+        secBlock.appendChild(box);
+        box.scrollIntoView({behavior:"smooth",block:"nearest"});
+      }
+      showToast("🎯 "+opcoes.length+" opções de refrão!","ok");
+    }else if(opcoes.length===1){
+      parsed.lyrics=opcoes[0];
       // Mostra o novo refrão abaixo do atual sem substituir
       const secBlock=document.getElementById("body-"+sid);
       if(secBlock){
@@ -2250,6 +2438,12 @@ Retorne EXCLUSIVAMENTE o JSON: {"lyrics":"novo refrão completo com quebras \n"}
     }
   }catch(e){showToast("Erro: "+e.message,"err");}
   finally{if(btn){btn.disabled=false;btn.textContent="🎯 Novo";}}
+}
+function useChorusOpcao(sec,sid,k){
+  const box=document.getElementById("alt-chorus-"+sid); if(!box)return;
+  const op=JSON.parse(box.dataset.opcoes||"[]")[k]; if(!op)return;
+  currentSections[sec]=op; window._rejectedChorus=[]; window._chorusCount=0;
+  box.remove(); renderResult(Object.keys(currentSections)); showToast("✅ Refrão aplicado!","ok");
 }
 function useAltChorus(sec,sid,btn){
   const altDiv=document.getElementById("alt-chorus-"+sid);
@@ -2424,7 +2618,7 @@ function renderResult(structs){
           </div>
           <button class="btn-copy-sm" style="background:#f97316;color:#fff" onclick="copyEl('ex-style','Style copiado! ✓')">📋 Copiar</button>
         </div>
-        <pre class="export-pre" id="ex-style" style="white-space:pre-wrap;word-break:break-word">${esc((s.suno_style||s.suno_style_prompt||"").slice(0,120))}</pre>
+        <pre class="export-pre" id="ex-style" style="white-space:pre-wrap;word-break:break-word">${esc((s.suno_style||s.suno_style_prompt||"").slice(0,1000))}</pre>
       </div>
 
       <!-- STYLE DETALHADO -->
@@ -2890,7 +3084,7 @@ REGRAS DE OURO:
 • Cenas concretas e sensoriais — não declarações genéricas.
 • Refrão: hook de 1 frase, fácil de cantar, impossível de esquecer.
 • Bridge: virada emocional real que eleva o último refrão.
-• Suno style: máx 120 chars, inglês, específico (ex: "raspy male tenor", "fingerpicked acoustic guitar").
+• Suno style: 300 a 900 caracteres (máx. 1000), inglês, tags separadas por vírgula, específico (ex: "raspy male tenor", "fingerpicked acoustic guitar").
 
 Retorne EXCLUSIVAMENTE o JSON, sem texto extra, sem markdown:
 {"title":"Novo título que emociona","subtitle":"Tagline poética","key":"Tom","chords":"Progressão","vibe":"Atmosfera em 1 frase","style_tags":["tag1","tag2","tag3"],"sections":{${secsToUse.map(s=>`"${s}":"letra nova com rima rica, quebras \\n, mín 4 linhas"`).join(",")}},"suno_style":"inglês vírgula máx 120 chars","instruments":["inst1","inst2","inst3"],"production_notes":"dinâmica, mix, referências"}`;
@@ -2948,8 +3142,8 @@ function switchRTab(tab){
     const charEl=document.getElementById("style-chars");
     if(styleEl&&charEl){
       const len=styleEl.textContent.length;
-      charEl.textContent=len+"/120 chars";
-      charEl.style.color=len>120?"#ef4444":len>100?"#f59e0b":"#22c55e";
+      charEl.textContent=len+"/1000 chars";
+      charEl.style.color=len>1000?"#ef4444":len>900?"#f59e0b":"#22c55e";
     }
     const detEl=document.getElementById("ex-style-detailed");
     const detCharEl=document.getElementById("detailed-chars");
