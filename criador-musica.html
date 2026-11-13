@@ -210,7 +210,13 @@ body.dark .tab-item.active::after{background:#00c2d1;box-shadow:0 0 8px rgba(0,1
 .ia-sel{width:100%;font-size:12px;padding:8px}
 .ia-dica{font-size:10px;color:#999;margin-top:5px;line-height:1.4}
 .ia-chk{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:#333;cursor:pointer}
-.ia-chk small{color:#999;font-size:10px}
+.ia-chk{justify-content:space-between}
+.ia-chk span{flex:1;line-height:1.3}
+.ia-chk small{display:block;color:#999;font-size:10px}
+.ia-chk input{-webkit-appearance:none;appearance:none;width:44px;height:24px;border-radius:12px;background:#ccc;position:relative;flex-shrink:0;cursor:pointer;transition:background .2s}
+.ia-chk input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.ia-chk input:checked{background:#22c55e}
+.ia-chk input:checked::after{left:23px}
 .btn-api{padding:11px 16px;border-radius:11px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .btn-api.ok{background:#22c55e}
 .btn-voltar{
@@ -648,7 +654,7 @@ window.amsAuthReady=(async()=>{
       <select id="ia-gem-model" class="api-input ia-sel" onchange="iaSalvarModelo()"></select>
       <div class="ia-dica">Crie a chave grátis em <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#f97316">aistudio.google.com/apikey</a> (com a mesma conta Google).</div>
     </div>
-    <label class="ia-chk"><input type="checkbox" id="ia-revisao" onchange="localStorage.setItem('ia_revisao',this.checked?'1':'0')"> ✍️ Revisão automática da letra <small>(mais lenta, letra melhor)</small></label>
+    <label class="ia-chk"><span>✍️ Revisão automática da letra <small>mais lenta, letra melhor</small></span><input type="checkbox" id="ia-revisao" onchange="localStorage.setItem('ia_revisao',this.checked?'1':'0')"></label>
   </div>
 </div>
 <div id="api-overlay" style="display:none;position:fixed;inset:0;z-index:199" onclick="toggleApiPanel()"></div>
