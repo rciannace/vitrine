@@ -220,7 +220,8 @@ body.dark .tab-item.active::after{background:#00c2d1;box-shadow:0 0 8px rgba(0,1
 .ia-chk small{display:block;color:#999;font-size:10px}
 .ia-chk input{-webkit-appearance:none;appearance:none;width:44px;height:24px;border-radius:12px;background:#ccc;position:relative;flex-shrink:0;cursor:pointer;transition:background .2s}
 .ia-chk input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.ia-chk input:checked{background:#22c55e}
+.ia-chk input:checked{background:#22c55e!important}
+.ia-chk input:not(:checked){background:#ccc!important}
 .ia-chk input:checked::after{left:23px}
 .btn-api{padding:11px 16px;border-radius:11px;border:none;background:#f97316;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .btn-api.ok{background:#22c55e}
@@ -2085,7 +2086,7 @@ Retorne EXCLUSIVAMENTE o JSON {"title":"...","sections":{...mesmas chaves...}} s
 document.addEventListener("DOMContentLoaded",()=>{
   try{
     iaSetProv(iaProv());
-    const gk=localStorage.getItem("gem_key"); if(gk)document.getElementById("gem-key").value=gk;
+    const gk=localStorage.getItem("gem_key"); if(gk){document.getElementById("gem-key").value=gk;const bg=document.getElementById("btn-gem");bg.textContent="✓ OK";bg.className="btn-api ok";}
     iaPreencher("ia-gem-model",IA_GEM_SUGERIDOS,localStorage.getItem("ia_model_gem")||IA_GEM_SUGERIDOS[0]);
     document.getElementById("ia-revisao").checked=localStorage.getItem("ia_revisao")!=="0";
     document.getElementById("ia-instr").value=localStorage.getItem("ia_instr")||"";
