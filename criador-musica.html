@@ -3759,6 +3759,20 @@ let spQueue=[];   // músicas com áudio
 let spShuffle=false;
 let spRepeat="none"; // none | all | one
 let spIndex=-1;   // índice atual
+// Aleatório "de verdade": cada música toca 1 vez por rodada (guardado pelo id, não pela posição)
+let _shufTocadas=new Set();   // ids já tocados nesta rodada
+let _spHist=[];               // ids tocados antes, para o botão ⏮ no aleatório
+function spAleatorioProximo(novaRodada){
+  const atual=spQueue[spIndex]&&spQueue[spIndex].id;
+  let resto=spQueue.map((e,i)=>i).filter(i=>i!==spIndex&&!_shufTocadas.has(spQueue[i].id));
+  if(!resto.length){
+    if(!novaRodada||spQueue.length===0)return -1;
+    _shufTocadas=new Set();                            // começa outra rodada (a atual pode voltar, mas não logo em seguida)
+    resto=spQueue.map((e,i)=>i).filter(i=>i!==spIndex);
+    if(!resto.length)resto=[spIndex];
+  }
+  return resto[Math.floor(Math.random()*resto.length)];
+}
 let spPlaying=false;
 const spAudio=document.getElementById?document.getElementById("sp-audio"):null;
 
@@ -3826,7 +3840,9 @@ function genreColor(g){
 
 function spToggleShuffle(){
   spShuffle=!spShuffle;
-  window._shufflePool=null; // reset pool ao trocar modo
+  const atual=spQueue[spIndex]&&spQueue[spIndex].id;
+  _shufTocadas=new Set(atual?[atual]:[]);             // nova rodada a partir da música atual
+  _spHist=[];
   const btn=document.getElementById("sp-shuffle-btn");
   if(btn)btn.className="sp-btn"+(spShuffle?" active-mode":"");
 }
@@ -4020,11 +4036,13 @@ function spHandleAudioFail(e){
     setTimeout(()=>showToast("❌ Vários áudios falharam — verifique o Cloudinary","err"),2000);
   }
 }
-function spPlay(i){
+function spPlay(i,voltando){
   if(!spQueue[i])return;
+  const anterior=spQueue[spIndex]&&spQueue[spIndex].id;
+  if(!voltando&&anterior&&anterior!==spQueue[i].id){_spHist.push(anterior);if(_spHist.length>200)_spHist.shift();}
   spIndex=i;
-  window._shufflePool=null; // reset pool ao trocar música manualmente
   const e=spQueue[i];
+  _shufTocadas.add(e.id);                             // marca como tocada nesta rodada
   window._spCurrentId=e.id;
   const audio=document.getElementById("sp-audio");
   const usedLight=audioPlayUrl(e)!==e.audio;
@@ -4081,6 +4099,13 @@ function spPrev(){
     audio.currentTime=0;
     return;
   }
+  // no aleatório, volta para a música que tocou antes (de verdade)
+  if(spShuffle){
+    while(_spHist.length){
+      const id=_spHist.pop(), idx=spQueue.findIndex(x=>x.id===id);
+      if(idx>=0){spPlay(idx,true);return;}
+    }
+  }
   // senão vai para a música anterior
   const i=(spIndex-1+spQueue.length)%spQueue.length;
   spPlay(i);
@@ -4097,7 +4122,8 @@ function spNext(){
   if(spRepeat==="one"){spPlay(spIndex);return;}
   let i;
   if(spShuffle){
-    do{i=Math.floor(Math.random()*spQueue.length);}while(spQueue.length>1&&i===spIndex);
+    i=spAleatorioProximo(true);                        // botão ⏭: se a rodada acabou, começa outra
+    if(i<0)return;
   }else{
     i=spIndex+1;
     // se chegou no fim
@@ -4192,25 +4218,9 @@ function spUpdateUI(){
       if(idx>=0){if(_queueOpen)renderQueue();setTimeout(()=>spPlay(idx),300);return;}
     }
     if(spShuffle){
-      // Shuffle correto: usa lista de índices não tocados
-      if(!window._shufflePool||window._shufflePool.length===0){
-        // Cria pool com todos os índices exceto o atual
-        window._shufflePool=spQueue.map((_,i)=>i).filter(i=>i!==spIndex);
-        // Embaralha (Fisher-Yates)
-        for(let i=window._shufflePool.length-1;i>0;i--){
-          const j=Math.floor(Math.random()*(i+1));
-          [window._shufflePool[i],window._shufflePool[j]]=[window._shufflePool[j],window._shufflePool[i]];
-        }
-      }
-      const next=window._shufflePool.shift();
-      if(next!==undefined){
-        setTimeout(()=>spPlay(next),300);
-      } else if(spRepeat==="all"){
-        // Tocou todas — recomeça
-        window._shufflePool=null;
-        const first=Math.floor(Math.random()*spQueue.length);
-        setTimeout(()=>spPlay(first),300);
-      }
+      // cada música 1 vez por rodada; no fim, só recomeça se "Repetir todas" estiver ligado
+      const next=spAleatorioProximo(spRepeat==="all");
+      if(next>=0)setTimeout(()=>spPlay(next),300);
     } else {
       const next=spIndex+1;
       if(next<spQueue.length){
