@@ -1,5 +1,62 @@
 [
   {
+    "id": 1794494585017,
+    "title": "GANHOU A SOLIDÃO",
+    "genre": "Sertanejo",
+    "mood": "Romantico",
+    "bpm": 125,
+    "duration": "normal",
+    "date": "12/11/2026",
+    "song": {
+      "title": "GANHOU A SOLIDÃO",
+      "subtitle": "",
+      "key": "",
+      "chords": "",
+      "vibe": "",
+      "style_tags": [],
+      "sections": {
+        "Verso 1": "Te dei a minha vida e a chave do meu coração,\nFiz de tudo pra te ver feliz, mas foi em vão.\nEnquanto eu suava pra erguer o nosso lar,\nVocê procurava alguém pra colocar no meu lugar.",
+        "Verso 2": "Jogou a nossa história no lixo por aventura,\nMostrou que a sua pose de santa era mentira pura.\nTrocou a minha cama pra deitar com um amigo meu,\nE agora vem chorar fingindo que se arrependeu.",
+        "Refrão": "Essa música é o ponto final pra eu nunca esquecer!\nEu posso até chorar, mas não volto pra você.\nFiz essa letra pesada pra sempre me lembrar,\nQue gente do seu tipo só serve pra machucar!\nPega as suas roupas, assume a sua traição,\nVocê perdeu um homem e ganhou a solidão!",
+        "Verso 3": "Quando a saudade bater e o outro te largar,\nNão adianta vir na minha porta implorar.\nEu já cansei de ser o trouxa que te perdoava,\nEnquanto nas minhas costas você me enganava.",
+        "Pré-Refrão": "A sua máscara caiu, eu descobri o seu jogo,\nPor você eu nunca mais boto a mão no fogo.\nEu sou homem demais pra viver de migalha,\nTô cortando da minha vida quem só me atrapalha!",
+        "Outro": "Nunca mais... um erro desse do meu lado.\nSegue o seu caminho com o seu novo namorado.\nFoi você quem escolheu fazer tudo errado.",
+        "Fim": "Acabou a palhaçada, chegou sua hora...\nFica lá com o seu amante e vai logo embora."
+      },
+      "suno_style": "",
+      "instruments": [],
+      "production_notes": "",
+      "bpm": 125,
+      "genre": "Sertanejo",
+      "mood": "Romantico",
+      "voice": "",
+      "duration": "normal"
+    },
+    "sections": {
+      "Verso 1": "Te dei a minha vida e a chave do meu coração,\nFiz de tudo pra te ver feliz, mas foi em vão.\nEnquanto eu suava pra erguer o nosso lar,\nVocê procurava alguém pra colocar no meu lugar.",
+      "Verso 2": "Jogou a nossa história no lixo por aventura,\nMostrou que a sua pose de santa era mentira pura.\nTrocou a minha cama pra deitar com um amigo meu,\nE agora vem chorar fingindo que se arrependeu.",
+      "Refrão": "Essa música é o ponto final pra eu nunca esquecer!\nEu posso até chorar, mas não volto pra você.\nFiz essa letra pesada pra sempre me lembrar,\nQue gente do seu tipo só serve pra machucar!\nPega as suas roupas, assume a sua traição,\nVocê perdeu um homem e ganhou a solidão!",
+      "Verso 3": "Quando a saudade bater e o outro te largar,\nNão adianta vir na minha porta implorar.\nEu já cansei de ser o trouxa que te perdoava,\nEnquanto nas minhas costas você me enganava.",
+      "Pré-Refrão": "A sua máscara caiu, eu descobri o seu jogo,\nPor você eu nunca mais boto a mão no fogo.\nEu sou homem demais pra viver de migalha,\nTô cortando da minha vida quem só me atrapalha!",
+      "Outro": "Nunca mais... um erro desse do meu lado.\nSegue o seu caminho com o seu novo namorado.\nFoi você quem escolheu fazer tudo errado.",
+      "Fim": "Acabou a palhaçada, chegou sua hora...\nFica lá com o seu amante e vai logo embora."
+    },
+    "struct": [
+      "Verso 1",
+      "Verso 2",
+      "Refrão",
+      "Verso 3",
+      "Pré-Refrão",
+      "Refrão",
+      "Outro",
+      "Fim"
+    ],
+    "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1794494581/vbwl0sbaxc7ne9q9l9eh.mp3",
+    "audioDur": 223.752,
+    "_mtime": 1794569207217,
+    "plays": 5
+  },
+  {
     "id": 1794006073379,
     "title": "O MELHOR DO MEU DIA",
     "genre": "Sertanejo",
@@ -53,8 +110,8 @@
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1794006071/xi5wcpodcrpm9dqzkffd.mp3",
     "audioDur": 183.312,
-    "_mtime": 1794337671240,
-    "plays": 11
+    "_mtime": 1794504708733,
+    "plays": 14
   },
   {
     "id": 1793537442535,
@@ -139,8 +196,8 @@
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1793537441/ngv4k132deagfpej7p1m.mp3",
     "audioDur": 160.128,
-    "_mtime": 1794334336021,
-    "plays": 16
+    "_mtime": 1794505605545,
+    "plays": 19
   },
   {
     "id": 1791558372909,
@@ -266,8 +323,8 @@
       "Uplifting Harmony"
     ],
     "audioDur": 186,
-    "_mtime": 1794249442776,
-    "plays": 10,
+    "_mtime": 1794421326990,
+    "plays": 11,
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791559093/xdw9cctapmp2ukl3fi49.mp3"
   },
   {
@@ -389,10 +446,10 @@
       "guitar solo",
       "outro"
     ],
-    "plays": 8,
+    "plays": 9,
     "_editedText": "\n(Verso 1)\nA casa em silêncio, o escuro na sala\nE o eco da tua voz que não cala\nEu sei que o nosso tempo passou,\nO que era pra ser eterno acabou.\n\n(Verso 2)\nVocê escolheu o seu canto e partiu,\nDeixando o vazio onde a gente sorriu.\nIsto guardo no peito o que restou de nós,\nTentando abafar o eco da tua voz.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n(Verso 3)\nO relógio não para, a madrugada é tão fria,\nE a nossa casa ficou tão vazia.\nTentando esquecer o que a gente viveu,\nBuscando a resposta do porquê se perdeu.\n\n(Verso 4)\nA noite arrasta os minutos devagar,\nE a mente não para de te procurar.\n\n[Chorus]\n(Refrão)\nÉ o preço de ver tudo desabar,\nDe ver que pra nós dois o amor acabou.\nO silêncio pesa e eu começo a me lembrar,\nDe um sonho perdido que a gente não soube guardar.\nCoração rasgado na madrugada fria,\nVocê longe de mim... quem dera se fosse mentira.\n\n[Guitar Solo]\n\n(Verso Final / Outro)\nO rádio toca baixo a nossa canção,\nO eco se perde na escuridão.\nAgora é tarde pra tentar voltar...\nO amor acabou, mas deixou o seu lugar.\n[Outro]\n",
     "fav": true,
-    "_mtime": 1794319054822,
+    "_mtime": 1794425802091,
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242137/oi9xwtbncdwignhzew11.mp3",
     "audioDur": 242.76
   },
@@ -496,9 +553,9 @@
       "outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241020/hy1ulobodtt5wsx7ygjt.mp3",
-    "plays": 14,
+    "plays": 15,
     "_editedText": "[ VERSE 1 ]\nEu lembro bem do teu abraço,\nDo teu olhar que me guiava o caminhar.\nSegurava firme o meu passo,\nQuando o mundo parecia me assustar.\nO tempo passa, os anos voam,\nMas o teu amor é o que me faz ficar.\n\n[ PRE-CHORUS ]\nVocê é a voz que acalma o meu medo,\nO mapa certo pra eu me encontrar.\nNão preciso de muitos segredos,\nSó de ouvir teu riso pra me confortar.\n\n[ CHORUS ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ VERSE 2 ]\nNa mesa posta, a tua calma,\nA força mansa que me ensinou a ser.\nCom um jeito simples, tocou minha alma,\nMe deu motivos pra sempre vencer.\nA tua vida espelhada na minha,\nÉ o presente que eu ganhei pra viver.\n\n[ CHORUS ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ BRIDGE ]\nE se o mundo girar, vou estar por perto,\nCuidando de ti como cuidou de mim.\nÉ o amor mais puro, o caminho certo,\nQue não tem começo e não tem fim.\n\n[ CHORUS FINAL ]\nPai, você é o brilho da minha história,\nA luz que eu levo e vive na memória.\nO abraço mais quente, o porto seguro,\nO sol que clareia o meu futuro.\nTudo o que sou, eu devo a você,\nMeu grande amor, meu jeito de viver.\n\n[ OUTRO ]\nMeu herói, meu pai...\n\n\n",
-    "_mtime": 1794246559221,
+    "_mtime": 1794425799452,
     "audioDur": 186.84
   },
   {
@@ -623,8 +680,8 @@
       "Outro: O ritmo desacelera com uma batida seca e a sanfona fechando com charme"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241058/douckqwjqaj0wqquhbso.mp3",
-    "plays": 15,
-    "_mtime": 1793728134832,
+    "plays": 17,
+    "_mtime": 1794506035554,
     "audioDur": 202.08
   },
   {
@@ -684,9 +741,9 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241076/hzykwbualpm7abgig89n.mp3",
-    "plays": 25,
+    "plays": 26,
     "fav": false,
-    "_mtime": 1794337854967,
+    "_mtime": 1794349339717,
     "audioDur": 211.848
   },
   {
@@ -825,9 +882,9 @@
       "End"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241137/czl9et6augugjw8etotk.mp3",
-    "plays": 13,
+    "plays": 15,
     "audioDur": 227.76,
-    "_mtime": 1794249629210
+    "_mtime": 1794505377339
   },
   {
     "id": 1783385309698,
@@ -948,8 +1005,8 @@
       "Outro: Fade out com guitarra solo"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241196/pwgzoxft8dcdxqc4xrgz.mp3",
-    "plays": 20,
-    "_mtime": 1794246406283,
+    "plays": 21,
+    "_mtime": 1794419210958,
     "audioDur": 152.232
   },
   {
@@ -1063,8 +1120,8 @@
       "Refrão Final"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241253/clazbegcplrdqwukayml.mp3",
-    "plays": 31,
-    "_mtime": 1794054165667,
+    "plays": 34,
+    "_mtime": 1794506693504,
     "audioDur": 222.72
   },
   {
@@ -1135,9 +1192,9 @@
       "verso final"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241270/hvzn9ozmij9jbqrie0hj.mp3",
-    "plays": 54,
+    "plays": 55,
     "_editedText": "[VERSO 1]\nCheguei na festa com a minha namorada\nFui lá no bar pra buscar uma gelada\nNo meio do caminho, o destino me pegou\nDei de cara com ela, um beijo me roubou\n\n[VERSO 2]\nCintura colada, o clima ficou quente\nBastou um toque, mexeu com a gente\nFiquei ali um pouco, perdi o meu juízo\nDepois voltei pra ela, fingindo um sorriso\n\n[ REFRÃO ]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar\n\n[VERSO 3]\nVoltei pro lado dela, o assunto morreu\nEla nem desconfia do que aconteceu\nA cabeça tá a mil, o perigo foi real\nFoi uma estranha que me fez passar mal\n\n[VERSO 4]\nA música não para, a gente segue na pista\nMas eu sinto o perigo que a noite conquista\nCada luz que reflete, cada riso que eu vejo\nParece que o mundo descobriu o meu desejo\n\n[ PONTE ]\nSe ela soubesse o que eu fiz ali atrás\nTalvez não me desse o perdão nunca mais\nÉ o preço da sede, da vontade de ter\nQuem não conhece o perigo, não sabe o que é viver...\n\n[ REFRÃO]\nO coração tá batendo, a adrenalina subiu\nTraí a minha mulher, enquanto ninguém me viu\nInventei uma desculpa, pra ninguém desconfiar\nMas o gosto desse beijo ainda tá no meu olhar...\n\n[VERSO FINAL]\nA noite ainda é longa e eu tô aqui\nCarregando esse segredo que eu não dividi\nFoi só um beijo, nada mais...\nMas ficou um gostinho de quero mais...\n\n",
-    "_mtime": 1794055467439,
+    "_mtime": 1794420536619,
     "audioDur": 191.544
   },
   {
@@ -1198,8 +1255,8 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241482/drpdk4awzi86je5doc9t.mp3",
-    "plays": 16,
-    "_mtime": 1793981688248,
+    "plays": 17,
+    "_mtime": 1794422398461,
     "audioDur": 219.96
   },
   {
@@ -1256,9 +1313,9 @@
       "final chorus, powerful baritone vocals, anthemic"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241339/x3tyinh56ltp0x9glgfs.mp3",
-    "plays": 36,
+    "plays": 38,
     "_editedText": "\nNa sombra do que a gente esqueceu,\nBusquei o rastro que o vento não moveu.\nTentei guardar o que não tinha fim,\nMas o silêncio gritou dentro de mim.\n\n[Verse 2]\nDe onde eu estou, vejo o que restou,\nO caminho mudou, o tempo não esperou.\nEu vi o espelho e não me reconheci,\nSão tantas marcas da vida que eu já vivi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n\n[Verse 3]\nVocê não estava lá quando a chuva caiu,\nE o peito vazio, finalmente partiu.\nAs luzes se apagam, a cena acabou,\nO que era verdade, o medo apagou.\n\n[Verse 4]\nNão tem mais volta, não tem mais saída,\nÉ a marca da tua ausência na minha vida!\nA culpa é o peso que eu carrego aqui,\nNo mesmo lugar onde eu te perdi.\n[Chorus, powerful baritone vocals, steady tempo]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!\n[Melodic guitar solo, moderate pace]\n\n[Bridge]\nSó me diz...\nSe o tempo parou,\nOu se foi só um sonho que o destino apagou.\nNa imensidão desse vazio que ficou,\nEu ainda espero o que nunca voltou.\n\n[Final Chorus, powerful baritone vocals, anthemic]\nDiz pra mim se ainda existe o nosso lugar,\nOu se o destino foi quem nos fez separar.\nEu tenho tanta coisa, tanta coisa pra dizer,\nQue o mundo não entende, só eu sei viver.\nDiz pra mim se a gente ainda é o que sonhou,\nOu se o inverno enfim, o nosso abraço gelou!",
-    "_mtime": 1793537711554,
+    "_mtime": 1794427865665,
     "audioDur": 284.304
   },
   {
@@ -1295,8 +1352,8 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241356/srnbanf98dmyo40hwa9g.mp3",
-    "plays": 24,
-    "_mtime": 1794246404789,
+    "plays": 26,
+    "_mtime": 1794425805097,
     "audioDur": 209.952
   },
   {
@@ -1352,9 +1409,9 @@
       "Final / Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241373/x2rlmaf4jicxarjjpqn5.mp3",
-    "plays": 92,
+    "plays": 95,
     "fav": false,
-    "_mtime": 1794250084211,
+    "_mtime": 1794506465090,
     "audioDur": 227.952
   },
   {
@@ -1414,8 +1471,8 @@
       "Outro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241383/ha18zhmit95hyn1evbbf.mp3",
-    "plays": 29,
-    "_mtime": 1793647104782,
+    "plays": 30,
+    "_mtime": 1794420729165,
     "audioDur": 241.992
   },
   {
@@ -1452,9 +1509,9 @@
       "intro"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241411/yb7q1lwix6yinwjni2s3.mp3",
-    "plays": 32,
+    "plays": 33,
     "_editedText": "\nNesse abraço tem, duas vidas separadas\nUma que não sabe, não desconfia de nada\nE a outra que aceita viver o proibido\nDividindo o risco, assumindo o perigo\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n\nMinto na chegada, disfarço a minha entrada\nNo beijo sem calor, numa vida cansada\nEvito o contato, pra esconder esse amor\nPra não perder quem não me causa dor\n\nE o pior de tudo é viver nessa corda bamba\nSaber que a qualquer hora esse castelo desaba\nO peito dividido não aguenta a pressão\nTô destruindo duas vidas por pura ilusão\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\n(Refrão)\nComo eu vou contar pra quem me deu valor\nQue eu tô vivendo outro amor\nE que esse afeto não é por ela?\nE se a verdade vier, eu perco a minha paz e a minha donzela\nSe a verdade vier, eu perco a minha paz e a minha donzela\n\nE o telefone toca, o meu corpo gela...\nSerá que é o meu fim, ou é o começo com ela?\n\n",
-    "_mtime": 1793981468428,
+    "_mtime": 1794419363646,
     "audioDur": 219.192
   },
   {
@@ -1491,8 +1548,8 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241427/x7wswlms2sjfmdhzobtc.mp3",
-    "plays": 18,
-    "_mtime": 1793729274153,
+    "plays": 19,
+    "_mtime": 1794507136230,
     "audioDur": 179.352
   },
   {
@@ -1529,8 +1586,8 @@
       "Verso 1"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241502/afmacq37uklgarztefvg.mp3",
-    "plays": 35,
-    "_mtime": 1794229582585,
+    "plays": 39,
+    "_mtime": 1794516089761,
     "audioDur": 182.4
   },
   {
@@ -1750,8 +1807,8 @@
       "Chorus"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242686/mnigtyiack9n5yfsanxb.mp3",
-    "plays": 38,
-    "_mtime": 1793984888345,
+    "plays": 42,
+    "_mtime": 1794506916704,
     "audioDur": 218.544
   },
   {
@@ -1805,8 +1862,8 @@
       "Final Chorus"
     ],
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241606/k5gqhopmyzbxbbwpgycn.mp3",
-    "plays": 24,
-    "_mtime": 1794333054669,
+    "plays": 25,
+    "_mtime": 1794425796709,
     "audioDur": 213.624
   },
   {
@@ -1853,10 +1910,10 @@
     "duration": "normal",
     "title": "RETORNO DO MEU SOL",
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241640/juwuevwumlxekunmpkg3.mp3",
-    "plays": 28,
+    "plays": 30,
     "fav": false,
     "audioDur": 274.8,
-    "_mtime": 1794248691942
+    "_mtime": 1794425797945
   },
   {
     "_editedText": "[ INTRO ]\nO céu se acende em cores, um palco pra nós dois. \nA batida do meu peito, acompanhando o que flui. \nPalavras que o vento traz, num sussurro pra escutar, \nO amor, nosso compasso, que nos ensina a amar.\n\n[ VERSE ]\nLembro do primeiro olhar, faísca num temporal. \nUm universo se abrindo, num instante sem igual. \nCada curva do teu riso, desenha o meu caminho, \nE em cada abraço teu, encontro meu cantinho.\n\n[ PRE-CHORUS ]\nE o tempo parece parar, quando você chega perto. \nUm convite pra sonhar, um amor tão certo. \nSinto o mundo girar mais lento, ao teu lado, meu amor, \nUm sentimento que transcende, com todo o seu fulgor.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n[ VERSE 2 ]\nOs anos deixam marcas, mas a paixão não desfaz. \nSomos a força que nos move, a nossa própria paz. \nA cumplicidade que aflora, em cada gesto teu, \nUm elo que ninguém quebra, vindo direto do céu.\n\n[ BRIDGE ]\nE se o amanhã trouxer, o que o presente não diz, \nNossa união será a luz, a nossa raiz. \nUm solo de guitarra ecoa, a força desse querer, \nUm hino ao nosso enlace, que a alma faz vibrar e crer.\n\n[ CHORUS ]\nNossa constelação brilha, no céu do meu desejo. \nEm cada estrela eu vejo, o brilho do teu beijo. \nTeu amor, meu porto seguro, meu eterno porquê, \nNesse dia dos namorados, mais uma vez, amo você! \nPara sempre, amo você!\n\n",
@@ -1976,8 +2033,8 @@
       ],
       "genre": "Sertanejo"
     },
-    "plays": 22,
-    "_mtime": 1793996627279,
+    "plays": 26,
+    "_mtime": 1794505121801,
     "audioDur": 254.784
   },
   {
@@ -2038,8 +2095,8 @@
       "production_notes": "Intro com um solo de guitarra emocionante. A bateria entra forte e pesada no refrão. O baixo deve ser grave e presente, sustentando a harmonia com peso. As vozes masculinas com timbre rouco e expressivo. Padrão de rádio com versos de 5-8 linhas bem desenvolvidas com rimas ricas e imagens poéticas."
     },
     "bpm": 90,
-    "plays": 38,
-    "_mtime": 1793646843065,
+    "plays": 39,
+    "_mtime": 1794506238686,
     "audioDur": 225.984
   },
   {
@@ -2104,8 +2161,8 @@
     ],
     "date": "08/06/2026",
     "id": 1780966074065,
-    "plays": 18,
-    "_mtime": 1794333268725,
+    "plays": 19,
+    "_mtime": 1794420533184,
     "audioDur": 198.84
   },
   {
@@ -2157,9 +2214,9 @@
     },
     "title": "PERFUME DE JASMIM",
     "duration": "normal",
-    "plays": 18,
+    "plays": 20,
     "audioDur": 194.88,
-    "_mtime": 1794248496618,
+    "_mtime": 1794425798822,
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791242439/orziyeobpbbpldtx7sqz.mp3"
   },
   {
@@ -2196,9 +2253,9 @@
     "title": "FICA MAIS UM POUCO",
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241770/d7novnbku0vdiqffvfgz.mp3",
     "duration": "normal",
-    "plays": 29,
+    "plays": 30,
     "fav": false,
-    "_mtime": 1793981908923,
+    "_mtime": 1794422618912,
     "audioDur": 197.064
   },
   {
@@ -2262,8 +2319,8 @@
     "audio": "https://res.cloudinary.com/ppylrh6g/video/upload/v1791241787/fho8ilncktoy5lrpyidf.mp3",
     "title": "O SILÊNCIO DA VARANDA",
     "duration": "normal",
-    "plays": 24,
+    "plays": 27,
     "audioDur": 268.92,
-    "_mtime": 1794338067958
+    "_mtime": 1794505766131
   }
 ]
