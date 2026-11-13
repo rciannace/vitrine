@@ -211,6 +211,11 @@ body.dark .tab-item.active::after{background:#00c2d1;box-shadow:0 0 8px rgba(0,1
 .ia-dica{font-size:10px;color:#999;margin-top:5px;line-height:1.4}
 .ia-chk{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:#333;cursor:pointer}
 .ia-chk{justify-content:space-between}
+.ia-det{margin-top:12px;border:1.5px solid #e5e5e5;border-radius:10px;padding:10px}
+.ia-det summary{font-size:12px;font-weight:700;color:#333;cursor:pointer;list-style:none}
+.ia-det summary::-webkit-details-marker{display:none}
+.ia-det summary span{font-weight:600;font-size:11px;color:#22c55e}
+.ia-ta{width:100%;font-size:12px;padding:8px;resize:vertical;font-family:'Inter',sans-serif;line-height:1.4;box-sizing:border-box}
 .ia-chk span{flex:1;line-height:1.3}
 .ia-chk small{display:block;color:#999;font-size:10px}
 .ia-chk input{-webkit-appearance:none;appearance:none;width:44px;height:24px;border-radius:12px;background:#ccc;position:relative;flex-shrink:0;cursor:pointer;transition:background .2s}
@@ -654,6 +659,14 @@ window.amsAuthReady=(async()=>{
       <select id="ia-gem-model" class="api-input ia-sel" onchange="iaSalvarModelo()"></select>
       <div class="ia-dica">Crie a chave grátis em <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#f97316">aistudio.google.com/apikey</a> (com a mesma conta Google).</div>
     </div>
+    <details class="ia-det" id="ia-det">
+      <summary>📝 Minhas instruções <span id="ia-instr-st"></span></summary>
+      <div class="ia-dica" style="margin-top:6px">Cole aqui o texto que o Gemini escreveu com tudo o que você quer nas músicas. A IA vai seguir isso em toda letra, refrão e revisão.</div>
+      <textarea id="ia-instr" class="api-input ia-ta" rows="7" placeholder="Ex.: Sempre rimas ricas, refrão curto e marcante, nada de clichês como 'coração partido'..."></textarea>
+      <div class="ia-lb">Letras de exemplo (opcional) — 2 ou 3 letras que você gostou</div>
+      <textarea id="ia-exemplos" class="api-input ia-ta" rows="5" placeholder="Cole as letras aqui, uma depois da outra"></textarea>
+      <button class="btn-api" style="width:100%;margin-top:8px" onclick="iaSalvarInstr()">💾 Salvar instruções</button>
+    </details>
     <label class="ia-chk"><span>✍️ Revisão automática da letra <small>mais lenta, letra melhor</small></span><input type="checkbox" id="ia-revisao" onchange="localStorage.setItem('ia_revisao',this.checked?'1':'0')"></label>
   </div>
 </div>
@@ -2002,12 +2015,33 @@ async function iaChamarGemini(body){
   if(!txt)return new Response(JSON.stringify({error:{message:"Gemini não devolveu texto ("+((d.candidates||[])[0]?.finishReason||"vazio")+")"}}),{status:500,headers:{"Content-Type":"application/json"}});
   return new Response(JSON.stringify({choices:[{message:{content:txt}}]}),{status:200,headers:{"Content-Type":"application/json"}});
 }
+function iaSalvarInstr(){
+  localStorage.setItem("ia_instr",document.getElementById("ia-instr").value.trim());
+  localStorage.setItem("ia_exemplos",document.getElementById("ia-exemplos").value.trim());
+  iaStatusInstr(); document.getElementById("ia-det").open=false;
+  showToast("✅ Instruções salvas — valem para todas as músicas","ok");
+}
+function iaStatusInstr(){
+  const on=!!(localStorage.getItem("ia_instr")||localStorage.getItem("ia_exemplos"));
+  const el=document.getElementById("ia-instr-st"); if(el)el.textContent=on?"· ✓ salvas":"";
+}
+function iaTextoSistema(){
+  const ins=localStorage.getItem("ia_instr")||"", ex=localStorage.getItem("ia_exemplos")||"";
+  if(!ins&&!ex)return "";
+  let t="PREFERÊNCIAS FIXAS DO COMPOSITOR (siga sempre, em tudo o que escrever):\n";
+  if(ins)t+="\n"+ins+"\n";
+  if(ex)t+="\nLETRAS DE EXEMPLO QUE ELE APROVOU — use como referência de estilo, linguagem e qualidade (não copie versos):\n"+ex+"\n";
+  t+="\nIMPORTANTE: o formato de resposta pedido na mensagem (JSON) tem prioridade sobre qualquer formato citado acima.";
+  return t;
+}
 const _fetchOriginal=window.fetch.bind(window);
 window.fetch=async function(url,opt){
   try{
     if(typeof url==="string"&&url.indexOf("openrouter.ai/api/v1/chat/completions")>=0&&opt&&opt.body){
       const body=JSON.parse(opt.body);
       const curto=(body.max_tokens||0)<=5;                       // o "Validar" da chave OpenRouter continua igual
+      const sis=curto?"":iaTextoSistema();
+      if(sis&&Array.isArray(body.messages)){body.messages=[{role:"system",content:sis},...body.messages];opt={...opt,body:JSON.stringify(body)};}
       if(!curto&&iaProv()==="gemini"&&localStorage.getItem("gem_key"))return iaChamarGemini(body);
       const m=localStorage.getItem("ia_model_or");
       if(!curto&&m){body.model=m;opt={...opt,body:JSON.stringify(body)};}
@@ -2054,6 +2088,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     const gk=localStorage.getItem("gem_key"); if(gk)document.getElementById("gem-key").value=gk;
     iaPreencher("ia-gem-model",IA_GEM_SUGERIDOS,localStorage.getItem("ia_model_gem")||IA_GEM_SUGERIDOS[0]);
     document.getElementById("ia-revisao").checked=localStorage.getItem("ia_revisao")!=="0";
+    document.getElementById("ia-instr").value=localStorage.getItem("ia_instr")||"";
+    document.getElementById("ia-exemplos").value=localStorage.getItem("ia_exemplos")||"";
+    iaStatusInstr();
     iaCarregarModelosOR();
   }catch(e){console.warn(e);}
 });
